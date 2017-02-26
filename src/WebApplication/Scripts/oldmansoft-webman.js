@@ -22,10 +22,13 @@
         });
     }
 
-	if (!window.oldmansoft) {
-		window.oldmansoft = {};
-	}
-	window.oldmansoft.webman = this;
-	window.oldmansoft.$man = {
-	}
+    this.init = function (main, defaultLink) {
+        $app.init(main, defaultLink);
+    }
+
+    if (!window.oldmansoft) window.oldmansoft = {};
+    window.oldmansoft.webman = this;
+    window.$man = {
+        init: this.init
+    }
 })();

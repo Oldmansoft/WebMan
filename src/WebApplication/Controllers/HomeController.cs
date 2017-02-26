@@ -13,9 +13,10 @@ namespace WebApplication.Controllers
     {
         public ActionResult Index()
         {
-            var document = new MainDocument();
+            var document = new MainDocument("/Home/Welcome");
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webapp.cn.js")));
             document.Title = "WebMan";
+            document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
             return new HtmlResult(document);
         }
 
@@ -50,6 +51,12 @@ namespace WebApplication.Controllers
             {
                 return Login("帐号或密码错误");
             }
+        }
+
+        public ActionResult Welcome()
+        {
+            var p = new HtmlElement(HtmlTag.P).Text("hello");
+            return new HtmlResult(p);
         }
     }
 }

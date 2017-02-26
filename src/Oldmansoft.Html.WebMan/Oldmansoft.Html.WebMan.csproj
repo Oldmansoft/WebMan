@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Oldmansoft.Html.WebMan.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,7 +45,11 @@
     <Compile Include="HtmlDocument.cs" />
     <Compile Include="LoginDocument.cs" />
     <Compile Include="MainDocument.cs" />
+    <Compile Include="TreeList.cs" />
+    <Compile Include="TreeListBranch.cs" />
+    <Compile Include="TreeListLeaf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Extends.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj">
@@ -52,6 +57,7 @@
       <Name>Oldmansoft.Html</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

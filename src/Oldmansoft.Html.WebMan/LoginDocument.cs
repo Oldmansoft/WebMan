@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
+    /// <summary>
+    /// 登录文档
+    /// </summary>
     public class LoginDocument : HtmlDocument
     {
+        /// <summary>
+        /// 创建登录文档
+        /// </summary>
+        /// <param name="seedPath"></param>
         public LoginDocument(string seedPath)
         {
             var container = new HtmlElement(HtmlTag.Div).AddClass("container-fluid");

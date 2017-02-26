@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Oldmansoft.Html.Util;
+using Oldmansoft.Html;
 
 namespace Testing.Html
 {

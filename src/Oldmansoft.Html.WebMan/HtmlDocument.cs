@@ -47,14 +47,16 @@ namespace Oldmansoft.Html.WebMan
         {
             if (Resources.LinkFontAwesome == null)
             {
-                // http://cdn.uedsc.com/font-awesome
-                Resources.LinkFontAwesome = new Element.Link("http://cdn.uedsc.com/font-awesome/4.5.0/css/font-awesome.min.css");
+                Head.Append(new Element.ScriptResource("//use.fontawesome.com/d189a98e3d.js"));
             }
-            Head.Append(Resources.LinkFontAwesome);
+            else
+            {
+                Head.Append(Resources.LinkFontAwesome);
+            }
 
             if (Resources.LinkBootstrap == null)
             {
-                Resources.LinkBootstrap = new Element.Link("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+                Resources.LinkBootstrap = new Element.Link("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
                 Resources.LinkBootstrap.Integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u";
                 Resources.LinkBootstrap.CrossOrigin = "anonymous";
             }
@@ -63,7 +65,7 @@ namespace Oldmansoft.Html.WebMan
 
             if (Resources.ScriptJQuery == null)
             {
-                Resources.ScriptJQuery = new Element.ScriptResource("http://code.jquery.com/jquery-1.12.4.min.js");
+                Resources.ScriptJQuery = new Element.ScriptResource("//code.jquery.com/jquery-1.12.4.min.js");
                 Resources.ScriptJQuery.Integrity = "sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=";
                 Resources.ScriptJQuery.CrossOrigin = "anonymous";
             }
@@ -72,7 +74,7 @@ namespace Oldmansoft.Html.WebMan
 
             if (Resources.ScriptBootstrap == null)
             {
-                Resources.ScriptBootstrap = new Element.ScriptResource("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
+                Resources.ScriptBootstrap = new Element.ScriptResource("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
                 Resources.ScriptBootstrap.Integrity = "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa";
                 Resources.ScriptBootstrap.CrossOrigin = "anonymous";
             }
@@ -98,7 +100,7 @@ namespace Oldmansoft.Html.WebMan
 
             if (Resources.ScriptSha256 == null)
             {
-                Resources.ScriptSha256 = new Element.ScriptResource("https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.5.0/sha256.min.js");
+                Resources.ScriptSha256 = new Element.ScriptResource("//cdnjs.cloudflare.com/ajax/libs/js-sha256/0.5.0/sha256.min.js");
                 Resources.ScriptSha256.Integrity = "sha256-QBdQQL9wDJVDk0eibUblj8jCArYQD+XaeFU47LnWboY=";
                 Resources.ScriptSha256.CrossOrigin = "anonymous";
             }

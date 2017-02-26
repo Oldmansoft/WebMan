@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Oldmansoft.Html.Util
+namespace Oldmansoft.Html
 {
     /// <summary>
     /// 扩展方法
@@ -40,6 +40,18 @@ namespace Oldmansoft.Html.Util
         {
             if (source == null) return null;
             return HttpUtility.HtmlEncode(source);
+        }
+
+        /// <summary>
+        /// 创建元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static HtmlElement CreateElement(this FontAwesome source)
+        {
+            var result = new HtmlElement(HtmlTag.I);
+            result.AddClass(string.Format("fa fa-{0}", source.ToString().ToLower().Replace("_", "-")));
+            return result;
         }
     }
 }

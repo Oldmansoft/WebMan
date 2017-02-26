@@ -45,6 +45,7 @@
     <Compile Include="Element\Document.cs" />
     <Compile Include="Element\Link.cs" />
     <Compile Include="Element\ScriptResource.cs" />
+    <Compile Include="FontAwesome.cs" />
     <Compile Include="HtmlAttribute.cs" />
     <Compile Include="HtmlChar.cs" />
     <Compile Include="HtmlEvent.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="HtmlText.cs" />
     <Compile Include="IHtmlElement.cs" />
     <Compile Include="IHtmlNode.cs" />
+    <Compile Include="LinkContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\HtmlScriptManager.cs" />
     <Compile Include="Util\HtmlStyleManager.cs" />
@@ -66,7 +68,7 @@
     <Compile Include="Util\IdGenerator.cs" />
     <Compile Include="Util\HtmlTemplate.cs" />
     <Compile Include="Util\HtmlTemplateLoader.cs" />
-    <Compile Include="Util\_Extend.cs" />
+    <Compile Include="_Extend.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
