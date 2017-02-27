@@ -54,7 +54,7 @@ namespace Oldmansoft.Html.Util
         public void Format(IHtmlOutput outer, object routeValues)
         {
             if (routeValues == null) return;
-            Format(outer, routeValues.ToKeyValues());
+            Format(outer, routeValues.GetKeyValues());
         }
 
         /// <summary>

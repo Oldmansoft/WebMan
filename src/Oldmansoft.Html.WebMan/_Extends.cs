@@ -15,11 +15,11 @@ namespace Oldmansoft.Html.WebMan
         private static IList<Col> ColValues { get; set; }
 
         /// <summary>
-        /// 转换为样式名称
+        /// 获取样式名称
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string ToClassName(this Col source)
+        public static string GetCssName(this Col source)
         {
             if (ColValues == null)
             {
@@ -66,6 +66,30 @@ namespace Oldmansoft.Html.WebMan
 
             if (!string.IsNullOrEmpty(source.Path)) result.Attribute(HtmlAttribute.Href, source.Path);
             return result;
+        }
+
+        /// <summary>
+        /// 添加样式
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public static IHtmlElement AddClass(this IHtmlElement source, Col col)
+        {
+            source.AddClass(col.GetCssName());
+            return source;
+        }
+
+        /// <summary>
+        /// 移除样式
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public static IHtmlElement RemoveClass(this IHtmlElement source, Col col)
+        {
+            source.RemoveClass(col.GetCssName());
+            return source;
         }
     }
 }

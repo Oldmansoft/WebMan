@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Col.cs" />
     <Compile Include="DocumentResource.cs" />
+    <Compile Include="Form.cs" />
     <Compile Include="HtmlDocument.cs" />
     <Compile Include="LoginDocument.cs" />
     <Compile Include="MainDocument.cs" />

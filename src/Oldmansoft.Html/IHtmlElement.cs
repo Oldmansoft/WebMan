@@ -106,6 +106,20 @@ namespace Oldmansoft.Html
         IHtmlElement Prepend(IHtmlNode node);
 
         /// <summary>
+        /// 元素后贴
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        IHtmlElement After(IHtmlNode node);
+
+        /// <summary>
+        /// 元素前贴
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        IHtmlElement Before(IHtmlNode node);
+
+        /// <summary>
         /// 设置文本
         /// </summary>
         /// <param name="text"></param>

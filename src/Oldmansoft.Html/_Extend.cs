@@ -13,11 +13,11 @@ namespace Oldmansoft.Html
     public static class Extend
     {
         /// <summary>
-        /// 将属性生成字符串键值对
+        /// 获取字符串键值对
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> ToKeyValues(this object source)
+        public static IDictionary<string, string> GetKeyValues(this object source)
         {
             var result = new Dictionary<string, string>();
             if (source == null) return result;

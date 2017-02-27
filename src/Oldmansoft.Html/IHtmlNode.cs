@@ -12,6 +12,16 @@ namespace Oldmansoft.Html
     public interface IHtmlNode
     {
         /// <summary>
+        /// 父节点
+        /// </summary>
+        IHtmlNode Parent { get; set; }
+
+        /// <summary>
+        /// 子元素
+        /// </summary>
+        List<IHtmlNode> GetNodes();
+
+        /// <summary>
         /// 格式化
         /// </summary>
         /// <param name="outer"></param>

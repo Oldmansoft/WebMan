@@ -15,18 +15,37 @@ namespace Oldmansoft.Html
         /// <summary>
         /// 子节点
         /// </summary>
-        private List<IHtmlNode> Nodes = new List<IHtmlNode>();
-        
+        private List<IHtmlNode> Nodes { get; set; }
+
+        private IHtmlNode _Parent;
+
         /// <summary>
-        /// 格式化
+        /// 创建节点
         /// </summary>
-        /// <param name="outer"></param>
+        public HtmlNode()
+        {
+            _Parent = new EmptyNode();
+            Nodes = new List<IHtmlNode>();
+            _Parent.GetNodes().Add(this);
+        }
+
+        IHtmlNode IHtmlNode.Parent
+        {
+            get { return _Parent; }
+            set { _Parent = value; }
+        }
+
+        List<IHtmlNode> IHtmlNode.GetNodes()
+        {
+            return Nodes;
+        }
+        
         void IHtmlNode.Format(IHtmlOutput outer)
         {
             if (outer == null) throw new ArgumentNullException("outer");
             Format(outer);
         }
-
+        
         /// <summary>
         /// 格式化
         /// </summary>
@@ -37,8 +56,10 @@ namespace Oldmansoft.Html
         /// 节点添加
         /// </summary>
         /// <param name="node"></param>
-        protected void NodesAdd(IHtmlNode node)
+        protected void NodesAppend(IHtmlNode node)
         {
+            node.Parent.GetNodes().Remove(node);
+            node.Parent = this;
             Nodes.Add(node);
         }
 
@@ -46,9 +67,37 @@ namespace Oldmansoft.Html
         /// 节点插入
         /// </summary>
         /// <param name="node"></param>
-        protected void NodesInsert(IHtmlNode node)
+        protected void NodesPrepend(IHtmlNode node)
         {
+            node.Parent.GetNodes().Remove(node);
+            node.Parent = this;
             Nodes.Insert(0, node);
+        }
+
+        /// <summary>
+        /// 元素后贴
+        /// </summary>
+        /// <param name="node"></param>
+        protected void NodeAfter(IHtmlNode node)
+        {
+            node.Parent.GetNodes().Remove(node);
+            var nodes = _Parent.GetNodes();
+            var index = nodes.IndexOf(this);
+            node.Parent = _Parent;
+            nodes.Insert(index + 1, node);
+        }
+
+        /// <summary>
+        /// 元素前贴
+        /// </summary>
+        /// <param name="node"></param>
+        protected void NodeBefore(IHtmlNode node)
+        {
+            node.Parent.GetNodes().Remove(node);
+            var nodes = _Parent.GetNodes();
+            var index = nodes.IndexOf(this);
+            node.Parent = _Parent;
+            nodes.Insert(index, node);
         }
 
         /// <summary>
@@ -56,6 +105,10 @@ namespace Oldmansoft.Html
         /// </summary>
         protected void NodesClear()
         {
+            foreach(var item in Nodes)
+            {
+                item.Parent = new EmptyNode();
+            }
             Nodes.Clear();
         }
 

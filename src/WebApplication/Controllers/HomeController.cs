@@ -65,10 +65,9 @@ namespace WebApplication.Controllers
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
 
-            var p = new HtmlElement(HtmlTag.P).Text("hello");
-            panel.Append(p);
+            panel.Text("hello, world");
             
-            return new HtmlResult(panel);
+            return new HtmlResult(panel.CreateLayout());
         }
     }
 }

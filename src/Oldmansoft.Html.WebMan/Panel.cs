@@ -14,10 +14,7 @@ namespace Oldmansoft.Html.WebMan
     {
         private IHtmlElement HeaderCaption { get; set; }
 
-        /// <summary>
-        /// 宽度
-        /// </summary>
-        public Col Col { get; set; }
+        private IHtmlElement Body { get; set; }
 
         /// <summary>
         /// 标题
@@ -32,13 +29,11 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建面板
         /// </summary>
-        public Panel(Col col = Col.Xs12)
+        public Panel()
             : base(HtmlTag.Div)
         {
-            Col = col;
-
             var header = new HtmlElement(HtmlTag.Header);
-            Append(header);
+            base.Append(header);
 
             header.Append(Icon.CreateElement());
             HeaderCaption = new HtmlElement(HtmlTag.H2);
@@ -47,6 +42,9 @@ namespace Oldmansoft.Html.WebMan
             var tools = new HtmlElement(HtmlTag.Div).AddClass("webman-panel-tools");
             header.Append(tools);
             tools.Append(FontAwesome.Times.CreateElement());
+
+            Body = new HtmlElement(HtmlTag.P);
+            base.Append(Body);
         }
 
         /// <summary>
@@ -57,8 +55,50 @@ namespace Oldmansoft.Html.WebMan
         {
             HeaderCaption.Text(Caption);
             AddClass("webman-panel");
-            AddClass(Col.ToClassName());
             base.Format(outer);
+        }
+
+        /// <summary>
+        /// 创建布局元素
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public IHtmlElement CreateLayout(Col col = Col.Xs12)
+        {
+            var result = new HtmlElement(HtmlTag.Div);
+            result.AddClass(col);
+            result.Append(this);
+            return result;
+        }
+
+        /// <summary>
+        /// 添加元素
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public override IHtmlElement Append(IHtmlNode node)
+        {
+            return Body.Append(node);
+        }
+
+        /// <summary>
+        /// 插入元素
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public override IHtmlElement Prepend(IHtmlNode node)
+        {
+            return Body.Prepend(node);
+        }
+
+        /// <summary>
+        /// 设置文本
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public override IHtmlElement Text(string text)
+        {
+            return Body.Text(text);
         }
     }
 }

@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="UtHtmlElement.cs" />
     <Compile Include="UtExtend.cs" />
     <Compile Include="UtTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

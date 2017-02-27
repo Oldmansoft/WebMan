@@ -103,6 +103,23 @@ namespace Oldmansoft.Html.WebMan
             (Element as IHtmlNode).Format(outer);
         }
 
+        IHtmlNode IHtmlNode.Parent
+        {
+            get
+            {
+                return (Element as IHtmlNode).Parent;
+            }
+            set
+            {
+                (Element as IHtmlNode).Parent = value;
+            }
+        }
+
+        List<IHtmlNode> IHtmlNode.GetNodes()
+        {
+            return (Element as IHtmlNode).GetNodes();
+        }
+
         IHtmlElement IHtmlElement.OnClient(HtmlEvent e, string script)
         {
             return Element.OnClient(e, script);
@@ -111,6 +128,16 @@ namespace Oldmansoft.Html.WebMan
         IHtmlElement IHtmlElement.Prepend(IHtmlNode node)
         {
             return Element.Prepend(node);
+        }
+
+        IHtmlElement IHtmlElement.After(IHtmlNode node)
+        {
+            return Element.After(node);
+        }
+
+        IHtmlElement IHtmlElement.Before(IHtmlNode node)
+        {
+            return Element.Before(node);
         }
 
         IHtmlElement IHtmlElement.RemoveAttribute(string name)

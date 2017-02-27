@@ -11,7 +11,7 @@ namespace Testing.Html
         public void TestToKeyValues()
         {
             var source = new { name = "hello" };
-            var result = source.ToKeyValues();
+            var result = source.GetKeyValues();
             Assert.AreEqual("hello", result["name"]);
         }
     }

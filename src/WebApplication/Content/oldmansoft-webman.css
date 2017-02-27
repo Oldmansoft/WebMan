@@ -18,10 +18,10 @@
 }
 
 .webman-main-panel {
-    background-color: #f3f3f4;
+    background-color: #e4e7ea;
 }
 
-.webman-main-panel header {
+.webman-main-panel>header {
     border-left: 1px solid #eee;
     background-color: #fff;
 }
@@ -104,17 +104,28 @@ header ul li a {
     border-bottom: 1px solid #e7eaec;
 }
 
-.webman-panel header {
+.webman-breadcrumb {
+    padding: 10px 10px 0;
+}
+
+.webman-panel {
+    margin-top: 15px;
+    border-radius: 3px;
+    background-color: #fcfcfc;
+}
+
+.webman-panel>header {
     width: 100%;
     float: left;
-    border-bottom: 1px solid #000;
+    padding: 20px;
+    border-bottom: 1px solid #e7e7e7;
 }
 
-.webman-panel header i, .webman-panel header h2 {
+.webman-panel>header i, .webman-panel header h2 {
     float: left;
 }
 
-.webman-panel header h2 {
+.webman-panel>header h2 {
     font-size: 14px;
     margin: 0 0 0 10px;
 }

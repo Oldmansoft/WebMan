@@ -181,9 +181,9 @@ namespace Oldmansoft.Html
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IHtmlElement Append(IHtmlNode node)
+        public virtual IHtmlElement Append(IHtmlNode node)
         {
-            NodesAdd(node);
+            NodesAppend(node);
             return this;
         }
 
@@ -192,9 +192,31 @@ namespace Oldmansoft.Html
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IHtmlElement Prepend(IHtmlNode node)
+        public virtual IHtmlElement Prepend(IHtmlNode node)
         {
-            NodesInsert(node);
+            NodesPrepend(node);
+            return this;
+        }
+
+        /// <summary>
+        /// 元素后贴
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public virtual IHtmlElement After(IHtmlNode node)
+        {
+            NodeAfter(node);
+            return this;
+        }
+
+        /// <summary>
+        /// 元素前贴
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public virtual IHtmlElement Before(IHtmlNode node)
+        {
+            NodeBefore(node);
             return this;
         }
 
@@ -203,7 +225,7 @@ namespace Oldmansoft.Html
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public IHtmlElement Text(string text)
+        public virtual IHtmlElement Text(string text)
         {
             NodesClear();
             return Append(new HtmlText(text));
