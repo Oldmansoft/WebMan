@@ -41,10 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Col.cs" />
     <Compile Include="DocumentResource.cs" />
     <Compile Include="HtmlDocument.cs" />
     <Compile Include="LoginDocument.cs" />
     <Compile Include="MainDocument.cs" />
+    <Compile Include="Panel.cs" />
+    <Compile Include="QuickMenu.cs" />
     <Compile Include="TreeList.cs" />
     <Compile Include="TreeListBranch.cs" />
     <Compile Include="TreeListLeaf.cs" />

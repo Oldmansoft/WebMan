@@ -54,7 +54,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
-            Append(Link.Create());
+            Append(Link.CreateElement());
             
             base.Format(outer);
         }

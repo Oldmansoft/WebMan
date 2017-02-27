@@ -7,18 +7,18 @@
 .webman-left-panel header {
     padding: 10px;
     background-color: #fff;
-    color: #1caf9a;
 }
 
-.webman-left-panel header h1 {
-    display: inline;
-    color: #1d2939;
-}
-
-.webman-left-panel header, .webman-left-panel header h1 {
+.webman-left-panel header {
     font-size: 30px;
     letter-spacing: -1.5px;
     line-height: 30px;
+    color: #1d2939;
+    overflow: hidden;
+}
+
+.webman-main-panel {
+    background-color: #f3f3f4;
 }
 
 .webman-main-panel header {
@@ -54,4 +54,71 @@
     border-radius: 0;
     height: 50px;
     font-size: 14px;
+}
+
+.webman-main-panel header form {
+    position: relative;
+    float: left;
+}
+
+.webman-main-panel header form i {
+    position: relative;
+    top:15px;
+    right: 24px;
+    font-size: 18px;
+}
+
+header ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+    float: right;
+}
+
+header ul li {
+    float: left;
+    border-left: 1px solid #eee;
+}
+
+header ul li a {
+    display: inline-block;
+    padding: 14px 15px 15px;
+    color: #333;
+    font-size: 16px;
+}
+
+.webman-account {
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+.webman-account img {
+    border-radius: 50%;
+    height: 26px;
+    margin-right: 5px;
+}
+
+.webman-main-panel nav {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #e7eaec;
+}
+
+.webman-panel header {
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid #000;
+}
+
+.webman-panel header i, .webman-panel header h2 {
+    float: left;
+}
+
+.webman-panel header h2 {
+    font-size: 14px;
+    margin: 0 0 0 10px;
+}
+
+.webman-panel-tools {
+    float: right;
 }
