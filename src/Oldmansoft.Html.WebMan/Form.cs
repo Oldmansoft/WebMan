@@ -17,6 +17,7 @@ namespace Oldmansoft.Html.WebMan
         public Form()
             :base(HtmlTag.Form)
         {
+            AddClass("form-horizontal");
         }
 
         /// <summary>

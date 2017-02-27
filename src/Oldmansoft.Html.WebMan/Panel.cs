@@ -43,8 +43,9 @@ namespace Oldmansoft.Html.WebMan
             header.Append(tools);
             tools.Append(FontAwesome.Times.CreateElement());
 
-            Body = new HtmlElement(HtmlTag.P);
+            Body = new HtmlElement(HtmlTag.Div);
             base.Append(Body);
+            Body.AddClass("webman-body");
         }
 
         /// <summary>

@@ -61,12 +61,14 @@ namespace WebApplication.Controllers
 
         public ActionResult Welcome()
         {
+            HtmlOutput.DebugFormat = true;
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
+            var form = new Form();
+            form.Add("名称", new HtmlElement(HtmlTag.Input));
+            panel.Append(form);
 
-            panel.Text("hello, world");
-            
             return new HtmlResult(panel.CreateLayout());
         }
     }

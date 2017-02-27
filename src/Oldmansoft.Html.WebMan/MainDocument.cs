@@ -113,7 +113,8 @@ namespace Oldmansoft.Html.WebMan
             if (!string.IsNullOrEmpty(SearchAction))
             {
                 var form = new HtmlElement(HtmlTag.Form);
-                header.Append(form).Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction);
+                header.Append(form);
+                form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction);
 
                 var input = new HtmlElement(HtmlTag.Input)
                     .Attribute(HtmlAttribute.Type, "text")

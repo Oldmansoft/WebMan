@@ -99,9 +99,13 @@ header ul li a {
     margin-right: 5px;
 }
 
-.webman-main-panel nav {
+.webman-main-panel>nav {
     background-color: #f7f7f7;
     border-bottom: 1px solid #e7eaec;
+}
+
+.webman-main-panel>.webman-content {
+    overflow: visible;
 }
 
 .webman-breadcrumb {
@@ -110,6 +114,7 @@ header ul li a {
 
 .webman-panel {
     margin-top: 15px;
+    margin-bottom: 15px;
     border-radius: 3px;
     background-color: #fcfcfc;
 }
@@ -132,4 +137,10 @@ header ul li a {
 
 .webman-panel-tools {
     float: right;
+}
+.webman-panel>.webman-body {
+    clear: both;
+}
+.webman-panel>.webman-body form {
+    
 }
