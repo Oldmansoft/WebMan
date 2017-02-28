@@ -54,15 +54,6 @@ namespace Oldmansoft.Html.WebMan
                 Head.Append(Resources.LinkFontAwesome);
             }
 
-            if (Resources.LinkBootstrap == null)
-            {
-                Resources.LinkBootstrap = new Element.Link("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
-                Resources.LinkBootstrap.Integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u";
-                Resources.LinkBootstrap.CrossOrigin = "anonymous";
-            }
-            Head.Append(Resources.LinkBootstrap);
-
-
             if (Resources.ScriptJQuery == null)
             {
                 Resources.ScriptJQuery = new Element.ScriptResource("//code.jquery.com/jquery-1.12.4.min.js");
@@ -70,7 +61,14 @@ namespace Oldmansoft.Html.WebMan
                 Resources.ScriptJQuery.CrossOrigin = "anonymous";
             }
             Head.Append(Resources.ScriptJQuery);
-            
+
+            if (Resources.LinkBootstrap == null)
+            {
+                Resources.LinkBootstrap = new Element.Link("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+                Resources.LinkBootstrap.Integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u";
+                Resources.LinkBootstrap.CrossOrigin = "anonymous";
+            }
+            Head.Append(Resources.LinkBootstrap);
 
             if (Resources.ScriptBootstrap == null)
             {
@@ -86,12 +84,6 @@ namespace Oldmansoft.Html.WebMan
             }
             Head.Append(Resources.LinkWebapp);
 
-            if (Resources.LinkWebman == null)
-            {
-                Resources.LinkWebman = new Element.Link(ResolveUrl("~/Content/oldmansoft-webman.css"));
-            }
-            Head.Append(Resources.LinkWebman);
-
             if (Resources.ScriptWebapp == null)
             {
                 Resources.ScriptWebapp = new Element.ScriptResource(ResolveUrl("~/Scripts/oldmansoft-webapp.js"));
@@ -105,6 +97,24 @@ namespace Oldmansoft.Html.WebMan
                 Resources.ScriptSha256.CrossOrigin = "anonymous";
             }
             Head.Append(Resources.ScriptSha256);
+
+            if (Resources.LinkDataTables == null)
+            {
+                Resources.LinkDataTables = new Element.Link("//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css");
+            }
+            Head.Append(Resources.LinkDataTables);
+
+            if (Resources.ScriptDataTables == null)
+            {
+                Resources.ScriptDataTables = new Element.ScriptResource("//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js");
+            }
+            Head.Append(Resources.ScriptDataTables);
+
+            if (Resources.LinkWebman == null)
+            {
+                Resources.LinkWebman = new Element.Link(ResolveUrl("~/Content/oldmansoft-webman.css"));
+            }
+            Head.Append(Resources.LinkWebman);
 
             if (Resources.ScriptWebman == null)
             {

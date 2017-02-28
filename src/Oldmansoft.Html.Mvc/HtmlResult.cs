@@ -19,14 +19,40 @@ namespace Oldmansoft.Html.Mvc
         /// <summary>
         /// 序号生成器
         /// </summary>
-        public IdGenerator Generator
+        public IGenerator<int> Generator
         {
             get
             {
                 return Writer.Generator;
             }
         }
-        
+
+        /// <summary>
+        /// 存储项
+        /// </summary>
+        public IList<string> Items
+        {
+            get
+            {
+                return Writer.Items;
+            }
+        }
+
+        /// <summary>
+        /// 当完成时
+        /// </summary>
+        public Action<IHtmlOutput> OnCompleted
+        {
+            get
+            {
+                return Writer.OnCompleted;
+            }
+            set
+            {
+                Writer.OnCompleted = value;
+            }
+        }
+
         /// <summary>
         /// 创建 Html 结果
         /// </summary>

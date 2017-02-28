@@ -48,6 +48,35 @@ namespace Testing.Html
         {
             private System.Text.StringBuilder Core = new System.Text.StringBuilder();
 
+            public IGenerator<int> Generator
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public IList<string> Items
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public Action<IHtmlOutput> OnCompleted
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
             public void Append(HtmlTag tag)
             {
                 throw new NotImplementedException();

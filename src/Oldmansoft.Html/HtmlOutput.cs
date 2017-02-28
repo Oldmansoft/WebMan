@@ -13,21 +13,31 @@ namespace Oldmansoft.Html
     /// </summary>
     public class HtmlOutput : IHtmlOutput
     {
+        private bool IsCompleted = false;
+
+        private StringBuilder Outer { get; set; }
+
+        private List<IHtmlNode> Nodes { get; set; }
+
         /// <summary>
         /// 格式化输出
         /// </summary>
         public static bool DebugFormat { get; set; }
 
-        private bool IsCompleted = false;
-
-        private StringBuilder Outer { get; set; }
-
         /// <summary>
         /// 序号生成器
         /// </summary>
-        public IdGenerator Generator { get; private set; }
+        public IGenerator<int> Generator { get; private set; }
 
-        private List<IHtmlNode> Nodes { get; set; }
+        /// <summary>
+        /// 存储项
+        /// </summary>
+        public IList<string> Items { get; private set; }
+
+        /// <summary>
+        /// 当完成时
+        /// </summary>
+        public Action<IHtmlOutput> OnCompleted { get; set; }
 
         /// <summary>
         /// 创建 HTML 输出
@@ -38,6 +48,7 @@ namespace Oldmansoft.Html
             Outer = new StringBuilder();
             Generator = new IdGenerator();
             Nodes = new List<IHtmlNode>(node);
+            Items = new List<string>();
         }
 
         /// <summary>
@@ -86,6 +97,7 @@ namespace Oldmansoft.Html
             {
                 node.Format(this);
             }
+            if (OnCompleted != null) OnCompleted(this);
             return Outer.ToString();
         }
     }

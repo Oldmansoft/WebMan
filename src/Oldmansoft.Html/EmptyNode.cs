@@ -22,7 +22,7 @@ namespace Oldmansoft.Html
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
             set
             {

@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.Util
     /// <summary>
     /// 序号生成器
     /// </summary>
-    public class IdGenerator
+    public class IdGenerator : IGenerator<int>
     {
         private int Start { get; set; }
 

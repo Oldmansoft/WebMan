@@ -17,14 +17,14 @@ namespace Oldmansoft.Html.WebMan
         public Element.Link LinkFontAwesome { get; set; }
 
         /// <summary>
-        /// Bootstrap 样式
-        /// </summary>
-        public Element.Link LinkBootstrap { get; set; }
-
-        /// <summary>
         /// JQuery 脚本
         /// </summary>
         public Element.ScriptResource ScriptJQuery { get; set; }
+
+        /// <summary>
+        /// Bootstrap 样式
+        /// </summary>
+        public Element.Link LinkBootstrap { get; set; }
 
         /// <summary>
         /// Bootstrap 脚本
@@ -42,14 +42,24 @@ namespace Oldmansoft.Html.WebMan
         public Element.Link LinkWebapp { get; set; }
 
         /// <summary>
-        /// Webman 样式
-        /// </summary>
-        public Element.Link LinkWebman { get; set; }
-
-        /// <summary>
         /// Webapp 脚本
         /// </summary>
         public Element.ScriptResource ScriptWebapp { get; set; }
+
+        /// <summary>
+        /// DataTables 样式
+        /// </summary>
+        public Element.Link LinkDataTables { get; set; }
+
+        /// <summary>
+        /// DataTables 脚本
+        /// </summary>
+        public Element.ScriptResource ScriptDataTables { get; set; }
+
+        /// <summary>
+        /// Webman 样式
+        /// </summary>
+        public Element.Link LinkWebman { get; set; }
 
         /// <summary>
         /// Webman 脚本

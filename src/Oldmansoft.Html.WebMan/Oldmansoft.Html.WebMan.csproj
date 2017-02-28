@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
+    <Compile Include="DataTablesDisplay.cs" />
+    <Compile Include="DataTablesSource.cs" />
     <Compile Include="DocumentResource.cs" />
     <Compile Include="FormHorizontal.cs" />
     <Compile Include="HtmlDocument.cs" />

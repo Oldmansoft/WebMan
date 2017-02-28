@@ -33,5 +33,20 @@ namespace Oldmansoft.Html
         /// 添加字符
         /// </summary>
         void Append(HtmlChar c);
+
+        /// <summary>
+        /// 获取序号生成器
+        /// </summary>
+        IGenerator<int> Generator { get; }
+        
+        /// <summary>
+        /// 存储项
+        /// </summary>
+        IList<string> Items { get; }
+
+        /// <summary>
+        /// 当完成时
+        /// </summary>
+        Action<IHtmlOutput> OnCompleted { get; set; }
     }
 }

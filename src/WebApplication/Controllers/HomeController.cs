@@ -17,7 +17,7 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webapp.cn.js")));
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
-            document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Group)));
+            document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/Home/DataTables", FontAwesome.Tablet)));
             document.Taskbar.Add(new LinkContent(FontAwesome.Male));
             document.Taskbar.Add(new LinkContent(FontAwesome.Envelope));
             document.Account = new QuickMenu();
@@ -71,6 +71,26 @@ namespace WebApplication.Controllers
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
+        }
+
+        public ActionResult DataTables()
+        {
+            var panel = new Panel();
+            panel.Caption = "表格";
+            panel.Icon = FontAwesome.Tablet;
+
+            var table = new DataTablesDisplay();
+            table.DataSource = "/Home/DataTablesDataSource";
+            panel.Append(table);
+            table.Columns.Add("序号");
+            table.Columns.Add("名称");
+            table.Columns.Add("操作");
+            return new HtmlResult(panel.CreateGrid());
+        }
+
+        public DataTablesSource DataTablesDataSource()
+        {
+            return new DataTablesSource();
         }
     }
 }

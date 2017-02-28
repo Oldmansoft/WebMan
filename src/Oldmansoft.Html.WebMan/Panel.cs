@@ -14,6 +14,8 @@ namespace Oldmansoft.Html.WebMan
     {
         private IHtmlElement HeaderCaption { get; set; }
 
+        private IHtmlElement Header { get; set; }
+
         private IHtmlElement Body { get; set; }
 
         /// <summary>
@@ -32,15 +34,14 @@ namespace Oldmansoft.Html.WebMan
         public Panel()
             : base(HtmlTag.Div)
         {
-            var header = new HtmlElement(HtmlTag.Header);
-            base.Append(header);
+            Header = new HtmlElement(HtmlTag.Header);
+            base.Append(Header);
 
-            header.Append(Icon.CreateElement());
             HeaderCaption = new HtmlElement(HtmlTag.H2);
-            header.Append(HeaderCaption);
+            Header.Append(HeaderCaption);
 
             var tools = new HtmlElement(HtmlTag.Div).AddClass("webman-panel-tools");
-            header.Append(tools);
+            Header.Append(tools);
             tools.Append(FontAwesome.Times.CreateElement());
 
             Body = new HtmlElement(HtmlTag.Div);
@@ -54,6 +55,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
+            Header.Prepend(Icon.CreateElement());
             HeaderCaption.Text(Caption);
             AddClass("webman-panel");
             base.Format(outer);

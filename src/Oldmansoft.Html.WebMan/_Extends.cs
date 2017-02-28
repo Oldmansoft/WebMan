@@ -162,5 +162,40 @@ namespace Oldmansoft.Html.WebMan
             result.Append(source);
             return result;
         }
+
+        /// <summary>
+        /// 获取序号生成名称
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetGeneratorName(this IGenerator<int> source)
+        {
+            return string.Format("Generator-{0}", source.Next());
+        }
+
+        /// <summary>
+        /// 添加事件脚本
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="script"></param>
+        public static void AddEvent(this IHtmlOutput source, string script)
+        {
+            source.Items.Add(script);
+            if (source.OnCompleted != null) return;
+
+            source.OnCompleted = (outer) =>
+            {
+                if (outer.Items.Count == 0) return;
+
+                outer.Append("<script>$app.event().onLoad(function (view) {");
+                outer.Append("\r\n");
+                foreach(var item in outer.Items)
+                {
+                    outer.Append(item);
+                    outer.Append("\r\n");
+                }
+                outer.Append("});</script>");
+            };
+        }
     }
 }
