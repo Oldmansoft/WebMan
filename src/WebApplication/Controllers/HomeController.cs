@@ -62,11 +62,10 @@ namespace WebApplication.Controllers
 
         public ActionResult Welcome()
         {
-            HtmlOutput.DebugFormat = true;
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = new Form();
+            var form = new FormHorizontal();
             form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
             form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
             panel.Append(form);

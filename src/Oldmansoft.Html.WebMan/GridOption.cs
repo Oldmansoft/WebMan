@@ -7,20 +7,18 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 栅格列
+    /// 栅格项
     /// </summary>
-    public class ColumnGrid : HtmlElement
+    public class GridOption : HtmlElement
     {
         /// <summary>
-        /// 创建栅格列
+        /// 创建栅格项
         /// </summary>
-        /// <param name="node"></param>
         /// <param name="column"></param>
-        public ColumnGrid(IHtmlElement node, Column column = Column.Sm12)
+        public GridOption(Column column = Column.Sm12)
             : base(HtmlTag.Div)
         {
             this.AddClass(column);
-            Append(node);
         }
     }
 }

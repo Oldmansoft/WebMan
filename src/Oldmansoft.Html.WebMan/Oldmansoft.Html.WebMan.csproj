@@ -42,10 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="ColumnOffset.cs" />
     <Compile Include="DocumentResource.cs" />
-    <Compile Include="Form.cs" />
+    <Compile Include="FormHorizontal.cs" />
     <Compile Include="HtmlDocument.cs" />
-    <Compile Include="ColumnGrid.cs" />
+    <Compile Include="GridOption.cs" />
     <Compile Include="LoginDocument.cs" />
     <Compile Include="MainDocument.cs" />
     <Compile Include="Panel.cs" />

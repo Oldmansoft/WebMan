@@ -4,6 +4,10 @@
     line-height: 21px;
 }
 
+.btn {
+    margin-right: 5px;
+}
+
 section.container-fluid {
     padding-right: 0;
     padding-left: 0;

@@ -12,7 +12,9 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public static class Extends
     {
-        private static IList<Column> ColValues { get; set; }
+        private static IList<Column> ColumnValues { get; set; }
+
+        private static IList<ColumnOffset> ColumnOffsetValues { get; set; }
 
         /// <summary>
         /// 获取样式名称
@@ -21,18 +23,18 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static string GetCssName(this Column source)
         {
-            if (ColValues == null)
+            if (ColumnValues == null)
             {
                 var list = new List<Column>();
                 foreach (var item in Enum.GetValues(typeof(Column)))
                 {
                     list.Add((Column)item);
                 }
-                ColValues = list;
+                ColumnValues = list;
             }
 
             var result = new StringBuilder();
-            foreach (var item in ColValues)
+            foreach (var item in ColumnValues)
             {
                 if ((item & source) == item)
                 {
@@ -45,7 +47,39 @@ namespace Oldmansoft.Html.WebMan
             }
             return result.ToString();
         }
-        
+
+        /// <summary>
+        /// 获取样式名称
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetCssName(this ColumnOffset source)
+        {
+            if (ColumnOffsetValues == null)
+            {
+                var list = new List<ColumnOffset>();
+                foreach (var item in Enum.GetValues(typeof(ColumnOffset)))
+                {
+                    list.Add((ColumnOffset)item);
+                }
+                ColumnOffsetValues = list;
+            }
+
+            var result = new StringBuilder();
+            foreach (var item in ColumnOffsetValues)
+            {
+                if ((item & source) == item)
+                {
+                    if (result.Length > 0) result.Append(" ");
+                    result.Append("col-");
+                    result.Append(item.ToString().Substring(0, 2).ToLower());
+                    result.Append("-offset-");
+                    result.Append(item.ToString().Substring(2));
+                }
+            }
+            return result.ToString();
+        }
+
         /// <summary>
         /// 创建元素
         /// </summary>
@@ -81,6 +115,18 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 添加样式
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static IHtmlElement AddClass(this IHtmlElement source, ColumnOffset column)
+        {
+            source.AddClass(column.GetCssName());
+            return source;
+        }
+
+        /// <summary>
         /// 移除样式
         /// </summary>
         /// <param name="source"></param>
@@ -92,6 +138,17 @@ namespace Oldmansoft.Html.WebMan
             return source;
         }
 
+        /// <summary>
+        /// 移除样式
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static IHtmlElement RemoveClass(this IHtmlElement source, ColumnOffset column)
+        {
+            source.RemoveClass(column.GetCssName());
+            return source;
+        }
 
         /// <summary>
         /// 创建布局元素
@@ -99,10 +156,11 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public static ColumnGrid CreateGrid(this IHtmlElement source, Column column = Column.Sm12)
+        public static GridOption CreateGrid(this IHtmlElement source, Column column = Column.Sm12)
         {
-            return new ColumnGrid(source, column);
+            var result = new GridOption(column);
+            result.Append(source);
+            return result;
         }
-
     }
 }
