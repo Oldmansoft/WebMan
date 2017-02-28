@@ -4,6 +4,11 @@
     line-height: 21px;
 }
 
+section.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
+
 .webman-left-panel header {
     padding: 10px;
     background-color: #fff;
@@ -15,6 +20,32 @@
     line-height: 30px;
     color: #1d2939;
     overflow: hidden;
+}
+
+.webman-left-panel nav ul {
+    list-style: none;
+    margin: 10px;
+    padding: 0;
+}
+
+.webman-left-panel nav ul li a {
+    color: #8f939e;
+    text-decoration: none;
+    padding: 7px 10px;
+    display: block;
+}
+
+.webman-left-panel nav ul li a:hover,.webman-left-panel nav ul li a:focus {
+    background-color: #293846;
+    color: #fff;
+}
+.webman-left-panel nav ul li a.active {
+    background-color: #35485a;
+    color: #fff;
+}
+
+.webman-left-panel nav ul li a i {
+    margin-right: 6px;
 }
 
 .webman-main-panel {
@@ -54,6 +85,10 @@
     border-radius: 0;
     height: 50px;
     font-size: 14px;
+}
+
+.webman-main-panel header form input:focus {
+    border-color: #ddd;
 }
 
 .webman-main-panel header form {
@@ -109,7 +144,23 @@ header ul li a {
 }
 
 .webman-breadcrumb {
-    padding: 10px 10px 0;
+    padding: 10px 10px 10px 15px;
+    overflow: auto;
+}
+
+.webman-breadcrumb span {
+    float: left;
+    margin-right: 10px;
+}
+
+.webman-breadcrumb ul {
+    padding: 0;
+    margin: 0;
+    float: left;
+    list-style: none;
+}
+.webman-breadcrumb  ul li {
+    float: left;
 }
 
 .webman-panel {
@@ -141,6 +192,16 @@ header ul li a {
 .webman-panel>.webman-body {
     clear: both;
 }
-.webman-panel>.webman-body form {
-    
+.webman-panel>.webman-body .form-group {
+    margin:0;
+    padding: 15px;
+    border-top: 1px dashed #d3d7db;
+}
+.webman-panel>.webman-body .form-group:first-child {
+    border-top: none;
+}
+
+.form-control:focus {
+    border-color: #999;
+    box-shadow: none;
 }

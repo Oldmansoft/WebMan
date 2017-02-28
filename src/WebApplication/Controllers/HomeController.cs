@@ -17,6 +17,7 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webapp.cn.js")));
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
+            document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Group)));
             document.Taskbar.Add(new LinkContent(FontAwesome.Male));
             document.Taskbar.Add(new LinkContent(FontAwesome.Envelope));
             document.Account = new QuickMenu();
@@ -66,10 +67,11 @@ namespace WebApplication.Controllers
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
             var form = new Form();
-            form.Add("名称", new HtmlElement(HtmlTag.Input));
+            form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
+            form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
             panel.Append(form);
 
-            return new HtmlResult(panel.CreateLayout());
+            return new HtmlResult(panel.CreateGrid());
         }
     }
 }

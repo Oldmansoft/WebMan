@@ -12,21 +12,21 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public static class Extends
     {
-        private static IList<Col> ColValues { get; set; }
+        private static IList<Column> ColValues { get; set; }
 
         /// <summary>
         /// 获取样式名称
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string GetCssName(this Col source)
+        public static string GetCssName(this Column source)
         {
             if (ColValues == null)
             {
-                var list = new List<Col>();
-                foreach (var item in Enum.GetValues(typeof(Col)))
+                var list = new List<Column>();
+                foreach (var item in Enum.GetValues(typeof(Column)))
                 {
-                    list.Add((Col)item);
+                    list.Add((Column)item);
                 }
                 ColValues = list;
             }
@@ -72,11 +72,11 @@ namespace Oldmansoft.Html.WebMan
         /// 添加样式
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="col"></param>
+        /// <param name="column"></param>
         /// <returns></returns>
-        public static IHtmlElement AddClass(this IHtmlElement source, Col col)
+        public static IHtmlElement AddClass(this IHtmlElement source, Column column)
         {
-            source.AddClass(col.GetCssName());
+            source.AddClass(column.GetCssName());
             return source;
         }
 
@@ -84,12 +84,25 @@ namespace Oldmansoft.Html.WebMan
         /// 移除样式
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="col"></param>
+        /// <param name="column"></param>
         /// <returns></returns>
-        public static IHtmlElement RemoveClass(this IHtmlElement source, Col col)
+        public static IHtmlElement RemoveClass(this IHtmlElement source, Column column)
         {
-            source.RemoveClass(col.GetCssName());
+            source.RemoveClass(column.GetCssName());
             return source;
         }
+
+
+        /// <summary>
+        /// 创建布局元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static ColumnGrid CreateGrid(this IHtmlElement source, Column column = Column.Sm12)
+        {
+            return new ColumnGrid(source, column);
+        }
+
     }
 }

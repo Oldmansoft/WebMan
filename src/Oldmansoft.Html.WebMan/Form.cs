@@ -24,25 +24,22 @@ namespace Oldmansoft.Html.WebMan
         /// 添加
         /// </summary>
         /// <param name="text"></param>
-        /// <param name="element"></param>
+        /// <param name="grid"></param>
         /// <returns></returns>
-        public Form Add(string text, IHtmlElement element)
+        public Form Add(string text, ColumnGrid grid)
         {
-            if (element == null) throw new ArgumentNullException("element");
+            if (grid == null) throw new ArgumentNullException("grid");
             var group = new HtmlElement(HtmlTag.Div);
             Append(group);
             group.AddClass("form-group");
 
             var label = new HtmlElement(HtmlTag.Label);
             group.Append(label);
-            label.AddClass(Col.Sm2);
+            label.AddClass(Column.Sm2);
             label.AddClass("control-label");
             label.Text(text);
 
-            var content = new HtmlElement(HtmlTag.Div);
-            group.Append(content);
-            content.AddClass(Col.Sm10);
-            content.Append(element);
+            group.Append(grid);
             return this;
         }
     }

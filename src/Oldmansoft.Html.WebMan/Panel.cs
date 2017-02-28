@@ -60,19 +60,6 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 创建布局元素
-        /// </summary>
-        /// <param name="col"></param>
-        /// <returns></returns>
-        public IHtmlElement CreateLayout(Col col = Col.Xs12)
-        {
-            var result = new HtmlElement(HtmlTag.Div);
-            result.AddClass(col);
-            result.Append(this);
-            return result;
-        }
-
-        /// <summary>
         /// 添加元素
         /// </summary>
         /// <param name="node"></param>

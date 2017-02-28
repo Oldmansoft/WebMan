@@ -60,11 +60,11 @@ namespace Oldmansoft.Html.WebMan
             var section = new HtmlElement(HtmlTag.Section).AddClass("container-fluid");
             Body.Append(section);
 
-            var leftPanel = new HtmlElement(HtmlTag.Article).AddClass("webman-left-panel col-sm-2");
+            var leftPanel = new HtmlElement(HtmlTag.Section).AddClass("webman-left-panel col-sm-2");
             section.Append(leftPanel);
             SetLeftPanelContent(leftPanel);
 
-            var mainPanel = new HtmlElement(HtmlTag.Article).AddClass("webman-main-panel col-sm-10");
+            var mainPanel = new HtmlElement(HtmlTag.Section).AddClass("webman-main-panel col-sm-10");
             section.Append(mainPanel);
             SetMainPanelContent(mainPanel);
 

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 宽度
+    /// 列
     /// </summary>
     [Flags]
-    public enum Col : long
+    public enum Column : long
     {
         /// <summary>
         /// 超小屏幕
