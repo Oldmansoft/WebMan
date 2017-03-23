@@ -43,6 +43,17 @@ namespace Oldmansoft.Html
         }
 
         /// <summary>
+        /// JavaScript 编码字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string JavaScriptEncode(this string source)
+        {
+            if (source == null) return null;
+            return HttpUtility.JavaScriptStringEncode(source);
+        }
+
+        /// <summary>
         /// 创建元素
         /// </summary>
         /// <param name="source"></param>

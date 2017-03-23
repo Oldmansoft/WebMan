@@ -14,7 +14,7 @@ namespace WebApplication.Controllers
         public ActionResult Index()
         {
             var document = new MainDocument("/Home/Welcome");
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webapp.cn.js")));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
             document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/Home/DataTables", FontAwesome.Tablet)));
@@ -79,18 +79,20 @@ namespace WebApplication.Controllers
             panel.Caption = "表格";
             panel.Icon = FontAwesome.Tablet;
 
-            var table = new DataTablesDisplay();
+            var table = new DataTablesDefinition<Models.DataTableItemModel>();
             table.DataSource = "/Home/DataTablesDataSource";
             panel.Append(table);
-            table.Columns.Add("序号");
-            table.Columns.Add("名称");
-            table.Columns.Add("操作");
             return new HtmlResult(panel.CreateGrid());
         }
 
-        public DataTablesSource DataTablesDataSource()
+        public JsonResult DataTablesDataSource(DataTablesRequest request)
         {
-            return new DataTablesSource();
+            System.Threading.Thread.Sleep(1000);
+            var list = new List<Models.DataTableItemModel>();
+            list.Add(new Models.DataTableItemModel() { Name = "Hello" });
+
+            var result = new DataTablesSource(request, 100, list);
+            return Json(result);
         }
     }
 }

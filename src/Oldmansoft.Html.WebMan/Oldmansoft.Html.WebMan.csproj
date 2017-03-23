@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
-    <Compile Include="DataTablesDisplay.cs" />
+    <Compile Include="DataTablesColumn.cs" />
+    <Compile Include="DataTablesDefinition.cs" />
+    <Compile Include="DataTablesRequest.cs" />
     <Compile Include="DataTablesSource.cs" />
     <Compile Include="DocumentResource.cs" />
     <Compile Include="FormHorizontal.cs" />

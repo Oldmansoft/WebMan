@@ -1,9 +1,25 @@
 ﻿/*
-* v0.0.1
+* v0.0.2
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function () {
-    var menu;
+    var menu,
+        text;
+
+    text = {
+        dataTable: {
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "Empty",
+            processing: "Processing...",
+            paginate: {
+                first: "First",
+                last: "Last",
+                next: "Next",
+                previous: "Previous"
+            }
+        }
+    }
+
     function define_menu() {
         var store = [];
         $(".webman-left-panel nav ul li a").each(function () {
@@ -26,6 +42,10 @@
         }
     }
 
+    this.configText = function (fn) {
+        if (typeof fn == "function") fn(text);
+    }
+
     this.setLoginSubmit = function (loginForm, seedPath, accountInput, passwordInput, doubleHashInput) {
         $(loginForm).submit(function () {
             var fakePassword = "I love you. It's not password.";
@@ -45,6 +65,26 @@
         });
     }
 
+    this.setDataTable = function (view, className, source, columns) {
+        var option = {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: source,
+                type: 'POST'
+            },
+            columns: columns,
+            retrieve: true,
+            searching: false,
+            lengthChange: false,
+            autoWidth: false,
+            ordering: false,
+            language: text.dataTable,
+            dom: "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>"
+        };
+        view.node.find("." + className).DataTable(option);
+    }
+
     this.init = function (main, defaultLink) {
         menu = new define_menu();
         $app.init(main, defaultLink).viewActived(function (view) {
@@ -62,6 +102,7 @@
     if (!window.oldmansoft) window.oldmansoft = {};
     window.oldmansoft.webman = this;
     window.$man = {
-        init: this.init
+        init: this.init,
+        configText: this.configText
     }
 })();

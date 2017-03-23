@@ -152,6 +152,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataTableItemModel.cs" />
     <Compile Include="Models\LoginModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -188,7 +189,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Scripts\oldmansoft-webapp.js" />
     <Content Include="Scripts\oldmansoft-webman.js" />
-    <Content Include="Scripts\oldmansoft-webapp.cn.js" />
+    <Content Include="Scripts\oldmansoft-webman.cn.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
