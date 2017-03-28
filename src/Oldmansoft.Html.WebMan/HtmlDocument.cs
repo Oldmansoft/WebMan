@@ -80,13 +80,13 @@ namespace Oldmansoft.Html.WebMan
 
             if (Resources.LinkWebapp == null)
             {
-                Resources.LinkWebapp = new Element.Link(ResolveUrl("~/Content/oldmansoft-webapp.css"));
+                Resources.LinkWebapp = new Element.Link("~/Content/oldmansoft-webapp.css".ResolveUrl());
             }
             Head.Append(Resources.LinkWebapp);
 
             if (Resources.ScriptWebapp == null)
             {
-                Resources.ScriptWebapp = new Element.ScriptResource(ResolveUrl("~/Scripts/oldmansoft-webapp.js"));
+                Resources.ScriptWebapp = new Element.ScriptResource("~/Scripts/oldmansoft-webapp.js".ResolveUrl());
             }
             Head.Append(Resources.ScriptWebapp);
 
@@ -112,13 +112,13 @@ namespace Oldmansoft.Html.WebMan
 
             if (Resources.LinkWebman == null)
             {
-                Resources.LinkWebman = new Element.Link(ResolveUrl("~/Content/oldmansoft-webman.css"));
+                Resources.LinkWebman = new Element.Link("~/Content/oldmansoft-webman.css".ResolveUrl());
             }
             Head.Append(Resources.LinkWebman);
 
             if (Resources.ScriptWebman == null)
             {
-                Resources.ScriptWebman = new Element.ScriptResource(ResolveUrl("~/Scripts/oldmansoft-webman.js"));
+                Resources.ScriptWebman = new Element.ScriptResource("~/Scripts/oldmansoft-webman.js".ResolveUrl());
             }
             Head.Append(Resources.ScriptWebman);
 

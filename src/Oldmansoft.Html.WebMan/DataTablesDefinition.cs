@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.Util;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -14,14 +16,29 @@ namespace Oldmansoft.Html.WebMan
     public class DataTablesDefinition<TModel> : HtmlElement where TModel : class
     {
         /// <summary>
+        /// 主键名称
+        /// </summary>
+        private string PrimaryKeyName { get; set; }
+
+        /// <summary>
+        /// 是否显示序数列
+        /// </summary>
+        private bool IsDisplayIndexColumn { get; set; }
+
+        /// <summary>
+        /// 是否显示多选框列
+        /// </summary>
+        private bool IsDisplayCheckboxColumn { get; set; }
+
+        /// <summary>
         /// 列名称
         /// </summary>
         private IList<DataTablesColumn> Columns { get; set; }
 
         /// <summary>
-        /// 请求数据源
+        /// 请求数据源路径
         /// </summary>
-        public string DataSource { get; set; }
+        private string DataSourceLoation { get; set; }
 
         /// <summary>
         /// 分页长度
@@ -31,15 +48,33 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建表格定义
         /// </summary>
-        public DataTablesDefinition()
+        /// <param name="primaryKey">主键</param>
+        /// <param name="dataSource">数据源路径</param>
+        public DataTablesDefinition(Expression<Func<TModel, object>> primaryKey, string dataSource)
             : base(HtmlTag.Table)
         {
-            Columns = new List<DataTablesColumn>();
+            if (primaryKey == null) throw new ArgumentNullException("primaryKey");
+            var primaryKeyProperty = primaryKey.GetProperty();
+            if (primaryKeyProperty == null) throw new ArgumentException("指定的属性不存在，请确认不是字段或方法。", "primaryKey");
+            if (dataSource == null) throw new ArgumentNullException("dataSource");
+            PrimaryKeyName = primaryKeyProperty.Name.ToLower();
+            DataSourceLoation = dataSource;
             InitColumns();
+        }
+
+        /// <summary>
+        /// 创建表格定义
+        /// </summary>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="dataSource">数据源路径</param>
+        public DataTablesDefinition(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
+            :this(primaryKey, dataSource.Location)
+        {
         }
 
         private void InitColumns()
         {
+            Columns = new List<DataTablesColumn>();
             foreach (var property in typeof(TModel).GetProperties())
             {
                 var column = new DataTablesColumn() { Name = property.Name, Text = property.Name, Visible = true };
@@ -50,7 +85,7 @@ namespace Oldmansoft.Html.WebMan
                         column.Text = ((DisplayAttribute)attribute).Name.JavaScriptEncode();
                     }
                 }
-                if (property.Name.ToLower() == "id")
+                if (property.Name.ToLower() == PrimaryKeyName)
                 {
                     column.Visible = false;
                 }
@@ -61,6 +96,11 @@ namespace Oldmansoft.Html.WebMan
         private HtmlElement CreateDefinitionColumns()
         {
             var result = new HtmlElement(HtmlTag.Tr);
+            result.Append(new HtmlElement(HtmlTag.Th).Append(new HtmlRaw("<input class='webman-datatables-checkbox' type='checkbox'>")));
+            if (IsDisplayIndexColumn)
+            {
+                result.Append(new HtmlElement(HtmlTag.Th).Text("序数"));
+            }
             foreach (var item in Columns)
             {
                 result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
@@ -70,21 +110,32 @@ namespace Oldmansoft.Html.WebMan
 
         private string GetColumnContent()
         {
-            var result = new StringBuilder();
-            result.Append("[");
+            var result = new JsonArray();
+
+            var checkboxObject = new JsonObject();
+            checkboxObject.Set("data", PrimaryKeyName);
+            checkboxObject.Set("render", new JsonRaw("window.oldmansoft.webman.setDataTableColumnCheckbox"));
+            result.Add(checkboxObject);
+
+            if (IsDisplayIndexColumn)
+            {
+                var indexObject = new JsonObject();
+                indexObject.Set("data", null);
+                indexObject.Set("render", new JsonRaw("window.oldmansoft.webman.setDataTableColumnIndex"));
+                result.Add(indexObject);
+            }
+
             for (var i = 0; i < Columns.Count; i++)
             {
-                if (i > 0) result.Append(",");
-                result.Append("{\"data\":\"");
-                result.Append(Columns[i].Name.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " "));
-                result.Append("\"");
+                var item = new JsonObject();
+                item.Set("data", Columns[i].Name);
                 if (!Columns[i].Visible)
                 {
-                    result.Append(",\"visible\":false");
+                    item.Set("visible", false);
                 }
-                result.Append("}");
+                result.Add(item);
             }
-            result.Append("]");
+            
             return result.ToString();
         }
 
@@ -107,8 +158,17 @@ namespace Oldmansoft.Html.WebMan
             header.Append(CreateDefinitionColumns());
             footer.Append(CreateDefinitionColumns());
 
-            outer.AddEvent(string.Format("window.oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSource, GetColumnContent()));
+            outer.AddEvent(string.Format("window.oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
             base.Format(outer);
+        }
+
+        /// <summary>
+        /// 是否显示序数
+        /// </summary>
+        /// <param name="value"></param>
+        public void DisplayIndexColumn(bool value)
+        {
+            IsDisplayIndexColumn = value;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace WebApplication.Models
         [Display(Name = "时间")]
         public DateTime CreatedTime { get; set; }
 
-        [Display(Name = "操作")]
+        [Display(Name = "动作")]
         public string Action { get; set; }
     }
 }

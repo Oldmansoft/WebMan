@@ -1,5 +1,5 @@
 ﻿/*
-* v0.0.2
+* v0.0.3
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function () {
@@ -65,6 +65,14 @@
         });
     }
 
+    this.setDataTableColumnCheckbox = function (data) {
+        return "<input type='checkbox' value='" + data + "'/>";
+    }
+
+    this.setDataTableColumnIndex = function (data, type, row, meta) {
+        return meta.settings._iDisplayStart + meta.row + 1;
+    }
+
     this.setDataTable = function (view, className, source, columns) {
         var option = {
             processing: true,
@@ -96,6 +104,9 @@
         $(".webman-main-panel").css("min-height", $(window).height());
         $(window).on("resize", function () {
             $(".webman-main-panel").css("min-height", $(window).height());
+        });
+        $(document).on("click", ".webman-datatables-checkbox", function () {
+            $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
         });
     }
 

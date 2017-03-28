@@ -49,9 +49,12 @@
     <Compile Include="DataTablesRequest.cs" />
     <Compile Include="DataTablesSource.cs" />
     <Compile Include="DocumentResource.cs" />
+    <Compile Include="FontAwesome.cs" />
     <Compile Include="FormHorizontal.cs" />
     <Compile Include="HtmlDocument.cs" />
     <Compile Include="GridOption.cs" />
+    <Compile Include="ILocation.cs" />
+    <Compile Include="LinkContent.cs" />
     <Compile Include="LoginDocument.cs" />
     <Compile Include="MainDocument.cs" />
     <Compile Include="Panel.cs" />

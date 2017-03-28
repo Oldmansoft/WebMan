@@ -54,15 +54,25 @@ namespace Oldmansoft.Html
         }
 
         /// <summary>
-        /// 创建元素
+        /// 将 URL 转换为在请求客户端可用的 URL
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static HtmlElement CreateElement(this FontAwesome source)
+        public static string ResolveUrl(this string source)
         {
-            var result = new HtmlElement(HtmlTag.I);
-            result.AddClass(string.Format("fa fa-{0}", source.ToString().ToLower().Replace("_", "-")));
-            return result;
+            if (string.IsNullOrEmpty(source)) return source;
+            if (source.Length == 1) return source;
+            if (source[0] != '~') return source;
+            if (source[1] != '/') return source;
+
+            if (source.Length < 3)
+            {
+                return HttpRuntime.AppDomainAppVirtualPath;
+            }
+            else
+            {
+                return HttpRuntime.AppDomainAppVirtualPath + source.Substring(2);
+            }
         }
     }
 }

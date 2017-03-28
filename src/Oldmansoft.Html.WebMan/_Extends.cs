@@ -85,6 +85,18 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
+        public static HtmlElement CreateElement(this FontAwesome source)
+        {
+            var result = new HtmlElement(HtmlTag.I);
+            result.AddClass(string.Format("fa fa-{0}", source.ToString().ToLower().Replace("_", "-")));
+            return result;
+        }
+
+        /// <summary>
+        /// 创建元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static HtmlElement CreateElement(this LinkContent source)
         {
             var result = new HtmlElement(HtmlTag.A);

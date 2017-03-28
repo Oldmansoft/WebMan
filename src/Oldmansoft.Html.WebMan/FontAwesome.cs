@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace Oldmansoft.Html
+namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 字体图标

@@ -79,8 +79,7 @@ namespace WebApplication.Controllers
             panel.Caption = "表格";
             panel.Icon = FontAwesome.Tablet;
 
-            var table = new DataTablesDefinition<Models.DataTableItemModel>();
-            table.DataSource = "/Home/DataTablesDataSource";
+            var table = new DataTablesDefinition<Models.DataTableItemModel>(o => o.Id, DataTableLocation.Create(DataTablesDataSource));
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

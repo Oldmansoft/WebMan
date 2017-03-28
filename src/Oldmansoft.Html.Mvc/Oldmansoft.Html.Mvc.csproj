@@ -69,13 +69,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTableLocation.cs" />
     <Compile Include="HtmlResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Extends.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Oldmansoft.Html.WebMan\Oldmansoft.Html.WebMan.csproj">
+      <Project>{22770d16-1e7f-4775-909f-a6db1ba3091c}</Project>
+      <Name>Oldmansoft.Html.WebMan</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj">
       <Project>{4bf2e2a4-bfab-4574-81a4-1d2563d75908}</Project>
       <Name>Oldmansoft.Html</Name>

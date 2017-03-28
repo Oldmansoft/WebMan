@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html
+namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 链接内容

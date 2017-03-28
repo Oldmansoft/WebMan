@@ -50,20 +50,7 @@ namespace Oldmansoft.Html.Element
                 TitleNode.Text(_Title);
             }
         }
-
-        /// <summary>
-        /// 将 URL 转换为在请求客户端可用的 URL
-        /// </summary>
-        /// <param name="relativeUrl"></param>
-        /// <returns></returns>
-        protected string ResolveUrl(string relativeUrl)
-        {
-            if (string.IsNullOrEmpty(relativeUrl)) return relativeUrl;
-            if (relativeUrl.Length < 3) return relativeUrl;
-            if (relativeUrl[0] != '~' || relativeUrl[1] != '/') return relativeUrl;
-            return System.Web.HttpRuntime.AppDomainAppVirtualPath + relativeUrl.Substring(2);
-        }
-
+        
         /// <summary>
         /// 格式化之前
         /// </summary>
