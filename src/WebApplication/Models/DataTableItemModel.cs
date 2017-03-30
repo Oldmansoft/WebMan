@@ -18,7 +18,10 @@ namespace WebApplication.Models
         public DataTableItemState State { get; set; }
 
         [Display(Name = "好吗")]
-        public bool IsGood { get; set; }
+        public bool? IsGood { get; set; }
+
+        [Display(Name = "列表")]
+        public List<DataTableItemState> States { get; set; }
 
         [Display(Name = "时间")]
         public DateTime CreatedTime { get; set; }

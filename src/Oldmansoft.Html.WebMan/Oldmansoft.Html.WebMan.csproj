@@ -48,6 +48,11 @@
     <Compile Include="DataTables\DataTablesDefinition.cs" />
     <Compile Include="DataTables\DataTablesRequest.cs" />
     <Compile Include="DataTables\DataTablesSource.cs" />
+    <Compile Include="DataTables\IValueDisplay.cs" />
+    <Compile Include="DataTables\ValueBoolDisplay.cs" />
+    <Compile Include="DataTables\ValueDisplay.cs" />
+    <Compile Include="DataTables\ValueDateTimeDisplay.cs" />
+    <Compile Include="DataTables\ValueGuidDisplay.cs" />
     <Compile Include="Documents\DocumentResource.cs" />
     <Compile Include="FontAwesome.cs" />
     <Compile Include="FormHorizontal.cs" />

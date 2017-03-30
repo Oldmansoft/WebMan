@@ -88,9 +88,13 @@ namespace WebApplication.Controllers
         {
             System.Threading.Thread.Sleep(1000);
             var list = new List<Models.DataTableItemModel>();
-            list.Add(new Models.DataTableItemModel() { Name = "Hello" });
+            var item = new Models.DataTableItemModel() { Name = "Hello", IsGood = true };
+            item.States = new List<Models.DataTableItemState>();
+            item.States.Add(Models.DataTableItemState.Low);
+            item.States.Add(Models.DataTableItemState.Hight);
+            list.Add(item);
 
-            var result = new DataTablesSource(request, 100, list);
+            var result = new DataTablesSource<Models.DataTableItemModel>(list, request, 100);
             return Json(result);
         }
     }

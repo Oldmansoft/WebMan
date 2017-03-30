@@ -9,7 +9,8 @@ namespace Oldmansoft.Html.WebMan
     /// <summary>
     /// 数据源
     /// </summary>
-    public class DataTablesSource
+    /// <typeparam name="TModel"></typeparam>
+    public class DataTablesSource<TModel> where TModel : class
     {
         /// <summary>
         /// 绘制计数器
@@ -39,11 +40,14 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建数据源
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="request"></param>
         /// <param name="totalCount"></param>
-        /// <param name="source"></param>
-        public DataTablesSource(DataTablesRequest request, int totalCount, IEnumerable<object> source)
+        public DataTablesSource(IEnumerable<TModel> source, DataTablesRequest request, int totalCount = 0)
         {
+            if (source == null) throw new ArgumentNullException("source");
+            if (request == null) throw new ArgumentNullException("request");
+            if (totalCount == 0) totalCount = source.Count();
             draw = request.draw;
             recordsTotal = totalCount;
             recordsFiltered = totalCount;
@@ -51,29 +55,24 @@ namespace Oldmansoft.Html.WebMan
             SetData(source);
         }
 
-        private void SetData(IEnumerable<object> source)
+        private void SetData(IEnumerable<TModel> source)
         {
+            var type = typeof(TModel);
+            var propertys = type.GetProperties();
             foreach(var item in source)
             {
                 var model = new Dictionary<string, string>();
-                foreach (var property in item.GetType().GetProperties())
+                foreach (var property in propertys)
                 {
                     var value = property.GetValue(item);
-                    if(value == null)
+                    if (value == null)
                     {
                         model.Add(property.Name, string.Empty);
-                        continue;
-                    }
-                    string valueString;
-                    if (property.PropertyType == typeof(Guid))
-                    {
-                        valueString = ((Guid)value).ToString("N");
                     }
                     else
                     {
-                        valueString = value.ToString().HtmlEncode();
+                        model.Add(property.Name, ValueDisplay.Instance.Convert(property.PropertyType, value));
                     }
-                    model.Add(property.Name, valueString);
                 }
                 data.Add(model);
             }
