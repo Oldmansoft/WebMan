@@ -239,3 +239,9 @@ table.dataTable tfoot th {
 table.dataTable tbody td {
     border-bottom: 1px solid #e7eaec;
 }
+table.dataTable tbody td a {
+    margin-left: 10px;
+}
+table.dataTable tbody td a:first-child {
+    margin-left: 0;
+}

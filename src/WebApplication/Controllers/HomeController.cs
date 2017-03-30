@@ -82,6 +82,8 @@ namespace WebApplication.Controllers
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
             table.AddTableAction("添加", "Home/DataTables", LinkBehave.Open);
             table.AddItemAction("查看", "ViewTableItem", LinkBehave.Open);
+            table.AddItemAction("修改", "ViewTableItem", LinkBehave.Open);
+            table.AddItemAction("删除", "ViewTableItem", LinkBehave.Call);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

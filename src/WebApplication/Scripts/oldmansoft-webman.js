@@ -1,5 +1,5 @@
 ﻿/*
-* v0.0.5
+* v0.0.6
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function () {
@@ -89,6 +89,13 @@
     }
 
     this.setDataTable = function (view, className, source, columns) {
+        function computeElementWidth(item) {
+            var width = 0;
+            item.children().each(function () {
+                width += $(this).outerWidth(true)
+            });
+            return width;
+        }
         var option = {
             processing: true,
             serverSide: true,
@@ -103,7 +110,24 @@
             autoWidth: false,
             ordering: false,
             language: text.dataTable,
-            dom: "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>"
+            dom: "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
+            initComplete: function () {
+                var table = view.node.find("." + className);
+                // fix first column width
+                var maxWidth = 0;
+                table.find("tbody tr td:first-child").each(function () {
+                    var width = computeElementWidth($(this));
+                    if (width > maxWidth) maxWidth = width;
+                })
+                table.find("thead tr th:first-child").width(maxWidth);
+                // fix last column width
+                maxWidth = 0;
+                table.find("tbody tr td:last-child").each(function () {
+                    var width = computeElementWidth($(this));
+                    if (width > maxWidth) maxWidth = width;
+                })
+                table.find("thead tr th:last-child").width(maxWidth);
+            }
         };
         view.node.find("." + className).DataTable(option);
     }
