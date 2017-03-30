@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 请求
+    /// 请求参数
     /// </summary>
-    public class DataTablesRequest
+    public class DataTableRequest
     {
         /// <summary>
         /// 绘制计数器

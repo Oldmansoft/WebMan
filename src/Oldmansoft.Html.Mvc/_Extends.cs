@@ -41,7 +41,7 @@ namespace Oldmansoft.Html.Mvc
         /// <param name="source"></param>
         /// <param name="dataSource"></param>
         /// <returns></returns>
-        public static ILocation Location(this System.Web.Mvc.Controller source, Func<DataTablesRequest, System.Web.Mvc.JsonResult> dataSource)
+        public static ILocation Location(this System.Web.Mvc.Controller source, Func<DataTableRequest, System.Web.Mvc.JsonResult> dataSource)
         {
             return new DataTableLocation(dataSource);
         }

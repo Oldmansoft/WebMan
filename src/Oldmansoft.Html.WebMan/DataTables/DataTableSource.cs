@@ -10,7 +10,7 @@ namespace Oldmansoft.Html.WebMan
     /// 数据源
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class DataTablesSource<TModel> where TModel : class
+    public class DataTableSource<TModel> where TModel : class
     {
         /// <summary>
         /// 绘制计数器
@@ -43,7 +43,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="request"></param>
         /// <param name="totalCount"></param>
-        public DataTablesSource(IEnumerable<TModel> source, DataTablesRequest request, int totalCount = 0)
+        internal DataTableSource(IEnumerable<TModel> source, DataTableRequest request, int totalCount)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (request == null) throw new ArgumentNullException("request");

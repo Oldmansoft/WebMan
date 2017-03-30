@@ -13,7 +13,7 @@ namespace Oldmansoft.Html.WebMan
     /// 表格定义
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class DataTablesDefinition<TModel> : HtmlElement where TModel : class
+    public class DataTableDefinition<TModel> : HtmlElement where TModel : class
     {
         /// <summary>
         /// 主键名称
@@ -33,7 +33,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 列名称
         /// </summary>
-        private IList<DataTablesColumn> Columns { get; set; }
+        private IList<DataTableColumn> Columns { get; set; }
 
         /// <summary>
         /// 请求数据源路径
@@ -50,7 +50,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="primaryKey">主键</param>
         /// <param name="dataSource">数据源路径</param>
-        public DataTablesDefinition(Expression<Func<TModel, object>> primaryKey, string dataSource)
+        internal DataTableDefinition(Expression<Func<TModel, object>> primaryKey, string dataSource)
             : base(HtmlTag.Table)
         {
             if (primaryKey == null) throw new ArgumentNullException("primaryKey");
@@ -61,23 +61,13 @@ namespace Oldmansoft.Html.WebMan
             DataSourceLoation = dataSource;
             InitColumns();
         }
-
-        /// <summary>
-        /// 创建表格定义
-        /// </summary>
-        /// <param name="primaryKey">主键</param>
-        /// <param name="dataSource">数据源路径</param>
-        public DataTablesDefinition(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
-            :this(primaryKey, dataSource.Location)
-        {
-        }
-
+        
         private void InitColumns()
         {
-            Columns = new List<DataTablesColumn>();
+            Columns = new List<DataTableColumn>();
             foreach (var property in typeof(TModel).GetProperties())
             {
-                var column = new DataTablesColumn() { Name = property.Name, Text = property.Name, Visible = true };
+                var column = new DataTableColumn() { Name = property.Name, Text = property.Name, Visible = true };
                 foreach (var attribute in property.GetCustomAttributes(typeof(Attribute), true))
                 {
                     if (attribute is DisplayAttribute)

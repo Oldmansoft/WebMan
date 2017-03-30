@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DataTablesColumn
+    class DataTableColumn
     {
         public string Name { get; set; }
 

@@ -79,12 +79,12 @@ namespace WebApplication.Controllers
             panel.Caption = "表格";
             panel.Icon = FontAwesome.Tablet;
 
-            var table = new DataTablesDefinition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
+            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
 
-        public JsonResult DataTablesDataSource(DataTablesRequest request)
+        public JsonResult DataTablesDataSource(DataTableRequest request)
         {
             System.Threading.Thread.Sleep(1000);
             var list = new List<Models.DataTableItemModel>();
@@ -94,8 +94,7 @@ namespace WebApplication.Controllers
             item.States.Add(Models.DataTableItemState.Hight);
             list.Add(item);
 
-            var result = new DataTablesSource<Models.DataTableItemModel>(list, request, 100);
-            return Json(result);
+            return Json(DataTable.Source(list, request, 100));
         }
     }
 }
