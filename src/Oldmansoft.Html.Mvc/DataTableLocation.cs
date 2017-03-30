@@ -18,19 +18,9 @@ namespace Oldmansoft.Html.Mvc
         /// 创建数据列表源路径
         /// </summary>
         /// <param name="dataSource"></param>
-        private DataTableLocation(Func<DataTablesRequest, System.Web.Mvc.JsonResult> dataSource)
+        public DataTableLocation(Func<DataTablesRequest, System.Web.Mvc.JsonResult> dataSource)
         {
             Value = dataSource.Method.GetMethodLocation();
-        }
-
-        /// <summary>
-        /// 创建数据列表源路径
-        /// </summary>
-        /// <param name="dataSource"></param>
-        /// <returns></returns>
-        public static ILocation Create(Func<DataTablesRequest, System.Web.Mvc.JsonResult> dataSource)
-        {
-            return new DataTableLocation(dataSource);
         }
         
         string ILocation.Location

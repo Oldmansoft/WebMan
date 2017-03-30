@@ -34,5 +34,16 @@ namespace Oldmansoft.Html.Mvc
         {
             return string.Format("{0}/{1}", GetControllerName(method), method.Name);
         }
+
+        /// <summary>
+        /// 创建数据列表源路径
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="dataSource"></param>
+        /// <returns></returns>
+        public static ILocation Location(this System.Web.Mvc.Controller source, Func<DataTablesRequest, System.Web.Mvc.JsonResult> dataSource)
+        {
+            return new DataTableLocation(dataSource);
+        }
     }
 }
