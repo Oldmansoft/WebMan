@@ -1,4 +1,15 @@
-﻿body {
+﻿@media (max-width: 767px){
+    .webman-left-panel {
+        display: none;
+    }
+    .webman-main-panel>header>form {
+        display: none;
+    }
+    .dataTable-action {
+/*        top: 10px !important;*/
+    }
+}
+body {
     background-color: #1d2939;
     font-family: 'LatoBold', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif;
     line-height: 21px;
@@ -195,6 +206,7 @@ header ul li a {
 }
 .webman-panel>.webman-body {
     clear: both;
+    position: relative;
 }
 .webman-panel>.webman-body .form-group {
     margin:0;
@@ -208,4 +220,22 @@ header ul li a {
 .form-control:focus {
     border-color: #999;
     box-shadow: none;
+}
+
+.dataTable-action {
+    position: absolute;
+    top: -45px;
+    right: 50px;
+    border-right: 1px solid #DBDBDB;
+}
+table.dataTable thead th {
+    padding: 10px 18px 6px 10px;
+    border-bottom: 2px solid #e7eaec;
+}
+table.dataTable tfoot th {
+    padding: 10px 18px 6px 10px;
+    border-top: 1px solid #e7eaec;
+}
+table.dataTable tbody td {
+    border-bottom: 1px solid #e7eaec;
 }

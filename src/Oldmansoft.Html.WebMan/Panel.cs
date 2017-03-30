@@ -42,7 +42,7 @@ namespace Oldmansoft.Html.WebMan
 
             var tools = new HtmlElement(HtmlTag.Div).AddClass("webman-panel-tools");
             Header.Append(tools);
-            tools.Append(FontAwesome.Times.CreateElement());
+            tools.Append(new HtmlElement(HtmlTag.A).Append(FontAwesome.Times.CreateElement()).AddClass("webapp-close"));
 
             Body = new HtmlElement(HtmlTag.Div);
             base.Append(Body);

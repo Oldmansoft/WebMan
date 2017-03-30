@@ -80,6 +80,8 @@ namespace WebApplication.Controllers
             panel.Icon = FontAwesome.Tablet;
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
+            table.AddTableAction("添加", "Home/DataTables", LinkBehave.Open);
+            table.AddItemAction("查看", "ViewTableItem", LinkBehave.Open);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
@@ -88,12 +90,14 @@ namespace WebApplication.Controllers
         {
             System.Threading.Thread.Sleep(1000);
             var list = new List<Models.DataTableItemModel>();
-            var item = new Models.DataTableItemModel() { Name = "Hello", IsGood = true };
-            item.States = new List<Models.DataTableItemState>();
-            item.States.Add(Models.DataTableItemState.Low);
-            item.States.Add(Models.DataTableItemState.Hight);
-            list.Add(item);
-
+            for (var i = 0; i < 10; i++)
+            {
+                var item = new Models.DataTableItemModel() { Name = "Hello", IsGood = true };
+                item.States = new List<Models.DataTableItemState>();
+                item.States.Add(Models.DataTableItemState.Low);
+                item.States.Add(Models.DataTableItemState.Hight);
+                list.Add(item);
+            }
             return Json(DataTable.Source(list, request, 100));
         }
     }

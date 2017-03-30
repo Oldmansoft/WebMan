@@ -42,14 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
     <Compile Include="DataTables\DataTable.cs" />
+    <Compile Include="DataTables\DataTableAction.cs" />
     <Compile Include="DataTables\DataTableColumn.cs" />
     <Compile Include="DataTables\DataTableDefinition.cs" />
     <Compile Include="DataTables\DataTableRequest.cs" />
     <Compile Include="DataTables\DataTableSource.cs" />
     <Compile Include="DataTables\IValueDisplay.cs" />
+    <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueBoolDisplay.cs" />
     <Compile Include="DataTables\ValueDisplay.cs" />
     <Compile Include="DataTables\ValueDateTimeDisplay.cs" />

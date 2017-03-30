@@ -1,5 +1,5 @@
 ﻿/*
-* v0.0.4
+* v0.0.5
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function () {
@@ -66,11 +66,26 @@
     }
 
     this.setDataTableColumnCheckbox = function (data) {
-        return "<input type='checkbox' value='" + data + "'/>";
+        var input = $("<input type='checkbox'/>");
+        input.val(data);
+        return input.wrap('<div></div>').parent().html();
     }
 
     this.setDataTableColumnIndex = function (data, type, row, meta) {
         return meta.settings._iDisplayStart + meta.row + 1;
+    }
+
+    this.setDataTableColumnOperate = function (items) {
+        return function () {
+            var div = $("<div></div>");
+            for (var i = 0; i < items.length; i++) {
+                var a = $("<a></a>");
+                a.text(items[i].text);
+                a.attr("href", items[i].path);
+                div.append(a);
+            }
+            return div.html();
+        }
     }
 
     this.setDataTable = function (view, className, source, columns) {
@@ -107,6 +122,17 @@
         });
         $(document).on("click", ".webman-datatables-checkbox", function () {
             $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
+        });
+        $(document).on("click", ".dataTable-action a", function (e) {
+            var behave = Number($(this).attr("data-behave")),
+                path = $(this).attr("data-path");
+            if (behave == 0) {
+                $app.open(path);
+            } else if (behave == 1) {
+                $app.addHash(path);
+            } else {
+
+            }
         });
     }
 
