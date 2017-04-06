@@ -37,20 +37,20 @@ namespace Oldmansoft.Html.WebMan
 
         private string ListDeal(Type type, object value, ModelItemInfo modelItem)
         {
-            var result = new StringBuilder();
+            IHtmlElement ul = new HtmlElement(HtmlTag.Ul);
 
             var source = value as System.Collections.IEnumerable;
             var itemType = type.GetGenericArguments()[0];
-            result.Append("<ul>");
             foreach (var item in source)
             {
                 if (item == null) continue;
-                result.Append("<li>");
-                result.Append(Convert(itemType, item, modelItem));
-                result.Append("</li>");
+                var li = new HtmlElement(HtmlTag.Li);
+                ul.Append(li);
+                li.Append(new HtmlRaw(Convert(itemType, item, modelItem)));
             }
-            result.Append("</ul>");
-            return result.ToString();
+            var result = new HtmlOutput();
+            ul.Format(result);
+            return result.Complete();
         }
 
         public string Convert(Type type, object value, ModelItemInfo modelItem)
