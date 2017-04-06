@@ -58,11 +58,14 @@
     <Compile Include="DataTables\DataTableSource.cs" />
     <Compile Include="DataTables\IValueDisplay.cs" />
     <Compile Include="FormInputCreator\FormInput.cs" />
+    <Compile Include="FormInputCreator\Handlers\DateHandler.cs" />
     <Compile Include="FormInputCreator\InputCreator.cs" />
     <Compile Include="FormInputCreator\Handlers\FinalHandler.cs" />
     <Compile Include="FormInputCreator\Handler.cs" />
     <Compile Include="FormInputCreator\HandlerParameter.cs" />
     <Compile Include="FormInputCreator\Handlers\StartHandler.cs" />
+    <Compile Include="FormInputCreator\Inputs\Date.cs" />
+    <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
     <Compile Include="FormInputCreator\Inputs\Text.cs" />
     <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueBoolDisplay.cs" />

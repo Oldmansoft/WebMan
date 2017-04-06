@@ -78,6 +78,14 @@ namespace Oldmansoft.Html.WebMan
             var result = new FormHorizontal();
             foreach(var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
+                if (item.Hidden)
+                {
+                    var hidden = new FormInputCreator.Inputs.Hidden(item.Name, model != null ? item.Property.GetValue(model) : string.Empty);
+                    hidden.SetInputMode();
+                    result.Append(hidden);
+                    continue;
+                }
+
                 var parameter = new FormInputCreator.HandlerParameter();
                 parameter.ModelItem = item;
                 if (model != null) parameter.Value = item.Property.GetValue(model);

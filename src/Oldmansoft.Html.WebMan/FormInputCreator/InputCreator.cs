@@ -16,7 +16,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
 
         protected override ChainOfResponsibilityHandler<HandlerParameter, FormInput> InitChain()
         {
-            var result = new StartHandler()
+            var result = new StartHandler();
+            result.SetNext(new DateHandler())
                 .SetNext(new FinalHandler());
             return result;
         }

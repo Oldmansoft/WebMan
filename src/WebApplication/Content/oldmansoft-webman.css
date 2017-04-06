@@ -211,7 +211,7 @@ header ul li a {
 .webman-panel>.webman-body .form-group {
     margin:0;
     padding: 15px;
-    border-top: 1px dashed #d3d7db;
+    border-bottom: 1px dashed #d3d7db;
 }
 .webman-panel>.webman-body .form-group:first-child {
     border-top: none;
@@ -258,4 +258,8 @@ table.dataTable tbody td ul li {
 }
 table.dataTable tbody td ul li:first-child {
     margin-left: 0;
+}
+
+.form-horizontal .form-group:last-child {
+    border-bottom: none;
 }
