@@ -1,18 +1,20 @@
 ﻿/*
-* v0.6.34
+* v0.9.44
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
-(function () {
-    if (!window.oldmansoft) window.oldmansoft = {};
-    window.oldmansoft.webapp = this;
-
-    var _setting = {
-        timeover: 180000
+if (!window.oldmansoft) window.oldmansoft = {};
+window.oldmansoft.webapp = new (function () {
+    var self = this,
+    _setting = {
+        timeover: 180000,
+        loading_show_time: 1000,
+        loading_hide_time: 200
     },
     _text = {
-        confirm: "Cofirm",
-        cancel: "Cancel",
+        ok: "Ok",
+        yes: "Yes",
+        no: "No",
         loading: "Loading"
     },
     _mainView = null,
@@ -32,11 +34,11 @@
     _messageBox,
     _windowBox;
     
-    function getAbsolutePath(path, basePath, defaultLink) {
+    function getAbsolutePath(path, basePath, fullLink) {
         var indexOfAmpersand,
             indexOfQuestion,
             pathnames;
-        if (path == "") path = defaultLink;
+        if (path == "") path = fullLink;
         indexOfAmpersand = path.indexOf("&");
         if (indexOfAmpersand > -1) {
             indexOfQuestion = path.indexOf("?");
@@ -64,9 +66,9 @@
         return pathnames.join("/") + "/" + path;
     }
 
-    function getPathHasAbsolutePathFromArray(array, index, defaultLink) {
+    function getPathHasAbsolutePathFromArray(array, index, fullLink) {
         for (var i = index; i > -1; i--) {
-            if (array[i] == "" && defaultLink.substr(0, 1) == "/") return defaultLink;
+            if (array[i] == "" && fullLink.substr(0, 1) == "/") return fullLink;
             if (array[i].substr(0, 1) == "/") return array[i];
         }
         return null;
@@ -162,10 +164,10 @@
                 return true;
             }
             this.bindMouseWheel = function () {
-                $(window).bind("mousewheel", targetMouseWheel);
+                $(window).on("mousewheel", targetMouseWheel);
             }
             this.unbindMouseWheel = function () {
-                $(window).unbind("mousewheel", targetMouseWheel);
+                $(window).off("mousewheel", targetMouseWheel);
             }
         }
 
@@ -187,10 +189,10 @@
                 return false;
             }
             this.bindMouseWheel = function () {
-                $t.bind("mousewheel", targetMouseWheel);
+                $t.on("mousewheel", targetMouseWheel);
             }
             this.unbindMouseWheel = function () {
-                $t.unbind("mousewheel", targetMouseWheel);
+                $t.off("mousewheel", targetMouseWheel);
             }
         }
 
@@ -212,16 +214,16 @@
                 }
             }
             target.scrollTop(targetScrollTop - delta);
-            setArrowPosition()
+            setArrowPosition();
             return false;
         }
 
         function arrowMouseDown(e) {
             downMouseY = e.clientY;
             downTargetTop = target.scrollTop();
-            html.bind("selectstart", htmlSelectStart);
-            html.bind("mousemove", htmlMouseMove);
-            html.bind("mouseup", htmlMouseUp);
+            html.on("selectstart", htmlSelectStart);
+            html.on("mousemove", htmlMouseMove);
+            html.on("mouseup", htmlMouseUp);
         }
 
         function htmlSelectStart() {
@@ -229,9 +231,9 @@
         }
 
         function htmlMouseUp() {
-            html.unbind("selectstart", htmlSelectStart);
-            html.unbind("mousemove", htmlMouseMove);
-            html.unbind("mouseup", htmlMouseUp);
+            html.off("selectstart", htmlSelectStart);
+            html.off("mousemove", htmlMouseMove);
+            html.off("mouseup", htmlMouseUp);
         }
 
         function htmlMouseMove(e) {
@@ -256,6 +258,7 @@
             arrowHeight = track.height() * targetHelper.viewHeight() / targetHelper.contentHeight();
             if (arrowHeight < 20) arrowHeight = 20;
             arrow.height(arrowHeight);
+            setArrowPosition();
         }
 
         target = $(target);
@@ -274,7 +277,7 @@
         _scrollbar.push(this);
         track.mousedown(arrowMouseDown);
         arrow.mousedown(arrowMouseDown);
-        $(window).bind("resize", reset);
+        $(window).on("resize", reset);
         targetHelper.bindMouseWheel();
 
         this.show = function () {
@@ -309,7 +312,8 @@
             _canTouch = "ontouchmove" in document;
         }
         if (!_canTouch && _isReplacePCScrollBar) {
-            _WindowScrollBar = new scrollbar("body");
+            _WindowScrollBar = new self.scrollbar("body");
+            setInterval(_WindowScrollBar.reset, 500);
         }
     }
 
@@ -469,7 +473,7 @@
 
             element.stop(true);
             element.fadeOut(200, function () {
-                bodyManagement.shrink();
+                self.bodyManagement.shrink();
                 if (current == null) {
                     if (fn) fn();
                     return;
@@ -513,7 +517,7 @@
                 }
                 store.push({ node: current.node.detach(), close: current.close });
             }
-            bodyManagement.expand();
+            self.bodyManagement.expand();
             current = { node: node, close: fnClose };
             core.append(node);
             element.stop(true, true);
@@ -539,22 +543,13 @@
         }
     }
 
-    _messageBox = new box("dialog-background", true);
-    _windowBox = new box("window-background");
+    _messageBox = new self.box("dialog-background", true);
+    _windowBox = new self.box("window-background");
 
     this.dialog = new function () {
-        function setButton(node) {
-            this.set = function (text, fn) {
-                var button = $("<button></button>").text(text);
-                button.click(function (event) {
-                    _messageBox.close(event, fn);
-                });
-                node.append(button);
-                return this;
-            }
-        }
         function elementBuilder() {
             var element = $("<div></div>").addClass("dialog-box").addClass("box-panel");
+            
             this.setHead = function (title) {
                 var header = $("<div></div>").addClass("dialog-header");
                 header.append($("<h4></h4>").text(title));
@@ -564,10 +559,29 @@
                 var body = $("<div></div>").addClass("dialog-body").text(text);;
                 element.append(body);
             }
-            this.setFooter = function (fnConfirm, fnCancel) {
+            this.setFooter = function () {
                 var footer = $("<div></div>").addClass("dialog-footer");
+
+                function option(node) {
+                    this.set = function (text) {
+                        var closeCallback,
+                            button = $("<button></button>").text(text);
+
+                        button.click(function (event) {
+                            _messageBox.close(event, function () {
+                                if (closeCallback) closeCallback();
+                            });
+                        });
+                        node.append(button);
+                        return new function () {
+                            this.setCallback = function (fn) {
+                                closeCallback = fn;
+                            }
+                        }
+                    }
+                }
                 element.append(footer);
-                return new setButton(footer);
+                return new option(footer);
             }
             this.get = function (type) {
                 element.data("type", type);
@@ -578,7 +592,20 @@
             }
         }
         this.alert = function (content, title, fn) {
-            var builder = new elementBuilder();
+            var okButton,
+                builder = new elementBuilder();
+
+            function option(button) {
+                this.onConfirm = function (fn) {
+                    console.warn("onConfirm is obsolete. commend use ok");
+                    button.setCallback(fn);
+                    return this;
+                }
+                this.ok = function (fn) {
+                    button.setCallback(fn);
+                    return this;
+                }
+            }
             if (typeof title == "function") {
                 fn = title;
                 title = null;
@@ -587,22 +614,62 @@
                 builder.setHead(title);
             }
             builder.setBody(content);
-            builder.setFooter().set(_text.confirm, fn);
+            okButton = builder.setFooter().set(_text.ok);
+            if (fn) {
+                console.warn("fn is obsolete. commend use ok");
+                okButton.setCallback(fn);
+            }
             _messageBox.open(builder.get("alert"));
+            return new option(okButton);
         }
-        this.confirm = function (content, title, fnConfirm, fnCancel) {
-            var builder = new elementBuilder();
+        this.confirm = function (content, title, fnYes, fnNo) {
+            var yesButton,
+                noButton,
+                footer,
+                builder = new elementBuilder();
+
+            function option(yesButton, noButton) {
+                this.onConfirm = function (fn) {
+                    console.warn("onConfirm is obsolete. commend use yes");
+                    yesButton.setCallback(fn);
+                    return this;
+                }
+                this.yes = function (fn) {
+                    yesButton.setCallback(fn);
+                    return this;
+                }
+                this.onCancel = function (fn) {
+                    console.warn("onCancel is obsolete. commend use no");
+                    noButton.setCallback(fn);
+                    return this;
+                }
+                this.no = function (fn) {
+                    noButton.setCallback(fn);
+                    return this;
+                }
+            }
             if (typeof title == "function") {
-                fnCancel = fnConfirm;
-                fnConfirm = title;
+                fnNo = fnYes;
+                fnYes = title;
                 title = null;
             }
             if (title) {
                 builder.setHead(title);
             }
             builder.setBody(content);
-            builder.setFooter().set(_text.confirm, fnConfirm).set(_text.cancel, fnCancel);
+            footer = builder.setFooter();
+            yesButton = footer.set(_text.yes, fnYes);
+            if (fnYes) {
+                console.warn("fnYes is obsolete.");
+                yesButton.setCallback(fnYes);
+            }
+            noButton = footer.set(_text.no, fnNo);
+            if (fnNo) {
+                console.warn("fnNo is obsolete.");
+                noButton.setCallback(fnNo);
+            }
             _messageBox.open(builder.get("confirm"));
+            return new option(yesButton, noButton);
         }
         this.message = function (content) {
             var builder = new elementBuilder();
@@ -634,20 +701,20 @@
         }
         this.show = function () {
             initElement();
-            bodyManagement.expand();
+            self.bodyManagement.expand();
             element.stop(true, true);
-            element.fadeIn(2000);
+            element.fadeIn(_setting.loading_show_time);
             return new function () {
                 this.hide = function () {
-                    loadingTip.hide();
+                    self.loadingTip.hide();
                 }
             }
         }
         this.hide = function () {
             initElement();
             element.stop(true);
-            element.fadeOut(200, function () {
-                bodyManagement.shrink();
+            element.fadeOut(_setting.loading_hide_time, function () {
+                self.bodyManagement.shrink();
             });
         }
     }
@@ -729,9 +796,8 @@
         }
     }
 
-    function openArea(link) {
-        var defaultLink = link,
-            links = new linkManagement();
+    function openArea() {
+        var links = new linkManagement();
 
         function setView(link, first, second) {
             var view,
@@ -763,12 +829,13 @@
             lastNode.callLoadAndActive();
         }
 
-        this.load = function (link) {
-            var loading = loadingTip.show();
+        this.load = function (link, data, type) {
+            var loading = self.loadingTip.show();
             $.ajax({
                 mimeType: 'text/html; charset=utf-8',
-                url: getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, defaultLink), defaultLink),
-                type: 'GET',
+                url: getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainView.getDefaultLink()), _mainView.getDefaultLink()),
+                data: data,
+                type: type,
                 timeout: _setting.timeover
             }).done(function (data, textStatus, jqXHR) {
                 loading.hide();
@@ -851,16 +918,16 @@
 
             event = _currentViewEvent;
             links.setLastContext(view, event, "main", links.count()).callLoadAndActive();
-            resetWindowScrollbar();
+            self.resetWindowScrollbar();
             $(window).scrollTop(0);
-            dealScrollToVisibleLoading();
+            self.dealScrollToVisibleLoading();
         }
 
         function loadContent(link, basePath, onloadBefore) {
             var currentId = ++loadId,
                 loading;
 
-            loading = loadingTip.show();
+            loading = self.loadingTip.show();
             $.ajax({
                 mimeType: 'text/html; charset=utf-8',
                 url: getAbsolutePath(link, basePath, defaultLink),
@@ -928,7 +995,7 @@
                     }
                 }
                 links.get(hrefs.length - 1).show();
-                resetWindowScrollbar();
+                self.resetWindowScrollbar();
                 return;
             }
 
@@ -956,7 +1023,7 @@
 
         this.close = function () {
             if (links.count() > 1) {
-                linker.hash(links.getBackLink());
+                self.linker.hash(links.getBackLink());
             }
         }
 
@@ -1024,8 +1091,8 @@
             $.get(src, function (data) {
                 loading.before(data);
                 loading.remove();
-                resetWindowScrollbar();
-                dealScrollToVisibleLoading();
+                self.resetWindowScrollbar();
+                self.dealScrollToVisibleLoading();
             });
         }
     }
@@ -1052,21 +1119,25 @@
 
     _dealHrefTarget = {
         _base: function (href) {
-            linker.hash(href);
+            self.linker.hash(href);
         },
         _add: function (href) {
-            linker.addHash(href);
+            self.linker.addHash(href);
         },
         _same: function (href) {
-            linker.sameHash(href);
+            self.linker.sameHash(href);
         },
-        _open: function (href) {
-            open(href);
+        _open: function (href, target) {
+            self.open(href, target.attr("data-data"));
         }
     }
 
-    this.open = function (href) {
-        _openView.load(href)
+    this.open = function (href, data) {
+        if (data) {
+            _openView.load(href, data, 'POST');
+        } else {
+            _openView.load(href, data, 'GET');
+        }
     }
 
     this.configSetting = function (fn) {
@@ -1077,53 +1148,53 @@
         if (typeof fn == "function") fn(_text);
     }
 
-    function initOption(main) {
-        this.viewNode = function (node) {
-            if (!node) return main.getElement();
-            main.setElement(node);
-            return this;
-        }
-        this.defaultLink = function (link) {
-            if (!link) return main.getDefaultLink();
-            main.setDefaultLink(link);
-            return this;
-        }
-        this.unauthorized = function (fn) {
-            _fnOnUnauthorized = fn;
-            return this;
-        }
-        this.dealLinkEmptyTarget = function (b) {
-            if (b == undefined) return _isDealLinkEmptyTarget;
-            _isDealLinkEmptyTarget = b;
-            return this;
-        }
-        this.replacePCScrollBar = function (b) {
-            _isReplacePCScrollBar = b;
-            return this;
-        }
-        this.viewLoaded = function (fn) {
-            _globalViewEvent.load = fn;
-            return this;
-        }
-        this.viewActived = function (fn) {
-            _globalViewEvent.active = fn;
-            return this;
-        }
-        this.viewInactived = function (fn) {
-            _globalViewEvent.inactive = fn;
-            return this;
-        }
-        this.viewUnloaded = function (fn) {
-            _globalViewEvent.unload = fn;
-            return this;
-        }
-    }
-
     this.init = function (viewNode, defaultLink) {
+        function option(main) {
+            this.viewNode = function (node) {
+                if (!node) return main.getElement();
+                main.setElement(node);
+                return this;
+            }
+            this.defaultLink = function (link) {
+                if (!link) return main.getDefaultLink();
+                main.setDefaultLink(link);
+                return this;
+            }
+            this.unauthorized = function (fn) {
+                _fnOnUnauthorized = fn;
+                return this;
+            }
+            this.dealLinkEmptyTarget = function (b) {
+                if (b == undefined) return _isDealLinkEmptyTarget;
+                _isDealLinkEmptyTarget = b;
+                return this;
+            }
+            this.replacePCScrollBar = function (b) {
+                _isReplacePCScrollBar = b;
+                return this;
+            }
+            this.viewLoaded = function (fn) {
+                _globalViewEvent.load = fn;
+                return this;
+            }
+            this.viewActived = function (fn) {
+                _globalViewEvent.active = fn;
+                return this;
+            }
+            this.viewInactived = function (fn) {
+                _globalViewEvent.inactive = fn;
+                return this;
+            }
+            this.viewUnloaded = function (fn) {
+                _globalViewEvent.unload = fn;
+                return this;
+            }
+        }
+
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             $.ajaxSetup({ cache: false });
         }
-        $("body").on("click", "a", function (e) {
+        $(document).on("click", "a", function (e) {
             var target = $(this).attr("target"),
                 href = $(this).attr('href');
 
@@ -1131,13 +1202,7 @@
                 e.preventDefault();
                 return;
             }
-
-            if ($(this).hasClass("webapp-close")) {
-                e.preventDefault();
-                viewClose();
-                return;
-            }
-
+            
             if (!target) {
                 if (!_isDealLinkEmptyTarget) return;
                 e.preventDefault();
@@ -1147,39 +1212,43 @@
 
             if (_dealHrefTarget[target]) {
                 e.preventDefault();
-                _dealHrefTarget[target](href);
+                _dealHrefTarget[target](href, $(this));
             }
         });
-        $(window).bind("scroll", dealScrollToVisibleLoading);
-        $(window).bind("resize", dealScrollToVisibleLoading);
-        $(document).bind("touchmove", dealTouchMove);
+        $(document).on("click", ".webapp-close", function (e) {
+            e.preventDefault();
+            self.viewClose();
+        });
+        $(window).on("scroll", self.dealScrollToVisibleLoading);
+        $(window).on("resize", self.dealScrollToVisibleLoading);
+        $(document).on("touchmove", dealTouchMove);
 
         _globalViewEvent = new viewEvent();
         _mainView = new viewArea(viewNode, defaultLink);
-        _openView = new openArea(defaultLink);
+        _openView = new openArea();
         _activeView = _mainView;
-        linker._init(function (link) {
+        self.linker._init(function (link) {
             _mainView.load(link);
         });
-        return new initOption(_mainView);
+        return new option(_mainView);
     }
 
     window.$app = {
-        configSetting: configSetting,
-        configText: configText,
-        alert: dialog.alert,
-        confirm: dialog.confirm,
-        message: dialog.message,
-        loading: loadingTip.show,
-        loadScript: scriptLoader.load,
-        hash: linker.hash,
-        baseHash: linker.hash,
-        addHash: linker.addHash,
-        sameHash: linker.sameHash,
-        reload: linker.refresh,
-        open: open,
-        event: event,
-        close: viewClose,
-        init: init
+        configSetting: self.configSetting,
+        configText: self.configText,
+        alert: self.dialog.alert,
+        confirm: self.dialog.confirm,
+        message: self.dialog.message,
+        loading: self.loadingTip.show,
+        loadScript: self.scriptLoader.load,
+        hash: self.linker.hash,
+        baseHash: self.linker.hash,
+        addHash: self.linker.addHash,
+        sameHash: self.linker.sameHash,
+        reload: self.linker.refresh,
+        open: self.open,
+        event: self.event,
+        close: self.viewClose,
+        init: self.init
     };
 })();

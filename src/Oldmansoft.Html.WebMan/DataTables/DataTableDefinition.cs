@@ -164,7 +164,7 @@ namespace Oldmansoft.Html.WebMan
             if (ItemActions.Count > 0)
             {
                 var operateObject = new JsonObject();
-                operateObject.Set("data", null);
+                operateObject.Set("data", PrimaryKeyName);
                 var operates = new JsonArray();
                 foreach(var item in ItemActions)
                 {
@@ -198,6 +198,7 @@ namespace Oldmansoft.Html.WebMan
                     a.AddClass("btn");
                     a.Attribute("data-path", item.Location);
                     a.Attribute("data-behave", ((int)item.Behave).ToString());
+                    a.Attribute("data-need", item.NeedSelectedItem ? "1" : "0");
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
                     span.Text(item.Text);
@@ -273,9 +274,10 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        public void AddTableAction(string text, string location, LinkBehave behave)
+        /// <param name="needSelectedItem"></param>
+        public void AddTableAction(string text, string location, LinkBehave behave, bool needSelectedItem)
         {
-            TableActions.Add(new DataTableAction(text, location, behave));
+            TableActions.Add(new DataTableAction(text, location, behave) { NeedSelectedItem = needSelectedItem });
         }
 
         /// <summary>

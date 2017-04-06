@@ -1,9 +1,11 @@
 ﻿/*
-* v0.0.6
+* v0.1.7
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
-(function () {
-    var menu,
+if (!window.oldmansoft) window.oldmansoft = {};
+window.oldmansoft.webman = new (function () {
+    var self = this,
+        menu,
         text;
 
     text = {
@@ -17,7 +19,10 @@
                 next: "Next",
                 previous: "Previous"
             }
-        }
+        },
+        error: "Error",
+        warning: "Warning",
+        denied: "Permission denied"
     }
 
     function define_menu() {
@@ -76,15 +81,18 @@
     }
 
     this.setDataTableColumnOperate = function (items) {
-        return function () {
+        return function (data) {
             var div = $("<div></div>");
+            div.addClass("dataTable-item-action");
+            div.attr("data-id", data);
             for (var i = 0; i < items.length; i++) {
                 var a = $("<a></a>");
                 a.text(items[i].text);
-                a.attr("href", items[i].path);
+                a.attr("data-path", items[i].path);
+                a.attr("data-behave", items[i].behave);
                 div.append(a);
             }
-            return div.html();
+            return div.wrap('<div></div>').parent().html();
         }
     }
 
@@ -113,23 +121,49 @@
             dom: "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
             initComplete: function () {
                 var table = view.node.find("." + className);
-                // fix first column width
+
                 var maxWidth = 0;
                 table.find("tbody tr td:first-child").each(function () {
                     var width = computeElementWidth($(this));
                     if (width > maxWidth) maxWidth = width;
                 })
-                table.find("thead tr th:first-child").width(maxWidth);
-                // fix last column width
+                if (maxWidth > 0) {
+                    table.find("thead tr th:first-child").width(maxWidth);
+                }
+
                 maxWidth = 0;
                 table.find("tbody tr td:last-child").each(function () {
-                    var width = computeElementWidth($(this));
+                    var width = computeElementWidth($(this).children());
                     if (width > maxWidth) maxWidth = width;
                 })
-                table.find("thead tr th:last-child").width(maxWidth);
+                if (maxWidth > 0) {
+                    table.find("thead tr th:last-child").width(maxWidth);
+                }
             }
         };
         view.node.find("." + className).DataTable(option);
+    }
+
+    function getDataTableSelectedIds(a) {
+        var ids = [];
+        a.parent().next().find("tbody tr td:first-child input[type='checkbox']").each(function () {
+            if ($(this).prop("checked")) {
+                ids.push($(this).val());
+            }
+        });
+        return ids;
+    }
+
+    function getDataTableItemId(a) {
+        return a.parent().attr("data-id");
+    }
+
+    function dealAjaxError(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.status == 401) {
+            $app.alert(text.denied, text.error);
+        } else {
+            $app.alert(errorThrown, text.error);
+        }
     }
 
     this.init = function (main, defaultLink) {
@@ -138,7 +172,7 @@
             if (view.name == "open") return;
             var link = view.node.data("link");
             menu.active(link);
-        }).replacePCScrollBar(false);
+        }).replacePCScrollBar(true);
 
         $(".webman-main-panel").css("min-height", $(window).height());
         $(window).on("resize", function () {
@@ -149,21 +183,59 @@
         });
         $(document).on("click", ".dataTable-action a", function (e) {
             var behave = Number($(this).attr("data-behave")),
+                path = $(this).attr("data-path"),
+                need = $(this).attr("data-need") == "1",
+                ids = getDataTableSelectedIds($(this));
+
+            if (need && ids.length == 0) return;
+            if (behave == 0) {
+                $app.open(path, { selectedId: ids });
+            } else if (behave == 1) {
+                if (!need || ids.length == 0) {
+                    $app.addHash(path);
+                } else {
+                    for (var i = 0; i < ids.length; i++) {
+                        ids[i] = encodeURIComponent(ids[i]);
+                    }
+                    $app.addHash(path + "?selectedId=" + ids.join("&selectedId="));
+                }
+            } else {
+                var loading = $app.loading();
+                $.post(path, { selectedId: ids }).done(function (result) {
+                    if (result.Success) {
+                        if (result.Message) {
+                            $app.alert(result.Message);
+                        }
+                    } else {
+                        $app.alert(result.Message, text.warning);
+                    }
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            }
+        });
+        $(document).on("click", ".dataTable-item-action a", function (e) {
+            var behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path");
             if (behave == 0) {
-                $app.open(path);
+                $app.open(path, { selectedId: getDataTableItemId($(this)) });
             } else if (behave == 1) {
-                $app.addHash(path);
+                $app.addHash(path + "?selectedId=" + getDataTableItemId($(this)));
             } else {
-
+                var loading = $app.loading();
+                $.post(path, { selectedId: getDataTableItemId($(this)) }).done(function (result) {
+                    if (result.Success) {
+                        if (result.Message) {
+                            $app.alert(result.Message);
+                        }
+                    } else {
+                        $app.alert(result.Message, text.warning);
+                    }
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
         });
     }
 
-    if (!window.oldmansoft) window.oldmansoft = {};
-    window.oldmansoft.webman = this;
     window.$man = {
-        init: this.init,
-        configText: this.configText
+        init: self.init,
+        configText: self.configText
     }
 })();

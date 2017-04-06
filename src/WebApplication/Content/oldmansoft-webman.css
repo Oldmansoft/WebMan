@@ -228,6 +228,9 @@ header ul li a {
     right: 50px;
     border-right: 1px solid #DBDBDB;
 }
+.dataTable-item-action a {
+    cursor: pointer;
+}
 table.dataTable thead th {
     padding: 10px 18px 6px 10px;
     border-bottom: 2px solid #e7eaec;

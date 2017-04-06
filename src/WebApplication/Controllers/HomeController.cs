@@ -80,10 +80,12 @@ namespace WebApplication.Controllers
             panel.Icon = FontAwesome.Tablet;
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
-            table.AddTableAction("添加", "Home/DataTables", LinkBehave.Open);
-            table.AddItemAction("查看", "ViewTableItem", LinkBehave.Open);
-            table.AddItemAction("修改", "ViewTableItem", LinkBehave.Open);
-            table.AddItemAction("删除", "ViewTableItem", LinkBehave.Call);
+            table.AddTableAction("添加", "/Home/DataTablesCreate", LinkBehave.Open, false);
+            table.AddTableAction("查看", "/Home/DataTablesView", LinkBehave.Link, true);
+            table.AddTableAction("删除", "/Home/DataTablesDelete", LinkBehave.Call, true);
+            table.AddItemAction("查看", "/Home/DataTablesCreate", LinkBehave.Open);
+            table.AddItemAction("修改", "/Home/DataTablesView", LinkBehave.Link);
+            table.AddItemAction("删除", "/Home/DataTablesDelete", LinkBehave.Call);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
@@ -101,6 +103,56 @@ namespace WebApplication.Controllers
                 list.Add(item);
             }
             return Json(DataTable.Source(list, request, 100));
+        }
+
+        public ActionResult DataTablesCreate()
+        {
+            var panel = new Panel();
+            panel.Caption = "hello";
+            panel.Icon = FontAwesome.Anchor;
+            var form = new FormHorizontal();
+            form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
+            form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
+            panel.Append(form);
+
+            return new HtmlResult(panel.CreateGrid());
+        }
+
+        public JsonResult DataTablesDelete(params Guid[] selectedId)
+        {
+            var output = new System.Text.StringBuilder();
+            if (selectedId == null)
+            {
+                output.Append("null");
+            }
+            else
+            {
+                foreach (var item in selectedId)
+                {
+                    output.Append(item.ToString("N"));
+                    output.Append(", ");
+                }
+            }
+
+            return Json(new
+            {
+                Success = true,
+                Message = output.ToString()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DataTablesView(params Guid[] selectedId)
+        {
+            var panel = new Panel();
+            panel.Caption = "hello";
+            panel.Icon = FontAwesome.Anchor;
+            foreach (var item in selectedId)
+            {
+                var div = new HtmlElement(HtmlTag.Div);
+                div.Text(item.ToString("N"));
+                panel.Append(div);
+            }
+            return new HtmlResult(panel.CreateGrid());
         }
     }
 }
