@@ -66,5 +66,28 @@ namespace Oldmansoft.Html.WebMan
             submit.AddClass("btn btn-primary");
             base.Format(outer);
         }
+
+        /// <summary>
+        /// 根据模型创建表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static FormHorizontal Create<TModel>(TModel model)
+        {
+            var result = new FormHorizontal();
+            foreach(var item in ModelProvider.Instance.GetItems(typeof(TModel)))
+            {
+                var parameter = new FormInputCreator.HandlerParameter();
+                parameter.ModelItem = item;
+                if (model != null) parameter.Value = item.Property.GetValue(model);
+                var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
+                input.Disabled = item.Disabled;
+                input.ReadOnly = item.ReadOnly;
+                input.SetInputMode();
+                result.Add(item.Display, input.CreateGrid(Column.Sm10));
+            }
+            return result;
+        }
     }
 }

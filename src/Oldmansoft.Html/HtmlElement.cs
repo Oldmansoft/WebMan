@@ -25,7 +25,7 @@ namespace Oldmansoft.Html
         /// <summary>
         /// 标签
         /// </summary>
-        public HtmlTag Tag { get; private set; }
+        public HtmlTag Tag { get; protected set; }
 
         /// <summary>
         /// 创建元素

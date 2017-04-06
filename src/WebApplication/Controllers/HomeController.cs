@@ -113,9 +113,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = new FormHorizontal();
-            form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
-            form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm10));
+            var form = FormHorizontal.Create(new Models.DataTableItemModel());
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
