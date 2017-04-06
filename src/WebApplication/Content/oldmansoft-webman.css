@@ -248,3 +248,14 @@ table.dataTable tbody td a {
 table.dataTable tbody td a:first-child {
     margin-left: 0;
 }
+table.dataTable tbody td ul {
+    list-style: none;
+    padding: 0;
+}
+table.dataTable tbody td ul li {
+    float: left;
+    margin-left: 10px;
+}
+table.dataTable tbody td ul li:first-child {
+    margin-left: 0;
+}

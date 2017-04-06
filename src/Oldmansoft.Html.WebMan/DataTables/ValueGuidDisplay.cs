@@ -8,7 +8,7 @@ namespace Oldmansoft.Html.WebMan
 {
     class ValueGuidDisplay : IValueDisplay
     {
-        public string Convert(object value)
+        public string Convert(object value, ModelItemInfo modelItem)
         {
             return ((Guid)value).ToString("N");
         }

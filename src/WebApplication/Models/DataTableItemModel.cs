@@ -23,11 +23,16 @@ namespace WebApplication.Models
         [Display(Name = "列表")]
         public List<DataTableItemState> States { get; set; }
 
-        [Display(Name = "时间")]
-        public DateTime CreatedTime { get; set; }
+        [Display(Name = "日期")]
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
 
-        [Display(Name = "动作")]
-        public string Action { get; set; }
+        [Display(Name = "时间")]
+        [DataType(DataType.Time)]
+        public DateTime Time { get; set; }
+
+        [Display(Name = "创建")]
+        public DateTime CreateTime { get; set; }
     }
 
     public enum DataTableItemState

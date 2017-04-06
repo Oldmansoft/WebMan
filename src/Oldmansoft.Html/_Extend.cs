@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,7 +24,7 @@ namespace Oldmansoft.Html
             if (source == null) return result;
             if (source is IDictionary<string, string>) return source as IDictionary<string, string>;
 
-            foreach (var property in source.GetType().GetProperties())
+            foreach (var property in source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var value = property.GetValue(source);
                 result.Add(property.Name, value == null ? string.Empty : value.ToString());

@@ -100,6 +100,9 @@ namespace WebApplication.Controllers
                 item.States = new List<Models.DataTableItemState>();
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);
+                item.Time = DateTime.Now;
+                item.Date = DateTime.Now;
+                item.CreateTime = DateTime.UtcNow;
                 list.Add(item);
             }
             return Json(DataTable.Source(list, request, 100));

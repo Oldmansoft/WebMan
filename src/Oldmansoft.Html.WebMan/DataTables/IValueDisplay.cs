@@ -15,7 +15,8 @@ namespace Oldmansoft.Html.WebMan
         /// 转换
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="modelItem"></param>
         /// <returns></returns>
-        string Convert(object value);
+        string Convert(object value, ModelItemInfo modelItem);
     }
 }

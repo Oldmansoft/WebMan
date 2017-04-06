@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.Html.Util;
+using System.Reflection;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -90,17 +91,11 @@ namespace Oldmansoft.Html.WebMan
         private void InitColumns()
         {
             Columns = new List<DataTableColumn>();
-            foreach (var property in typeof(TModel).GetProperties())
+            foreach (var item in ModelProvider.Instance.GetItems( typeof(TModel)))
             {
-                var column = new DataTableColumn() { Name = property.Name, Text = property.Name, Visible = true };
-                foreach (var attribute in property.GetCustomAttributes(typeof(Attribute), true))
-                {
-                    if (attribute is DisplayAttribute)
-                    {
-                        column.Text = ((DisplayAttribute)attribute).Name.JavaScriptEncode();
-                    }
-                }
-                if (property.Name == PrimaryKeyName)
+                var column = new DataTableColumn() { Name = item.Property.Name, Text = item.Display, Visible = true };
+                
+                if (item.Property.Name == PrimaryKeyName)
                 {
                     column.Visible = false;
                 }

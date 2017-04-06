@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan
 
         private Dictionary<Type, IValueDisplay> SimpleDealers { get; set; }
 
-        private Dictionary<Type, Func<Type, object, string>> GenericDealers { get; set; }
+        private Dictionary<Type, Func<Type, object, ModelItemInfo, string>> GenericDealers { get; set; }
 
         private ValueDisplay()
         {
@@ -25,50 +25,52 @@ namespace Oldmansoft.Html.WebMan
             SimpleDealers.Add(typeof(bool), new ValueBoolDisplay());
             SimpleDealers.Add(typeof(DateTime), new ValueDateTimeDisplay());
 
-            GenericDealers = new Dictionary<Type, Func<Type, object, string>>();
+            GenericDealers = new Dictionary<Type, Func<Type, object, ModelItemInfo, string>>();
             GenericDealers.Add(typeof(Nullable<>), NullableDeal);
             GenericDealers.Add(typeof(List<>), ListDeal);
         }
 
-        private string NullableDeal(Type type, object value)
+        private string NullableDeal(Type type, object value, ModelItemInfo modelItem)
         {
-            return ConvertSimpleType(Nullable.GetUnderlyingType(type), value);
+            return ConvertSimpleType(Nullable.GetUnderlyingType(type), value, modelItem);
         }
 
-        private string ListDeal(Type type, object value)
+        private string ListDeal(Type type, object value, ModelItemInfo modelItem)
         {
             var result = new StringBuilder();
 
             var source = value as System.Collections.IEnumerable;
             var itemType = type.GetGenericArguments()[0];
+            result.Append("<ul>");
             foreach (var item in source)
             {
                 if (item == null) continue;
-                result.Append("<i>");
-                result.Append(Convert(itemType, item));
-                result.Append("</i>");
+                result.Append("<li>");
+                result.Append(Convert(itemType, item, modelItem));
+                result.Append("</li>");
             }
+            result.Append("</ul>");
             return result.ToString();
         }
 
-        public string Convert(Type type, object value)
+        public string Convert(Type type, object value, ModelItemInfo modelItem)
         {
             if (type.IsGenericType)
             {
                 var genericType = type.GetGenericTypeDefinition();
                 if (GenericDealers.ContainsKey(genericType))
                 {
-                    return GenericDealers[genericType](type, value);
+                    return GenericDealers[genericType](type, value, modelItem);
                 }
             }
-            return ConvertSimpleType(type, value);
+            return ConvertSimpleType(type, value, modelItem);
         }
 
-        private string ConvertSimpleType(Type type, object value)
+        private string ConvertSimpleType(Type type, object value, ModelItemInfo modelItem)
         {
             if (SimpleDealers.ContainsKey(type))
             {
-                return SimpleDealers[type].Convert(value);
+                return SimpleDealers[type].Convert(value, modelItem);
             }
 
             if (!type.IsEnum)

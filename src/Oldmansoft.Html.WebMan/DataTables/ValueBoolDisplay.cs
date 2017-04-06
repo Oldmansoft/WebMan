@@ -8,7 +8,7 @@ namespace Oldmansoft.Html.WebMan
 {
     class ValueBoolDisplay : IValueDisplay
     {
-        public string Convert(object value)
+        public string Convert(object value, ModelItemInfo modelItem)
         {
             return (bool)value ? "是" : "否";
         }

@@ -45,6 +45,9 @@
     <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Annotations\FileOptionAttribute.cs" />
+    <Compile Include="Annotations\HiddenAttribute.cs" />
+    <Compile Include="Annotations\ReadOnlyAttribute.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
     <Compile Include="DataTables\DataTable.cs" />
@@ -68,6 +71,8 @@
     <Compile Include="LinkContent.cs" />
     <Compile Include="Documents\LoginDocument.cs" />
     <Compile Include="Documents\MainDocument.cs" />
+    <Compile Include="ModelItemInfo.cs" />
+    <Compile Include="ModelProvider.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Documents\QuickMenu.cs" />
     <Compile Include="Documents\TreeList.cs" />

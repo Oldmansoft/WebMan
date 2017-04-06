@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,24 +58,23 @@ namespace Oldmansoft.Html.WebMan
 
         private void SetData(IEnumerable<TModel> source)
         {
-            var type = typeof(TModel);
-            var propertys = type.GetProperties();
-            foreach(var item in source)
+            var items = ModelProvider.Instance.GetItems(typeof(TModel));
+            foreach(var model in source)
             {
-                var model = new Dictionary<string, string>();
-                foreach (var property in propertys)
+                var dataItem = new Dictionary<string, string>();
+                foreach (var item in items)
                 {
-                    var value = property.GetValue(item);
+                    var value = item.Property.GetValue(model);
                     if (value == null)
                     {
-                        model.Add(property.Name, string.Empty);
+                        dataItem.Add(item.Name, string.Empty);
                     }
                     else
                     {
-                        model.Add(property.Name, ValueDisplay.Instance.Convert(property.PropertyType, value));
+                        dataItem.Add(item.Name, ValueDisplay.Instance.Convert(item.Property.PropertyType, value, item));
                     }
                 }
-                data.Add(model);
+                data.Add(dataItem);
             }
         }
     }
