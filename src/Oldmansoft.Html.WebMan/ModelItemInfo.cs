@@ -91,6 +91,25 @@ namespace Oldmansoft.Html.WebMan
             Name = property.Name;
             Display = property.Name;
             Hidden = property.Name.ToLower() == "id";
+
+            if (IsType(property.PropertyType, typeof(DateTime)))
+            {
+                DataType = DataType.DateTime;
+            }
+        }
+
+        /// <summary>
+        /// 源类型像目标类型
+        /// 指源类型也可以是 Nullable 的泛型为目标类型
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="targetType"></param>
+        /// <returns></returns>
+        public static bool IsType(Type sourceType, Type targetType)
+        {
+            if (sourceType == targetType) return true;
+            if (!targetType.IsClass && sourceType == typeof(Nullable<>).MakeGenericType(targetType)) return true;
+            return false;
         }
     }
 }

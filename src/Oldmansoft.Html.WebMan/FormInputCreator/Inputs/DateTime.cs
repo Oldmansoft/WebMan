@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
-    class Date : FormInput
+    class DateTime : FormInput
     {
         private System.DateTime? Value { get; set; }
 
-        public Date(string name, System.DateTime? value)
+        public DateTime(string name, System.DateTime? value)
             : base(name)
         {
             Value = value;
@@ -24,7 +24,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 result = result.ToLocalTime();
             }
-            return result.ToString("yyyy-MM-dd");
+            return result.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public override void SetInputMode()
@@ -35,11 +35,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var span = new HtmlElement(HtmlTag.Span);
             Append(span);
             span.AddClass("input-group-addon");
-            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-calendar"));
+            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-calendar-o"));
 
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
-            input.Attribute(HtmlAttribute.Type, "date");
+            input.Attribute(HtmlAttribute.Type, "datetime-local");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
             input.AddClass("form-control");

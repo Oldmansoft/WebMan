@@ -35,7 +35,7 @@ namespace Oldmansoft.Html.WebMan
 
             var label = new HtmlElement(HtmlTag.Label);
             group.Append(label);
-            label.AddClass(Column.Sm2);
+            label.AddClass(Column.Sm3 | Column.Md2);
             label.AddClass("control-label");
             label.Text(text);
 
@@ -53,16 +53,16 @@ namespace Oldmansoft.Html.WebMan
             Append(group);
             group.AddClass("form-group");
 
-            var buttons = new GridOption(Column.Sm10);
+            var buttons = new GridOption(Column.Sm9 | Column.Md10);
             group.Append(buttons);
-            buttons.AddClass(ColumnOffset.Sm2);
+            buttons.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
 
             var reset = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset");
-            buttons.Append(reset);
+            group.Append(reset.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1).AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2));
             reset.AddClass("btn btn-default");
 
             var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit");
-            buttons.Append(submit);
+            group.Append(submit.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1));
             submit.AddClass("btn btn-primary");
             base.Format(outer);
         }
@@ -93,7 +93,7 @@ namespace Oldmansoft.Html.WebMan
                 input.Disabled = item.Disabled;
                 input.ReadOnly = item.ReadOnly;
                 input.SetInputMode();
-                result.Add(item.Display, input.CreateGrid(Column.Sm10));
+                result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
             }
             return result;
         }

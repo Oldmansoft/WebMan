@@ -1,12 +1,6 @@
-﻿@media (max-width: 767px){
-    .webman-left-panel {
-        display: none;
-    }
+﻿@media (max-width: 830px){
     .webman-main-panel>header>form {
         display: none;
-    }
-    .dataTable-action {
-/*        top: 10px !important;*/
     }
 }
 body {
@@ -15,25 +9,33 @@ body {
     line-height: 21px;
 }
 
-.btn {
-    margin-right: 5px;
-}
-
 section.container-fluid {
     padding-right: 0;
     padding-left: 0;
 }
 
-.webman-left-panel header {
-    padding: 10px;
-    background-color: #fff;
+.webman-left-panel {
+    position: absolute;
+    width: 220px;
+    z-index: 100;
+}
+
+.webman-main-panel {
+    margin-left: 220px;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .webman-left-panel header {
+    padding: 10px;
+    background-color: #2f4050;
     font-size: 30px;
     letter-spacing: -1.5px;
     line-height: 30px;
-    color: #1d2939;
+    color: #efe4ed;
     overflow: hidden;
 }
 

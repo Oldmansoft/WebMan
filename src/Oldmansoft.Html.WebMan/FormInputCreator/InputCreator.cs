@@ -18,6 +18,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         {
             var result = new StartHandler();
             result.SetNext(new DateHandler())
+                .SetNext(new TimeHandler())
+                .SetNext(new DateTimeHandler())
+                .SetNext(new NumberHandler())
                 .SetNext(new FinalHandler());
             return result;
         }

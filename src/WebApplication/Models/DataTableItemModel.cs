@@ -20,6 +20,9 @@ namespace WebApplication.Models
         [Display(Name = "好吗")]
         public bool? IsGood { get; set; }
 
+        [Display(Name = "年龄")]
+        public int? Age { get; set; }
+
         [Display(Name = "列表")]
         public List<DataTableItemState> States { get; set; }
 
