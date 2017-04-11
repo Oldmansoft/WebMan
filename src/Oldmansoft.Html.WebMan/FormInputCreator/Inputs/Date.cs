@@ -42,10 +42,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "date");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
-            input.AddClass("form-control");
             SetAttribute(input);
-
-            if (Disabled || ReadOnly) return;
+            input.AddClass("form-control");
         }
 
         public override void SetViewMode()

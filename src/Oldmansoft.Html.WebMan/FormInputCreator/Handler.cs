@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,18 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         protected string GetStringValue(HandlerParameter input)
         {
             return input.Value == null ? string.Empty : input.Value.ToString();
+        }
+
+        protected IList<string> GetStringValues(HandlerParameter input)
+        {
+            var result = new List<string>();
+            if (input.Value == null) return result;
+            foreach(var item in input.Value as IEnumerable)
+            {
+                if (item == null) continue;
+                result.Add(item.ToString());
+            }
+            return result;
         }
     }
 }

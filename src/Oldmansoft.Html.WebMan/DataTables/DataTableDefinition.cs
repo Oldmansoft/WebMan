@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.Html.Util;
 using System.Reflection;
+using Oldmansoft.Html.WebMan.Util;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -191,9 +192,9 @@ namespace Oldmansoft.Html.WebMan
                     var a = new HtmlElement(HtmlTag.A);
                     tableAction.Append(a);
                     a.AddClass("btn");
-                    a.Attribute("data-path", item.Location);
-                    a.Attribute("data-behave", ((int)item.Behave).ToString());
-                    a.Attribute("data-need", item.NeedSelectedItem ? "1" : "0");
+                    a.Data("path", item.Location);
+                    a.Data("behave", ((int)item.Behave).ToString());
+                    a.Data("need", item.NeedSelectedItem ? "1" : "0");
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
                     span.Text(item.Text);

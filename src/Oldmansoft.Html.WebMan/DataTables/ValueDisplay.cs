@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oldmansoft.Html.WebMan.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -72,22 +73,13 @@ namespace Oldmansoft.Html.WebMan
             {
                 return SimpleDealers[type].Convert(value, modelItem);
             }
-
-            if (!type.IsEnum)
+            
+            if (type.IsEnum)
             {
-                return value.ToString().HtmlEncode();
+                return EnumProvider.Instance.GetDescription(type, value).HtmlEncode();
             }
 
-            var name = Enum.GetName(type, value);
-            var attribute = type.GetMember(name)[0].GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute), false) as System.ComponentModel.DescriptionAttribute;
-            if (attribute == null)
-            {
-                return name.HtmlEncode();
-            }
-            else
-            {
-                return attribute.Description.HtmlEncode();
-            }
+            return value.ToString().HtmlEncode();
         }
     }
 }

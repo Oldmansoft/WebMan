@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html.WebMan
+namespace Oldmansoft.Html.WebMan.Util
 {
     class ModelItemInfo
     {

@@ -52,30 +52,30 @@ namespace Oldmansoft.Html.WebMan
         {
             return Element.Append(node);
         }
-
-        IHtmlElement IHtmlElement.Attribute(object properties)
-        {
-            return Element.Attribute(properties);
-        }
-
-        string IHtmlElement.Attribute(string name)
-        {
-            return Element.Attribute(name);
-        }
-
+        
         string IHtmlElement.Attribute(HtmlAttribute name)
         {
             return Element.Attribute(name);
         }
-
-        IHtmlElement IHtmlElement.Attribute(string name, string value)
+        
+        IHtmlElement IHtmlElement.Attribute(HtmlAttribute name, string value)
         {
             return Element.Attribute(name, value);
         }
 
-        IHtmlElement IHtmlElement.Attribute(HtmlAttribute name, string value)
+        string IHtmlElement.Data(string name)
         {
-            return Element.Attribute(name, value);
+            return Element.Data(name);
+        }
+
+        IHtmlElement IHtmlElement.Data(string name, string value)
+        {
+            return Element.Data(name, value);
+        }
+        
+        IHtmlElement IHtmlElement.RemoveData(string name)
+        {
+            return Element.RemoveData(name);
         }
 
         IEnumerable<IHtmlNode> IHtmlNode.Children()
@@ -140,7 +140,7 @@ namespace Oldmansoft.Html.WebMan
             return Element.Before(node);
         }
 
-        IHtmlElement IHtmlElement.RemoveAttribute(string name)
+        IHtmlElement IHtmlElement.RemoveAttribute(HtmlAttribute name)
         {
             return Element.RemoveAttribute(name);
         }

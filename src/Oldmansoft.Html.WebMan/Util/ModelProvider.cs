@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html.WebMan
+namespace Oldmansoft.Html.WebMan.Util
 {
     class ModelProvider
     {
@@ -48,7 +48,7 @@ namespace Oldmansoft.Html.WebMan
                 list.Add(info);
             }
             result = list.ToArray();
-            Models[type] = result;
+            Models.TryAdd(type, result);
             return result;
         }
 

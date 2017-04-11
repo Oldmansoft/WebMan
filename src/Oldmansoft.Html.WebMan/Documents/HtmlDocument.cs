@@ -47,12 +47,9 @@ namespace Oldmansoft.Html.WebMan
         {
             if (Resources.LinkFontAwesome == null)
             {
-                Head.Append(new Element.ScriptResource("//use.fontawesome.com/d189a98e3d.js"));
+                Resources.LinkFontAwesome = new Element.Link("https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css");
             }
-            else
-            {
-                Head.Append(Resources.LinkFontAwesome);
-            }
+            Head.Append(Resources.LinkFontAwesome);
 
             if (Resources.ScriptJQuery == null)
             {

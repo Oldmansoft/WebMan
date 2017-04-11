@@ -17,10 +17,17 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         protected override ChainOfResponsibilityHandler<HandlerParameter, FormInput> InitChain()
         {
             var result = new StartHandler();
-            result.SetNext(new DateHandler())
+            result.SetNext(new ListHandler())
+                .SetNext(new FileHandler())
+                .SetNext(new DataSourceHandler())
+                .SetNext(new BoolHandler())
+                .SetNext(new NumberHandler())
+                .SetNext(new DateHandler())
                 .SetNext(new TimeHandler())
                 .SetNext(new DateTimeHandler())
-                .SetNext(new NumberHandler())
+                .SetNext(new EnumHandler())
+                .SetNext(new PasswordHandler())
+                .SetNext(new MultilineTextHandler())
                 .SetNext(new FinalHandler());
             return result;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oldmansoft.Html.WebMan.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,9 +73,12 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="model"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model)
+        public static FormHorizontal Create<TModel>(TModel model, ListDataSource source)
         {
+            if (source == null) throw new ArgumentNullException("source");
+
             var result = new FormHorizontal();
             foreach(var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
@@ -89,6 +93,8 @@ namespace Oldmansoft.Html.WebMan
                 var parameter = new FormInputCreator.HandlerParameter();
                 parameter.ModelItem = item;
                 if (model != null) parameter.Value = item.Property.GetValue(model);
+                parameter.Source = source;
+
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 input.Disabled = item.Disabled;
                 input.ReadOnly = item.ReadOnly;
@@ -96,6 +102,17 @@ namespace Oldmansoft.Html.WebMan
                 result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
             }
             return result;
+        }
+
+        /// <summary>
+        /// 根据模型创建表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static FormHorizontal Create<TModel>(TModel model)
+        {
+            return Create(model, new ListDataSource());
         }
     }
 }

@@ -137,15 +137,11 @@ namespace Oldmansoft.Html.WebMan
                 var account = new HtmlElement(HtmlTag.A).AddClass("webman-account");
                 if (!string.IsNullOrEmpty(Account.Image))
                 {
-                    account.Append(new HtmlElement(HtmlTag.Img).Attribute("src", Account.Image));
+                    account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Account.Image));
                 }
                 account.Append(new HtmlText(Account.Text));
                 nav.Append(new HtmlElement(HtmlTag.Li).Append(account));
             }
-
-            var quickPanel = new HtmlElement(HtmlTag.Li);
-            quickPanel.Append(new LinkContent(FontAwesome.Cogs).CreateElement().AddClass("webman-setting"));
-            nav.Append(quickPanel);
         }
 
         private void SetRightPanelContent(IHtmlElement panel)

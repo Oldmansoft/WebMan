@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,21 +59,38 @@
     <Compile Include="DataTables\DataTableSource.cs" />
     <Compile Include="DataTables\IValueDisplay.cs" />
     <Compile Include="FormInputCreator\FormInput.cs" />
+    <Compile Include="FormInputCreator\Handlers\BoolHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\DataSourceHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\DateHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\DateTimeHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\EnumHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\FileHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\ListHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\MultilineTextHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\NumberHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\PasswordHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\TimeHandler.cs" />
     <Compile Include="FormInputCreator\InputCreator.cs" />
     <Compile Include="FormInputCreator\Handlers\FinalHandler.cs" />
     <Compile Include="FormInputCreator\Handler.cs" />
     <Compile Include="FormInputCreator\HandlerParameter.cs" />
     <Compile Include="FormInputCreator\Handlers\StartHandler.cs" />
+    <Compile Include="FormInputCreator\Inputs\Bool.cs" />
+    <Compile Include="FormInputCreator\Inputs\CheckBoxList.cs" />
     <Compile Include="FormInputCreator\Inputs\Date.cs" />
     <Compile Include="FormInputCreator\Inputs\DateTime.cs" />
     <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
+    <Compile Include="FormInputCreator\Inputs\Html.cs" />
+    <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />
     <Compile Include="FormInputCreator\Inputs\Number.cs" />
+    <Compile Include="FormInputCreator\Inputs\Password.cs" />
+    <Compile Include="FormInputCreator\Inputs\RadioList.cs" />
+    <Compile Include="FormInputCreator\Inputs\Select.cs" />
     <Compile Include="FormInputCreator\Inputs\Text.cs" />
+    <Compile Include="FormInputCreator\Inputs\Textarea.cs" />
     <Compile Include="FormInputCreator\Inputs\Time.cs" />
+    <Compile Include="FormInputCreator\ListDataItem.cs" />
+    <Compile Include="FormInputCreator\ListDataSource.cs" />
     <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueBoolDisplay.cs" />
     <Compile Include="DataTables\ValueDisplay.cs" />
@@ -87,8 +105,8 @@
     <Compile Include="LinkContent.cs" />
     <Compile Include="Documents\LoginDocument.cs" />
     <Compile Include="Documents\MainDocument.cs" />
-    <Compile Include="ModelItemInfo.cs" />
-    <Compile Include="ModelProvider.cs" />
+    <Compile Include="Util\ModelItemInfo.cs" />
+    <Compile Include="Util\ModelProvider.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Documents\QuickMenu.cs" />
     <Compile Include="Documents\TreeList.cs" />
@@ -97,6 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\ChainOfResponsibility.cs" />
     <Compile Include="Util\ChainOfResponsibilityHandler.cs" />
+    <Compile Include="Util\EnumProvider.cs" />
     <Compile Include="_Extends.cs" />
   </ItemGroup>
   <ItemGroup>

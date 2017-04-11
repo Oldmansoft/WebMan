@@ -64,17 +64,7 @@ namespace Oldmansoft.Html
         {
             return Attributes.Attribute(name.ToString().ToLower());
         }
-
-        /// <summary>
-        /// 获取属性
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public string Attribute(string name)
-        {
-            return Attributes.Attribute(name);
-        }
-
+        
         /// <summary>
         /// 设置属性
         /// </summary>
@@ -86,38 +76,48 @@ namespace Oldmansoft.Html
             Attributes.Attribute(name.ToString().ToLower(), value);
             return this;
         }
-
-        /// <summary>
-        /// 设置属性
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public IHtmlElement Attribute(string name, string value)
-        {
-            Attributes.Attribute(name, value);
-            return this;
-        }
-
-        /// <summary>
-        /// 设置属性
-        /// </summary>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        public IHtmlElement Attribute(object properties)
-        {
-            Attributes.Attribute(properties);
-            return this;
-        }
-
+        
         /// <summary>
         /// 移除属性
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IHtmlElement RemoveAttribute(string name)
+        public IHtmlElement RemoveAttribute(HtmlAttribute name)
         {
-            Attributes.RemoveAttribute(name);
+            Attributes.RemoveAttribute(name.ToString().ToLower());
+            return this;
+        }
+
+        /// <summary>
+        /// 获取数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string Data(string name)
+        {
+            return Attributes.Attribute(string.Format("data-{0}", name));
+        }
+
+        /// <summary>
+        /// 设置数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public IHtmlElement Data(string name, string value)
+        {
+            Attributes.Attribute(string.Format("data-{0}", name), value);
+            return this;
+        }
+
+        /// <summary>
+        /// 移除数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IHtmlElement RemoveData(string name)
+        {
+            Attributes.RemoveAttribute(string.Format("data-{0}", name));
             return this;
         }
 
@@ -183,6 +183,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Append(IHtmlNode node)
         {
+            if (node == null) throw new ArgumentNullException("node");
             NodesAppend(node);
             return this;
         }
@@ -194,6 +195,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Prepend(IHtmlNode node)
         {
+            if (node == null) throw new ArgumentNullException("node");
             NodesPrepend(node);
             return this;
         }
@@ -205,6 +207,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement After(IHtmlNode node)
         {
+            if (node == null) throw new ArgumentNullException("node");
             NodeAfter(node);
             return this;
         }
@@ -216,6 +219,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Before(IHtmlNode node)
         {
+            if (node == null) throw new ArgumentNullException("node");
             NodeBefore(node);
             return this;
         }

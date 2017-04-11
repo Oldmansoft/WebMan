@@ -11,15 +11,6 @@ namespace Oldmansoft.Html.Util
     {
         private Dictionary<string, string> Store = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 
-        public void Attribute(object properties)
-        {
-            if (properties == null) return;
-            foreach(var propertyInfo in properties.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                Attribute(propertyInfo.Name, propertyInfo.GetValue(properties).ToString());
-            }
-        }
-
         public string Attribute(string name)
         {
             string result = string.Empty;

@@ -17,14 +17,7 @@ namespace Oldmansoft.Html
         /// <param name="name"></param>
         /// <returns></returns>
         string Attribute(HtmlAttribute name);
-
-        /// <summary>
-        /// 获取属性
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        string Attribute(string name);
-
+        
         /// <summary>
         /// 设置属性
         /// </summary>
@@ -32,28 +25,35 @@ namespace Oldmansoft.Html
         /// <param name="value"></param>
         /// <returns></returns>
         IHtmlElement Attribute(HtmlAttribute name, string value);
-
-        /// <summary>
-        /// 设置属性
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        IHtmlElement Attribute(string name, string value);
-
-        /// <summary>
-        /// 设置属性
-        /// </summary>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        IHtmlElement Attribute(object properties);
-
+        
         /// <summary>
         /// 移除属性
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        IHtmlElement RemoveAttribute(string name);
+        IHtmlElement RemoveAttribute(HtmlAttribute name);
+
+        /// <summary>
+        /// 获取数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        string Data(string name);
+
+        /// <summary>
+        /// 设置数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        IHtmlElement Data(string name, string value);
+
+        /// <summary>
+        /// 移除数据属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IHtmlElement RemoveData(string name);
 
         /// <summary>
         /// 添加样式

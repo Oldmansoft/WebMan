@@ -110,10 +110,14 @@ namespace WebApplication.Controllers
 
         public ActionResult DataTablesCreate()
         {
+            var model = new Models.DataTableItemModel();
+            model.States = new List<Models.DataTableItemState>();
+            model.States.Add(Models.DataTableItemState.Hight);
+
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(new Models.DataTableItemModel());
+            var form = FormHorizontal.Create(model);
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());

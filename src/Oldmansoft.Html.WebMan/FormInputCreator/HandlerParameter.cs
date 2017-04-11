@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oldmansoft.Html.WebMan.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 值
         /// </summary>
         public object Value { get; set; }
+
+        /// <summary>
+        /// 数据源
+        /// </summary>
+        public ListDataSource Source { get; set; }
     }
 }
