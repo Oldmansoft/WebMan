@@ -35,28 +35,24 @@ namespace WebApplication.Controllers
             return seed;
         }
 
-        public ActionResult Login(string tips)
+        public ActionResult Login()
         {
-            var document = new LoginDocument("/Home/Seed");
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webapp.cn.js")));
+            var document = new LoginDocument("/Home/Seed", "/Home/Login");
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Title = "WebMan";
-            if (!string.IsNullOrEmpty(tips))
-            {
-                document.Body.Append(new Oldmansoft.Html.Element.Script("$app.alert('" + tips + "')"));
-            }
             return new HtmlResult(document);
         }
 
         [HttpPost]
-        public ActionResult Login(Models.LoginModel model)
+        public JsonResult Login(Models.LoginModel model)
         {
-            if (model.Account == "root" && !string.IsNullOrEmpty(model.DoubleHash))
+            if (model.Account == "root" && !string.IsNullOrEmpty(model.Hash))
             {
-                return RedirectToAction("Index");
+                return Json(DealResult.Location("/Home/Index"));
             }
             else
             {
-                return Login("帐号或密码错误");
+                return Json(DealResult.CreateWrong("帐号或密码错误"));
             }
         }
 
@@ -117,10 +113,20 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(model);
+            var form = FormHorizontal.Create(model, "/Home/DataTablesCreate");
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
+        }
+
+        [HttpPost]
+        public JsonResult DataTablesCreate(Models.DataTableItemModel model)
+        {
+            return Json(new
+            {
+                Success = true,
+                Message = model.Name,
+            });
         }
 
         public JsonResult DataTablesDelete(params Guid[] selectedId)

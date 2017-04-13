@@ -8,9 +8,7 @@ namespace WebApplication.Models
     public class LoginModel
     {
         public string Account { get; set; }
-
-        public string Password { get; set; }
-
-        public string DoubleHash { get; set; }
+        
+        public string Hash { get; set; }
     }
 }

@@ -107,6 +107,20 @@ namespace Oldmansoft.Html.WebMan
             }
             Head.Append(Resources.ScriptDataTables);
 
+            if (Resources.ScriptJQueryForm == null)
+            {
+                Resources.ScriptJQueryForm = new Element.ScriptResource("//cdn.jsdelivr.net/jquery.form/4.2.1/jquery.form.min.js");
+                Resources.ScriptJQueryForm.Integrity = "sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer";
+                Resources.ScriptJQueryForm.CrossOrigin = "anonymous";
+            }
+            Head.Append(Resources.ScriptJQueryForm);
+
+            if (Resources.ScriptPluginFix == null)
+            {
+                Resources.ScriptPluginFix = new Element.ScriptResource("~/Scripts/oldmansoft-plugin-fix.js".ResolveUrl());
+            }
+            Head.Append(Resources.ScriptPluginFix);
+
             if (Resources.LinkWebman == null)
             {
                 Resources.LinkWebman = new Element.Link("~/Content/oldmansoft-webman.css".ResolveUrl());

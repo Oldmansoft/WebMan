@@ -57,6 +57,16 @@ namespace Oldmansoft.Html.WebMan
         public Element.ScriptResource ScriptDataTables { get; set; }
 
         /// <summary>
+        /// jQuery Form Plugin 脚本
+        /// </summary>
+        public Element.ScriptResource ScriptJQueryForm { get; set; }
+
+        /// <summary>
+        /// 插件修复脚本
+        /// </summary>
+        public Element.ScriptResource ScriptPluginFix { get; set; }
+
+        /// <summary>
         /// Webman 样式
         /// </summary>
         public Element.Link LinkWebman { get; set; }
@@ -69,7 +79,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 节点
         /// </summary>
-        internal IList<IHtmlElement> Nodes { get; set; }
+        internal IList<IHtmlElement> Nodes { get; private set; }
 
         /// <summary>
         /// 创建文档资源

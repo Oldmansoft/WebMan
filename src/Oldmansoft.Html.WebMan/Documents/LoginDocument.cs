@@ -14,27 +14,33 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建登录文档
         /// </summary>
-        /// <param name="seedPath"></param>
-        public LoginDocument(string seedPath)
+        /// <param name="seedPath">加密种子路径</param>
+        /// <param name="action">登录处理地址</param>
+        public LoginDocument(string seedPath, string action)
         {
             var container = new HtmlElement(HtmlTag.Div).AddClass("container-fluid");
             Body.Append(container);
+
             var row = new HtmlElement(HtmlTag.Div).AddClass("row");
             container.Append(row);
+
             var col = new HtmlElement(HtmlTag.Div).AddClass("col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3");
             row.Append(col);
-            var form = new HtmlElement(HtmlTag.Form).Attribute(HtmlAttribute.Method, "post");
+
+            var form = new HtmlElement(HtmlTag.Form).Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, action);
             col.Append(form);
-            var inputDoubleHash = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, "DoubleHash").Attribute(HtmlAttribute.Type, "hidden");
-            form.Append(inputDoubleHash);
+            
             var inputAccount = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, "Account");
             form.Append(inputAccount);
+
             var inputPassword = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, "Password").Attribute(HtmlAttribute.Type, "password");
             form.Append(inputPassword);
+
             var inputSubmit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit").Attribute(HtmlAttribute.Value, "提交");
             form.Append(inputSubmit);
-
-            var script = new Element.Script("window.oldmansoft.webman.setLoginSubmit('form', '" + seedPath + "', 'input[name=Account]', 'input[name=Password]', 'input[name=DoubleHash]');");
+            
+            var scriptContent = string.Format("window.oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seedPath);
+            var script = new Element.Script(scriptContent);
             Body.Append(script);
         }
     }

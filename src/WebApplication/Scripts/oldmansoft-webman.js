@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.7
+* v0.1.8
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -51,22 +51,45 @@ window.oldmansoft.webman = new (function () {
         if (typeof fn == "function") fn(text);
     }
 
-    this.setLoginSubmit = function (loginForm, seedPath, accountInput, passwordInput, doubleHashInput) {
+    this.setLoginSubmit = function (loginForm, seedPath, accountInput, passwordInput) {
         $(loginForm).submit(function () {
-            var fakePassword = "I love you. It's not password.";
-            if ($(passwordInput).val() != fakePassword) {
-                var seedResponse = $.ajax({ url: seedPath + "?" + new Date().getTime(), async: false });
-                if (seedResponse.status != 200) {
-                    alert(seedResponse.statusText);
-                    return false;
-                }
+            var loading = $app.loading(),
+                account,
+                password,
+                seedResponse,
+                passwordHash,
+                doubleHash;
 
-                var hash = sha256($.trim($(accountInput).val().toLowerCase()) + $(passwordInput).val());
-                var doubleHash = sha256(hash.toUpperCase() + seedResponse.responseText);
-
-                $(doubleHashInput).val(doubleHash);
-                $(passwordInput).val(fakePassword);
+            account = $.trim($(accountInput).val());
+            password = $(passwordInput).val();
+            seedResponse = $.ajax({ url: seedPath + "?" + new Date().getTime(), async: false });
+            if (seedResponse.status != 200) {
+                $app.alert(seedResponse.statusText);
+                return false;
             }
+            passwordHash = sha256(account.toLowerCase() + password);
+            doubleHash = sha256(passwordHash.toUpperCase() + seedResponse.responseText);
+
+            $.post($(this).attr("action"), {
+                Account: account,
+                Hash: doubleHash
+            }).done(function (data) {
+                loading.hide();
+                if (data.Message) {
+                    $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
+                        if (data.Path != null) {
+                            document.location = data.Path;
+                        }
+                    });
+                } else if (data.Path != null) {
+                    document.location = data.Path;
+                }
+            }).fail(function (error) {
+                loading.hide();
+                $app.alert($(error.responseText).eq(1).text(), error.statusText);
+            });
+
+            return false;
         });
     }
 
@@ -185,7 +208,8 @@ window.oldmansoft.webman = new (function () {
             var behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
                 need = $(this).attr("data-need") == "1",
-                ids = getDataTableSelectedIds($(this));
+                ids = getDataTableSelectedIds($(this)),
+                loading;
 
             if (need && ids.length == 0) return;
             if (behave == 0) {
@@ -200,7 +224,7 @@ window.oldmansoft.webman = new (function () {
                     $app.addHash(path + "?selectedId=" + ids.join("&selectedId="));
                 }
             } else {
-                var loading = $app.loading();
+                loading = $app.loading();
                 $.post(path, { selectedId: ids }).done(function (result) {
                     if (result.Success) {
                         if (result.Message) {
@@ -214,13 +238,15 @@ window.oldmansoft.webman = new (function () {
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
             var behave = Number($(this).attr("data-behave")),
-                path = $(this).attr("data-path");
+                path = $(this).attr("data-path"),
+                loading;
+
             if (behave == 0) {
                 $app.open(path, { selectedId: getDataTableItemId($(this)) });
             } else if (behave == 1) {
                 $app.addHash(path + "?selectedId=" + getDataTableItemId($(this)));
             } else {
-                var loading = $app.loading();
+                loading = $app.loading();
                 $.post(path, { selectedId: getDataTableItemId($(this)) }).done(function (result) {
                     if (result.Success) {
                         if (result.Message) {
@@ -231,6 +257,29 @@ window.oldmansoft.webman = new (function () {
                     }
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
+        });
+        $(document).on("submit", "form", function (e) {
+            var form,
+                jqxhr,
+                loading;
+            e.preventDefault();
+
+            loading = $app.loading();
+            form = $(this).ajaxSubmit();
+            jqxhr = form.data("jqxhr");
+            jqxhr.done(function (data) {
+                loading.hide();
+                if (data.Success) {
+                    if (data.Message) {
+                        $app.alert(data.Message);
+                    }
+                } else {
+                    $app.alert(data.Message, text.warning);
+                }
+            }).fail(function (error) {
+                loading.hide();
+                $app.alert($(error.responseText).eq(1).text(), error.statusText);
+            });
         });
     }
 

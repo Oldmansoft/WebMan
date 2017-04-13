@@ -19,6 +19,7 @@ namespace Oldmansoft.Html.WebMan
             :base(HtmlTag.Form)
         {
             AddClass("form-horizontal");
+            Attribute(HtmlAttribute.Method, "post");
         }
 
         /// <summary>
@@ -73,13 +74,15 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="model"></param>
+        /// <param name="action"></param>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model, ListDataSource source)
+        public static FormHorizontal Create<TModel>(TModel model, string action, ListDataSource source)
         {
             if (source == null) throw new ArgumentNullException("source");
 
             var result = new FormHorizontal();
+            result.Attribute(HtmlAttribute.Action, action);
             foreach(var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
                 if (item.Hidden)
@@ -109,10 +112,11 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="model"></param>
+        /// <param name="action"></param>
         /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model)
+        public static FormHorizontal Create<TModel>(TModel model, string action)
         {
-            return Create(model, new ListDataSource());
+            return Create(model, action, new ListDataSource());
         }
     }
 }
