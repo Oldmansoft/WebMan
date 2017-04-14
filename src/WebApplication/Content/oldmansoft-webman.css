@@ -14,6 +14,19 @@ section.container-fluid {
     padding-left: 0;
 }
 
+.btn-group-center {
+    text-align: center;
+    width: 100%;
+}
+.btn-group-center>.btn {
+    float: none;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .webman-left-panel {
     position: absolute;
     width: 220px;
@@ -22,11 +35,6 @@ section.container-fluid {
 
 .webman-main-panel {
     margin-left: 220px;
-}
-
-.row {
-    margin-left: 0;
-    margin-right: 0;
 }
 
 .webman-left-panel header {

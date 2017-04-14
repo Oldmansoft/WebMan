@@ -32,7 +32,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static string GetMethodLocation(this MethodBase method)
         {
-            return string.Format("{0}/{1}", GetControllerName(method), method.Name);
+            return string.Format("/{0}/{1}", GetControllerName(method), method.Name);
         }
 
         /// <summary>

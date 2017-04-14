@@ -21,14 +21,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
         public override void SetInputMode()
         {
-            Tag = HtmlTag.Ul;
-            AddClass("radio");
+            Tag = HtmlTag.Div;
             foreach (var option in Options)
             {
-                var li = new HtmlElement(HtmlTag.Li);
-                Append(li);
                 var label = new HtmlElement(HtmlTag.Label);
-                li.Append(label);
+                Append(label);
+                label.AddClass("radio-inline");
+
                 var input = new HtmlElement(HtmlTag.Input);
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "radio");

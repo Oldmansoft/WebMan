@@ -27,7 +27,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 搜索栏地址
         /// </summary>
-        public string SearchAction { get; set; }
+        private string SearchAction { get; set; }
 
         /// <summary>
         /// 任务栏
@@ -151,6 +151,15 @@ namespace Oldmansoft.Html.WebMan
 
             var main = new HtmlElement(HtmlTag.Div).AddClass("webman-content");
             panel.Append(main);
+        }
+
+        /// <summary>
+        /// 设置搜索栏路径
+        /// </summary>
+        /// <param name="action"></param>
+        public void SetSearchAction(string action)
+        {
+            SearchAction = action;
         }
     }
 }

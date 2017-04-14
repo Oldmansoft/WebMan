@@ -80,6 +80,7 @@
     <Compile Include="FormInputCreator\Inputs\CheckBoxList.cs" />
     <Compile Include="FormInputCreator\Inputs\Date.cs" />
     <Compile Include="FormInputCreator\Inputs\DateTime.cs" />
+    <Compile Include="FormInputCreator\Inputs\File.cs" />
     <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
     <Compile Include="FormInputCreator\Inputs\Html.cs" />
     <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="FormInputCreator\Inputs\Time.cs" />
     <Compile Include="FormInputCreator\ListDataItem.cs" />
     <Compile Include="FormInputCreator\ListDataSource.cs" />
+    <Compile Include="HttpPostedFileCustom.cs" />
     <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueBoolDisplay.cs" />
     <Compile Include="DataTables\ValueDisplay.cs" />

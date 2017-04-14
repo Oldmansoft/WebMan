@@ -27,21 +27,56 @@ namespace Oldmansoft.Html.WebMan
             var col = new HtmlElement(HtmlTag.Div).AddClass("col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3");
             row.Append(col);
 
-            var form = new HtmlElement(HtmlTag.Form).Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, action);
-            col.Append(form);
-            
-            var inputAccount = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, "Account");
-            form.Append(inputAccount);
+            var panel = new Panel();
+            col.Append(panel);
+            panel.Caption = "登录";
+            panel.Icon = FontAwesome.Unlock_Alt;
 
-            var inputPassword = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, "Password").Attribute(HtmlAttribute.Type, "password");
-            form.Append(inputPassword);
-
-            var inputSubmit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit").Attribute(HtmlAttribute.Value, "提交");
-            form.Append(inputSubmit);
+            panel.Append(CreateForm(action));
             
             var scriptContent = string.Format("window.oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seedPath);
             var script = new Element.Script(scriptContent);
             Body.Append(script);
+        }
+
+        private IHtmlElement CreateForm(string action)
+        {
+            var form = new HtmlElement(HtmlTag.Form).Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, action);
+            form.AddClass("form-horizontal");
+
+            form.Append(CreateFormGroup("帐号", "Account", "text"));
+            form.Append(CreateFormGroup("密码", "Password", "password"));
+
+            var group = new HtmlElement(HtmlTag.Div);
+            form.Append(group);
+            group.AddClass("form-group btn-group-center");
+
+            var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit").Attribute(HtmlAttribute.Value, "提交");
+            submit.AddClass("btn btn-primary");
+            group.Append(submit);
+
+            return form;
+        }
+
+        private IHtmlElement CreateFormGroup(string text, string name, string type)
+        {
+            var group = new HtmlElement(HtmlTag.Div);
+            group.AddClass("form-group");
+
+            var label = new HtmlElement(HtmlTag.Label);
+            group.Append(label);
+            label.AddClass("col-sm-3 col-md-2 control-label");
+            label.Text(text);
+
+            var div = new HtmlElement(HtmlTag.Div);
+            group.Append(div);
+            div.AddClass("col-sm-9 col-md-10");
+
+            var input = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Name, name);
+            div.Append(input);
+            input.Attribute(HtmlAttribute.Type, type);
+            input.AddClass("form-control");
+            return group;
         }
     }
 }

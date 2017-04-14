@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
             document.Account = new QuickMenu();
             document.Account.Image = "http://wx.qlogo.cn/mmopen/Q3auHgzwzM6SkLNbjL7Vq3koXuoq1PSv6Nlhp7AmfQjsB02hYG37blVecGupjK3GXm1iaYUKNh2z3PU8R6mo2HRTGfo066Fc2PCibT5B0asBo/0";
             document.Account.Text = "Oldman 老人";
-            document.SearchAction = "/Home/Search";
+            document.SetSearchAction("/Home/Search");
             return new HtmlResult(document);
         }
 
@@ -48,7 +48,7 @@ namespace WebApplication.Controllers
         {
             if (model.Account == "root" && !string.IsNullOrEmpty(model.Hash))
             {
-                return Json(DealResult.Location("/Home/Index"));
+                return Json(DealResult.Location("/"));
             }
             else
             {
@@ -122,11 +122,8 @@ namespace WebApplication.Controllers
         [HttpPost]
         public JsonResult DataTablesCreate(Models.DataTableItemModel model)
         {
-            return Json(new
-            {
-                Success = true,
-                Message = model.Name,
-            });
+            System.Threading.Thread.Sleep(1000);
+            return Json(DealResult.Location("/Home/DataTables", "不能为空"));
         }
 
         public JsonResult DataTablesDelete(params Guid[] selectedId)

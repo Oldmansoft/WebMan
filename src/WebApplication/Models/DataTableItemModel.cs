@@ -34,6 +34,9 @@ namespace WebApplication.Models
         [DataType(DataType.Time)]
         public DateTime Time { get; set; }
 
+        [Display(Name = "文件")]
+        public HttpPostedFileBase File { get; set; }
+
         [Display(Name = "创建")]
         public DateTime CreateTime { get; set; }
     }
