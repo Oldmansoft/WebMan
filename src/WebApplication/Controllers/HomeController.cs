@@ -79,8 +79,8 @@ namespace WebApplication.Controllers
             table.AddTableAction("添加", "/Home/DataTablesCreate", LinkBehave.Open, false);
             table.AddTableAction("查看", "/Home/DataTablesView", LinkBehave.Link, true);
             table.AddTableAction("删除", "/Home/DataTablesDelete", LinkBehave.Call, true);
-            table.AddItemAction("查看", "/Home/DataTablesCreate", LinkBehave.Open);
-            table.AddItemAction("修改", "/Home/DataTablesView", LinkBehave.Link);
+            table.AddItemAction("查看", "/Home/DataTablesView", LinkBehave.Open);
+            table.AddItemAction("修改", "/Home/DataTablesCreate", LinkBehave.Link);
             table.AddItemAction("删除", "/Home/DataTablesDelete", LinkBehave.Call);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());

@@ -1,10 +1,10 @@
 ﻿/*
-* v0.1.9
+* v0.1.10
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
 window.oldmansoft.webman = new (function () {
-    var self = this,
+    var $this = this,
         menu,
         text;
 
@@ -47,6 +47,18 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
+    function dealSubmitResult(data) {
+        if (data.Message) {
+            $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
+                if (data.Path != null) {
+                    document.location = data.Path;
+                }
+            });
+        } else if (data.Path != null) {
+            document.location = data.Path;
+        }
+    }
+
     this.configText = function (fn) {
         if (typeof fn == "function") fn(text);
     }
@@ -75,15 +87,7 @@ window.oldmansoft.webman = new (function () {
                 Hash: doubleHash
             }).done(function (data) {
                 loading.hide();
-                if (data.Message) {
-                    $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
-                        if (data.Path != null) {
-                            document.location = data.Path;
-                        }
-                    });
-                } else if (data.Path != null) {
-                    document.location = data.Path;
-                }
+                dealSubmitResult(data);
             }).fail(function (error) {
                 loading.hide();
                 $app.alert($(error.responseText).eq(1).text(), error.statusText);
@@ -141,7 +145,7 @@ window.oldmansoft.webman = new (function () {
             autoWidth: false,
             ordering: false,
             language: text.dataTable,
-            dom: "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
+            dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
             initComplete: function () {
                 var table = view.node.find("." + className);
 
@@ -213,7 +217,11 @@ window.oldmansoft.webman = new (function () {
 
             if (need && ids.length == 0) return;
             if (behave == 0) {
-                $app.open(path, { selectedId: ids });
+                if (need) {
+                    $app.open(path, { selectedId: ids });
+                } else {
+                    $app.open(path);
+                }
             } else if (behave == 1) {
                 if (!need || ids.length == 0) {
                     $app.addHash(path);
@@ -225,15 +233,17 @@ window.oldmansoft.webman = new (function () {
                 }
             } else {
                 loading = $app.loading();
-                $.post(path, { selectedId: ids }).done(function (result) {
-                    if (result.Success) {
-                        if (result.Message) {
-                            $app.alert(result.Message);
-                        }
-                    } else {
-                        $app.alert(result.Message, text.warning);
-                    }
-                }).fail(dealAjaxError).always(function () { loading.hide(); });
+                if (need) {
+                    $.post(path, {
+                        selectedId: ids
+                    }).done(function (data) {
+                        dealSubmitResult(data);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                } else {
+                    $.get(path).done(function (data) {
+                        dealSubmitResult(data);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                }
             }
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
@@ -247,14 +257,10 @@ window.oldmansoft.webman = new (function () {
                 $app.addHash(path + "?selectedId=" + getDataTableItemId($(this)));
             } else {
                 loading = $app.loading();
-                $.post(path, { selectedId: getDataTableItemId($(this)) }).done(function (result) {
-                    if (result.Success) {
-                        if (result.Message) {
-                            $app.alert(result.Message);
-                        }
-                    } else {
-                        $app.alert(result.Message, text.warning);
-                    }
+                $.post(path, {
+                    selectedId: getDataTableItemId($(this))
+                }).done(function (data) {
+                    dealSubmitResult(data);
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
         });
@@ -269,15 +275,7 @@ window.oldmansoft.webman = new (function () {
             jqxhr = form.data("jqxhr");
             jqxhr.done(function (data) {
                 loading.hide();
-                if (data.Message) {
-                    $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
-                        if (data.Path != null) {
-                            $app.sameHash(data.Path);
-                        }
-                    });
-                } else if (data.Path != null) {
-                    $app.sameHash(data.Path);
-                }
+                dealSubmitResult(data);
             }).fail(function (error) {
                 loading.hide();
                 $app.alert($(error.responseText).eq(1).text(), error.statusText);
@@ -286,7 +284,7 @@ window.oldmansoft.webman = new (function () {
     }
 
     window.$man = {
-        init: self.init,
-        configText: self.configText
+        init: $this.init,
+        configText: $this.configText
     }
 })();

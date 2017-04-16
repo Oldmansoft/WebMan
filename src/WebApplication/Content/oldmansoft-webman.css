@@ -214,6 +214,11 @@ header ul li a {
 .webman-panel-tools {
     float: right;
 }
+
+.main-view:first-child .webman-panel-tools a.webapp-close {
+    display: none;
+}
+
 .webman-panel>.webman-body {
     clear: both;
     position: relative;
@@ -268,6 +273,9 @@ table.dataTable tbody td ul li {
 }
 table.dataTable tbody td ul li:first-child {
     margin-left: 0;
+}
+.table-content .dataTables_paginate {
+    margin-bottom: 8px;
 }
 
 .form-horizontal .form-group:last-child {
