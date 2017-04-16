@@ -16,4 +16,5 @@ $man.configText(function (text) {
     text.error = "错误";
     text.warning = "警告";
     text.denied = "权限不足";
+    text.please_select_item = "请选择相关项";
 });

@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.10
+* v0.1.11
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -22,7 +22,8 @@ window.oldmansoft.webman = new (function () {
         },
         error: "Error",
         warning: "Warning",
-        denied: "Permission denied"
+        denied: "Permission denied",
+        please_select_item: "Please select item.",
     }
 
     function define_menu() {
@@ -117,6 +118,7 @@ window.oldmansoft.webman = new (function () {
                 a.text(items[i].text);
                 a.attr("data-path", items[i].path);
                 a.attr("data-behave", items[i].behave);
+                a.attr("data-tips", items[i].tips);
                 div.append(a);
             }
             return div.wrap('<div></div>').parent().html();
@@ -211,58 +213,80 @@ window.oldmansoft.webman = new (function () {
         $(document).on("click", ".dataTable-action a", function (e) {
             var behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
-                need = $(this).attr("data-need") == "1",
+                post = $(this).attr("data-post") == "1",
+                tips = $(this).attr("data-tips"),
                 ids = getDataTableSelectedIds($(this)),
                 loading;
 
-            if (need && ids.length == 0) return;
-            if (behave == 0) {
-                if (need) {
-                    $app.open(path, { selectedId: ids });
-                } else {
-                    $app.open(path);
-                }
-            } else if (behave == 1) {
-                if (!need || ids.length == 0) {
-                    $app.addHash(path);
-                } else {
-                    for (var i = 0; i < ids.length; i++) {
-                        ids[i] = encodeURIComponent(ids[i]);
+            function execute(){
+                if (behave == 0) {
+                    if (post) {
+                        $app.open(path, { selectedId: ids });
+                    } else {
+                        $app.open(path);
                     }
-                    $app.addHash(path + "?selectedId=" + ids.join("&selectedId="));
-                }
-            } else {
-                loading = $app.loading();
-                if (need) {
-                    $.post(path, {
-                        selectedId: ids
-                    }).done(function (data) {
-                        dealSubmitResult(data);
-                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                } else if (behave == 1) {
+                    if (!post || ids.length == 0) {
+                        $app.addHash(path);
+                    } else {
+                        for (var i = 0; i < ids.length; i++) {
+                            ids[i] = encodeURIComponent(ids[i]);
+                        }
+                        $app.addHash(path + "?selectedId=" + ids.join("&selectedId="));
+                    }
                 } else {
-                    $.get(path).done(function (data) {
-                        dealSubmitResult(data);
-                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                    loading = $app.loading();
+                    if (post) {
+                        $.post(path, {
+                            selectedId: ids
+                        }).done(function (data) {
+                            dealSubmitResult(data);
+                        }).fail(dealAjaxError).always(function () { loading.hide(); });
+                    } else {
+                        $.get(path).done(function (data) {
+                            dealSubmitResult(data);
+                        }).fail(dealAjaxError).always(function () { loading.hide(); });
+                    }
                 }
             }
+
+            if (post && ids.length == 0) {
+                $app.alert(text.please_select_item);
+                return;
+            }
+            if (tips) {
+                $app.confirm(tips).yes(execute);
+                return;
+            }
+            execute();
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
             var behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
+                tips = $(this).attr("data-tips"),
+                id = getDataTableItemId($(this)),
                 loading;
 
-            if (behave == 0) {
-                $app.open(path, { selectedId: getDataTableItemId($(this)) });
-            } else if (behave == 1) {
-                $app.addHash(path + "?selectedId=" + getDataTableItemId($(this)));
-            } else {
-                loading = $app.loading();
-                $.post(path, {
-                    selectedId: getDataTableItemId($(this))
-                }).done(function (data) {
-                    dealSubmitResult(data);
-                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            function execute() {
+                if (behave == 0) {
+                    $app.open(path, { selectedId: id });
+                } else if (behave == 1) {
+                    $app.addHash(path + "?selectedId=" + id);
+                } else {
+                    loading = $app.loading();
+                    $.post(path, {
+                        selectedId: id
+                    }).done(function (data) {
+                        dealSubmitResult(data);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                }
             }
+
+            if (tips) {
+                $app.confirm(tips).yes(execute);
+                return;
+            }
+            execute();
         });
         $(document).on("submit", "form", function (e) {
             var form,

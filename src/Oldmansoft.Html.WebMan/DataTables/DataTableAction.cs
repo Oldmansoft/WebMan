@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DataTableAction
+    class DataTableAction : ITableAction
     {
         /// <summary>
         /// 文本
@@ -24,15 +24,32 @@ namespace Oldmansoft.Html.WebMan
         public LinkBehave Behave { get; set; }
 
         /// <summary>
-        /// 是否需要选中项
+        /// 是否需要提交参数
         /// </summary>
-        public bool NeedSelectedItem { get; set; }
+        public bool NeedPost { get; set; }
+
+        /// <summary>
+        /// 确认内容
+        /// </summary>
+        public string ConfirmContent { get; set; }
 
         public DataTableAction(string text, string location, LinkBehave behave)
         {
             Text = text;
             Location = location;
             Behave = behave;
+        }
+
+        public ITableAction Confirm(string content)
+        {
+            ConfirmContent = content;
+            return this;
+        }
+
+        public ITableAction Post()
+        {
+            NeedPost = true;
+            return this;
         }
     }
 }

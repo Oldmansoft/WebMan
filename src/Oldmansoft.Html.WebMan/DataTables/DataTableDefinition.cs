@@ -168,6 +168,7 @@ namespace Oldmansoft.Html.WebMan
                     operate.Set("text", item.Text);
                     operate.Set("path", item.Location);
                     operate.Set("behave", ((int)item.Behave).ToString());
+                    operate.Set("tips", item.ConfirmContent);
                     operates.Add(operate);
                 }
                 operateObject.Set("render", new JsonRaw(string.Format("window.oldmansoft.webman.setDataTableColumnOperate({0})", operates.ToString())));
@@ -194,7 +195,8 @@ namespace Oldmansoft.Html.WebMan
                     a.AddClass("btn");
                     a.Data("path", item.Location);
                     a.Data("behave", ((int)item.Behave).ToString());
-                    a.Data("need", item.NeedSelectedItem ? "1" : "0");
+                    a.Data("post", item.NeedPost ? "1" : "0");
+                    if (!string.IsNullOrEmpty(item.ConfirmContent)) a.Data("tips", item.ConfirmContent);
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
                     span.Text(item.Text);
@@ -270,10 +272,12 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        /// <param name="needSelectedItem"></param>
-        public void AddTableAction(string text, string location, LinkBehave behave, bool needSelectedItem)
+        /// <returns></returns>
+        public ITableAction AddTableAction(string text, string location, LinkBehave behave)
         {
-            TableActions.Add(new DataTableAction(text, location, behave) { NeedSelectedItem = needSelectedItem });
+            var action = new DataTableAction(text, location, behave);
+            TableActions.Add(action);
+            return action;
         }
 
         /// <summary>
@@ -282,9 +286,11 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        public void AddItemAction(string text, string location, LinkBehave behave)
+        public IItemAction AddItemAction(string text, string location, LinkBehave behave)
         {
-            ItemActions.Add(new DataTableAction(text, location, behave));
+            var action = new DataTableAction(text, location, behave);
+            ItemActions.Add(action);
+            return action;
         }
     }
 }

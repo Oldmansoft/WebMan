@@ -46,6 +46,7 @@
     <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DataTables\IItemAction.cs" />
     <Compile Include="DealResult.cs" />
     <Compile Include="Annotations\FileOptionAttribute.cs" />
     <Compile Include="Annotations\HiddenAttribute.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="FormInputCreator\ListDataItem.cs" />
     <Compile Include="FormInputCreator\ListDataSource.cs" />
     <Compile Include="HttpPostedFileCustom.cs" />
+    <Compile Include="DataTables\ITableAction.cs" />
     <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueBoolDisplay.cs" />
     <Compile Include="DataTables\ValueDisplay.cs" />
