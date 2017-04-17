@@ -46,7 +46,7 @@ namespace Oldmansoft.Html.WebMan
             return this;
         }
 
-        public ITableAction Post()
+        public ITableAction PostSelected()
         {
             NeedPost = true;
             return this;

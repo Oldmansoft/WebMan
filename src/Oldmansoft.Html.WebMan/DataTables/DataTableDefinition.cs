@@ -267,13 +267,13 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 添加表格操作
+        /// 添加操作表格
         /// </summary>
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
         /// <returns></returns>
-        public ITableAction AddTableAction(string text, string location, LinkBehave behave)
+        public ITableAction AddActionTable(string text, string location, LinkBehave behave)
         {
             var action = new DataTableAction(text, location, behave);
             TableActions.Add(action);
@@ -281,12 +281,12 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 添加数据项操作
+        /// 添加操作提交数据项
         /// </summary>
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        public IItemAction AddItemAction(string text, string location, LinkBehave behave)
+        public IItemAction AddActionPostItem(string text, string location, LinkBehave behave)
         {
             var action = new DataTableAction(text, location, behave);
             ItemActions.Add(action);

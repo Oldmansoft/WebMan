@@ -76,12 +76,12 @@ namespace WebApplication.Controllers
             panel.Icon = FontAwesome.Tablet;
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
-            table.AddTableAction("添加", "/Home/DataTablesCreate", LinkBehave.Open);
-            table.AddTableAction("查看", "/Home/DataTablesView", LinkBehave.Link).Post();
-            table.AddTableAction("删除", "/Home/DataTablesDelete", LinkBehave.Call).Post().Confirm("是否删除");
-            table.AddItemAction("查看", "/Home/DataTablesView", LinkBehave.Open).Confirm("查看吗");
-            table.AddItemAction("修改", "/Home/DataTablesCreate", LinkBehave.Link);
-            table.AddItemAction("删除", "/Home/DataTablesDelete", LinkBehave.Call).Confirm("是否删除");
+            table.AddActionTable("添加", "/Home/DataTablesCreate", LinkBehave.Open);
+            table.AddActionTable("查看", "/Home/DataTablesView", LinkBehave.Link).PostSelected();
+            table.AddActionTable("删除", "/Home/DataTablesDelete", LinkBehave.Call).PostSelected().Confirm("是否删除");
+            table.AddActionPostItem("查看", "/Home/DataTablesView", LinkBehave.Open).Confirm("查看吗");
+            table.AddActionPostItem("修改", "/Home/DataTablesCreate", LinkBehave.Link);
+            table.AddActionPostItem("删除", "/Home/DataTablesDelete", LinkBehave.Call).Confirm("是否删除");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

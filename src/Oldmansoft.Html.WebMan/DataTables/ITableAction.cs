@@ -15,6 +15,6 @@ namespace Oldmansoft.Html.WebMan
         /// 提交选择参数
         /// </summary>
         /// <returns></returns>
-        ITableAction Post();
+        ITableAction PostSelected();
     }
 }
