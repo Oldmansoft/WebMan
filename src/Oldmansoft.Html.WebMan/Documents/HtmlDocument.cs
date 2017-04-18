@@ -115,6 +115,18 @@ namespace Oldmansoft.Html.WebMan
             }
             Head.Append(Resources.ScriptJQueryForm);
 
+            if (Resources.LinkBootstrapValidator == null)
+            {
+                Resources.LinkBootstrapValidator = new Element.Link("//cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css");
+            }
+            Head.Append(Resources.LinkBootstrapValidator);
+
+            if (Resources.ScriptBootstrapValidator == null)
+            {
+                Resources.ScriptBootstrapValidator = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js");
+            }
+            Head.Append(Resources.ScriptBootstrapValidator);
+
             if (Resources.ScriptPluginFix == null)
             {
                 Resources.ScriptPluginFix = new Element.ScriptResource("~/Scripts/oldmansoft-plugin-fix.js".ResolveUrl());

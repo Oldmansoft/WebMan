@@ -15,6 +15,7 @@ namespace WebApplication.Controllers
         {
             var document = new MainDocument("/Home/Welcome");
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
             document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/Home/DataTables", FontAwesome.Tablet)));
@@ -115,6 +116,11 @@ namespace WebApplication.Controllers
             panel.Icon = FontAwesome.Anchor;
             var form = FormHorizontal.Create(model, "/Home/DataTablesCreate");
             panel.Append(form);
+
+            form.Validator["Name"].Set(Validator.NoEmpty());
+            form.Validator["Name"].Set(Validator.StringLength(6, 10));
+            form.Validator["Name"].Set(Validator.Regexp(@"^[a-zA-Z0-9_\.]+$").Message("请使用字母和数字"));
+            form.Validator["Name"].Set(Validator.EmailAddress());
 
             return new HtmlResult(panel.CreateGrid());
         }

@@ -13,6 +13,11 @@ namespace Oldmansoft.Html.WebMan
     public class FormHorizontal : HtmlElement
     {
         /// <summary>
+        /// 验证器
+        /// </summary>
+        public FormValidate.FormValidator Validator { get; private set; }
+
+        /// <summary>
         /// 创建横表单
         /// </summary>
         public FormHorizontal()
@@ -20,6 +25,8 @@ namespace Oldmansoft.Html.WebMan
         {
             AddClass("form-horizontal");
             Attribute(HtmlAttribute.Method, "post");
+
+            Validator = new FormValidate.FormValidator();
         }
 
         /// <summary>
@@ -51,6 +58,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
+            var name = outer.Generator.GetGeneratorName();
+            AddClass(name);
+
             var group = new HtmlElement(HtmlTag.Div);
             Append(group);
             group.AddClass("form-group");
@@ -66,7 +76,9 @@ namespace Oldmansoft.Html.WebMan
             var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit");
             group.Append(submit.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1));
             submit.AddClass("btn btn-primary");
+
             base.Format(outer);
+            outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});", name, Validator.Create()));
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.12
+* v0.1.13
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -52,12 +52,46 @@ window.oldmansoft.webman = new (function () {
         if (data.Message) {
             $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
                 if (data.Path != null) {
-                    document.location = data.Path;
+                    $app.sameHash(data.Path);
                 }
             });
         } else if (data.Path != null) {
-            document.location = data.Path;
+            $app.sameHash(data.Path);
         }
+    }
+    
+    function getDataTableSelectedIds(a) {
+        var ids = [];
+        a.parent().next().find("tbody tr td:first-child input[type='checkbox']").each(function () {
+            if ($(this).prop("checked")) {
+                ids.push($(this).val());
+            }
+        });
+        return ids;
+    }
+
+    function getDataTableItemId(a) {
+        return a.parent().attr("data-id");
+    }
+
+    function dealAjaxError(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.status == 401) {
+            $app.alert(text.denied, text.error);
+        } else {
+            $app.alert(errorThrown, text.error);
+        }
+    }
+
+    function submitForm(form) {
+        var loading;
+        loading = $app.loading();
+        form.ajaxSubmit().data("jqxhr").done(function (data) {
+            loading.hide();
+            dealSubmitResult(data);
+        }).fail(function (error) {
+            loading.hide();
+            $app.alert($(error.responseText).eq(1).text(), error.statusText);
+        });
     }
 
     this.configText = function (fn) {
@@ -95,6 +129,22 @@ window.oldmansoft.webman = new (function () {
             });
 
             return false;
+        });
+    }
+
+    this.setFormValidate = function (view, className, fields) {
+        if (!fields) return;
+        var form = view.node.find("." + className);
+        form.bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: fields
+        }).on('success.form.bv', function (e) {
+            e.preventDefault();
+            submitForm($(e.target));
         });
     }
 
@@ -171,28 +221,6 @@ window.oldmansoft.webman = new (function () {
             }
         };
         view.node.find("." + className).DataTable(option);
-    }
-
-    function getDataTableSelectedIds(a) {
-        var ids = [];
-        a.parent().next().find("tbody tr td:first-child input[type='checkbox']").each(function () {
-            if ($(this).prop("checked")) {
-                ids.push($(this).val());
-            }
-        });
-        return ids;
-    }
-
-    function getDataTableItemId(a) {
-        return a.parent().attr("data-id");
-    }
-
-    function dealAjaxError(jqXHR, textStatus, errorThrown) {
-        if (jqXHR.status == 401) {
-            $app.alert(text.denied, text.error);
-        } else {
-            $app.alert(errorThrown, text.error);
-        }
     }
 
     this.init = function (main, defaultLink) {
@@ -295,22 +323,10 @@ window.oldmansoft.webman = new (function () {
             }
             execute();
         });
-        $(document).on("submit", "form", function (e) {
-            var form,
-                jqxhr,
-                loading;
+        $(document).on("submit", "form:not(.bv-form)", function (e) {
             e.preventDefault();
 
-            loading = $app.loading();
-            form = $(this).ajaxSubmit();
-            jqxhr = form.data("jqxhr");
-            jqxhr.done(function (data) {
-                loading.hide();
-                dealSubmitResult(data);
-            }).fail(function (error) {
-                loading.hide();
-                $app.alert($(error.responseText).eq(1).text(), error.statusText);
-            });
+            submitForm($(this));
         });
     }
 

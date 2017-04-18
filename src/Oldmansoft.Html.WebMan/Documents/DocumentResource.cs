@@ -62,6 +62,16 @@ namespace Oldmansoft.Html.WebMan
         public Element.ScriptResource ScriptJQueryForm { get; set; }
 
         /// <summary>
+        /// bootstrapValidator 样式
+        /// </summary>
+        public Element.Link LinkBootstrapValidator { get; set; }
+
+        /// <summary>
+        /// bootstrapValidator 脚本
+        /// </summary>
+        public Element.ScriptResource ScriptBootstrapValidator { get; set; }
+
+        /// <summary>
         /// 插件修复脚本
         /// </summary>
         public Element.ScriptResource ScriptPluginFix { get; set; }

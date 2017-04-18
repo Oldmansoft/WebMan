@@ -34,7 +34,7 @@ namespace Oldmansoft.Html.WebMan
 
             panel.Append(CreateForm(action));
             
-            var scriptContent = string.Format("window.oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seedPath);
+            var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seedPath);
             var script = new Element.Script(scriptContent);
             Body.Append(script);
         }

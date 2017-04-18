@@ -134,7 +134,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 var checkboxObject = new JsonObject();
                 checkboxObject.Set("data", PrimaryKeyName);
-                checkboxObject.Set("render", new JsonRaw("window.oldmansoft.webman.setDataTableColumnCheckbox"));
+                checkboxObject.Set("render", new JsonRaw("oldmansoft.webman.setDataTableColumnCheckbox"));
                 result.Add(checkboxObject);
             }
 
@@ -142,7 +142,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 var indexObject = new JsonObject();
                 indexObject.Set("data", null);
-                indexObject.Set("render", new JsonRaw("window.oldmansoft.webman.setDataTableColumnIndex"));
+                indexObject.Set("render", new JsonRaw("oldmansoft.webman.setDataTableColumnIndex"));
                 result.Add(indexObject);
             }
 
@@ -171,7 +171,7 @@ namespace Oldmansoft.Html.WebMan
                     operate.Set("tips", item.ConfirmContent);
                     operates.Add(operate);
                 }
-                operateObject.Set("render", new JsonRaw(string.Format("window.oldmansoft.webman.setDataTableColumnOperate({0})", operates.ToString())));
+                operateObject.Set("render", new JsonRaw(string.Format("oldmansoft.webman.setDataTableColumnOperate({0})", operates.ToString())));
                 result.Add(operateObject);
             }
             
@@ -228,7 +228,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 item.Format(outer);
             }
-            outer.AddEvent(string.Format("window.oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
+            outer.AddEvent(string.Format("oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
         }
 
         /// <summary>

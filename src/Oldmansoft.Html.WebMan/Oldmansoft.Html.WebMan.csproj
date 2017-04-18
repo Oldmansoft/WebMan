@@ -94,6 +94,13 @@
     <Compile Include="FormInputCreator\Inputs\Time.cs" />
     <Compile Include="FormInputCreator\ListDataItem.cs" />
     <Compile Include="FormInputCreator\ListDataSource.cs" />
+    <Compile Include="FormValidate\EmailAddress.cs" />
+    <Compile Include="FormValidate\FormValidator.cs" />
+    <Compile Include="FormValidate\NotEmpty.cs" />
+    <Compile Include="FormValidate\Regexp.cs" />
+    <Compile Include="FormValidate\StringLength.cs" />
+    <Compile Include="FormValidate\Validator.cs" />
+    <Compile Include="FormValidate\ValidatorManager.cs" />
     <Compile Include="HttpPostedFileCustom.cs" />
     <Compile Include="DataTables\ITableAction.cs" />
     <Compile Include="LinkBehave.cs" />
