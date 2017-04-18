@@ -12,7 +12,15 @@ namespace WebApplication.Models
         public Guid Id { get; set; }
 
         [Display(Name = "名称")]
+        [Required]
+        [StringLength(6)]
+        [Description("请输入名称")]
+        [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
         public string Name { get; set; }
+
+        [Display(Name = "确认名称")]
+        [Compare("Name", ErrorMessage = "输入和名称一样的值")]
+        public string ConfirmName { get; set; }
 
         [Display(Name = "状态")]
         public DataTableItemState State { get; set; }
@@ -38,7 +46,7 @@ namespace WebApplication.Models
         public HttpPostedFileBase File { get; set; }
 
         [Display(Name = "创建")]
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
     }
 
     public enum DataTableItemState

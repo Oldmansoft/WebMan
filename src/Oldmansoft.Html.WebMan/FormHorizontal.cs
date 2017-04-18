@@ -114,7 +114,12 @@ namespace Oldmansoft.Html.WebMan
                 input.Disabled = item.Disabled;
                 input.ReadOnly = item.ReadOnly;
                 input.SetInputMode();
+                if (!string.IsNullOrEmpty(item.Description))
+                {
+                    input.Attribute(HtmlAttribute.PlaceHolder, item.Description);
+                }
                 result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
+                item.SetValidate(result.Validator);
             }
             return result;
         }

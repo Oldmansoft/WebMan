@@ -136,11 +136,6 @@ window.oldmansoft.webman = new (function () {
         if (!fields) return;
         var form = view.node.find("." + className);
         form.bootstrapValidator({
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
             fields: fields
         }).on('success.form.bv', function (e) {
             e.preventDefault();

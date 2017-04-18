@@ -65,11 +65,12 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator StringLength(int min)
         {
+            if (min < 1) throw new ArgumentOutOfRangeException("min");
             var result = new FormValidate.StringLength();
             result.Min = min;
             return result;
         }
-
+        
         /// <summary>
         /// 创建字符串长度设置
         /// </summary>
@@ -78,8 +79,12 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator StringLength(int min, int max)
         {
+            if (max < 1) throw new ArgumentOutOfRangeException("max");
             var result = new FormValidate.StringLength();
-            result.Min = min;
+            if (min > 0)
+            {
+                result.Min = min;
+            }
             result.Max = max;
             return result;
         }
@@ -103,6 +108,18 @@ namespace Oldmansoft.Html.WebMan
         public static Validator EmailAddress()
         {
             return new FormValidate.EmailAddress();
+        }
+
+        /// <summary>
+        /// 相同
+        /// </summary>
+        /// <param name="otherProperty">属性名称</param>
+        /// <returns></returns>
+        public static Validator Identical(string otherProperty)
+        {
+            var result = new FormValidate.Identical();
+            result.OtherProperty = otherProperty;
+            return result;
         }
     }
 }

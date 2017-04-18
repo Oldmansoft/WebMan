@@ -116,12 +116,7 @@ namespace WebApplication.Controllers
             panel.Icon = FontAwesome.Anchor;
             var form = FormHorizontal.Create(model, "/Home/DataTablesCreate");
             panel.Append(form);
-
-            form.Validator["Name"].Set(Validator.NoEmpty());
-            form.Validator["Name"].Set(Validator.StringLength(6, 10));
-            form.Validator["Name"].Set(Validator.Regexp(@"^[a-zA-Z0-9_\.]+$").Message("请使用字母和数字"));
-            form.Validator["Name"].Set(Validator.EmailAddress());
-
+            
             return new HtmlResult(panel.CreateGrid());
         }
 

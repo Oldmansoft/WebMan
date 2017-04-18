@@ -51,9 +51,24 @@ namespace Oldmansoft.Html.WebMan.Util
         public string Compare { get; set; }
 
         /// <summary>
+        /// 比较错误消息
+        /// </summary>
+        public string CompareErrorMessage { get; set; }
+
+        /// <summary>
         /// 正则表达式模式
         /// </summary>
         public string RegularPattern { get; set; }
+
+        /// <summary>
+        /// 正则表达式错误消息
+        /// </summary>
+        public string RegularErrorMessage { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// 是否不可用
@@ -110,6 +125,53 @@ namespace Oldmansoft.Html.WebMan.Util
             if (sourceType == targetType) return true;
             if (!targetType.IsClass && sourceType == typeof(Nullable<>).MakeGenericType(targetType)) return true;
             return false;
+        }
+
+        /// <summary>
+        /// 设置验证
+        /// </summary>
+        /// <param name="form"></param>
+        public void SetValidate(FormValidate.FormValidator form)
+        {
+            if (ReadOnly || Disabled) return;
+            var validator = form[Name];
+            if (Required)
+            {
+                validator.Set(Validator.NoEmpty());
+            }
+            if (MinimumLength > 0 || MaximumLength > 0)
+            {
+                if (MinimumLength > 0 && MaximumLength < 1)
+                {
+                    validator.Set(Validator.StringLength(MinimumLength));
+                }
+                else
+                {
+                    validator.Set(Validator.StringLength(MinimumLength, MaximumLength));
+                }
+            }
+            if (!string.IsNullOrEmpty(RegularPattern))
+            {
+                var regular = Validator.Regexp(RegularPattern);
+                if (!string.IsNullOrEmpty(RegularErrorMessage))
+                {
+                    regular.Message(RegularErrorMessage);
+                }
+                validator.Set(regular);
+            }
+            if (DataType == DataType.EmailAddress)
+            {
+                validator.Set(Validator.EmailAddress());
+            }
+            if (!string.IsNullOrEmpty(Compare))
+            {
+                var compare = Validator.Identical(Compare);
+                if (!string.IsNullOrEmpty(CompareErrorMessage))
+                {
+                    compare.Message(CompareErrorMessage);
+                }
+                validator.Set(compare);
+            }
         }
     }
 }

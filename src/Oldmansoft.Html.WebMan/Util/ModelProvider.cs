@@ -75,6 +75,10 @@ namespace Oldmansoft.Html.WebMan.Util
             {
                 return;
             }
+            if (modelType.IsEnum)
+            {
+                return;
+            }
             info.Required = true;
         }
 
@@ -139,13 +143,23 @@ namespace Oldmansoft.Html.WebMan.Util
 
             if (attribute is CompareAttribute)
             {
-                info.Compare = (attribute as CompareAttribute).OtherProperty;
+                var compare = attribute as CompareAttribute;
+                info.Compare = compare.OtherProperty;
+                info.CompareErrorMessage = compare.ErrorMessage;
                 return;
             }
 
             if (attribute is RegularExpressionAttribute)
             {
-                info.RegularPattern = (attribute as RegularExpressionAttribute).Pattern;
+                var regularExpression = attribute as RegularExpressionAttribute;
+                info.RegularPattern = regularExpression.Pattern;
+                info.RegularErrorMessage = regularExpression.ErrorMessage;
+                return;
+            }
+
+            if (attribute is System.ComponentModel.DescriptionAttribute)
+            {
+                info.Description = (attribute as System.ComponentModel.DescriptionAttribute).Description;
                 return;
             }
         }
