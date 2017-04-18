@@ -195,7 +195,7 @@ namespace Oldmansoft.Html.WebMan
                     a.AddClass("btn");
                     a.Data("path", item.Location);
                     a.Data("behave", ((int)item.Behave).ToString());
-                    a.Data("post", item.NeedPost ? "1" : "0");
+                    a.Data("action", ((item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0)).ToString());
                     if (!string.IsNullOrEmpty(item.ConfirmContent)) a.Data("tips", item.ConfirmContent);
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
@@ -281,12 +281,13 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 添加操作提交数据项
+        /// 添加操作数据项
+        /// 数据项的主键将用变量 SelectedId 传递
         /// </summary>
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        public IItemAction AddActionPostItem(string text, string location, LinkBehave behave)
+        public IItemAction AddActionItem(string text, string location, LinkBehave behave)
         {
             var action = new DataTableAction(text, location, behave);
             ItemActions.Add(action);

@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.11
+* v0.1.12
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -211,34 +211,39 @@ window.oldmansoft.webman = new (function () {
             $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
         });
         $(document).on("click", ".dataTable-action a", function (e) {
-            var behave = Number($(this).attr("data-behave")),
+            var action_nothing = 0,
+                action_supportParameter = 1,
+                action_needSelected = 2,
+                behave_open = 0,
+                behave_link = 1,
+                behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
-                post = $(this).attr("data-post") == "1",
+                action = Number($(this).attr("data-action")),
                 tips = $(this).attr("data-tips"),
                 ids = getDataTableSelectedIds($(this)),
                 loading;
 
             function execute(){
-                if (behave == 0) {
-                    if (post) {
-                        $app.open(path, { selectedId: ids });
+                if (behave == behave_open) {
+                    if ((action & action_supportParameter) == action_supportParameter) {
+                        $app.open(path, { SelectedId: ids });
                     } else {
                         $app.open(path);
                     }
-                } else if (behave == 1) {
-                    if (!post || ids.length == 0) {
+                } else if (behave == behave_link) {
+                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
                         $app.addHash(path);
                     } else {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
                         }
-                        $app.addHash(path + "?selectedId=" + ids.join("&selectedId="));
+                        $app.addHash(path + "?SelectedId=" + ids.join("&SelectedId="));
                     }
                 } else {
                     loading = $app.loading();
-                    if (post) {
+                    if ((action & action_supportParameter) == action_supportParameter) {
                         $.post(path, {
-                            selectedId: ids
+                            SelectedId: ids
                         }).done(function (data) {
                             dealSubmitResult(data);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
@@ -250,7 +255,7 @@ window.oldmansoft.webman = new (function () {
                 }
             }
 
-            if (post && ids.length == 0) {
+            if ((action & action_needSelected) == action_needSelected && ids.length == 0) {
                 $app.alert(text.please_select_item);
                 return;
             }
@@ -261,21 +266,23 @@ window.oldmansoft.webman = new (function () {
             execute();
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
-            var behave = Number($(this).attr("data-behave")),
+            var behave_open = 0,
+                behave_link = 1,
+                behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
                 tips = $(this).attr("data-tips"),
                 id = getDataTableItemId($(this)),
                 loading;
 
             function execute() {
-                if (behave == 0) {
-                    $app.open(path, { selectedId: id });
-                } else if (behave == 1) {
-                    $app.addHash(path + "?selectedId=" + id);
+                if (behave == behave_open) {
+                    $app.open(path, { SelectedId: id });
+                } else if (behave == behave_link) {
+                    $app.addHash(path + "?SelectedId=" + id);
                 } else {
                     loading = $app.loading();
                     $.post(path, {
-                        selectedId: id
+                        SelectedId: id
                     }).done(function (data) {
                         dealSubmitResult(data);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });

@@ -24,9 +24,14 @@ namespace Oldmansoft.Html.WebMan
         public LinkBehave Behave { get; set; }
 
         /// <summary>
-        /// 是否需要提交参数
+        /// 是否提交参数
         /// </summary>
-        public bool NeedPost { get; set; }
+        public bool IsSupportParameter { get; set; }
+
+        /// <summary>
+        /// 是否需要选择
+        /// </summary>
+        public bool IsNeedSelected { get; set; }
 
         /// <summary>
         /// 确认内容
@@ -46,9 +51,15 @@ namespace Oldmansoft.Html.WebMan
             return this;
         }
 
-        public ITableAction PostSelected()
+        public ITableAction SupportParameter()
         {
-            NeedPost = true;
+            IsSupportParameter = true;
+            return this;
+        }
+
+        public ITableAction NeedSelected()
+        {
+            IsNeedSelected = true;
             return this;
         }
     }

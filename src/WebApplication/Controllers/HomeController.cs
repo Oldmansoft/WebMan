@@ -77,11 +77,11 @@ namespace WebApplication.Controllers
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
             table.AddActionTable("添加", "/Home/DataTablesCreate", LinkBehave.Open);
-            table.AddActionTable("查看", "/Home/DataTablesView", LinkBehave.Link).PostSelected();
-            table.AddActionTable("删除", "/Home/DataTablesDelete", LinkBehave.Call).PostSelected().Confirm("是否删除");
-            table.AddActionPostItem("查看", "/Home/DataTablesView", LinkBehave.Open).Confirm("查看吗");
-            table.AddActionPostItem("修改", "/Home/DataTablesCreate", LinkBehave.Link);
-            table.AddActionPostItem("删除", "/Home/DataTablesDelete", LinkBehave.Call).Confirm("是否删除");
+            table.AddActionTable("查看", "/Home/DataTablesView", LinkBehave.Link).SupportParameter().NeedSelected();
+            table.AddActionTable("删除", "/Home/DataTablesDelete", LinkBehave.Call).SupportParameter().Confirm("是否删除");
+            table.AddActionItem("查看", "/Home/DataTablesView", LinkBehave.Open).Confirm("查看吗");
+            table.AddActionItem("修改", "/Home/DataTablesCreate", LinkBehave.Link);
+            table.AddActionItem("删除", "/Home/DataTablesDelete", LinkBehave.Call).Confirm("是否删除");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
