@@ -28,7 +28,7 @@ namespace Oldmansoft.Html.WebMan.Util
         /// <summary>
         /// 是否必须
         /// </summary>
-        public bool Required { get; set; }
+        public RequiredAttribute Required { get; set; }
 
         /// <summary>
         /// 数据类型
@@ -36,35 +36,30 @@ namespace Oldmansoft.Html.WebMan.Util
         public DataType DataType { get; set; }
 
         /// <summary>
-        /// 最小长度
+        /// 数据类型不匹配错误消息
         /// </summary>
-        public int MinimumLength { get; set; }
+        public string DataTypeErrorMessage { get; set; }
 
         /// <summary>
-        /// 最大长度
+        /// 字符串长度
         /// </summary>
-        public int MaximumLength { get; set; }
+        public StringLengthAttribute StringLength { get; set; }
 
         /// <summary>
         /// 比较
         /// </summary>
-        public string Compare { get; set; }
-
+        public CompareAttribute Compare { get; set; }
+        
         /// <summary>
-        /// 比较错误消息
+        /// 正则表达式
         /// </summary>
-        public string CompareErrorMessage { get; set; }
-
+        public RegularExpressionAttribute Regular { get; set; }
+        
         /// <summary>
-        /// 正则表达式模式
+        /// 两值之间
         /// </summary>
-        public string RegularPattern { get; set; }
-
-        /// <summary>
-        /// 正则表达式错误消息
-        /// </summary>
-        public string RegularErrorMessage { get; set; }
-
+        public RangeAttribute Range { get; set; }
+        
         /// <summary>
         /// 描述
         /// </summary>
@@ -94,11 +89,6 @@ namespace Oldmansoft.Html.WebMan.Util
         /// 文件可以删除
         /// </summary>
         public bool FileCanDelete { get; set; }
-
-        /// <summary>
-        /// 两值之间
-        /// </summary>
-        public RangeAttribute Range { get; set; }
 
         public ModelItemInfo(PropertyInfo property)
         {
@@ -135,42 +125,38 @@ namespace Oldmansoft.Html.WebMan.Util
         {
             if (ReadOnly || Disabled) return;
             var validator = form[Name];
-            if (Required)
+            if (Required != null)
             {
-                validator.Set(Validator.NoEmpty());
+                validator.Set(Validator.NoEmpty().SetMessage(Required));
             }
-            if (MinimumLength > 0 || MaximumLength > 0)
+            if (StringLength != null)
             {
-                if (MinimumLength > 0 && MaximumLength < 1)
+                if (StringLength.MinimumLength > 0 && StringLength.MaximumLength < 1)
                 {
-                    validator.Set(Validator.StringLength(MinimumLength));
+                    validator.Set(Validator.StringLength(StringLength.MinimumLength).SetMessage(StringLength));
                 }
                 else
                 {
-                    validator.Set(Validator.StringLength(MinimumLength, MaximumLength));
+                    validator.Set(Validator.StringLength(StringLength.MinimumLength, StringLength.MaximumLength).SetMessage(StringLength));
                 }
             }
-            if (!string.IsNullOrEmpty(RegularPattern))
+            if (Regular != null && !string.IsNullOrEmpty(Regular.Pattern))
             {
-                var regular = Validator.Regexp(RegularPattern);
-                if (!string.IsNullOrEmpty(RegularErrorMessage))
-                {
-                    regular.Message(RegularErrorMessage);
-                }
-                validator.Set(regular);
+                validator.Set(Validator.Regexp(Regular.Pattern).SetMessage(Regular));
             }
             if (DataType == DataType.EmailAddress)
             {
-                validator.Set(Validator.EmailAddress());
+                validator.Set(Validator.EmailAddress().Message(DataTypeErrorMessage));
             }
-            if (!string.IsNullOrEmpty(Compare))
+            if (Compare != null && !string.IsNullOrEmpty(Compare.OtherProperty))
             {
-                var compare = Validator.Identical(Compare);
-                if (!string.IsNullOrEmpty(CompareErrorMessage))
-                {
-                    compare.Message(CompareErrorMessage);
-                }
-                validator.Set(compare);
+                validator.Set(Validator.Identical(Compare.OtherProperty).SetMessage(Compare));
+                form[Compare.OtherProperty].Set(Validator.Identical(Name).SetMessage(Compare));
+            }
+            if (Range != null)
+            {
+                validator.Set(Validator.GreaterThan(Range.Minimum).SetMessage(Range));
+                validator.Set(Validator.LessThan(Range.Maximum).SetMessage(Range));
             }
         }
     }

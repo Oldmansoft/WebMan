@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Oldmansoft.Html.Mvc
 {
@@ -41,9 +42,34 @@ namespace Oldmansoft.Html.Mvc
         /// <param name="source"></param>
         /// <param name="dataSource"></param>
         /// <returns></returns>
-        public static ILocation Location(this System.Web.Mvc.Controller source, Func<DataTableRequest, System.Web.Mvc.JsonResult> dataSource)
+        public static ILocation Location(this Controller source, Func<DataTableRequest, JsonResult> dataSource)
         {
             return new DataTableLocation(dataSource);
+        }
+
+        /// <summary>
+        /// 验证失败
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool ValidateFail(this ModelStateDictionary source)
+        {
+            return !source.IsValid;
+        }
+
+        /// <summary>
+        /// 验证消息
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string ValidateMessage(this ModelStateDictionary source)
+        {
+            var outer = new StringBuilder();
+            foreach (var error in source.Values.SelectMany(v => v.Errors))
+            {
+                outer.AppendLine(error.ErrorMessage);
+            }
+            return outer.ToString();
         }
     }
 }

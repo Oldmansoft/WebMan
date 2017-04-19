@@ -12,8 +12,8 @@ namespace WebApplication.Models
         public Guid Id { get; set; }
 
         [Display(Name = "名称")]
-        [Required]
-        [StringLength(6)]
+        [Required(ErrorMessage = "要填")]
+        [StringLength(6, ErrorMessage = "太短")]
         [Description("请输入名称")]
         [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
         public string Name { get; set; }
@@ -29,6 +29,7 @@ namespace WebApplication.Models
         public bool? IsGood { get; set; }
 
         [Display(Name = "年龄")]
+        [Range(1, 5)]
         public int? Age { get; set; }
 
         [Display(Name = "列表")]

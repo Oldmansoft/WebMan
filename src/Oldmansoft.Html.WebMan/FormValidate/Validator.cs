@@ -49,6 +49,15 @@ namespace Oldmansoft.Html.WebMan
             return this;
         }
 
+        internal Validator SetMessage(System.ComponentModel.DataAnnotations.ValidationAttribute attribute)
+        {
+            if (!string.IsNullOrEmpty(attribute.ErrorMessage))
+            {
+                MessageContent = attribute.ErrorMessage;
+            }
+            return this;
+        }
+
         /// <summary>
         /// 创建非空
         /// </summary>
@@ -119,6 +128,30 @@ namespace Oldmansoft.Html.WebMan
         {
             var result = new FormValidate.Identical();
             result.OtherProperty = otherProperty;
+            return result;
+        }
+
+        /// <summary>
+        /// 少于
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Validator LessThan(object value)
+        {
+            var result = new FormValidate.LessThan();
+            result.Value = value;
+            return result;
+        }
+
+        /// <summary>
+        /// 多于
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Validator GreaterThan(object value)
+        {
+            var result = new FormValidate.GreaterThan();
+            result.Value = value;
             return result;
         }
     }

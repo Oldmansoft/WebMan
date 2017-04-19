@@ -79,7 +79,7 @@ namespace Oldmansoft.Html.WebMan.Util
             {
                 return;
             }
-            info.Required = true;
+            info.Required = new RequiredAttribute();
         }
 
         private void SetAttribute(ModelItemInfo info, object attribute)
@@ -92,7 +92,7 @@ namespace Oldmansoft.Html.WebMan.Util
             
             if (attribute is RequiredAttribute)
             {
-                info.Required = true;
+                info.Required = attribute as RequiredAttribute;
                 return;
             }
 
@@ -104,7 +104,9 @@ namespace Oldmansoft.Html.WebMan.Util
 
             if (attribute is DataTypeAttribute)
             {
-                info.DataType = (attribute as DataTypeAttribute).DataType;
+                var dataType = attribute as DataTypeAttribute;
+                info.DataType = dataType.DataType;
+                info.DataTypeErrorMessage = dataType.ErrorMessage;
                 return;
             }
 
@@ -135,26 +137,25 @@ namespace Oldmansoft.Html.WebMan.Util
 
             if (attribute is StringLengthAttribute)
             {
-                var stringLength = attribute as StringLengthAttribute;
-                info.MinimumLength = stringLength.MinimumLength;
-                info.MaximumLength = stringLength.MaximumLength;
+                info.StringLength = attribute as StringLengthAttribute; ;
                 return;
             }
 
             if (attribute is CompareAttribute)
             {
-                var compare = attribute as CompareAttribute;
-                info.Compare = compare.OtherProperty;
-                info.CompareErrorMessage = compare.ErrorMessage;
+                info.Compare = attribute as CompareAttribute;
                 return;
             }
 
             if (attribute is RegularExpressionAttribute)
             {
-                var regularExpression = attribute as RegularExpressionAttribute;
-                info.RegularPattern = regularExpression.Pattern;
-                info.RegularErrorMessage = regularExpression.ErrorMessage;
+                info.Regular = attribute as RegularExpressionAttribute;
                 return;
+            }
+
+            if (attribute is RangeAttribute)
+            {
+                info.Range = attribute as RangeAttribute;
             }
 
             if (attribute is System.ComponentModel.DescriptionAttribute)

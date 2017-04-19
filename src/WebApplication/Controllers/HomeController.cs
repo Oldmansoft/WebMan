@@ -89,7 +89,6 @@ namespace WebApplication.Controllers
 
         public JsonResult DataTablesDataSource(DataTableRequest request)
         {
-            System.Threading.Thread.Sleep(1000);
             var list = new List<Models.DataTableItemModel>();
             for (var i = 0; i < 10; i++)
             {
@@ -123,8 +122,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public JsonResult DataTablesCreate(Models.DataTableItemModel model)
         {
-            System.Threading.Thread.Sleep(1000);
-            return Json(DealResult.Location("/Home/DataTables", "不能为空"));
+            if (ModelState.ValidateFail())
+            {
+                return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
+            }
+            return Json(DealResult.Location("/Home/DataTables"));
         }
 
         public JsonResult DataTablesDelete(params Guid[] selectedId)

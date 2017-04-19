@@ -96,7 +96,9 @@
     <Compile Include="FormInputCreator\ListDataSource.cs" />
     <Compile Include="FormValidate\EmailAddress.cs" />
     <Compile Include="FormValidate\FormValidator.cs" />
+    <Compile Include="FormValidate\GreaterThan.cs" />
     <Compile Include="FormValidate\Identical.cs" />
+    <Compile Include="FormValidate\LessThan.cs" />
     <Compile Include="FormValidate\NotEmpty.cs" />
     <Compile Include="FormValidate\Regexp.cs" />
     <Compile Include="FormValidate\StringLength.cs" />
