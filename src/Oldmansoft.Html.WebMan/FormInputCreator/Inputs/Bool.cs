@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class Bool : FormInput
     {
+        private string Name { get; set; }
+
         private bool? Value { get; set; }
 
         private Dictionary<bool, string> Options { get; set; }
-
-        public Bool(string name, bool? value)
-            : base(name)
+        
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
+            Name = name;
             Options = new Dictionary<bool, string>();
             Options.Add(true, "是");
             Options.Add(false, "否");
-            Value = value;
+            Value = (bool?)value;
         }
 
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Div;
             foreach (var option in Options)
@@ -39,7 +42,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                SetAttribute(input);
+                SetAttribute(input, disabled, readony, hint);
                 label.Append(new HtmlRaw(option.Value.HtmlEncode()));
             }
         }

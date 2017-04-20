@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class RadioList : FormInput
     {
+        protected string Name { get; set; }
+
         protected string Value { get; set; }
 
         protected IList<ListDataItem> Options { get; set; }
-
-        public RadioList(string name, string value, IList<ListDataItem> options)
-            : base(name)
+        
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
-            Value = value;
+            Name = name;
+            Value = value.GetString();
             Options = options;
         }
 
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Div;
             foreach (var option in Options)
@@ -37,7 +40,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                SetAttribute(input);
+                SetAttribute(input, disabled, readony, hint);
                 label.Append(new HtmlRaw(option.Text.HtmlEncode()));
             }
         }

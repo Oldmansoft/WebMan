@@ -8,11 +8,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class BoolHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             if (Util.ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(bool)))
             {
-                result = new Inputs.Bool(input.ModelItem.Name, (bool?)input.Value);
+                result = new Inputs.Bool();
+                result.Init(input.ModelItem.Name, input.Value, null, null);
                 return true;
             }
             return false;

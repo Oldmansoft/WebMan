@@ -16,6 +16,7 @@ namespace WebApplication.Controllers
             var document = new MainDocument("/Home/Welcome");
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
+            document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
             document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/Home/DataTables", FontAwesome.Tablet)));
@@ -145,11 +146,7 @@ namespace WebApplication.Controllers
                 }
             }
 
-            return Json(new
-            {
-                Success = true,
-                Message = output.ToString()
-            }, JsonRequestBehavior.AllowGet);
+            return Json(DealResult.CreateWrong(output.ToString()), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult DataTablesView(params Guid[] selectedId)

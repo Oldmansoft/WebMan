@@ -3,30 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class Hidden : FormInput
     {
-        private string Value { get; set; }
+        private string Name { get; set; }
 
-        public Hidden(string name, object value)
-            : base(name)
+        private string Value { get; set; }
+        
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
-            Value = value == null ? string.Empty : value.ToString();
+            Name = name;
+            Value = value.GetString();
         }
 
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Attribute(HtmlAttribute.Type, "hidden");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(this);
+            SetAttribute(this, disabled, readony, hint);
         }
 
         public override void SetViewMode()
         {
-            SetInputMode();
+            SetInputMode(false, false, null);
         }
     }
 }

@@ -183,7 +183,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Append(IHtmlNode node)
         {
-            if (node == null) throw new ArgumentNullException("node");
+            if (node == null) return this;
             NodesAppend(node);
             return this;
         }
@@ -195,7 +195,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Prepend(IHtmlNode node)
         {
-            if (node == null) throw new ArgumentNullException("node");
+            if (node == null) return this;
             NodesPrepend(node);
             return this;
         }
@@ -207,7 +207,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement After(IHtmlNode node)
         {
-            if (node == null) throw new ArgumentNullException("node");
+            if (node == null) return this;
             NodeAfter(node);
             return this;
         }
@@ -219,7 +219,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Before(IHtmlNode node)
         {
-            if (node == null) throw new ArgumentNullException("node");
+            if (node == null) return this;
             NodeBefore(node);
             return this;
         }
@@ -231,6 +231,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public virtual IHtmlElement Text(string text)
         {
+            if (string.IsNullOrEmpty(text)) return this;
             NodesClear();
             return Append(new HtmlText(text));
         }

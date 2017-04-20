@@ -6,36 +6,58 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator
 {
-    abstract class FormInput : HtmlElement
+    /// <summary>
+    /// 表单输入组件
+    /// </summary>
+    public abstract class FormInput : HtmlElement, Input.IFormInput
     {
-        public string Name { get; set; }
-
-        public bool Disabled { get; set; }
-
-        public bool ReadOnly { get; set; }
-
-        public FormInput(string name)
+        /// <summary>
+        /// 创建表单输入组件
+        /// </summary>
+        public FormInput()
             : base(HtmlTag.Input)
         {
-            Name = name;
         }
 
-        protected void SetAttribute(IHtmlElement element)
+        /// <summary>
+        /// 设置属性
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="disabled"></param>
+        /// <param name="readony"></param>
+        /// <param name="hint"></param>
+        protected void SetAttribute(IHtmlElement input, bool disabled, bool readony, string hint)
         {
-            if (Disabled)
+            if (disabled)
             {
-                element.Attribute(HtmlAttribute.Disabled, "disabled");
+                input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
-            if (ReadOnly)
+            if (readony)
             {
-                element.Attribute(HtmlAttribute.ReadOnly, "readOnly");
+                input.Attribute(HtmlAttribute.ReadOnly, "readonly");
+            }
+            if (!string.IsNullOrEmpty(hint))
+            {
+                input.Attribute(HtmlAttribute.PlaceHolder, hint);
             }
         }
 
         /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="options"></param>
+        /// <param name="scripts"></param>
+        public abstract void Init(string name, object value, IList<ListDataItem> options, Input.ScriptRegister scripts);
+
+        /// <summary>
         /// 设置输入模式
         /// </summary>
-        public abstract void SetInputMode();
+        /// <param name="disabled"></param>
+        /// <param name="readony"></param>
+        /// <param name="hint"></param>
+        public abstract void SetInputMode(bool disabled, bool readony, string hint);
 
         /// <summary>
         /// 设置查看模式

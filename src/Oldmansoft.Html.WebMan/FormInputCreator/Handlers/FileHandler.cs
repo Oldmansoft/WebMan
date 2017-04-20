@@ -8,13 +8,14 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class FileHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             var type = typeof(System.Web.HttpPostedFileBase);
             if (input.ModelItem.Property.PropertyType == type ||
                 input.ModelItem.Property.PropertyType.IsSubclassOf(type))
             {
-                result = new Inputs.File(input.ModelItem.Name);
+                result = new Inputs.File();
+                result.Init(input.ModelItem.Name, input.Value, null, null);
                 return true;
             }
             return false;

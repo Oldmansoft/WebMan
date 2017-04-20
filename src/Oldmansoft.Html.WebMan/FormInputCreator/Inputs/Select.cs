@@ -8,12 +8,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class Select : RadioList
     {
-        public Select(string name, string value, IList<ListDataItem> options)
-            : base(name, value, options)
-        {
-        }
-
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Select;
             Attribute(HtmlAttribute.Name, Name);
@@ -28,7 +23,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
                 item.Text(option.Text);
             }
-            SetAttribute(this);
+            SetAttribute(this, disabled, readony, hint);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Oldmansoft.Html.WebMan.Annotations;
+using Oldmansoft.Html.WebMan.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +24,10 @@ namespace WebApplication.Models
         [Compare("Name", ErrorMessage = "输入和名称一样的值")]
         public string ConfirmName { get; set; }
 
+        [Display(Name = "内容")]
+        [CustomInput(typeof(Markdown))]
+        public string Content { get; set; }
+        
         [Display(Name = "状态")]
         public DataTableItemState State { get; set; }
 
@@ -44,6 +50,7 @@ namespace WebApplication.Models
         public DateTime Time { get; set; }
 
         [Display(Name = "文件")]
+        [Required]
         public HttpPostedFileBase File { get; set; }
 
         [Display(Name = "创建")]

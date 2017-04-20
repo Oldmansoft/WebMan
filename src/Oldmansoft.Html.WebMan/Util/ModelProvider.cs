@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oldmansoft.Html.WebMan.Annotations;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -84,7 +85,7 @@ namespace Oldmansoft.Html.WebMan.Util
 
         private void SetAttribute(ModelItemInfo info, object attribute)
         {
-            if (attribute is Annotations.HiddenAttribute)
+            if (attribute is HiddenAttribute)
             {
                 info.Hidden = true;
                 return;
@@ -116,16 +117,16 @@ namespace Oldmansoft.Html.WebMan.Util
                 return;
             }
 
-            if (attribute is Annotations.ReadOnlyAttribute)
+            if (attribute is ReadOnlyAttribute)
             {
                 info.ReadOnly = true;
                 return;
             }
 
-            if (attribute is Annotations.FileOptionAttribute)
+            if (attribute is FileOptionAttribute)
             {
-                info.FileCount = (attribute as Annotations.FileOptionAttribute).Count;
-                info.FileCanDelete = (attribute as Annotations.FileOptionAttribute).CanDelete;
+                info.FileCount = (attribute as FileOptionAttribute).Count;
+                info.FileCanDelete = (attribute as FileOptionAttribute).CanDelete;
                 return;
             }
 
@@ -162,6 +163,11 @@ namespace Oldmansoft.Html.WebMan.Util
             {
                 info.Description = (attribute as System.ComponentModel.DescriptionAttribute).Description;
                 return;
+            }
+
+            if (attribute is CustomInputAttribute)
+            {
+                info.CustomInput = (attribute as CustomInputAttribute).Input;
             }
         }
     }

@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class Number : FormInput
     {
-        private object Value { get; set; }
+        private string Name { get; set; }
 
-        public Number(string name, object value)
-            : base(name)
+        private object Value { get; set; }
+        
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
+            Name = name;
             Value = value;
         }
 
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Attribute(HtmlAttribute.Type, "number");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value == null ? string.Empty : Value.ToString());
-            SetAttribute(this);
+            SetAttribute(this, disabled, readony, hint);
             AddClass("form-control");
         }
 

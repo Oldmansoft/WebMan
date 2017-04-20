@@ -10,7 +10,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class ListHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             var model = input.ModelItem;
             if (model.Property.PropertyType.IsGenericType && model.Property.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)))
@@ -18,29 +18,20 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                 var itemType = model.Property.PropertyType.GetGenericArguments()[0];
                 if (itemType.IsEnum)
                 {
-                    result = new Inputs.CheckBoxList(
-                        model.Name,
-                        GetStringValues(input),
-                        input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(itemType)
-                    );
+                    result = new Inputs.CheckBoxList();
+                    result.Init(model.Name, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(itemType), null);
                     return true;
                 }
                 else if (itemType == typeof(string))
                 {
-                    result = new Inputs.MultiSelect(
-                        model.Name,
-                        GetStringValues(input),
-                        input.Source.Get(model.Name)
-                    );
+                    result = new Inputs.MultiSelect();
+                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), null);
                     return true;
                 }
                 else if (!itemType.IsClass)
                 {
-                    result = new Inputs.CheckBoxList(
-                        model.Name,
-                        GetStringValues(input),
-                        input.Source.Get(model.Name)
-                    );
+                    result = new Inputs.CheckBoxList();
+                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), null);
                     return true;
                 }
                 else if (itemType == typeof(HttpPostedFileBase))

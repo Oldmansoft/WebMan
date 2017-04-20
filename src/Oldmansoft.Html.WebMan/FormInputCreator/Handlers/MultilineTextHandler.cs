@@ -8,11 +8,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class MultilineTextHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.MultilineText)
             {
-                result = new Inputs.Textarea(input.ModelItem.Name, GetStringValue(input));
+                result = new Inputs.Textarea();
+                result.Init(input.ModelItem.Name, input.Value, null, null);
                 return true;
             }
             return false;

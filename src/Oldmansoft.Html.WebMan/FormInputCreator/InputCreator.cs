@@ -8,16 +8,18 @@ using Oldmansoft.Html.WebMan.FormInputCreator.Handlers;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator
 {
-    class InputCreator : ChainOfResponsibility<HandlerParameter, FormInput>
+    class InputCreator : ChainOfResponsibility<HandlerParameter, Input.IFormInput>
     {
         public static readonly InputCreator Instance = new InputCreator();
 
         private InputCreator() { }
 
-        protected override ChainOfResponsibilityHandler<HandlerParameter, FormInput> InitChain()
+        protected override ChainOfResponsibilityHandler<HandlerParameter, Input.IFormInput> InitChain()
         {
             var result = new StartHandler();
-            result.SetNext(new ListHandler())
+            result
+                .SetNext(new CustomInputHandler())
+                .SetNext(new ListHandler())
                 .SetNext(new FileHandler())
                 .SetNext(new DataSourceHandler())
                 .SetNext(new BoolHandler())

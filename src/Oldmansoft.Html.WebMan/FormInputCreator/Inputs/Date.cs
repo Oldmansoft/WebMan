@@ -1,18 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     class Date : FormInput
     {
-        private System.DateTime? Value { get; set; }
+        private string Name { get; set; }
 
-        public Date(string name, System.DateTime? value)
-            : base(name)
+        private System.DateTime? Value { get; set; }
+        
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
-            Value = value;
+            Name = name;
+            Value = (System.DateTime?)value;
         }
 
         private string GetValue()
@@ -27,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             return result.ToString("yyyy-MM-dd");
         }
 
-        public override void SetInputMode()
+        public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Div;
             AddClass("input-group");
@@ -42,7 +46,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "date");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
-            SetAttribute(input);
+            SetAttribute(input, disabled, readony, hint);
             input.AddClass("form-control");
         }
 

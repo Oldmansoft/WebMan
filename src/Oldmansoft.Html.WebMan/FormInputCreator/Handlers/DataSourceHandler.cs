@@ -8,11 +8,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class DataSourceHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             if (input.Source.Contains(input.ModelItem.Name))
             {
-                result = new Inputs.Select(input.ModelItem.Name, GetStringValue(input), input.Source.Get(input.ModelItem.Name));
+                result = new Inputs.Select();
+                result.Init(input.ModelItem.Name, input.Value, input.Source.Get(input.ModelItem.Name), null);
                 return true;
             }
             return false;

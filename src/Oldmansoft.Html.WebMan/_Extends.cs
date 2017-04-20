@@ -12,6 +12,29 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public static class Extends
     {
+        internal static IList<string> GetListString(this object source)
+        {
+            var result = new List<string>();
+            if (source == null) return result;
+            foreach (var item in source as System.Collections.IEnumerable)
+            {
+                if (item == null) continue;
+                result.Add(item.ToString());
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取非 null 字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetString(this object source)
+        {
+            return source == null ? string.Empty : source.ToString();
+        }
+
+
         private static IList<Column> ColumnValues { get; set; }
 
         private static IList<ColumnOffset> ColumnOffsetValues { get; set; }
@@ -195,13 +218,13 @@ namespace Oldmansoft.Html.WebMan
             source.Items.Add(script);
             if (source.OnCompleted != null) return;
 
-            source.OnCompleted = (outer) =>
+            source.OnCompleted += (outer) =>
             {
                 if (outer.Items.Count == 0) return;
 
                 outer.Append("<script>$app.event().onLoad(function (view) {");
                 outer.Append("\r\n");
-                foreach(var item in outer.Items)
+                foreach (var item in outer.Items)
                 {
                     outer.Append(item);
                     outer.Append("\r\n");

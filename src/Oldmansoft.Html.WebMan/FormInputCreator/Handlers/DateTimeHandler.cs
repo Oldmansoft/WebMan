@@ -8,11 +8,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class DateTimeHandler : Handler
     {
-        protected override bool Request(HandlerParameter input, ref FormInput result)
+        protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.DateTime)
             {
-                result = new Inputs.DateTime(input.ModelItem.Name, (DateTime?)input.Value);
+                result = new Inputs.DateTime();
+                result.Init(input.ModelItem.Name, input.Value, null, null);
                 return true;
             }
             return false;

@@ -90,6 +90,11 @@ namespace Oldmansoft.Html.WebMan.Util
         /// </summary>
         public bool FileCanDelete { get; set; }
 
+        /// <summary>
+        /// 定制输入
+        /// </summary>
+        public Input.ICustomInput CustomInput { get; set; }
+
         public ModelItemInfo(PropertyInfo property)
         {
             Property = property;
@@ -125,7 +130,7 @@ namespace Oldmansoft.Html.WebMan.Util
         {
             if (ReadOnly || Disabled) return;
             var validator = form[Name];
-            if (Required != null)
+            if (Required != null && !Required.AllowEmptyStrings)
             {
                 validator.Set(Validator.NoEmpty().SetMessage(Required));
             }

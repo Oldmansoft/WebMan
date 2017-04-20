@@ -99,8 +99,9 @@ namespace Oldmansoft.Html.WebMan
             {
                 if (item.Hidden)
                 {
-                    var hidden = new FormInputCreator.Inputs.Hidden(item.Name, model != null ? item.Property.GetValue(model) : string.Empty);
-                    hidden.SetInputMode();
+                    var hidden = new FormInputCreator.Inputs.Hidden();
+                    hidden.Init(item.Name, model != null ? item.Property.GetValue(model) : string.Empty, null, null);
+                    hidden.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
                     result.Append(hidden);
                     continue;
                 }
@@ -111,13 +112,7 @@ namespace Oldmansoft.Html.WebMan
                 parameter.Source = source;
 
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
-                input.Disabled = item.Disabled;
-                input.ReadOnly = item.ReadOnly;
-                input.SetInputMode();
-                if (!string.IsNullOrEmpty(item.Description))
-                {
-                    input.Attribute(HtmlAttribute.PlaceHolder, item.Description);
-                }
+                input.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
                 result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
                 item.SetValidate(result.Validator);
             }
