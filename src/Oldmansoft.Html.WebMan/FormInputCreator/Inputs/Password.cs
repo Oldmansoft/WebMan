@@ -21,18 +21,31 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
         public override void SetInputMode(bool disabled, bool readony, string hint)
         {
-            Attribute(HtmlAttribute.Type, "password");
-            Attribute(HtmlAttribute.Name, Name);
-            Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(this, disabled, readony, hint);
-            AddClass("form-control");
+            Tag = HtmlTag.Div;
+            AddClass("input-group");
+
+            var span = new HtmlElement(HtmlTag.Span);
+            Append(span);
+            span.AddClass("input-group-addon");
+            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-eye-slash"));
+
+            var input = new HtmlElement(HtmlTag.Input);
+            Append(input);
+            input.Attribute(HtmlAttribute.Type, "password");
+            input.Attribute(HtmlAttribute.Name, Name);
+            input.Attribute(HtmlAttribute.Value, Value);
+            SetAttribute(input, disabled, readony, hint);
+            input.AddClass("form-control");
         }
 
         public override void SetViewMode()
         {
             Tag = HtmlTag.Div;
             AddClass("control-value");
-            Text("******");
+
+            var i = new HtmlElement(HtmlTag.I);
+            Append(i);
+            i.AddClass("fa fa-eye-slash");
         }
     }
 }

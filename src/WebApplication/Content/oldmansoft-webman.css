@@ -292,3 +292,9 @@ table.dataTable tbody td ul li:first-child {
 .form-horizontal .form-group ul.control-value li:first-child {
     margin-left: 0;
 }
+.form-horizontal.view-mode .control-label {
+    padding-top: 0;
+}
+.form-horizontal .control-value i.fa {
+    margin-right: 2px;
+}

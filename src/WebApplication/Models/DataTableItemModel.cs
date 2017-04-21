@@ -15,7 +15,7 @@ namespace WebApplication.Models
 
         [Display(Name = "名称")]
         [Required(ErrorMessage = "要填")]
-        [StringLength(6, ErrorMessage = "太短")]
+        [StringLength(6)]
         [Description("请输入名称")]
         [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
         public string Name { get; set; }
@@ -23,6 +23,9 @@ namespace WebApplication.Models
         [Display(Name = "确认名称")]
         [Compare("Name", ErrorMessage = "输入和名称一样的值")]
         public string ConfirmName { get; set; }
+
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
         [Display(Name = "内容")]
         [CustomInput(typeof(Markdown))]
@@ -50,7 +53,6 @@ namespace WebApplication.Models
         public DateTime Time { get; set; }
 
         [Display(Name = "文件")]
-        [Required]
         public HttpPostedFileBase File { get; set; }
 
         [Display(Name = "创建")]

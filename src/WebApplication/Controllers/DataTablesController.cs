@@ -1,4 +1,5 @@
-﻿using Oldmansoft.Html.Mvc;
+﻿using Oldmansoft.ClassicDomain.Util;
+using Oldmansoft.Html.Mvc;
 using Oldmansoft.Html.WebMan;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,9 @@ namespace WebApplication.Controllers
             var list = new List<Models.DataTableItemModel>();
             for (var i = 0; i < 100; i++)
             {
-                var item = new Models.DataTableItemModel() { Name = "Hello", IsGood = true, Content = "### heading text" };
+                var item = new Models.DataTableItemModel() { Name = "Hello" + (i + 1), IsGood = true, Content = "### heading text" };
                 item.Id = i + 1;
+                item.ConfirmName = item.Name;
                 item.States = new List<Models.DataTableItemState>();
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);
@@ -107,6 +109,12 @@ namespace WebApplication.Controllers
             {
                 return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
             }
+            var data = GetDataSource().FirstOrDefault(o => o.Id == model.Id);
+            if (data != null)
+            {
+                model.CopyTo(data);
+            }
+
             return Json(DealResult.Location("/DataTables"));
         }
 

@@ -126,8 +126,7 @@ namespace Oldmansoft.Html.WebMan
             Markdown = new Input.MarkdownResource();
             Markdown.Link = new Element.Link("//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css");
             Markdown.Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js");
-            Markdown.Markdown = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/markdown.min.js");
-            Markdown.ToMarkdown = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/to-markdown.min.js");
+            Markdown.Preview = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/markdown.min.js");
         }
 
         /// <summary>

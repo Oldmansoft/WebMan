@@ -77,6 +77,10 @@ namespace Oldmansoft.Html.WebMan
         {
             var name = outer.Generator.GetGeneratorName();
             AddClass(name);
+            if (ViewMode)
+            {
+                AddClass("view-mode");
+            }
 
             if (UseButtonGroup)
             {
@@ -97,7 +101,11 @@ namespace Oldmansoft.Html.WebMan
                 submit.AddClass("btn btn-primary");
             }
             base.Format(outer);
-            if (!ViewMode)
+            if (ViewMode)
+            {
+                outer.AddEvent(Script.ToString());
+            }
+            else
             {
                 outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
             }

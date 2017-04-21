@@ -30,11 +30,6 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <summary>
         /// 附加预览脚本
         /// </summary>
-        public ScriptResource Markdown { get; set; }
-
-        /// <summary>
-        /// 附加预览脚本
-        /// </summary>
-        public ScriptResource ToMarkdown { get; set; }
+        public ScriptResource Preview { get; set; }
     }
 }

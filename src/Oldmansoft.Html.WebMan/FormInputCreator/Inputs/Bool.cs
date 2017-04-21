@@ -37,7 +37,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "radio");
                 input.Attribute(HtmlAttribute.Name, Name);
-                input.Attribute(HtmlAttribute.Value, option.Value);
+                input.Attribute(HtmlAttribute.Value, option.Key.ToString().ToLower());
                 if (Value.HasValue && option.Key == Value.Value)
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");

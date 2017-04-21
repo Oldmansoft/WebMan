@@ -48,7 +48,7 @@ namespace Oldmansoft.Html.WebMan.Input
             AddClass("form-control");
             AddClass("markdown");
 
-            Scripts.Register("Markdown", "view.node.find('.markdown').markdown();");
+            Scripts.Register("MarkdownEdit", "view.node.find('textarea.markdown').markdown({resize : 'vertical'});");
         }
 
         /// <summary>
@@ -57,8 +57,11 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void SetViewMode()
         {
             Tag = HtmlTag.Div;
-            AddClass("control-value textarea");
+            AddClass("control-value");
+            AddClass("markdown");
             Append(new HtmlRaw(Value.HtmlEncode().Replace("\r\n", "<br/>").Replace("\n", "<br/>")));
+
+            Scripts.Register("MarkdownView", "view.node.find('div.markdown').html(markdown.toHTML(view.node.find('div.markdown').text()));");
         }
     }
 }
