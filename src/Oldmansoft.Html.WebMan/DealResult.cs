@@ -17,6 +17,16 @@ namespace Oldmansoft.Html.WebMan
         public bool Success { get; set; }
 
         /// <summary>
+        /// 关闭新窗
+        /// </summary>
+        public bool CloseOpen { get; set; }
+
+        /// <summary>
+        /// 父级页面加载新数据
+        /// </summary>
+        public bool NewData { get; set; }
+
+        /// <summary>
         /// 消息
         /// </summary>
         public string Message { get; set; }
@@ -47,6 +57,7 @@ namespace Oldmansoft.Html.WebMan
         public static DealResult Location(string path)
         {
             var result = new DealResult();
+            result.CloseOpen = true;
             result.Path = path;
             return result;
         }
@@ -60,7 +71,34 @@ namespace Oldmansoft.Html.WebMan
         public static DealResult Location(string path, string message)
         {
             var result = new DealResult();
+            result.CloseOpen = true;
             result.Path = path;
+            result.Message = message;
+            return result;
+        }
+
+        /// <summary>
+        /// 刷新数据
+        /// </summary>
+        /// <returns></returns>
+        public static DealResult Refresh()
+        {
+            var result = new DealResult();
+            result.CloseOpen = true;
+            result.NewData = true;
+            return result;
+        }
+
+        /// <summary>
+        /// 刷新数据
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static DealResult Refresh(string message)
+        {
+            var result = new DealResult();
+            result.CloseOpen = true;
+            result.NewData = true;
             result.Message = message;
             return result;
         }

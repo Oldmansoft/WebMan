@@ -22,7 +22,6 @@ namespace WebApplication.Controllers
             {
                 var item = new Models.DataTableItemModel() { Name = "Hello" + (i + 1), IsGood = true, Content = "### heading text" };
                 item.Id = i + 1;
-                item.ConfirmName = item.Name;
                 item.States = new List<Models.DataTableItemState>();
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);
@@ -62,6 +61,9 @@ namespace WebApplication.Controllers
             var model = new Models.DataTableItemModel();
             model.States = new List<Models.DataTableItemState>();
             model.States.Add(Models.DataTableItemState.Hight);
+            model.Time = DateTime.Now;
+            model.Date = DateTime.Now;
+            model.CreateTime = DateTime.UtcNow;
 
             var source = new ListDataSource();
             source["Age"].Add(new ListDataItem("1", "1"));
@@ -83,7 +85,9 @@ namespace WebApplication.Controllers
             {
                 return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
             }
-            return Json(DealResult.Location("/DataTables"));
+            model.Id = GetDataSource().Max(o => o.Id) + 1;
+            GetDataSource().Insert(0, model);
+            return Json(DealResult.Location("/DataTables", "添加成功"));
         }
 
         public ActionResult Edit(int selectedId)
@@ -115,7 +119,7 @@ namespace WebApplication.Controllers
                 model.CopyTo(data);
             }
 
-            return Json(DealResult.Location("/DataTables"));
+            return Json(DealResult.Refresh("修改成功"));
         }
 
         public JsonResult Delete(params int[] selectedId)
@@ -127,7 +131,7 @@ namespace WebApplication.Controllers
                 GetDataSource().Remove(model);
             }
 
-            return Json(DealResult.Location("/DataTables"), JsonRequestBehavior.AllowGet);
+            return Json(DealResult.Refresh("删除成功"), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Details(int selectedId)

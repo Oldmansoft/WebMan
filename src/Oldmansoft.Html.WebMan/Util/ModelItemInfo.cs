@@ -136,7 +136,7 @@ namespace Oldmansoft.Html.WebMan.Util
             }
             if (StringLength != null)
             {
-                if (StringLength.MinimumLength > 0 && StringLength.MaximumLength < 1)
+                if (StringLength.MinimumLength > 0 && StringLength.MaximumLength == int.MaxValue)
                 {
                     validator.Set(Validator.StringLength(StringLength.MinimumLength).SetMessage(StringLength));
                 }

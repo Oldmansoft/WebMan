@@ -180,6 +180,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\oldmansoft-plugin-fix.js" />
+    <Content Include="Scripts\oldmansoft-webapp.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -192,7 +193,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Scripts\oldmansoft-webapp.js" />
     <Content Include="Scripts\oldmansoft-webman.js" />
     <Content Include="Scripts\oldmansoft-webman.cn.js" />
   </ItemGroup>

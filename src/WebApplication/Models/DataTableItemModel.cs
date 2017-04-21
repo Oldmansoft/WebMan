@@ -15,15 +15,11 @@ namespace WebApplication.Models
 
         [Display(Name = "名称")]
         [Required(ErrorMessage = "要填")]
-        [StringLength(6)]
+        [StringLength(int.MaxValue, MinimumLength = 3)]
         [Description("请输入名称")]
         [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
         public string Name { get; set; }
-
-        [Display(Name = "确认名称")]
-        [Compare("Name", ErrorMessage = "输入和名称一样的值")]
-        public string ConfirmName { get; set; }
-
+        
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

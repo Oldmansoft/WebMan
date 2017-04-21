@@ -1,12 +1,13 @@
 ﻿/*
-* v0.1.13
+* v0.1.14
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
 window.oldmansoft.webman = new (function () {
     var $this = this,
         menu,
-        text;
+        text,
+        dealMethod;
 
     text = {
         dataTable: {
@@ -21,9 +22,15 @@ window.oldmansoft.webman = new (function () {
             }
         },
         error: "Error",
-        warning: "Warning",
+        success: "Success",
+        tips: "Tips",
         denied: "Permission denied",
         please_select_item: "Please select item.",
+    }
+
+    dealMethod = {
+        form: 0,
+        call: 1
     }
 
     function define_menu() {
@@ -48,15 +55,30 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
-    function dealSubmitResult(data) {
-        if (data.Message) {
-            $app.alert(data.Message, data.Success ? undefined : text.warning).ok(function () {
-                if (data.Path != null) {
-                    $app.sameHash(data.Path);
-                }
-            });
+    function dealSubmitResultAction(data, method) {
+        var operator;
+        if (data.CloseOpen && method == dealMethod.form) {
+            $app.close();
+        }
+        if (data.NewData) {
+            operator = $(".main-view").last().data("operator");
+            if (operator) {
+                operator.draw(false);
+            } else {
+                $app.reload();
+            }
         } else if (data.Path != null) {
             $app.sameHash(data.Path);
+        }
+    }
+
+    function dealSubmitResult(data, method) {
+        if (data.Message) {
+            $app.alert(data.Message, data.Success ? text.success : text.tips).ok(function () {
+                dealSubmitResultAction(data, method);
+            });
+        } else {
+            dealSubmitResultAction(data, method);
         }
     }
     
@@ -87,7 +109,7 @@ window.oldmansoft.webman = new (function () {
         loading = $app.loading();
         form.ajaxSubmit().data("jqxhr").done(function (data) {
             loading.hide();
-            dealSubmitResult(data);
+            dealSubmitResult(data, dealMethod.form);
         }).fail(function (error) {
             loading.hide();
             $app.alert($(error.responseText).eq(1).text(), error.statusText);
@@ -122,7 +144,7 @@ window.oldmansoft.webman = new (function () {
                 Hash: doubleHash
             }).done(function (data) {
                 loading.hide();
-                dealSubmitResult(data);
+                dealSubmitResult(data, dealMethod.form);
             }).fail(function (error) {
                 loading.hide();
                 $app.alert($(error.responseText).eq(1).text(), error.statusText);
@@ -179,43 +201,45 @@ window.oldmansoft.webman = new (function () {
             return width;
         }
         var option = {
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: source,
-                type: 'POST'
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: source,
+                    type: 'POST'
+                },
+                columns: columns,
+                retrieve: true,
+                searching: false,
+                lengthChange: false,
+                autoWidth: false,
+                ordering: false,
+                language: text.dataTable,
+                dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+                initComplete: function () {
+                    var table = view.node.find("." + className);
+
+                    var maxWidth = 0;
+                    table.find("tbody tr td:first-child").each(function () {
+                        var width = computeElementWidth($(this));
+                        if (width > maxWidth) maxWidth = width;
+                    })
+                    if (maxWidth > 0) {
+                        table.find("thead tr th:first-child").width(maxWidth);
+                    }
+
+                    maxWidth = 0;
+                    table.find("tbody tr td:last-child").each(function () {
+                        var width = computeElementWidth($(this).children());
+                        if (width > maxWidth) maxWidth = width;
+                    })
+                    if (maxWidth > 0) {
+                        table.find("thead tr th:last-child").width(maxWidth);
+                    }
+                }
             },
-            columns: columns,
-            retrieve: true,
-            searching: false,
-            lengthChange: false,
-            autoWidth: false,
-            ordering: false,
-            language: text.dataTable,
-            dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-            initComplete: function () {
-                var table = view.node.find("." + className);
-
-                var maxWidth = 0;
-                table.find("tbody tr td:first-child").each(function () {
-                    var width = computeElementWidth($(this));
-                    if (width > maxWidth) maxWidth = width;
-                })
-                if (maxWidth > 0) {
-                    table.find("thead tr th:first-child").width(maxWidth);
-                }
-
-                maxWidth = 0;
-                table.find("tbody tr td:last-child").each(function () {
-                    var width = computeElementWidth($(this).children());
-                    if (width > maxWidth) maxWidth = width;
-                })
-                if (maxWidth > 0) {
-                    table.find("thead tr th:last-child").width(maxWidth);
-                }
-            }
-        };
-        view.node.find("." + className).DataTable(option);
+            node;
+        node = view.node.find("." + className);
+        node.data("datatable", node.DataTable(option));
     }
 
     this.init = function (main, defaultLink) {
@@ -244,49 +268,51 @@ window.oldmansoft.webman = new (function () {
                 action = Number($(this).attr("data-action")),
                 tips = $(this).attr("data-tips"),
                 ids = getDataTableSelectedIds($(this)),
-                loading;
+                node = $(e.target).parents(".webman-body").find("table.dataTable");
 
-            function execute(){
+            function execute() {
+                var loading;
                 if (behave == behave_open) {
                     if ((action & action_supportParameter) == action_supportParameter) {
                         $app.open(path, { SelectedId: ids });
                     } else {
                         $app.open(path);
-                    }
+                }
                 } else if (behave == behave_link) {
                     if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
                         $app.addHash(path);
                     } else {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
-                        }
-                        $app.addHash(path + "?SelectedId=" + ids.join("&SelectedId="));
                     }
+                        $app.addHash(path + "?SelectedId=" + ids.join("&SelectedId="));
+                }
                 } else {
                     loading = $app.loading();
                     if ((action & action_supportParameter) == action_supportParameter) {
                         $.post(path, {
-                            SelectedId: ids
+                                SelectedId: ids
                         }).done(function (data) {
-                            dealSubmitResult(data);
+                            dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
                     } else {
                         $.get(path).done(function (data) {
-                            dealSubmitResult(data);
+                            dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
-                    }
                 }
             }
+        }
 
             if ((action & action_needSelected) == action_needSelected && ids.length == 0) {
                 $app.alert(text.please_select_item);
                 return;
-            }
+        }
             if (tips) {
                 $app.confirm(tips).yes(execute);
-                return;
-            }
-            execute();
+            } else {
+                execute();
+        }
+            node.parents(".main-view").data("operator", node.data("datatable"));
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
             var behave_open = 0,
@@ -295,9 +321,10 @@ window.oldmansoft.webman = new (function () {
                 path = $(this).attr("data-path"),
                 tips = $(this).attr("data-tips"),
                 id = getDataTableItemId($(this)),
-                loading;
+                node = $(e.target).parents("table.dataTable");
 
             function execute() {
+                var loading;
                 if (behave == behave_open) {
                     $app.open(path, { SelectedId: id });
                 } else if (behave == behave_link) {
@@ -305,22 +332,22 @@ window.oldmansoft.webman = new (function () {
                 } else {
                     loading = $app.loading();
                     $.post(path, {
-                        SelectedId: id
+                            SelectedId: id
                     }).done(function (data) {
-                        dealSubmitResult(data);
+                        dealSubmitResult(data, dealMethod.call);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });
-                }
             }
+        }
 
             if (tips) {
                 $app.confirm(tips).yes(execute);
-                return;
-            }
-            execute();
+            } else {
+                execute();
+        }
+            node.parents(".main-view").data("operator", node.data("datatable"));
         });
         $(document).on("submit", "form:not(.bv-form)", function (e) {
             e.preventDefault();
-
             submitForm($(this));
         });
     }

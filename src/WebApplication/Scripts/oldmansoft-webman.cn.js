@@ -14,7 +14,8 @@ $man.configText(function (text) {
     text.dataTable.paginate.previous = "前一页";
 
     text.error = "错误";
-    text.warning = "警告";
+    text.success = "成功";
+    text.tips = "提示";
     text.denied = "权限不足";
     text.please_select_item = "请选择相关项";
 });
