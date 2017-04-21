@@ -26,7 +26,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool Contains(string key)
+        internal bool Contains(string key)
         {
             return Source.ContainsKey(key);
         }
@@ -36,11 +36,11 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public IList<ListDataItem> Get(string key)
+        internal IList<ListDataItem> Get(string key)
         {
             if (!Contains(key))
             {
-                Source.Add(key, new List<ListDataItem>());
+                return new List<ListDataItem>();
             }
             return Source[key];
         }
@@ -61,6 +61,23 @@ namespace Oldmansoft.Html.WebMan
             else
             {
                 Source.Add(key, new List<ListDataItem>(list));
+            }
+        }
+
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public IList<ListDataItem> this[string key]
+        {
+            get
+            {
+                if (!Contains(key))
+                {
+                    Source.Add(key, new List<ListDataItem>());
+                }
+                return Source[key];
             }
         }
 

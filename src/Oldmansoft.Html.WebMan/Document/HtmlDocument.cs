@@ -65,6 +65,8 @@ namespace Oldmansoft.Html.WebMan
             {
                 Head.Append(Resources.Markdown.Link);
                 Head.Append(Resources.Markdown.Script);
+                Head.Append(Resources.Markdown.Markdown);
+                Head.Append(Resources.Markdown.ToMarkdown);
             }
 
             foreach(var item in Resources.Nodes)

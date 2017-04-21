@@ -64,7 +64,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// Markdown
         /// </summary>
-        public Document.IEnabledLinkScriptResource Markdown { get; private set; }
+        public Input.MarkdownResource Markdown { get; private set; }
         
         /// <summary>
         /// 节点
@@ -123,9 +123,11 @@ namespace Oldmansoft.Html.WebMan
             WebMan.Link = new Element.Link("~/Content/oldmansoft-webman.css".ResolveUrl());
             WebMan.Script = new Element.ScriptResource("~/Scripts/oldmansoft-webman.js".ResolveUrl());
 
-            Markdown = new Document.Resource();
+            Markdown = new Input.MarkdownResource();
             Markdown.Link = new Element.Link("//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css");
             Markdown.Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js");
+            Markdown.Markdown = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/markdown.min.js");
+            Markdown.ToMarkdown = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/to-markdown.min.js");
         }
 
         /// <summary>

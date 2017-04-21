@@ -13,7 +13,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
         {
             if (input.ModelItem.CustomInput == null) return false;
 
-            input.ModelItem.CustomInput.Init(input.ModelItem.Name, input.Value, input.Source.Get(input.ModelItem.Name), null);
+            input.ModelItem.CustomInput.Init(input.ModelItem.Name, input.Value, input.Source.Get(input.ModelItem.Name), input.Script);
             result = input.ModelItem.CustomInput;
             return true;
         }

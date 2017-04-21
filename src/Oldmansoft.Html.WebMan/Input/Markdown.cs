@@ -14,7 +14,9 @@ namespace Oldmansoft.Html.WebMan.Input
         private string Name { get; set; }
 
         private string Value { get; set; }
-        
+
+        private ScriptRegister Scripts { get; set; }
+
         /// <summary>
         /// 设值
         /// </summary>
@@ -26,6 +28,7 @@ namespace Oldmansoft.Html.WebMan.Input
         {
             Name = name;
             Value = value.GetString();
+            Scripts = scripts;
         }
 
         /// <summary>
@@ -44,6 +47,9 @@ namespace Oldmansoft.Html.WebMan.Input
             Data("provide", "markdown");
             SetAttribute(this, disabled, readony, hint);
             AddClass("form-control");
+            AddClass("markdown");
+
+            Scripts.Register("Markdown", "view.node.find('.markdown').markdown();");
         }
 
         /// <summary>

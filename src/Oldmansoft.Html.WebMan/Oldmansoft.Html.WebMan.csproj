@@ -115,6 +115,7 @@
     <Compile Include="FormValidate\ValidatorManager.cs" />
     <Compile Include="HttpPostedFileCustom.cs" />
     <Compile Include="DataTables\ITableAction.cs" />
+    <Compile Include="Input\MarkdownResource.cs" />
     <Compile Include="Input\ScriptRegister.cs" />
     <Compile Include="Input\ICustomInput.cs" />
     <Compile Include="Input\IFormInput.cs" />

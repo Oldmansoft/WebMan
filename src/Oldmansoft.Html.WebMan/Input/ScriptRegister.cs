@@ -13,6 +13,11 @@ namespace Oldmansoft.Html.WebMan.Input
     {
         private Dictionary<string, string> Events { get; set; }
 
+        internal ScriptRegister()
+        {
+            Events = new Dictionary<string, string>();
+        }
+
         /// <summary>
         /// 注册
         /// </summary>
@@ -22,6 +27,20 @@ namespace Oldmansoft.Html.WebMan.Input
         {
             if (Events.ContainsKey(name)) return;
             Events.Add(name, script);
+        }
+
+        /// <summary>
+        /// 生成脚本
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var outer = new StringBuilder();
+            foreach(var item in Events.Values)
+            {
+                outer.Append(item);
+            }
+            return outer.ToString();
         }
     }
 }

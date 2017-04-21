@@ -13,6 +13,11 @@ namespace Oldmansoft.Html.WebMan
     public class FormHorizontal : HtmlElement
     {
         /// <summary>
+        /// 脚本
+        /// </summary>
+        public Input.ScriptRegister Script { get; private set; }
+
+        /// <summary>
         /// 验证器
         /// </summary>
         public FormValidate.FormValidator Validator { get; private set; }
@@ -26,6 +31,7 @@ namespace Oldmansoft.Html.WebMan
             AddClass("form-horizontal");
             Attribute(HtmlAttribute.Method, "post");
 
+            Script = new Input.ScriptRegister();
             Validator = new FormValidate.FormValidator();
         }
 
@@ -78,7 +84,7 @@ namespace Oldmansoft.Html.WebMan
             submit.AddClass("btn btn-primary");
 
             base.Format(outer);
-            outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});", name, Validator.Create()));
+            outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
         }
 
         /// <summary>
@@ -110,6 +116,7 @@ namespace Oldmansoft.Html.WebMan
                 parameter.ModelItem = item;
                 if (model != null) parameter.Value = item.Property.GetValue(model);
                 parameter.Source = source;
+                parameter.Script = result.Script;
 
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 input.SetInputMode(item.Disabled, item.ReadOnly, item.Description);

@@ -23,5 +23,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 数据源
         /// </summary>
         public ListDataSource Source { get; set; }
+
+        /// <summary>
+        /// 脚本
+        /// </summary>
+        public Input.ScriptRegister Script { get; set; }
     }
 }
