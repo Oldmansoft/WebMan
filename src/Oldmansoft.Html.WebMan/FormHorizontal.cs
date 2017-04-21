@@ -23,6 +23,16 @@ namespace Oldmansoft.Html.WebMan
         public FormValidate.FormValidator Validator { get; private set; }
 
         /// <summary>
+        /// 使用按钮组
+        /// </summary>
+        public bool UseButtonGroup { get; set; }
+
+        /// <summary>
+        /// 查看模式
+        /// </summary>
+        private bool ViewMode { get; set; }
+
+        /// <summary>
         /// 创建横表单
         /// </summary>
         public FormHorizontal()
@@ -33,6 +43,7 @@ namespace Oldmansoft.Html.WebMan
 
             Script = new Input.ScriptRegister();
             Validator = new FormValidate.FormValidator();
+            UseButtonGroup = true;
         }
 
         /// <summary>
@@ -67,41 +78,38 @@ namespace Oldmansoft.Html.WebMan
             var name = outer.Generator.GetGeneratorName();
             AddClass(name);
 
-            var group = new HtmlElement(HtmlTag.Div);
-            Append(group);
-            group.AddClass("form-group");
+            if (UseButtonGroup)
+            {
+                var group = new HtmlElement(HtmlTag.Div);
+                Append(group);
+                group.AddClass("form-group");
 
-            var buttons = new GridOption(Column.Sm9 | Column.Md10);
-            group.Append(buttons);
-            buttons.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
+                var buttons = new GridOption(Column.Sm9 | Column.Md10);
+                group.Append(buttons);
+                buttons.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
 
-            var reset = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset");
-            group.Append(reset.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1).AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2));
-            reset.AddClass("btn btn-default");
+                var reset = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset");
+                group.Append(reset.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1).AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2));
+                reset.AddClass("btn btn-default");
 
-            var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit");
-            group.Append(submit.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1));
-            submit.AddClass("btn btn-primary");
-
+                var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit");
+                group.Append(submit.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1));
+                submit.AddClass("btn btn-primary");
+            }
             base.Format(outer);
-            outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
+            if (!ViewMode)
+            {
+                outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
+            }
         }
 
-        /// <summary>
-        /// 根据模型创建表单
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="model"></param>
-        /// <param name="action"></param>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model, string action, ListDataSource source)
+        private static FormHorizontal CreateForm<TModel>(TModel model, string action, ListDataSource source, bool inputMode)
         {
-            if (source == null) throw new ArgumentNullException("source");
-
             var result = new FormHorizontal();
+            result.ViewMode = !inputMode;
+            result.UseButtonGroup = inputMode;
             result.Attribute(HtmlAttribute.Action, action);
-            foreach(var item in ModelProvider.Instance.GetItems(typeof(TModel)))
+            foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
                 if (item.Hidden)
                 {
@@ -119,7 +127,14 @@ namespace Oldmansoft.Html.WebMan
                 parameter.Script = result.Script;
 
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
-                input.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
+                if (inputMode)
+                {
+                    input.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
+                }
+                else
+                {
+                    input.SetViewMode();
+                }
                 result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
                 item.SetValidate(result.Validator);
             }
@@ -127,7 +142,21 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 根据模型创建表单
+        /// 根据模型创建提交表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="action"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static FormHorizontal Create<TModel>(TModel model, string action, ListDataSource source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return CreateForm(model, action, source, true);
+        }
+
+        /// <summary>
+        /// 根据模型创建提交表单
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="model"></param>
@@ -136,6 +165,30 @@ namespace Oldmansoft.Html.WebMan
         public static FormHorizontal Create<TModel>(TModel model, string action)
         {
             return Create(model, action, new ListDataSource());
+        }
+
+        /// <summary>
+        /// 根据模型创建查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static FormHorizontal Create<TModel>(TModel model, ListDataSource source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return CreateForm(model, null, source, false);
+        }
+
+        /// <summary>
+        /// 根据模型创建查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static FormHorizontal Create<TModel>(TModel model)
+        {
+            return Create(model, new ListDataSource());
         }
     }
 }

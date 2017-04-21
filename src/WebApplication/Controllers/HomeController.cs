@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
             document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
             document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
-            document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/Home/DataTables", FontAwesome.Tablet)));
+            document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/DataTables", FontAwesome.Tablet)));
             document.Taskbar.Add(new LinkContent(FontAwesome.Male));
             document.Taskbar.Add(new LinkContent(FontAwesome.Envelope));
             document.Account = new QuickMenu();
@@ -66,111 +66,6 @@ namespace WebApplication.Controllers
             var form = new FormHorizontal();
             form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
             form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
-            panel.Append(form);
-
-            return new HtmlResult(panel.CreateGrid());
-        }
-
-        private static List<Models.DataTableItemModel> DataSource { get; set; }
-
-        private static List<Models.DataTableItemModel> GetDataSource()
-        {
-            if (DataSource != null) return DataSource;
-            var list = new List<Models.DataTableItemModel>();
-            for (var i = 0; i < 100; i++)
-            {
-                var item = new Models.DataTableItemModel() { Name = "Hello", IsGood = true, Content = "### heading text" };
-                item.Id = Guid.NewGuid();
-                item.States = new List<Models.DataTableItemState>();
-                item.States.Add(Models.DataTableItemState.Low);
-                item.States.Add(Models.DataTableItemState.Hight);
-                item.Time = DateTime.Now;
-                item.Date = DateTime.Now;
-                item.CreateTime = DateTime.UtcNow;
-                list.Add(item);
-            }
-            DataSource = list;
-            return DataSource;
-        }
-
-        public ActionResult DataTables()
-        {
-            var panel = new Panel();
-            panel.Caption = "表格";
-            panel.Icon = FontAwesome.Tablet;
-
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(DataTablesDataSource));
-            table.AddActionTable("添加", "/Home/DataTablesCreate", LinkBehave.Open);
-            table.AddActionTable("删除", "/Home/DataTablesDelete", LinkBehave.Call).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionItem("查看", "/Home/DataTablesView", LinkBehave.Open);
-            table.AddActionItem("修改", "/Home/DataTablesCreate", LinkBehave.Link);
-            table.AddActionItem("删除", "/Home/DataTablesDelete", LinkBehave.Call).Confirm("是否删除");
-            panel.Append(table);
-            return new HtmlResult(panel.CreateGrid());
-        }
-
-        public JsonResult DataTablesDataSource(DataTableRequest request)
-        {
-            var list = GetDataSource().Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            return Json(DataTable.Source(list, request, GetDataSource().Count));
-        }
-
-        public ActionResult DataTablesCreate()
-        {
-            var model = new Models.DataTableItemModel();
-            model.States = new List<Models.DataTableItemState>();
-            model.States.Add(Models.DataTableItemState.Hight);
-
-            var source = new ListDataSource();
-            source["Age"].Add(new ListDataItem("1", "1"));
-            source["Age"].Add(new ListDataItem("2", "2"));
-
-            var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(model, "/Home/DataTablesCreate", source);
-            panel.Append(form);
-            
-            return new HtmlResult(panel.CreateGrid());
-        }
-
-        [HttpPost]
-        public JsonResult DataTablesCreate(Models.DataTableItemModel model)
-        {
-            if (ModelState.ValidateFail())
-            {
-                return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
-            }
-            return Json(DealResult.Location("/Home/DataTables"));
-        }
-
-        public JsonResult DataTablesDelete(params Guid[] selectedId)
-        {
-            var output = new System.Text.StringBuilder();
-            if (selectedId == null)
-            {
-                output.Append("null");
-            }
-            else
-            {
-                foreach (var item in selectedId)
-                {
-                    output.Append(item.ToString("N"));
-                    output.Append(", ");
-                }
-            }
-
-            return Json(DealResult.CreateWrong(output.ToString()), JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult DataTablesView(Guid selectedId)
-        {
-            var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
-            
-            var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(model, "/Home/DataTablesCreate");
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());

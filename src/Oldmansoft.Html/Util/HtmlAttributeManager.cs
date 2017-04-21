@@ -21,6 +21,7 @@ namespace Oldmansoft.Html.Util
 
         public void Attribute(string name, string value)
         {
+            if (value == null) return;
             if (string.IsNullOrWhiteSpace(name)) return;
             if (name == HtmlAttribute.Class.ToString().ToLower())
             {

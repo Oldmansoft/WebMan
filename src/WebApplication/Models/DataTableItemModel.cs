@@ -11,7 +11,7 @@ namespace WebApplication.Models
 {
     public class DataTableItemModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "名称")]
         [Required(ErrorMessage = "要填")]

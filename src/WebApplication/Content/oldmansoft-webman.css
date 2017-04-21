@@ -281,3 +281,14 @@ table.dataTable tbody td ul li:first-child {
 .form-horizontal .form-group:last-child {
     border-bottom: none;
 }
+.form-horizontal .form-group ul.control-value {
+    list-style: none;
+    padding: 0;
+}
+.form-horizontal .form-group ul.control-value li {
+    float: left;
+    margin-left: 10px;
+}
+.form-horizontal .form-group ul.control-value li:first-child {
+    margin-left: 0;
+}

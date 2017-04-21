@@ -15,7 +15,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
         /// <summary>
         /// 输入组件
         /// </summary>
-        public ICustomInput Input { get; set; }
+        public Type InputType { get; set; }
 
         /// <summary>
         /// 创建定制输入
@@ -27,21 +27,12 @@ namespace Oldmansoft.Html.WebMan.Annotations
             if (!type.IsClass) throw new ArgumentException("必须是类", "type");
             if (type.IsAbstract) throw new ArgumentException("不能是虚拟类", "type");
 
-            object input;
-            try
-            {
-                input = Activator.CreateInstance(type);
-            }
-            catch
-            {
-                throw new ArgumentException("不支持无参创建对象", "type");
-            }
-            if (!(input is ICustomInput))
+            if (!type.GetInterfaces().Contains(typeof(ICustomInput)))
             {
                 throw new ArgumentException(string.Format("{0} 不支持 ICustomInput 接口。", type.FullName), "type");
             }
-
-            Input = input as ICustomInput;
+            
+            InputType = type;
         }
     }
 }

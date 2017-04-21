@@ -93,7 +93,7 @@ namespace Oldmansoft.Html.WebMan.Util
         /// <summary>
         /// 定制输入
         /// </summary>
-        public Input.ICustomInput CustomInput { get; set; }
+        public Type CustomInputType { get; set; }
 
         public ModelItemInfo(PropertyInfo property)
         {

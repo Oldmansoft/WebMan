@@ -54,11 +54,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Tag = HtmlTag.Div;
             AddClass("control-value");
-            Text(GetValue());
 
             var span = new HtmlElement(HtmlTag.Span);
             Append(span);
             span.AddClass("fa fa-calendar");
+
+            Append(new HtmlText(GetValue()));
         }
     }
 }
