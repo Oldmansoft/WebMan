@@ -40,12 +40,11 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Textarea;
-            Attribute(HtmlAttribute.Type, "text");
             Attribute(HtmlAttribute.Name, Name);
-            Attribute(HtmlAttribute.Value, Value);
             Attribute(HtmlAttribute.Rows, "5");
             Data("provide", "markdown");
             SetAttribute(this, disabled, readony, hint);
+            Text(Value);
             AddClass("form-control");
             AddClass("markdown");
 

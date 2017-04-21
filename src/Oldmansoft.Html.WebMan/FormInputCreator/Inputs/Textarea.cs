@@ -22,11 +22,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Textarea;
-            Attribute(HtmlAttribute.Type, "text");
             Attribute(HtmlAttribute.Name, Name);
-            Attribute(HtmlAttribute.Value, Value);
             Attribute(HtmlAttribute.Rows, "5");
             SetAttribute(this, disabled, readony, hint);
+            Text(Value);
             AddClass("form-control");
         }
 

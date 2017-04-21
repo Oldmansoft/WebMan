@@ -44,7 +44,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Append(input);
             input.Attribute(HtmlAttribute.Type, "datetime-local");
             input.Attribute(HtmlAttribute.Name, Name);
-            input.Attribute(HtmlAttribute.Value, GetValue());
+            input.Attribute(HtmlAttribute.Value, GetValue().Replace(" ", "T"));
             SetAttribute(input, disabled, readony, hint);
             input.AddClass("form-control");
         }
