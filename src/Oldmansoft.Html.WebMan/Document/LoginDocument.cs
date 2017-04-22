@@ -14,9 +14,9 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建登录文档
         /// </summary>
-        /// <param name="seedPath">加密种子路径</param>
+        /// <param name="seed">加密种子路径</param>
         /// <param name="action">登录处理地址</param>
-        public LoginDocument(string seedPath, string action)
+        public LoginDocument(ILocation seed, ILocation action)
         {
             var container = new HtmlElement(HtmlTag.Div).AddClass("container-fluid");
             Body.Append(container);
@@ -32,9 +32,9 @@ namespace Oldmansoft.Html.WebMan
             panel.Caption = "登录";
             panel.Icon = FontAwesome.Unlock_Alt;
 
-            panel.Append(CreateForm(action));
+            panel.Append(CreateForm(action.Path));
             
-            var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seedPath);
+            var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seed.Path);
             var script = new Element.Script(scriptContent);
             Body.Append(script);
         }

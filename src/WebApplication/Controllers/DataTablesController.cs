@@ -40,12 +40,12 @@ namespace WebApplication.Controllers
             panel.Caption = "表格";
             panel.Icon = FontAwesome.Tablet;
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, this.Location(IndexDataSource));
-            table.AddActionTable("添加", "/DataTables/Create", LinkBehave.Open);
-            table.AddActionTable("删除", "/DataTables/Delete", LinkBehave.Call).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionItem("查看", "/DataTables/Details", LinkBehave.Open);
-            table.AddActionItem("修改", "/DataTables/Edit", LinkBehave.Link);
-            table.AddActionItem("删除", "/DataTables/Delete", LinkBehave.Call).Confirm("是否删除");
+            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
+            table.AddActionTable("添加", Url.Location(Create), LinkBehave.Open);
+            table.AddActionTable("删除", Url.Location(Delete), LinkBehave.Call).SupportParameter().Confirm("是否删除").NeedSelected();
+            table.AddActionItem("查看", Url.Location(Details), LinkBehave.Open);
+            table.AddActionItem("修改", Url.Location(Edit), LinkBehave.Link);
+            table.AddActionItem("删除", Url.Location(Delete), LinkBehave.Call).Confirm("是否删除");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
@@ -72,7 +72,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(model, "/DataTables/Create", source);
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
@@ -87,7 +87,7 @@ namespace WebApplication.Controllers
             }
             model.Id = GetDataSource().Max(o => o.Id) + 1;
             GetDataSource().Insert(0, model);
-            return Json(DealResult.Location("/DataTables", "添加成功"));
+            return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index)), "添加成功"));
         }
 
         public ActionResult Edit(int selectedId)
@@ -100,7 +100,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.Caption = "hello";
             panel.Icon = FontAwesome.Anchor;
-            var form = FormHorizontal.Create(model, "/DataTables/Edit", source);
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), source);
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());

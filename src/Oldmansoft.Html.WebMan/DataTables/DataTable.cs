@@ -19,24 +19,11 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="primaryKey">主键</param>
         /// <param name="dataSource">数据源路径</param>
         /// <returns></returns>
-        public static DataTableDefinition<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, string dataSource)
-            where TModel : class
-        {
-            return new DataTableDefinition<TModel>(primaryKey, dataSource);
-        }
-
-        /// <summary>
-        /// 创建表格定义
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="primaryKey">主键</param>
-        /// <param name="dataSource">数据源路径</param>
-        /// <returns></returns>
         public static DataTableDefinition<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
             where TModel : class
         {
             if (dataSource == null) throw new ArgumentNullException("dataSource");
-            return new DataTableDefinition<TModel>(primaryKey, dataSource.Location);
+            return new DataTableDefinition<TModel>(primaryKey, dataSource.Path);
         }
 
         /// <summary>

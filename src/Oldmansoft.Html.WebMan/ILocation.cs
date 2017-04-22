@@ -14,6 +14,6 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 路径
         /// </summary>
-        string Location { get; }
+        string Path { get; }
     }
 }

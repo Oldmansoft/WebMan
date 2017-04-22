@@ -273,9 +273,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="location"></param>
         /// <param name="behave"></param>
         /// <returns></returns>
-        public ITableAction AddActionTable(string text, string location, LinkBehave behave)
+        public ITableAction AddActionTable(string text, ILocation location, LinkBehave behave)
         {
-            var action = new DataTableAction(text, location, behave);
+            var action = new DataTableAction(text, location.Path, behave);
             TableActions.Add(action);
             return action;
         }
@@ -287,9 +287,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="text"></param>
         /// <param name="location"></param>
         /// <param name="behave"></param>
-        public IItemAction AddActionItem(string text, string location, LinkBehave behave)
+        public IItemAction AddActionItem(string text, ILocation location, LinkBehave behave)
         {
-            var action = new DataTableAction(text, location, behave);
+            var action = new DataTableAction(text, location.Path, behave);
             ItemActions.Add(action);
             return action;
         }

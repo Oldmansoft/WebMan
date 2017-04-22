@@ -111,12 +111,12 @@ namespace Oldmansoft.Html.WebMan
             }
         }
 
-        private static FormHorizontal CreateForm<TModel>(TModel model, string action, ListDataSource source, bool inputMode)
+        private static FormHorizontal CreateForm<TModel>(TModel model, ILocation action, ListDataSource source, bool inputMode)
         {
             var result = new FormHorizontal();
             result.ViewMode = !inputMode;
             result.UseButtonGroup = inputMode;
-            result.Attribute(HtmlAttribute.Action, action);
+            result.Attribute(HtmlAttribute.Action, action.Path);
             foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
                 if (item.Hidden)
@@ -157,7 +157,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="action"></param>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model, string action, ListDataSource source)
+        public static FormHorizontal Create<TModel>(TModel model, ILocation action, ListDataSource source)
         {
             if (source == null) throw new ArgumentNullException("source");
             return CreateForm(model, action, source, true);
@@ -170,7 +170,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="model"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static FormHorizontal Create<TModel>(TModel model, string action)
+        public static FormHorizontal Create<TModel>(TModel model, ILocation action)
         {
             return Create(model, action, new ListDataSource());
         }

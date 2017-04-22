@@ -42,10 +42,10 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建主页文档
         /// </summary>
-        /// <param name="link"></param>
-        public MainDocument(string link)
+        /// <param name="defaultLink">默认链接</param>
+        public MainDocument(ILocation defaultLink)
         {
-            DefaultLink = link;
+            DefaultLink = defaultLink.Path;
             Menu = new TreeList();
             Taskbar = new List<LinkContent>();
         }

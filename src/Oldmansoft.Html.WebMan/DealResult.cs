@@ -54,11 +54,11 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static DealResult Location(string path)
+        public static DealResult Location(ILocation path)
         {
             var result = new DealResult();
             result.CloseOpen = true;
-            result.Path = path;
+            result.Path = path.Path;
             return result;
         }
 
@@ -68,11 +68,11 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="path"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static DealResult Location(string path, string message)
+        public static DealResult Location(ILocation path, string message)
         {
             var result = new DealResult();
             result.CloseOpen = true;
-            result.Path = path;
+            result.Path = path.Path;
             result.Message = message;
             return result;
         }
@@ -86,6 +86,7 @@ namespace Oldmansoft.Html.WebMan
             var result = new DealResult();
             result.CloseOpen = true;
             result.NewData = true;
+            result.Success = true;
             return result;
         }
 
@@ -100,6 +101,7 @@ namespace Oldmansoft.Html.WebMan
             result.CloseOpen = true;
             result.NewData = true;
             result.Message = message;
+            result.Success = true;
             return result;
         }
     }

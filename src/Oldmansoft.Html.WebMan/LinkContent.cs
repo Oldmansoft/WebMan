@@ -39,12 +39,12 @@ namespace Oldmansoft.Html.WebMan
         /// 创建链接内容
         /// </summary>
         /// <param name="text">文字</param>
-        /// <param name="path">路径</param>
+        /// <param name="location">路径</param>
         /// <param name="icon">图标</param>
-        public LinkContent(string text, string path, FontAwesome icon)
+        public LinkContent(string text, ILocation location, FontAwesome icon)
         {
             Text = text;
-            Path = path;
+            Path = location.Path;
             Icon = icon;
         }
     }

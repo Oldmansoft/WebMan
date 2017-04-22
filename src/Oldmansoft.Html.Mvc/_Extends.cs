@@ -18,33 +18,43 @@ namespace Oldmansoft.Html.Mvc
         /// <summary>
         /// 获取控制器的名称
         /// </summary>
-        /// <param name="method"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static string GetControllerName(this MethodBase method)
+        internal static string GetControllerName(this MethodBase source)
         {
-            var dataSourceClassName = method.ReflectedType.Name;
+            var dataSourceClassName = source.ReflectedType.Name;
             return dataSourceClassName.Substring(0, dataSourceClassName.Length - 10);
         }
 
         /// <summary>
         /// 获取方法信息里的路径
         /// </summary>
-        /// <param name="method"></param>
+        /// <param name="source"></param>
+        /// <param name="url"></param>
         /// <returns></returns>
-        public static string GetMethodLocation(this MethodBase method)
+        internal static string GetMethodLocation(this MethodBase source, UrlHelper url)
         {
-            return string.Format("/{0}/{1}", GetControllerName(method), method.Name);
+            return url.Action(source.Name, GetControllerName(source));
         }
 
         /// <summary>
-        /// 创建数据列表源路径
+        /// 获取表达式中的方法
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="dataSource"></param>
         /// <returns></returns>
-        public static ILocation Location(this Controller source, Func<DataTableRequest, JsonResult> dataSource)
+        internal static MethodInfo GetMethod(this LambdaExpression source)
         {
-            return new DataTableLocation(dataSource);
+            if (!(source.Body is UnaryExpression)) return null;
+            var unaryExpression = (UnaryExpression)source.Body;
+
+            if (!(unaryExpression.Operand is MethodCallExpression)) return null;
+            var methodCallExpression = (MethodCallExpression)unaryExpression.Operand;
+
+            if (!(methodCallExpression.Object is ConstantExpression)) return null;
+            var constantExpression = (ConstantExpression)methodCallExpression.Object;
+
+            if (!(constantExpression.Value is MethodInfo)) return null;
+            return (MethodInfo)constantExpression.Value;
         }
 
         /// <summary>

@@ -13,13 +13,13 @@ namespace WebApplication.Controllers
     {
         public ActionResult Index()
         {
-            var document = new MainDocument("/Home/Welcome");
+            var document = new MainDocument(Url.Location(Welcome));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
-            document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", "/Home/Welcome", FontAwesome.Home)));
-            document.Menu.Add(new TreeListBranch(new LinkContent("表格", "/DataTables", FontAwesome.Tablet)));
+            document.Menu.Add(new TreeListBranch(new LinkContent("欢迎", Url.Location(Welcome), FontAwesome.Home)));
+            document.Menu.Add(new TreeListBranch(new LinkContent("表格", Url.Location<DataTablesController>(o => o.Index), FontAwesome.Tablet)));
             document.Taskbar.Add(new LinkContent(FontAwesome.Male));
             document.Taskbar.Add(new LinkContent(FontAwesome.Envelope));
             document.Account = new QuickMenu();
@@ -39,7 +39,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Login()
         {
-            var document = new LoginDocument("/Home/Seed", "/Home/Login");
+            var document = new LoginDocument(Url.Location(new Func<string>(Seed)), Url.Location(new Func<Models.LoginModel, JsonResult>(Login)));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Title = "WebMan";
             return new HtmlResult(document);
@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
         {
             if (model.Account == "root" && !string.IsNullOrEmpty(model.Hash))
             {
-                return Json(DealResult.Location("/"));
+                return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index))));
             }
             else
             {
