@@ -38,6 +38,17 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建链接内容
         /// </summary>
+        /// <param name="text"></param>
+        /// <param name="icon"></param>
+        public LinkContent(string text, FontAwesome icon)
+        {
+            Text = text;
+            Icon = icon;
+        }
+
+        /// <summary>
+        /// 创建链接内容
+        /// </summary>
         /// <param name="text">文字</param>
         /// <param name="location">路径</param>
         /// <param name="icon">图标</param>

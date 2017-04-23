@@ -75,5 +75,16 @@ namespace Oldmansoft.Html
                 return HttpRuntime.AppDomainAppVirtualPath + source.Substring(2);
             }
         }
+
+        /// <summary>
+        /// 是否有子节点
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool HasChild(this IHtmlNode source)
+        {
+            if (source == null) return false;
+            return source.GetNodes().Count > 0;
+        }
     }
 }

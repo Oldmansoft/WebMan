@@ -19,6 +19,7 @@ namespace Oldmansoft.Html.WebMan
         public TreeList()
         {
             Element = new HtmlElement(HtmlTag.Ul);
+            Element.AddClass("side-menu");
         }
 
         /// <summary>

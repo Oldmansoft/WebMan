@@ -55,7 +55,10 @@ namespace Oldmansoft.Html.WebMan
         protected override void Format(IHtmlOutput outer)
         {
             Append(Link.CreateElement());
-            
+            if (Leafs.HasChild())
+            {
+                Append(Leafs);
+            }
             base.Format(outer);
         }
     }

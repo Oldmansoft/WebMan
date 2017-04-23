@@ -116,7 +116,7 @@ namespace Oldmansoft.Html.WebMan
             var result = new FormHorizontal();
             result.ViewMode = !inputMode;
             result.UseButtonGroup = inputMode;
-            result.Attribute(HtmlAttribute.Action, action.Path);
+            if (action != null) result.Attribute(HtmlAttribute.Action, action.Path);
             foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
                 if (item.Hidden)

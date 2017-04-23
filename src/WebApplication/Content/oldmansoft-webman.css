@@ -47,10 +47,27 @@ section.container-fluid {
     overflow: hidden;
 }
 
+.webman-left-panel nav ul.side-menu {
+    margin: 10px;
+}
+
+.webman-left-panel nav ul.side-menu a {
+    cursor: pointer;
+}
+
+.webman-left-panel nav ul.side-menu ul {
+    margin-left: 16px;
+}
+
 .webman-left-panel nav ul {
     list-style: none;
-    margin: 10px;
     padding: 0;
+}
+
+.webman-left-panel nav ul li .fa {
+    font-size: 16px;
+    width: 16px;
+    text-align: center;
 }
 
 .webman-left-panel nav ul li a {
@@ -190,9 +207,16 @@ header ul li a {
 
 .webman-panel {
     margin-top: 15px;
-    margin-bottom: 15px;
     border-radius: 3px;
     background-color: #fcfcfc;
+}
+
+.main-view .webman-panel {
+    margin-bottom: 15px;
+}
+
+.open-view .webman-panel:first-child {
+    margin-top: 0;
 }
 
 .webman-panel>header {

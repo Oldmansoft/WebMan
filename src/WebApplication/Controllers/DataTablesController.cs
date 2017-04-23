@@ -75,7 +75,7 @@ namespace WebApplication.Controllers
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
             panel.Append(form);
 
-            return new HtmlResult(panel.CreateGrid());
+            return new HtmlResult(panel);
         }
 
         [HttpPost]
@@ -144,7 +144,7 @@ namespace WebApplication.Controllers
             var form = FormHorizontal.Create(model);
             panel.Append(form);
 
-            return new HtmlResult(panel.CreateGrid());
+            return new HtmlResult(panel);
         }
     }
 }
