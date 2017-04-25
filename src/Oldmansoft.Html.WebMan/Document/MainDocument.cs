@@ -98,7 +98,7 @@ namespace Oldmansoft.Html.WebMan
             var breadcrumb = new HtmlElement(HtmlTag.Div).AddClass("webman-breadcrumb");
             nav.Append(breadcrumb);
             breadcrumb.Append(new HtmlElement(HtmlTag.Span).Text("位置: "));
-            breadcrumb.Append(new HtmlElement(HtmlTag.Ul));
+            breadcrumb.Append(new HtmlElement(HtmlTag.Ul).AddClass("breadcrumb"));
 
             var main = new HtmlElement(HtmlTag.Div).AddClass("webman-content row");
             panel.Append(main);

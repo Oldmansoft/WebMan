@@ -78,7 +78,6 @@ window.oldmansoft.webman = new (function () {
                 if (!text) {
                     if (view.node.data("link") == links[i]) {
                         text = view.node.find(".webman-panel header h2").text();
-                        icon = view.node.find(".webman-panel header h2").prev().clone();
                     } else {
                         text = "..";
                     }
