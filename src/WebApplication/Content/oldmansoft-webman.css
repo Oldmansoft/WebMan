@@ -285,6 +285,14 @@ header ul li a {
     box-shadow: none;
 }
 
+.dataTables_wrapper {
+    overflow: auto;
+}
+
+.dataTables_wrapper td, .dataTables_wrapper th {
+    white-space: nowrap;
+}
+
 .dataTable-action {
     position: absolute;
     top: -45px;
@@ -316,7 +324,7 @@ table.dataTable tbody td ul {
     padding: 0;
 }
 table.dataTable tbody td ul li {
-    float: left;
+    display: inline-block;
     margin-left: 10px;
 }
 table.dataTable tbody td ul li:first-child {

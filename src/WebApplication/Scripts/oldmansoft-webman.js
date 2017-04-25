@@ -258,43 +258,43 @@ window.oldmansoft.webman = new (function () {
             return width;
         }
         var option = {
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: source,
-                    type: 'POST'
-                },
-                columns: columns,
-                retrieve: true,
-                searching: false,
-                lengthChange: false,
-                autoWidth: false,
-                ordering: false,
-                language: text.dataTable,
-                dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-                initComplete: function () {
-                    var table = view.node.find("." + className);
-
-                    var maxWidth = 0;
-                    table.find("tbody tr td:first-child").each(function () {
-                        var width = computeElementWidth($(this));
-                        if (width > maxWidth) maxWidth = width;
-                    })
-                    if (maxWidth > 0) {
-                        table.find("thead tr th:first-child").width(maxWidth);
-                    }
-
-                    maxWidth = 0;
-                    table.find("tbody tr td:last-child").each(function () {
-                        var width = computeElementWidth($(this).children());
-                        if (width > maxWidth) maxWidth = width;
-                    })
-                    if (maxWidth > 0) {
-                        table.find("thead tr th:last-child").width(maxWidth);
-                    }
-                }
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: source,
+                type: 'POST'
             },
-            node;
+            columns: columns,
+            retrieve: true,
+            searching: false,
+            lengthChange: false,
+            autoWidth: false,
+            ordering: false,
+            language: text.dataTable,
+            dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+            initComplete: function () {
+                var table = view.node.find("." + className);
+
+                var maxWidth = 0;
+                table.find("tbody tr td:first-child").each(function () {
+                    var width = computeElementWidth($(this));
+                    if (width > maxWidth) maxWidth = width;
+                })
+                if (maxWidth > 0) {
+                    table.find("thead tr th:first-child").width(maxWidth);
+                }
+
+                maxWidth = 0;
+                table.find("tbody tr td:last-child").each(function () {
+                    var width = computeElementWidth($(this).children());
+                    if (width > maxWidth) maxWidth = width;
+                })
+                if (maxWidth > 0) {
+                    table.find("thead tr th:last-child").width(maxWidth);
+                }
+            }
+        },
+        node;
         node = view.node.find("." + className);
         node.data("datatable", node.DataTable(option));
     }
