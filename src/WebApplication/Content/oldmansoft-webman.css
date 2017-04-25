@@ -49,6 +49,11 @@ section.container-fluid {
 
 .webman-left-panel nav ul.side-menu ul {
     display: none;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.webman-left-panel nav ul.side-menu ul i:not(.arrow) {
+    display: none;
 }
 
 .webman-left-panel nav ul.side-menu .arrow {
@@ -89,14 +94,11 @@ section.container-fluid {
     color: #fff;
 }
 .webman-left-panel nav ul li.active>a {
+    background-color: #35485a;
     color: #fff;
 }
 
-.webman-left-panel nav ul li.active {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.webman-left-panel nav ul.side-menu li.active>ul {
+.webman-left-panel nav ul.side-menu li.expand>ul {
     display: block;
 }
 
@@ -204,7 +206,7 @@ header ul li a {
     overflow: auto;
 }
 
-.webman-breadcrumb span {
+.webman-breadcrumb>span {
     float: left;
     margin-right: 10px;
 }
@@ -213,10 +215,18 @@ header ul li a {
     padding: 0;
     margin: 0;
     float: left;
-    list-style: none;
+    list-style-type: none;
 }
-.webman-breadcrumb  ul li {
+.webman-breadcrumb ul li {
+    margin-right: 10px;
     float: left;
+}
+.webman-breadcrumb ul li a i {
+    margin-right: 4px;
+}
+
+.webman-breadcrumb ul li a {
+    color: inherit;
 }
 
 .webman-panel {

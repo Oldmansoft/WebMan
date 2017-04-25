@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.15
+* v0.1.16
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -35,31 +35,70 @@ window.oldmansoft.webman = new (function () {
 
     function define_menu() {
         var store = [];
-        $(".webman-left-panel nav ul li a").each(function () {
-            var item = { level: 0, node: $(this) };
+        $(".webman-left-panel ul.side-menu li").each(function () {
+            var item = { level: 0, node: $(this).children("a") };
             store.push(item);
             item.node.click(function () {
-                if ($(this).parent().hasClass("active")) {
-                    $(this).parent().removeClass("active");
+                if ($(this).parent().hasClass("expand")) {
+                    $(this).parent().removeClass("expand");
                     $(this).find(".arrow").removeClass("fa-minus-circle").addClass("fa-plus-circle");
                 } else {
-                    $(this).parent().addClass("active");
+                    $(this).parent().addClass("expand");
                     $(this).find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
                 }
             });
+            if ($(this).children("ul").length > 0) {
+                item.node.append($("<i></i>").addClass("arrow").addClass("fa").addClass("fa-plus-circle"));
+            }
         });
 
-        this.active = function (links) {
-            var i, j;
-            $(".webman-left-panel nav ul li").removeClass("active");
-            for (i = links.length - 1; i > -1; i--) {
+        function setBreadcrumb(links, view, defaultLink) {
+            var i, j, link, node, text, currentLinks, a, icon;
+            node = $(".webman-breadcrumb ul");
+            node.empty();
+            for (i = 0; i < links.length; i++) {
+                link = links[i];
+                if (link == "") link = defaultLink;
+                text = null;
+                icon = null;
                 for (j = 0; j < store.length; j++) {
-                    if (links[i] == store[j].node.attr("href")) {
-                        store[j].node.parentsUntil(".side-menu", "li").addClass("active")
-                            .find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
+                    if (link == store[j].node.attr("href")) {
+                        text = store[j].node.children("span").text();
+                        icon = store[j].node.children("i").clone();
+                        break;
+                    }
+                }
+                
+                currentLinks = links.slice(0, i + 1);
+                currentLinks.splice(0, 0, "");
+                a = $("<a></a>");
+                if (i < links.length - 1) {
+                    a.attr("href", currentLinks.join("#"));
+                }
+                if (!text) {
+                    if (view.node.data("link") == links[i]) {
+                        text = view.node.find(".webman-panel header h2").text();
+                        icon = view.node.find(".webman-panel header h2").prev().clone();
+                    } else {
+                        text = "..";
+                    }
+                }
+                if (icon) a.append(icon);
+                a.append($("<span></span>").text(text));
+                node.append($("<li></li>").append(a));
+            }
+        }
 
-                        $(".webman-breadcrumb ul").empty();
-                        $(".webman-breadcrumb ul").append($("<li></li>").text(store[j].node.text()));
+        this.active = function (links, view, defaultLink) {
+            var i, j, link;
+            setBreadcrumb(links, view, defaultLink);
+            $(".webman-left-panel ul.side-menu li").removeClass("active");
+            for (i = links.length - 1; i > -1; i--) {
+                link = links[i];
+                if (link == "") link = defaultLink;
+                for (j = 0; j < store.length; j++) {
+                    if (link == store[j].node.attr("href")) {
+                        store[j].node.parent().addClass("active").parentsUntil(".side-menu", "li").addClass("expand").find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
                         return true;
                     }
                 }
@@ -259,8 +298,7 @@ window.oldmansoft.webman = new (function () {
         menu = new define_menu();
         $app.init(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
-            var link = view.node.data("link");
-            menu.active(oldmansoft.webapp.hashes());
+            menu.active(oldmansoft.webapp.hashes(), view, defaultLink);
         }).replacePCScrollBar(true);
 
         $(".webman-main-panel").css("min-height", $(window).height());

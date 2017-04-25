@@ -11,8 +11,6 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public class TreeListItem : HtmlElement
     {
-        internal bool IsRoot { get; set; }
-
         private string Display { get; set; }
 
         private ILocation Location { get; set; }
@@ -65,18 +63,11 @@ namespace Oldmansoft.Html.WebMan
         {
             var result = new HtmlElement(HtmlTag.A);
             if (Location != null) result.Attribute(HtmlAttribute.Href, Location.Path);
-            if (IsRoot)
-            {
-                result.Append(Icon.CreateElement());
-            }
+            result.Append(Icon.CreateElement());
             if (!string.IsNullOrEmpty(Display))
             {
                 var span = new HtmlElement(HtmlTag.Span).Text(Display);
                 result.Append(span);
-            }
-            if (Leafs.HasChild())
-            {
-                result.Append(FontAwesome.Plus_Circle.CreateElement().AddClass("arrow"));
             }
             return result;
         }

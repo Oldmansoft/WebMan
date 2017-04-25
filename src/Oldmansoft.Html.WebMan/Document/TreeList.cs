@@ -29,7 +29,6 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public TreeList Add(TreeListItem item)
         {
-            item.IsRoot = true;
             Element.Append(item);
             return this;
         }
