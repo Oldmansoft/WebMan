@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html.WebMan
+namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
-    class ValueGuidDisplay : IValueDisplay
+    class GuidDisplay : IValueDisplay
     {
         public string Convert(object value, ModelItemInfo modelItem)
         {

@@ -20,8 +20,11 @@ namespace WebApplication.Controllers
             var list = new List<Models.DataTableItemModel>();
             for (var i = 0; i < 100; i++)
             {
-                var item = new Models.DataTableItemModel() { Name = "Hello" + (i + 1), IsGood = true, Content = "### heading text" };
+                var item = new Models.DataTableItemModel();
                 item.Id = i + 1;
+                item.Name = "Hello" + (i + 1);
+                item.Password = "^_^";
+                item.Content = "### heading text";
                 item.States = new List<Models.DataTableItemState>();
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.Html.WebMan.DataTables.ValueDealer;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -22,9 +23,10 @@ namespace Oldmansoft.Html.WebMan
         private ValueDisplay()
         {
             SimpleDealers = new Dictionary<Type, IValueDisplay>();
-            SimpleDealers.Add(typeof(Guid), new ValueGuidDisplay());
-            SimpleDealers.Add(typeof(bool), new ValueBoolDisplay());
-            SimpleDealers.Add(typeof(DateTime), new ValueDateTimeDisplay());
+            SimpleDealers.Add(typeof(Guid), new GuidDisplay());
+            SimpleDealers.Add(typeof(bool), new BoolDisplay());
+            SimpleDealers.Add(typeof(DateTime), new DateTimeDisplay());
+            SimpleDealers.Add(typeof(string), new StringDisplay());
 
             GenericDealers = new Dictionary<Type, Func<Type, object, ModelItemInfo, string>>();
             GenericDealers.Add(typeof(Nullable<>), NullableDeal);
