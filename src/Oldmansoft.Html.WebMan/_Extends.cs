@@ -123,8 +123,6 @@ namespace Oldmansoft.Html.WebMan
         public static HtmlElement CreateElement(this LinkContent source)
         {
             var result = new HtmlElement(HtmlTag.A);
-
-            var icon = new HtmlElement(HtmlTag.I).AddClass(string.Format("fa fa-{0}", source.Icon.ToString().ToLower().Replace("_", "-")));
             result.Append(source.Icon.CreateElement());
 
             if (!string.IsNullOrEmpty(source.Text))
@@ -133,7 +131,7 @@ namespace Oldmansoft.Html.WebMan
                 result.Append(span);
             }
 
-            if (!string.IsNullOrEmpty(source.Path)) result.Attribute(HtmlAttribute.Href, source.Path);
+            if (source.Location != null) result.Attribute(HtmlAttribute.Href, source.Location.Path);
             return result;
         }
 

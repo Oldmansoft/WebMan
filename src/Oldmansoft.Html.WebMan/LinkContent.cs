@@ -19,7 +19,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path { get; set; }
+        public ILocation Location { get; set; }
 
         /// <summary>
         /// 图标
@@ -55,7 +55,7 @@ namespace Oldmansoft.Html.WebMan
         public LinkContent(string text, ILocation location, FontAwesome icon)
         {
             Text = text;
-            Path = location.Path;
+            Location = location;
             Icon = icon;
         }
     }

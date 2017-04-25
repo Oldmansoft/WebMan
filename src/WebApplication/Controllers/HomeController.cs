@@ -18,11 +18,11 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
-            document.Menu.Add(new TreeListBranch(new LinkContent("表格", Url.Location<DataTablesController>(o => o.Index), FontAwesome.Tablet)));
+            document.Menu.Add(new TreeListItem("表格", Url.Location<DataTablesController>(o => o.Index), FontAwesome.Tablet));
             document.Menu.Add(
-                new TreeListBranch(new LinkContent("组合", FontAwesome.Suitcase)).Add(
-                    new TreeListBranch(new LinkContent("组合", FontAwesome.Home)).Add(
-                        new TreeListLeaf(new LinkContent("欢迎", Url.Location(Welcome), FontAwesome.Home))
+                new TreeListItem("组合", null, FontAwesome.Suitcase).Add(
+                    new TreeListItem("组合", null, FontAwesome.Home).Add(
+                        new TreeListItem("欢迎", Url.Location(Welcome), FontAwesome.Home)
                     )
                 )
             );

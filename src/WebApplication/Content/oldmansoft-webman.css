@@ -47,16 +47,23 @@ section.container-fluid {
     overflow: hidden;
 }
 
-.webman-left-panel nav ul.side-menu {
-    margin: 10px;
+.webman-left-panel nav ul.side-menu ul {
+    display: none;
+}
+
+.webman-left-panel nav ul.side-menu .arrow {
+    float: right;
+    font-size: 12px;
+    width: 12px;
+    line-height: 21px;
 }
 
 .webman-left-panel nav ul.side-menu a {
     cursor: pointer;
 }
 
-.webman-left-panel nav ul.side-menu ul {
-    margin-left: 16px;
+.webman-left-panel nav ul.side-menu ul li a {
+    padding-left: 32px;
 }
 
 .webman-left-panel nav ul {
@@ -73,17 +80,24 @@ section.container-fluid {
 .webman-left-panel nav ul li a {
     color: #8f939e;
     text-decoration: none;
-    padding: 7px 10px;
+    padding: 7px 4px 7px 10px;
     display: block;
 }
 
-.webman-left-panel nav ul li a:hover,.webman-left-panel nav ul li a:focus {
+.webman-left-panel nav ul li a:hover {
     background-color: #293846;
     color: #fff;
 }
-.webman-left-panel nav ul li a.active {
-    background-color: #35485a;
+.webman-left-panel nav ul li.active>a {
     color: #fff;
+}
+
+.webman-left-panel nav ul li.active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.webman-left-panel nav ul.side-menu li.active>ul {
+    display: block;
 }
 
 .webman-left-panel nav ul li a i {

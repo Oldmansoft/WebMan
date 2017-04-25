@@ -25,25 +25,15 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="branch">分支</param>
+        /// <param name="item">项</param>
         /// <returns></returns>
-        public TreeList Add(TreeListBranch branch)
+        public TreeList Add(TreeListItem item)
         {
-            Element.Append(branch);
+            item.IsRoot = true;
+            Element.Append(item);
             return this;
         }
-
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="leaf">叶子</param>
-        /// <returns></returns>
-        public TreeList Add(TreeListLeaf leaf)
-        {
-            Element.Append(leaf);
-            return this;
-        }
-
+        
         IHtmlElement IHtmlElement.AddClass(string name)
         {
             return Element.AddClass(name);

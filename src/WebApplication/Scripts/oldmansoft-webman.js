@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.14
+* v0.1.15
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -38,17 +38,30 @@ window.oldmansoft.webman = new (function () {
         $(".webman-left-panel nav ul li a").each(function () {
             var item = { level: 0, node: $(this) };
             store.push(item);
+            item.node.click(function () {
+                if ($(this).parent().hasClass("active")) {
+                    $(this).parent().removeClass("active");
+                    $(this).find(".arrow").removeClass("fa-minus-circle").addClass("fa-plus-circle");
+                } else {
+                    $(this).parent().addClass("active");
+                    $(this).find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
+                }
+            });
         });
 
-        this.active = function (link) {
-            $(".webman-left-panel nav ul li a").removeClass("active");
-            for (var i = 0; i < store.length; i++) {
-                if (store[i].node.attr("href") == link) {
-                    store[i].node.addClass("active");
+        this.active = function (links) {
+            var i, j;
+            $(".webman-left-panel nav ul li").removeClass("active");
+            for (i = links.length - 1; i > -1; i--) {
+                for (j = 0; j < store.length; j++) {
+                    if (links[i] == store[j].node.attr("href")) {
+                        store[j].node.parentsUntil(".side-menu", "li").addClass("active")
+                            .find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
 
-                    $(".webman-breadcrumb ul").empty();
-                    $(".webman-breadcrumb ul").append($("<li></li>").text(store[i].node.text()));
-                    return true;
+                        $(".webman-breadcrumb ul").empty();
+                        $(".webman-breadcrumb ul").append($("<li></li>").text(store[j].node.text()));
+                        return true;
+                    }
                 }
             }
             return false;
@@ -247,7 +260,7 @@ window.oldmansoft.webman = new (function () {
         $app.init(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
             var link = view.node.data("link");
-            menu.active(link);
+            menu.active(oldmansoft.webapp.hashes());
         }).replacePCScrollBar(true);
 
         $(".webman-main-panel").css("min-height", $(window).height());
