@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.16
+* v0.1.17
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -78,29 +78,35 @@ window.oldmansoft.webman = new (function () {
                 if (!text) {
                     if (view.node.data("link") == links[i]) {
                         text = view.node.find(".webman-panel header h2").text();
+                        icon = view.node.find(".webman-panel header>i");
                     } else {
                         text = "..";
                     }
                 }
-                if (icon) a.append(icon);
+                if (i < links.length - 1 && icon) a.append(icon);
                 a.append($("<span></span>").text(text));
                 node.append($("<li></li>").append(a));
             }
         }
 
+        function findNode(link, defaultLink) {
+            var i;
+            if (link == "") link = defaultLink;
+            for (i = 0; i < store.length; i++) {
+                if (link == store[i].node.attr("href")) {
+                    return store[i].node.parent();
+                }
+            }
+        }
+
         this.active = function (links, view, defaultLink) {
-            var i, j, link;
+            var node;
             setBreadcrumb(links, view, defaultLink);
             $(".webman-left-panel ul.side-menu li").removeClass("active");
-            for (i = links.length - 1; i > -1; i--) {
-                link = links[i];
-                if (link == "") link = defaultLink;
-                for (j = 0; j < store.length; j++) {
-                    if (link == store[j].node.attr("href")) {
-                        store[j].node.parent().addClass("active").parentsUntil(".side-menu", "li").addClass("expand").find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
-                        return true;
-                    }
-                }
+            node = findNode(links[links.length - 1], defaultLink);
+            if (node) {
+                node.addClass("active").parentsUntil(".side-menu", "li").addClass("expand").find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
+                return true;
             }
             return false;
         }
