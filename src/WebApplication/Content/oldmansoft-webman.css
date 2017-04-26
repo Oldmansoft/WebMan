@@ -37,6 +37,63 @@ section.container-fluid {
     margin-left: 220px;
 }
 
+.mini-nav .webman-left-panel {
+    width: 50px;
+    margin-top: 50px;
+}
+
+.mini-nav .webman-left-panel header {
+    display: none;
+}
+
+.mini-nav .webman-main-panel {
+    margin-left: 50px;
+}
+
+.mini-nav .webman-main-panel>header {
+    margin-left: -50px;
+}
+
+.mini-nav .webman-left-panel nav>ul>li>a span {
+    display: none;
+}
+.mini-nav .webman-left-panel nav>ul>li>a i {
+    font-size: 16px;
+    width: 16px;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu li {
+    position: relative;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu .arrow {
+    display: none;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu li.expand > ul {
+    display: none;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu li > ul {
+    display: block;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu>li>ul {
+    left: 50px !important;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu li ul {
+    position: absolute;
+    background-color: #1d2939;
+    width: 130px;
+    left: 130px;
+    top: 0;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu ul li a {
+    padding-left: 20px;
+}
+
 .webman-left-panel header {
     padding: 10px;
     background-color: #2f4050;
@@ -61,6 +118,7 @@ section.container-fluid {
     font-size: 12px;
     width: 12px;
     line-height: 21px;
+    margin-right: 0;
 }
 
 .webman-left-panel nav ul.side-menu a {
@@ -68,7 +126,7 @@ section.container-fluid {
 }
 
 .webman-left-panel nav ul.side-menu ul li a {
-    padding-left: 37px;
+    padding-left: 47px;
 }
 
 .webman-left-panel nav ul {
@@ -85,7 +143,7 @@ section.container-fluid {
 .webman-left-panel nav ul li a {
     color: #8f939e;
     text-decoration: none;
-    padding: 10px 5px 10px 15px;
+    padding: 14px 15px 14px 15px;
     display: block;
 }
 

@@ -20,10 +20,18 @@ namespace WebApplication.Controllers
             document.Title = "WebMan";
             document.Menu.Add(new TreeListItem("表格", Url.Location<DataTablesController>(o => o.Index), FontAwesome.Tablet));
             document.Menu.Add(
-                new TreeListItem("组合", null, FontAwesome.Suitcase).Add(
-                    new TreeListItem("组合", null, FontAwesome.Home).Add(
+                new TreeListItem("一级菜单", null, FontAwesome.Suitcase)
+                .Add(
+                    new TreeListItem("一", Url.Location(One), FontAwesome.Home)
+                )
+                .Add(
+                    new TreeListItem("二级菜单", null, FontAwesome.Home)
+                    .Add(
                         new TreeListItem("欢迎", Url.Location(Welcome), FontAwesome.Home)
                     )
+                )
+                .Add(
+                    new TreeListItem("二", Url.Location(Two), FontAwesome.Home)
                 )
             );
 
@@ -76,6 +84,16 @@ namespace WebApplication.Controllers
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
+        }
+
+        public ActionResult One()
+        {
+            return Content("Hello");
+        }
+
+        public ActionResult Two()
+        {
+            return Content("World");
         }
     }
 }

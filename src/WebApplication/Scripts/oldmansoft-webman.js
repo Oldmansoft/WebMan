@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.17
+* v0.1.18
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -105,7 +105,7 @@ window.oldmansoft.webman = new (function () {
             $(".webman-left-panel ul.side-menu li").removeClass("active");
             node = findNode(links[links.length - 1], defaultLink);
             if (node) {
-                node.addClass("active").parentsUntil(".side-menu", "li").addClass("expand").find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
+                node.addClass("active").parentsUntil(".side-menu", "li").addClass("expand").children("a").children(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
                 return true;
             }
             return false;
@@ -309,6 +309,14 @@ window.oldmansoft.webman = new (function () {
         $(".webman-main-panel").css("min-height", $(window).height());
         $(window).on("resize", function () {
             $(".webman-main-panel").css("min-height", $(window).height());
+        });
+        $(".webman-bar").on("click", function () {
+            var body = $("body"), className = "mini-nav";
+            if (body.hasClass(className)) {
+                body.removeClass(className);
+            } else {
+                body.addClass(className);
+            }
         });
         $(document).on("click", ".webman-datatables-checkbox", function () {
             $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
