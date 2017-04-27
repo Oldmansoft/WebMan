@@ -70,16 +70,31 @@ section.container-fluid {
     display: none;
 }
 
-.mini-nav .webman-left-panel nav ul.side-menu li.expand > ul {
+.mini-nav .webman-left-panel nav ul.side-menu li.expand>ul {
     display: none;
 }
 
-.mini-nav .webman-left-panel nav ul.side-menu li:hover > ul {
+.mini-nav .webman-left-panel nav ul.side-menu>li:hover {
+    width: 180px;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu>li:hover>a {
+    background-color: #293846;
+    color: #fff;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu li:hover>ul {
     display: block;
+}
+
+.mini-nav .webman-left-panel nav ul.side-menu>li:hover>a span {
+    display: inline-block;
+    margin-left: 28px;
 }
 
 .mini-nav .webman-left-panel nav ul.side-menu>li>ul {
     left: 50px !important;
+    top: 49px !important;
 }
 
 .mini-nav .webman-left-panel nav ul.side-menu li ul {
@@ -91,7 +106,7 @@ section.container-fluid {
 }
 
 .mini-nav .webman-left-panel nav ul.side-menu ul li a {
-    padding-left: 20px;
+    padding-left: 15px;
 }
 
 .webman-left-panel header {
