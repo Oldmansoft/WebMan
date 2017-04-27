@@ -74,7 +74,7 @@ section.container-fluid {
     display: none;
 }
 
-.mini-nav .webman-left-panel nav ul.side-menu li > ul {
+.mini-nav .webman-left-panel nav ul.side-menu li:hover > ul {
     display: block;
 }
 
