@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.18
+* v0.1.19
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -316,6 +316,18 @@ window.oldmansoft.webman = new (function () {
                 body.removeClass(className);
             } else {
                 body.addClass(className);
+            }
+        });
+        $(".side-menu>li>a").on("click", function (e) {
+            if ($(window).width() <= 768) {
+                var menu = $(".side-menu");
+                var index = $(".side-menu>li>a").index($(this));
+                if (menu.data("click") != index) {
+                    menu.data("click", index);
+                    return false;
+                } else {
+                    $(document).click();
+                }
             }
         });
         $(document).on("click", ".webman-datatables-checkbox", function () {

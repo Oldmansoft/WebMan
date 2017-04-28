@@ -1,8 +1,95 @@
-﻿@media (max-width: 830px){
-    .webman-main-panel>header>form {
+﻿@media (max-width: 666px) {
+    .webman-main-panel > header > form {
         display: none;
     }
 }
+@media (max-width: 768px){
+    .mini-nav .webman-left-panel {
+        display: none;
+    }
+
+    .mini-nav .webman-main-panel {
+        margin-left: 0 !important;
+    }
+
+    .mini-nav .webman-main-panel > header {
+        margin-left: 0 !important;
+    }
+
+    .webman-left-panel {
+        width: 50px !important;
+        margin-top: 50px;
+    }
+
+    .webman-left-panel header {
+        display: none;
+    }
+
+    .webman-main-panel {
+        margin-left: 50px !important;
+    }
+
+    .webman-main-panel > header {
+        margin-left: -50px;
+    }
+
+    .webman-left-panel nav > ul > li > a span {
+        display: none;
+    }
+
+    .webman-left-panel nav > ul > li > a i {
+        font-size: 16px;
+        width: 16px;
+    }
+
+    .webman-left-panel nav ul.side-menu li {
+        position: relative;
+    }
+
+    .webman-left-panel nav ul.side-menu .arrow {
+        display: none;
+    }
+
+    .webman-left-panel nav ul.side-menu li.expand > ul {
+        display: none !important;
+    }
+
+    .webman-left-panel nav ul.side-menu > li:hover {
+        width: 180px;
+    }
+
+    .webman-left-panel nav ul.side-menu > li:hover > a {
+        background-color: #293846;
+        color: #fff;
+    }
+
+    .webman-left-panel nav ul.side-menu li:hover > ul {
+        display: block !important;
+    }
+
+    .webman-left-panel nav ul.side-menu > li:hover > a span {
+        display: inline-block;
+        margin-left: 28px;
+    }
+
+    .webman-left-panel nav ul.side-menu > li > ul {
+        left: 50px !important;
+        top: 49px !important;
+    }
+
+    .webman-left-panel nav ul.side-menu li ul {
+        position: absolute;
+        background-color: #1d2939;
+        width: 130px;
+        left: 130px;
+        top: 0;
+    }
+
+    .webman-left-panel nav ul.side-menu ul li a {
+        padding-left: 15px !important;
+    }
+}
+
 body {
     background-color: #1d2939;
     font-family: 'LatoBold', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif;
