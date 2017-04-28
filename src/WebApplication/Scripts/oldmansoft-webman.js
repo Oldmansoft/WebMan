@@ -319,7 +319,7 @@ window.oldmansoft.webman = new (function () {
             }
         });
         $(".side-menu>li>a").on("click", function (e) {
-            if ($(window).width() <= 768) {
+            if ("ontouchmove" in document && $(window).width() <= 768) {
                 var menu = $(".side-menu");
                 var index = $(".side-menu>li>a").index($(this));
                 if (menu.data("click") != index) {
