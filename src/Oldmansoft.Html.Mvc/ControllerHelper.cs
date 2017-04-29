@@ -31,23 +31,23 @@ namespace Oldmansoft.Html.Mvc
         }
 
         /// <summary>
-        /// 获取最后一个方法配置
+        /// 获取最后一个位置配置
         /// </summary>
         /// <returns></returns>
-        public static ConfigurationAttribute GetLastMethodConfiguration()
+        public static LocationAttribute GetLastMethodConfiguration()
         {
             var method = GetLastMethod();
             return GetMethodConfiguration(method);
         }
 
         /// <summary>
-        /// 获取方法配置
+        /// 获取位置配置
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static ConfigurationAttribute GetMethodConfiguration(MethodBase method)
+        public static LocationAttribute GetMethodConfiguration(MethodBase method)
         {
-            var result = method.GetCustomAttribute<ConfigurationAttribute>();
+            var result = method.GetCustomAttribute<LocationAttribute>();
             if (result == null)
             {
                 var title = method.Name;
@@ -56,7 +56,7 @@ namespace Oldmansoft.Html.Mvc
                 {
                     title = title.Substring(0, title.Length - 10);
                 }
-                result = new ConfigurationAttribute(title);
+                result = new LocationAttribute(title);
             }
             return result;
         }

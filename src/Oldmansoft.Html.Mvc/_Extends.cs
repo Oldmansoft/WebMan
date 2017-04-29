@@ -83,10 +83,10 @@ namespace Oldmansoft.Html.Mvc
         }
         
         /// <summary>
-        /// 根据选项进行配置
+        /// 配置位置内容
         /// </summary>
         /// <param name="source"></param>
-        public static void Configure(this Panel source)
+        public static void ConfigLoation(this Panel source)
         {
             var option = ControllerHelper.GetLastMethodConfiguration();
             source.Caption = option.Display;

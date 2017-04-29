@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.Mvc
     /// <summary>
     /// 配置
     /// </summary>
-    public class ConfigurationAttribute : Attribute
+    public class LocationAttribute : Attribute
     {
         /// <summary>
         /// 显示
@@ -30,7 +30,7 @@ namespace Oldmansoft.Html.Mvc
         /// 创建配置
         /// </summary>
         /// <param name="display">显示</param>
-        public ConfigurationAttribute(string display)
+        public LocationAttribute(string display)
         {
             Display = display;
         }

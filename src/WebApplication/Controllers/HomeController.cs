@@ -81,8 +81,7 @@ namespace WebApplication.Controllers
         public ActionResult Welcome()
         {
             var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
+            panel.ConfigLoation();
             var form = new FormHorizontal();
             form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
             form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
@@ -91,13 +90,13 @@ namespace WebApplication.Controllers
             return new HtmlResult(panel.CreateGrid());
         }
 
-        [Configuration("人员", Icon = FontAwesome.Male, Behave = LinkBehave.Open)]
+        [Location("人员", Icon = FontAwesome.Male, Behave = LinkBehave.Open)]
         public ActionResult Male()
         {
             return Content("人员");
         }
 
-        [Configuration("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Link)]
+        [Location("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Link)]
         public ActionResult Envelope()
         {
             return Content("邮件");

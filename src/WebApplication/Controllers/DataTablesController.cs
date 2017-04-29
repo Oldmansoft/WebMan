@@ -37,11 +37,11 @@ namespace WebApplication.Controllers
             return DataSource;
         }
 
-        [Configuration("表格", Icon = FontAwesome.Tablet)]
+        [Location("表格", Icon = FontAwesome.Tablet)]
         public ActionResult Index()
         {
             var panel = new Panel();
-            panel.Configure();
+            panel.ConfigLoation();
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
             table.AddActionTable(Url.Location(Create));
@@ -59,7 +59,7 @@ namespace WebApplication.Controllers
             return Json(DataTable.Source(list, request, GetDataSource().Count));
         }
 
-        [Configuration("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
+        [Location("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Create()
         {
             var model = new Models.DataTableItemModel();
@@ -74,7 +74,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.Configure();
+            panel.ConfigLoation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
             panel.Append(form);
 
@@ -93,7 +93,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index)), "添加成功"));
         }
 
-        [Configuration("修改", Icon = FontAwesome.Anchor)]
+        [Location("修改", Icon = FontAwesome.Anchor)]
         public ActionResult Edit(int selectedId)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
@@ -102,7 +102,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.Configure();
+            panel.ConfigLoation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), source);
             panel.Append(form);
 
@@ -125,7 +125,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Refresh("修改成功"));
         }
 
-        [Configuration("删除", Behave = LinkBehave.Call)]
+        [Location("删除", Behave = LinkBehave.Call)]
         public JsonResult Delete(params int[] selectedId)
         {
             foreach (var id in selectedId)
@@ -138,13 +138,13 @@ namespace WebApplication.Controllers
             return Json(DealResult.Refresh("删除成功"), JsonRequestBehavior.AllowGet);
         }
 
-        [Configuration("详情", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
+        [Location("详情", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Details(int selectedId)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
 
             var panel = new Panel();
-            panel.Configure();
+            panel.ConfigLoation();
             var form = FormHorizontal.Create(model);
             panel.Append(form);
 
