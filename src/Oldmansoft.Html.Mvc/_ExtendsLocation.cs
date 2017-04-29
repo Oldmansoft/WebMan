@@ -14,6 +14,12 @@ namespace Oldmansoft.Html.Mvc
     /// </summary>
     public static class LocationExtends
     {
+        private static ILocation CreateLocation(this UrlHelper url, System.Reflection.MethodInfo method)
+        {
+            var configuration = ControllerHelper.GetMethodConfiguration(method);
+            return WebMan.Location.Create(configuration.Display, method.GetMethodLocation(url), configuration.Icon, configuration.Behave);
+        }
+
         /// <summary>
         /// 创建路径
         /// </summary>
@@ -22,7 +28,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Delegate method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
         
         /// <summary>
@@ -33,7 +39,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -44,7 +50,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<DataTableRequest, JsonResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<int, ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -66,7 +72,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<int[], ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -77,7 +83,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<long, ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -88,7 +94,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<long[], ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -99,7 +105,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<string, ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<string[], ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -121,7 +127,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<Guid, ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -132,7 +138,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location(this UrlHelper source, Func<Guid[], ActionResult> method)
         {
-            return WebMan.Location.Create(method.Method.GetMethodLocation(source));
+            return CreateLocation(source, method.Method);
         }
 
         /// <summary>
@@ -143,7 +149,7 @@ namespace Oldmansoft.Html.Mvc
         /// <returns></returns>
         public static ILocation Location<TController>(this UrlHelper source, Expression<Func<TController, Func<ActionResult>>> method) where TController : Controller
         {
-            return WebMan.Location.Create(method.GetMethod().GetMethodLocation(source));
+            return CreateLocation(source, method.GetMethod());
         }
     }
 }

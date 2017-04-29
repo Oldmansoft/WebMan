@@ -37,18 +37,18 @@ namespace WebApplication.Controllers
             return DataSource;
         }
 
+        [Configuration("表格", Icon = FontAwesome.Tablet)]
         public ActionResult Index()
         {
             var panel = new Panel();
-            panel.Caption = "表格";
-            panel.Icon = FontAwesome.Tablet;
+            panel.Configure();
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
-            table.AddActionTable("添加", Url.Location(Create), LinkBehave.Open);
-            table.AddActionTable("删除", Url.Location(Delete), LinkBehave.Call).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionItem("查看", Url.Location(Details), LinkBehave.Open);
-            table.AddActionItem("修改", Url.Location(Edit), LinkBehave.Link);
-            table.AddActionItem("删除", Url.Location(Delete), LinkBehave.Call).Confirm("是否删除");
+            table.AddActionTable(Url.Location(Create));
+            table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
+            table.AddActionItem(Url.Location(Details));
+            table.AddActionItem(Url.Location(Edit));
+            table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
@@ -59,6 +59,7 @@ namespace WebApplication.Controllers
             return Json(DataTable.Source(list, request, GetDataSource().Count));
         }
 
+        [Configuration("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Create()
         {
             var model = new Models.DataTableItemModel();
@@ -73,8 +74,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
+            panel.Configure();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
             panel.Append(form);
 
@@ -93,6 +93,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index)), "添加成功"));
         }
 
+        [Configuration("修改", Icon = FontAwesome.Anchor)]
         public ActionResult Edit(int selectedId)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
@@ -101,8 +102,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
+            panel.Configure();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), source);
             panel.Append(form);
 
@@ -125,6 +125,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Refresh("修改成功"));
         }
 
+        [Configuration("删除", Behave = LinkBehave.Call)]
         public JsonResult Delete(params int[] selectedId)
         {
             foreach (var id in selectedId)
@@ -137,13 +138,13 @@ namespace WebApplication.Controllers
             return Json(DealResult.Refresh("删除成功"), JsonRequestBehavior.AllowGet);
         }
 
+        [Configuration("详情", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Details(int selectedId)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
 
             var panel = new Panel();
-            panel.Caption = "hello";
-            panel.Icon = FontAwesome.Anchor;
+            panel.Configure();
             var form = FormHorizontal.Create(model);
             panel.Append(form);
 

@@ -269,13 +269,11 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 添加操作表格
         /// </summary>
-        /// <param name="text"></param>
         /// <param name="location"></param>
-        /// <param name="behave"></param>
         /// <returns></returns>
-        public ITableAction AddActionTable(string text, ILocation location, LinkBehave behave)
+        public ITableAction AddActionTable(ILocation location)
         {
-            var action = new DataTableAction(text, location.Path, behave);
+            var action = new DataTableAction(location.Display, location.Path, location.Behave);
             TableActions.Add(action);
             return action;
         }
@@ -284,12 +282,10 @@ namespace Oldmansoft.Html.WebMan
         /// 添加操作数据项
         /// 数据项的主键将用变量 SelectedId 传递
         /// </summary>
-        /// <param name="text"></param>
         /// <param name="location"></param>
-        /// <param name="behave"></param>
-        public IItemAction AddActionItem(string text, ILocation location, LinkBehave behave)
+        public IItemAction AddActionItem(ILocation location)
         {
-            var action = new DataTableAction(text, location.Path, behave);
+            var action = new DataTableAction(location.Display, location.Path, location.Behave);
             ItemActions.Add(action);
             return action;
         }

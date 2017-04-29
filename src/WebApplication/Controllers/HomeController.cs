@@ -18,25 +18,25 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
-            document.Menu.Add(new TreeListItem("表格", Url.Location<DataTablesController>(o => o.Index), FontAwesome.Tablet));
+            document.Menu.Add(new TreeListItem(Url.Location<DataTablesController>(o => o.Index)));
             document.Menu.Add(
-                new TreeListItem("一级菜单", null, FontAwesome.Suitcase)
+                new TreeListItem("一级菜单", FontAwesome.Suitcase)
                 .Add(
-                    new TreeListItem("一", Url.Location(One), FontAwesome.Home)
+                    new TreeListItem(Url.Location(Male))
                 )
                 .Add(
-                    new TreeListItem("二级菜单", null, FontAwesome.Home)
+                    new TreeListItem("二级菜单", FontAwesome.Home)
                     .Add(
-                        new TreeListItem("欢迎", Url.Location(Welcome), FontAwesome.Home)
+                        new TreeListItem(Url.Location(Welcome))
                     )
                 )
                 .Add(
-                    new TreeListItem("二", Url.Location(Two), FontAwesome.Home)
+                    new TreeListItem(Url.Location(Envelope))
                 )
             );
 
-            document.Taskbar.Add(new LinkContent(FontAwesome.Male));
-            document.Taskbar.Add(new LinkContent(FontAwesome.Envelope));
+            document.Taskbar.Add(Url.Location(Male));
+            document.Taskbar.Add(Url.Location(Envelope));
             document.Account = new QuickMenu();
             document.Account.Image = "http://wx.qlogo.cn/mmopen/Q3auHgzwzM6SkLNbjL7Vq3koXuoq1PSv6Nlhp7AmfQjsB02hYG37blVecGupjK3GXm1iaYUKNh2z3PU8R6mo2HRTGfo066Fc2PCibT5B0asBo/0";
             document.Account.Text = "Oldman 老人";
@@ -73,6 +73,11 @@ namespace WebApplication.Controllers
             }
         }
 
+        public ActionResult Logoff()
+        {
+            return RedirectToAction("Login");
+        }
+
         public ActionResult Welcome()
         {
             var panel = new Panel();
@@ -86,14 +91,16 @@ namespace WebApplication.Controllers
             return new HtmlResult(panel.CreateGrid());
         }
 
-        public ActionResult One()
+        [Configuration("人员", Icon = FontAwesome.Male, Behave = LinkBehave.Open)]
+        public ActionResult Male()
         {
-            return Content("Hello");
+            return Content("人员");
         }
 
-        public ActionResult Two()
+        [Configuration("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Link)]
+        public ActionResult Envelope()
         {
-            return Content("World");
+            return Content("邮件");
         }
     }
 }

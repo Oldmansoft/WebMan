@@ -21,17 +21,14 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         public string Image { get; set; }
 
-        /// <summary>
-        /// 菜单项
-        /// </summary>
-        public List<LinkContent> Items { get; private set; }
-
+        private IList<ILocation> Items { get; set; }
+        
         /// <summary>
         /// 创建快速菜单
         /// </summary>
         public QuickMenu()
         {
-            Items = new List<LinkContent>();
+            Items = new List<ILocation>();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 任务栏
         /// </summary>
-        public List<LinkContent> Taskbar { get; private set; }
+        public List<ILocation> Taskbar { get; private set; }
 
         /// <summary>
         /// 帐号资料
@@ -47,7 +47,7 @@ namespace Oldmansoft.Html.WebMan
         {
             DefaultLink = defaultLink.Path;
             Menu = new TreeList();
-            Taskbar = new List<LinkContent>();
+            Taskbar = new List<ILocation>();
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Oldmansoft.Html.WebMan
         {
             var bar = new HtmlElement(HtmlTag.Div).AddClass("webman-bar");
             header.Append(bar);
-            bar.Append(new LinkContent(FontAwesome.Bars).CreateElement());
+            bar.Append(Location.Create(null, null, FontAwesome.Bars, LinkBehave.Link).CreateElement());
 
             if (!string.IsNullOrEmpty(SearchAction))
             {
@@ -129,6 +129,7 @@ namespace Oldmansoft.Html.WebMan
             header.Append(nav);
             foreach (var item in Taskbar)
             {
+                item.Display = null;
                 nav.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
             }
 

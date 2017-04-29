@@ -12,9 +12,24 @@ namespace Oldmansoft.Html.WebMan
     public class Location : ILocation
     {
         /// <summary>
+        /// 显示
+        /// </summary>
+        public string Display { get; set; }
+
+        /// <summary>
         /// 路径
         /// </summary>
         public string Path { get; set; }
+        
+        /// <summary>
+        /// 图标
+        /// </summary>
+        public FontAwesome Icon { get; set; }
+
+        /// <summary>
+        /// 行为
+        /// </summary>
+        public LinkBehave Behave { get; set; }
 
         /// <summary>
         /// 创建路径
@@ -33,6 +48,19 @@ namespace Oldmansoft.Html.WebMan
         public static ILocation Create(string path)
         {
             return new Location(path);
+        }
+
+        /// <summary>
+        /// 创建路径
+        /// </summary>
+        /// <param name="display"></param>
+        /// <param name="path"></param>
+        /// <param name="icon"></param>
+        /// <param name="behave"></param>
+        /// <returns></returns>
+        public static ILocation Create(string display, string path, FontAwesome icon, LinkBehave behave)
+        {
+            return new Location(path) { Display = display, Icon = icon, Behave = behave };
         }
     }
 }

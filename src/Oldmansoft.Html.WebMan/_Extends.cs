@@ -120,18 +120,18 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static HtmlElement CreateElement(this LinkContent source)
+        public static HtmlElement CreateElement(this ILocation source)
         {
             var result = new HtmlElement(HtmlTag.A);
             result.Append(source.Icon.CreateElement());
 
-            if (!string.IsNullOrEmpty(source.Text))
+            if (!string.IsNullOrEmpty(source.Display))
             {
-                var span = new HtmlElement(HtmlTag.Span).Text(source.Text);
+                var span = new HtmlElement(HtmlTag.Span).Text(source.Display);
                 result.Append(span);
             }
 
-            if (source.Location != null) result.Attribute(HtmlAttribute.Href, source.Location.Path);
+            if (source.Path != null) result.Attribute(HtmlAttribute.Href, source.Path);
             return result;
         }
 

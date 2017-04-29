@@ -11,26 +11,30 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public class TreeListItem : HtmlElement
     {
-        private string Display { get; set; }
-
         private ILocation Location { get; set; }
-
-        private FontAwesome Icon { get; set; }
 
         private IHtmlElement Leafs { get; set; }
 
         /// <summary>
         /// 创建菜单项
         /// </summary>
-        /// <param name="text"></param>
         /// <param name="location"></param>
-        /// <param name="icon"></param>
-        public TreeListItem(string text, ILocation location, FontAwesome icon)
+        public TreeListItem(ILocation location)
             : base(HtmlTag.Li)
         {
-            Display = text;
-            Location = location;
-            Icon = icon;
+            Location = location ?? throw new ArgumentNullException();
+            Leafs = new HtmlElement(HtmlTag.Ul);
+        }
+
+        /// <summary>
+        /// 创建菜单项
+        /// </summary>
+        /// <param name="display"></param>
+        /// <param name="icon"></param>
+        public TreeListItem(string display, FontAwesome icon)
+            : base(HtmlTag.Li)
+        {
+            Location = WebMan.Location.Create(display, null, icon, LinkBehave.Link);
             Leafs = new HtmlElement(HtmlTag.Ul);
         }
 
@@ -41,6 +45,7 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public TreeListItem Add(TreeListItem item)
         {
+            if (item == null) throw new ArgumentNullException();
             Leafs.Append(item);
             return this;
         }
@@ -62,11 +67,11 @@ namespace Oldmansoft.Html.WebMan
         private IHtmlElement CreateElement()
         {
             var result = new HtmlElement(HtmlTag.A);
-            if (Location != null) result.Attribute(HtmlAttribute.Href, Location.Path);
-            result.Append(Icon.CreateElement());
-            if (!string.IsNullOrEmpty(Display))
+            if (Location.Path != null) result.Attribute(HtmlAttribute.Href, Location.Path);
+            result.Append(Location.Icon.CreateElement());
+            if (!string.IsNullOrEmpty(Location.Display))
             {
-                var span = new HtmlElement(HtmlTag.Span).Text(Display);
+                var span = new HtmlElement(HtmlTag.Span).Text(Location.Display);
                 result.Append(span);
             }
             return result;

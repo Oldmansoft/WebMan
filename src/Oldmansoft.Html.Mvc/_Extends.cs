@@ -81,5 +81,16 @@ namespace Oldmansoft.Html.Mvc
             }
             return outer.ToString();
         }
+        
+        /// <summary>
+        /// 根据选项进行配置
+        /// </summary>
+        /// <param name="source"></param>
+        public static void Configure(this Panel source)
+        {
+            var option = ControllerHelper.GetLastMethodConfiguration();
+            source.Caption = option.Display;
+            source.Icon = option.Icon;
+        }
     }
 }

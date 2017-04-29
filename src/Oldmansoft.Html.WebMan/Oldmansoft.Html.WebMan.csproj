@@ -132,7 +132,6 @@
     <Compile Include="Document\HtmlDocument.cs" />
     <Compile Include="GridOption.cs" />
     <Compile Include="ILocation.cs" />
-    <Compile Include="LinkContent.cs" />
     <Compile Include="Document\LoginDocument.cs" />
     <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Location.cs" />

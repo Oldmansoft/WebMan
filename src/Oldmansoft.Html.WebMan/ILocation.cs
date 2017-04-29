@@ -12,8 +12,23 @@ namespace Oldmansoft.Html.WebMan
     public interface ILocation
     {
         /// <summary>
+        /// 显示
+        /// </summary>
+        string Display { get; set; }
+
+        /// <summary>
         /// 路径
         /// </summary>
         string Path { get; }
+
+        /// <summary>
+        /// 图标
+        /// </summary>
+        FontAwesome Icon { get; set; }
+
+        /// <summary>
+        /// 行为
+        /// </summary>
+        LinkBehave Behave { get; set; }
     }
 }

@@ -12,13 +12,15 @@ namespace Oldmansoft.Html.WebMan
     public enum LinkBehave
     {
         /// <summary>
-        /// 弹窗
-        /// </summary>
-        Open,
-        /// <summary>
         /// 内联
         /// </summary>
         Link,
+
+        /// <summary>
+        /// 弹窗
+        /// </summary>
+        Open,
+
         /// <summary>
         /// 调用
         /// </summary>
