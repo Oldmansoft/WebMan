@@ -27,7 +27,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 搜索栏地址
         /// </summary>
-        private string SearchAction { get; set; }
+        private ILocation SearchAction { get; set; }
 
         /// <summary>
         /// 任务栏
@@ -35,9 +35,9 @@ namespace Oldmansoft.Html.WebMan
         public List<ILocation> Taskbar { get; private set; }
 
         /// <summary>
-        /// 帐号资料
+        /// 帐号资料快速菜单
         /// </summary>
-        public QuickMenu Account { get; set; }
+        public QuickMenu Quick { get; private set; }
 
         /// <summary>
         /// 创建主页文档
@@ -48,6 +48,7 @@ namespace Oldmansoft.Html.WebMan
             DefaultLink = defaultLink.Path;
             Menu = new TreeList();
             Taskbar = new List<ILocation>();
+            Quick = new QuickMenu();
         }
 
         /// <summary>
@@ -110,17 +111,20 @@ namespace Oldmansoft.Html.WebMan
             header.Append(bar);
             bar.Append(Location.Create(null, null, FontAwesome.Bars, LinkBehave.Link).CreateElement());
 
-            if (!string.IsNullOrEmpty(SearchAction))
+            if (SearchAction != null)
             {
                 var form = new HtmlElement(HtmlTag.Form);
                 header.Append(form);
-                form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction);
+                form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction.Path);
 
                 var input = new HtmlElement(HtmlTag.Input)
                     .Attribute(HtmlAttribute.Type, "text")
                     .Attribute(HtmlAttribute.Name, "keyword")
-                    .Attribute(HtmlAttribute.PlaceHolder, "Search here...")
                     .AddClass("form-control");
+                if (!string.IsNullOrEmpty(SearchAction.Display))
+                {
+                    input.Attribute(HtmlAttribute.PlaceHolder, SearchAction.Display);
+                }
                 var button = new HtmlElement(HtmlTag.I).AddClass("fa fa-search");
                 form.Append(input).Append(button);
             }
@@ -133,15 +137,29 @@ namespace Oldmansoft.Html.WebMan
                 nav.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
             }
 
-            if (Account != null)
+            if (Quick.Avatar.Photo != null || Quick.Avatar.Display != null)
             {
                 var account = new HtmlElement(HtmlTag.A).AddClass("webman-account");
-                if (!string.IsNullOrEmpty(Account.Image))
+                if (!string.IsNullOrEmpty(Quick.Avatar.Photo))
                 {
-                    account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Account.Image));
+                    account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Quick.Avatar.Photo));
                 }
-                account.Append(new HtmlText(Account.Text));
-                nav.Append(new HtmlElement(HtmlTag.Li).Append(account));
+                account.Append(new HtmlText(Quick.Avatar.Display));
+                account.AddClass("dropdown-toggle");
+                account.Data("toggle", "dropdown");
+
+                var quick = new HtmlElement(HtmlTag.Li).Append(account);
+                nav.Append(quick);
+                quick.AddClass("dropdown");
+
+                var quickItems = new HtmlElement(HtmlTag.Ul);
+                quick.Append(quickItems);
+                quickItems.AddClass("dropdown-menu");
+                quickItems.AddClass("pull-right");
+                foreach (var item in Quick.Items)
+                {
+                    quickItems.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
+                }
             }
         }
 
@@ -157,10 +175,10 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 设置搜索栏路径
         /// </summary>
-        /// <param name="action"></param>
-        public void SetSearchAction(string action)
+        /// <param name="location"></param>
+        public void SetSearchAction(ILocation location)
         {
-            SearchAction = action;
+            SearchAction = location;
         }
     }
 }

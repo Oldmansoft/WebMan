@@ -37,10 +37,13 @@ namespace WebApplication.Controllers
 
             document.Taskbar.Add(Url.Location(Male));
             document.Taskbar.Add(Url.Location(Envelope));
-            document.Account = new QuickMenu();
-            document.Account.Image = "http://wx.qlogo.cn/mmopen/Q3auHgzwzM6SkLNbjL7Vq3koXuoq1PSv6Nlhp7AmfQjsB02hYG37blVecGupjK3GXm1iaYUKNh2z3PU8R6mo2HRTGfo066Fc2PCibT5B0asBo/0";
-            document.Account.Text = "Oldman 老人";
-            document.SetSearchAction("/Home/Search");
+
+            document.Quick.Avatar.Photo = "http://wx.qlogo.cn/mmopen/Q3auHgzwzM6SkLNbjL7Vq3koXuoq1PSv6Nlhp7AmfQjsB02hYG37blVecGupjK3GXm1iaYUKNh2z3PU8R6mo2HRTGfo066Fc2PCibT5B0asBo/0";
+            document.Quick.Avatar.Display = "Oldman 老人";
+            document.Quick.Add(Url.Location(Male));
+            document.Quick.Add(Url.Location(Logoff));
+
+            document.SetSearchAction(Url.Location(Search));
             return new HtmlResult(document);
         }
 
@@ -76,6 +79,11 @@ namespace WebApplication.Controllers
         public ActionResult Logoff()
         {
             return RedirectToAction("Login");
+        }
+
+        public ActionResult Search(string key)
+        {
+            return Content("Search " + key);
         }
 
         public ActionResult Welcome()

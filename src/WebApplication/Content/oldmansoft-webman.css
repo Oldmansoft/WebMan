@@ -240,6 +240,7 @@ section.container-fluid {
     font-size: 16px;
     width: 16px;
     text-align: center;
+    margin-right: 6px;
 }
 
 .webman-left-panel nav ul li a {
@@ -260,10 +261,6 @@ section.container-fluid {
 
 .webman-left-panel nav ul.side-menu li.expand>ul {
     display: block;
-}
-
-.webman-left-panel nav ul li a i {
-    margin-right: 6px;
 }
 
 .webman-main-panel {
@@ -321,7 +318,7 @@ section.container-fluid {
     font-size: 18px;
 }
 
-header ul {
+header>ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -329,16 +326,29 @@ header ul {
     float: right;
 }
 
-header ul li {
+header>ul>li {
     float: left;
     border-left: 1px solid #eee;
 }
 
-header ul li a {
+header>ul>li>a {
     display: inline-block;
     padding: 14px 15px 15px;
     color: #333;
     font-size: 16px;
+    cursor: pointer;
+}
+
+header .dropdown-menu a i.fa {
+    font-size: 14px;
+    width: 14px;
+    text-align: center;
+    margin-right: 6px;
+}
+
+header .dropdown-menu a {
+    font-size: 13px;
+    line-height: 25px;
 }
 
 .webman-account {
