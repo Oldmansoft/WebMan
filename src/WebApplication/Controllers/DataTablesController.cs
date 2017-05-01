@@ -125,7 +125,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Refresh("修改成功"));
         }
 
-        [Location("删除", Behave = LinkBehave.Call)]
+        [Location("删除")]
         public JsonResult Delete(params int[] selectedId)
         {
             foreach (var id in selectedId)

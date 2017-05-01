@@ -311,11 +311,13 @@ section.container-fluid {
     float: left;
 }
 
-.webman-main-panel header form i {
+.webman-main-panel header form i.fa-search {
     position: relative;
-    top:15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     right: 24px;
     font-size: 18px;
+    cursor: pointer;
 }
 
 header>ul {

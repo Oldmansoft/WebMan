@@ -115,6 +115,25 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
+        internal static void SetTargetAttribute(this LinkBehave source, IHtmlElement element)
+        {
+            switch (source)
+            {
+                case LinkBehave.Open:
+                    element.Attribute(HtmlAttribute.Target, "_open");
+                    break;
+                case LinkBehave.Call:
+                    element.Attribute(HtmlAttribute.Target, "_call");
+                    break;
+                case LinkBehave.Self:
+                    element.Attribute(HtmlAttribute.Target, "_self");
+                    break;
+                case LinkBehave.Blank:
+                    element.Attribute(HtmlAttribute.Target, "_blank");
+                    break;
+            }
+        }
+
         /// <summary>
         /// 创建元素
         /// </summary>
@@ -132,6 +151,7 @@ namespace Oldmansoft.Html.WebMan
             }
 
             if (source.Path != null) result.Attribute(HtmlAttribute.Href, source.Path);
+            source.Behave.SetTargetAttribute(result);
             return result;
         }
 

@@ -56,25 +56,12 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
-            Append(CreateElement());
+            Append(Location.CreateElement());
             if (Leafs.HasChild())
             {
                 Append(Leafs);
             }
             base.Format(outer);
-        }
-
-        private IHtmlElement CreateElement()
-        {
-            var result = new HtmlElement(HtmlTag.A);
-            if (Location.Path != null) result.Attribute(HtmlAttribute.Href, Location.Path);
-            result.Append(Location.Icon.CreateElement());
-            if (!string.IsNullOrEmpty(Location.Display))
-            {
-                var span = new HtmlElement(HtmlTag.Span).Text(Location.Display);
-                result.Append(span);
-            }
-            return result;
         }
     }
 }

@@ -110,24 +110,7 @@ namespace Oldmansoft.Html.WebMan
             var bar = new HtmlElement(HtmlTag.Div).AddClass("webman-bar");
             header.Append(bar);
             bar.Append(Location.Create(null, null, FontAwesome.Bars, LinkBehave.Link).CreateElement());
-
-            if (SearchAction != null)
-            {
-                var form = new HtmlElement(HtmlTag.Form);
-                header.Append(form);
-                form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction.Path);
-
-                var input = new HtmlElement(HtmlTag.Input)
-                    .Attribute(HtmlAttribute.Type, "text")
-                    .Attribute(HtmlAttribute.Name, "keyword")
-                    .AddClass("form-control");
-                if (!string.IsNullOrEmpty(SearchAction.Display))
-                {
-                    input.Attribute(HtmlAttribute.PlaceHolder, SearchAction.Display);
-                }
-                var button = new HtmlElement(HtmlTag.I).AddClass("fa fa-search");
-                form.Append(input).Append(button);
-            }
+            SetSearchAction(header);
 
             var nav = new HtmlElement(HtmlTag.Ul);
             header.Append(nav);
@@ -137,29 +120,55 @@ namespace Oldmansoft.Html.WebMan
                 nav.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
             }
 
-            if (Quick.Avatar.Photo != null || Quick.Avatar.Display != null)
+            SetQuickMenu(nav);
+        }
+
+        private void SetSearchAction(IHtmlElement header)
+        {
+            if (SearchAction == null) return;
+
+            var form = new HtmlElement(HtmlTag.Form);
+            header.Append(form);
+            form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction.Path);
+            SearchAction.Behave.SetTargetAttribute(form);
+
+            var input = new HtmlElement(HtmlTag.Input)
+                .Attribute(HtmlAttribute.Type, "text")
+                .Attribute(HtmlAttribute.Name, "keyword")
+                .AddClass("form-control");
+            if (!string.IsNullOrEmpty(SearchAction.Display))
             {
-                var account = new HtmlElement(HtmlTag.A).AddClass("webman-account");
-                if (!string.IsNullOrEmpty(Quick.Avatar.Photo))
-                {
-                    account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Quick.Avatar.Photo));
-                }
-                account.Append(new HtmlText(Quick.Avatar.Display));
-                account.AddClass("dropdown-toggle");
-                account.Data("toggle", "dropdown");
+                input.Attribute(HtmlAttribute.PlaceHolder, SearchAction.Display);
+            }
+            
+            var button = new HtmlElement(HtmlTag.I).AddClass("fa fa-search");
+            form.Append(input).Append(button);
+        }
 
-                var quick = new HtmlElement(HtmlTag.Li).Append(account);
-                nav.Append(quick);
-                quick.AddClass("dropdown");
+        private void SetQuickMenu(HtmlElement nav)
+        {
+            if (Quick.Avatar.Photo == null && Quick.Avatar.Display == null) return;
 
-                var quickItems = new HtmlElement(HtmlTag.Ul);
-                quick.Append(quickItems);
-                quickItems.AddClass("dropdown-menu");
-                quickItems.AddClass("pull-right");
-                foreach (var item in Quick.Items)
-                {
-                    quickItems.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
-                }
+            var account = new HtmlElement(HtmlTag.A).AddClass("webman-account");
+            if (!string.IsNullOrEmpty(Quick.Avatar.Photo))
+            {
+                account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Quick.Avatar.Photo));
+            }
+            account.Append(new HtmlText(Quick.Avatar.Display));
+            account.AddClass("dropdown-toggle");
+            account.Data("toggle", "dropdown");
+
+            var quick = new HtmlElement(HtmlTag.Li).Append(account);
+            nav.Append(quick);
+            quick.AddClass("dropdown");
+
+            var quickItems = new HtmlElement(HtmlTag.Ul);
+            quick.Append(quickItems);
+            quickItems.AddClass("dropdown-menu");
+            quickItems.AddClass("pull-right");
+            foreach (var item in Quick.Items)
+            {
+                quickItems.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
             }
         }
 

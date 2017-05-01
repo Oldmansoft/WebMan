@@ -76,14 +76,21 @@ namespace WebApplication.Controllers
             }
         }
 
+        [Location("退出", Behave = LinkBehave.Self)]
         public ActionResult Logoff()
         {
             return RedirectToAction("Login");
         }
 
-        public ActionResult Search(string key)
+        [Location("Search key...")]
+        public JsonResult Search(string keyword)
         {
-            return Content("Search " + key);
+            return Json(DealResult.Location(Url.Location(Call)));
+        }
+
+        public JsonResult Call()
+        {
+            return Json(DealResult.Location(Url.Location(Male)), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Welcome()
@@ -98,13 +105,13 @@ namespace WebApplication.Controllers
             return new HtmlResult(panel.CreateGrid());
         }
 
-        [Location("人员", Icon = FontAwesome.Male, Behave = LinkBehave.Open)]
+        [Location("人员", Icon = FontAwesome.Male)]
         public ActionResult Male()
         {
             return Content("人员");
         }
 
-        [Location("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Link)]
+        [Location("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Open)]
         public ActionResult Envelope()
         {
             return Content("邮件");

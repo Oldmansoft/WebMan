@@ -37,6 +37,11 @@ namespace Oldmansoft.Html.WebMan
         public string Path { get; set; }
 
         /// <summary>
+        /// 重定向行为
+        /// </summary>
+        public LinkBehave Behave { get; set; }
+
+        /// <summary>
         /// 创建错误内容
         /// </summary>
         /// <param name="message"></param>
@@ -52,27 +57,29 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 重定向
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="location"></param>
         /// <returns></returns>
-        public static DealResult Location(ILocation path)
+        public static DealResult Location(ILocation location)
         {
             var result = new DealResult();
             result.CloseOpen = true;
-            result.Path = path.Path;
+            result.Path = location.Path;
+            result.Behave = location.Behave;
             return result;
         }
 
         /// <summary>
         /// 显示消息并重定向
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="location"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static DealResult Location(ILocation path, string message)
+        public static DealResult Location(ILocation location, string message)
         {
             var result = new DealResult();
             result.CloseOpen = true;
-            result.Path = path.Path;
+            result.Path = location.Path;
+            result.Behave = location.Behave;
             result.Message = message;
             return result;
         }

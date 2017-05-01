@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.19
+* v0.1.21
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -7,7 +7,8 @@ window.oldmansoft.webman = new (function () {
     var $this = this,
         menu,
         text,
-        dealMethod;
+        dealMethod,
+        linkBehave;
 
     text = {
         dataTable: {
@@ -31,6 +32,14 @@ window.oldmansoft.webman = new (function () {
     dealMethod = {
         form: 0,
         call: 1
+    }
+
+    linkBehave = {
+        link: 0,
+        open: 1,
+        call: 2,
+        self: 3,
+        blank: 4,
     }
 
     function define_menu() {
@@ -68,7 +77,7 @@ window.oldmansoft.webman = new (function () {
                         break;
                     }
                 }
-                
+
                 currentLinks = links.slice(0, i + 1);
                 currentLinks.splice(0, 0, "");
                 a = $("<a></a>");
@@ -113,7 +122,8 @@ window.oldmansoft.webman = new (function () {
     }
 
     function dealSubmitResultAction(data, method) {
-        var operator;
+        var operator,
+            loading;
         if (data.CloseOpen && method == dealMethod.form) {
             $app.close();
         }
@@ -125,7 +135,20 @@ window.oldmansoft.webman = new (function () {
                 $app.reload();
             }
         } else if (data.Path != null) {
-            $app.sameHash(data.Path);
+            if (data.Behave == linkBehave.link) {
+                $app.sameHash(data.Path);
+            } else if (data.Behave == linkBehave.open) {
+                $app.open(data.Path);
+            } else if (data.Behave == linkBehave.call) {
+                loading = $app.loading();
+                $.get(data.Path).done(function (data) {
+                    dealSubmitResult(data, dealMethod.call);
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            } else if (data.Behave == linkBehave.self) {
+                document.location = data.Path;
+            } else if (data.Behave == linkBehave.blank) {
+                window.open(data.Path);
+            }
         }
     }
 
@@ -138,7 +161,7 @@ window.oldmansoft.webman = new (function () {
             dealSubmitResultAction(data, method);
         }
     }
-    
+
     function getDataTableSelectedIds(a) {
         var ids = [];
         a.parent().next().find("tbody tr td:first-child input[type='checkbox']").each(function () {
@@ -162,15 +185,27 @@ window.oldmansoft.webman = new (function () {
     }
 
     function submitForm(form) {
-        var loading;
-        loading = $app.loading();
-        form.ajaxSubmit().data("jqxhr").done(function (data) {
-            loading.hide();
-            dealSubmitResult(data, dealMethod.form);
-        }).fail(function (error) {
-            loading.hide();
-            $app.alert($(error.responseText).eq(1).text(), error.statusText);
-        });
+        var loading,
+            action = form.attr("action"),
+            target = form.attr("target");
+
+        if (target == "_call") {
+            loading = $app.loading();
+            form.ajaxSubmit().data("jqxhr").done(function (data) {
+                loading.hide();
+                dealSubmitResult(data, dealMethod.form);
+            }).fail(function (error) {
+                loading.hide();
+                $app.alert($(error.responseText).eq(1).text(), error.statusText);
+            });
+        } else if (target == "_open") {
+            $app.open(action, form.serialize());
+        } else if (!target) {
+            $app.hash(action + "?" + form.serialize().replace(/%23/g, ''));
+        } else {
+            return true;
+        }
+        return false;
     }
 
     this.configText = function (fn) {
@@ -217,8 +252,9 @@ window.oldmansoft.webman = new (function () {
         form.bootstrapValidator({
             fields: fields
         }).on('success.form.bv', function (e) {
-            e.preventDefault();
-            submitForm($(e.target));
+            if (!submitForm($(e.target))) {
+                e.preventDefault();
+            }
         });
     }
 
@@ -294,12 +330,20 @@ window.oldmansoft.webman = new (function () {
                 }
             }
         },
-        node;
+            node;
         node = view.node.find("." + className);
         node.data("datatable", node.DataTable(option));
     }
 
     this.init = function (main, defaultLink) {
+        oldmansoft.webapp.configTarget(function (target) {
+            target["_call"] = function (href) {
+                var loading = $app.loading();
+                $.get(href).done(function (data) {
+                    dealSubmitResult(data, dealMethod.call);
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            }
+        });
         menu = new define_menu();
         $app.init(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
@@ -320,8 +364,8 @@ window.oldmansoft.webman = new (function () {
         });
         $(".side-menu>li>a").on("click", function (e) {
             if ("ontouchmove" in document && $(window).width() <= 768) {
-                var menu = $(".side-menu");
-                var index = $(".side-menu>li>a").index($(this));
+                var menu = $(".side-menu"),
+                    index = $(".side-menu>li>a").index($(this));
                 if (menu.data("click") != index) {
                     menu.data("click", index);
                     return false;
@@ -337,8 +381,6 @@ window.oldmansoft.webman = new (function () {
             var action_nothing = 0,
                 action_supportParameter = 1,
                 action_needSelected = 2,
-                behave_open = 0,
-                behave_link = 1,
                 behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
                 action = Number($(this).attr("data-action")),
@@ -348,26 +390,26 @@ window.oldmansoft.webman = new (function () {
 
             function execute() {
                 var loading;
-                if (behave == behave_open) {
+                if (behave == linkBehave.open) {
                     if ((action & action_supportParameter) == action_supportParameter) {
                         $app.open(path, { SelectedId: ids });
                     } else {
                         $app.open(path);
-                }
-                } else if (behave == behave_link) {
+                    }
+                } else if (behave == linkBehave.link) {
                     if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
                         $app.addHash(path);
                     } else {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
-                    }
+                        }
                         $app.addHash(path + "?SelectedId=" + ids.join("&SelectedId="));
-                }
-                } else {
+                    }
+                } else if (behave == linkBehave.call) {
                     loading = $app.loading();
                     if ((action & action_supportParameter) == action_supportParameter) {
                         $.post(path, {
-                                SelectedId: ids
+                            SelectedId: ids
                         }).done(function (data) {
                             dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
@@ -375,25 +417,41 @@ window.oldmansoft.webman = new (function () {
                         $.get(path).done(function (data) {
                             dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
+                    }
+                } else if (behave == linkBehave.self) {
+                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
+                        document.location = path;
+                    } else {
+                        for (var i = 0; i < ids.length; i++) {
+                            ids[i] = encodeURIComponent(ids[i]);
+                        }
+                        document.location = path + "?SelectedId=" + ids.join("&SelectedId=");
+                    }
+                } else if (behave == linkBehave.blank) {
+                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
+                        window.open(path);
+                    } else {
+                        for (var i = 0; i < ids.length; i++) {
+                            ids[i] = encodeURIComponent(ids[i]);
+                        }
+                        window.open(path + "?SelectedId=" + ids.join("&SelectedId="));
+                    }
                 }
             }
-        }
 
             if ((action & action_needSelected) == action_needSelected && ids.length == 0) {
                 $app.alert(text.please_select_item);
                 return;
-        }
+            }
             if (tips) {
                 $app.confirm(tips).yes(execute);
             } else {
                 execute();
-        }
+            }
             node.parents(".main-view").data("operator", node.data("datatable"));
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
-            var behave_open = 0,
-                behave_link = 1,
-                behave = Number($(this).attr("data-behave")),
+            var behave = Number($(this).attr("data-behave")),
                 path = $(this).attr("data-path"),
                 tips = $(this).attr("data-tips"),
                 id = getDataTableItemId($(this)),
@@ -401,30 +459,38 @@ window.oldmansoft.webman = new (function () {
 
             function execute() {
                 var loading;
-                if (behave == behave_open) {
+                if (behave == linkBehave.open) {
                     $app.open(path, { SelectedId: id });
-                } else if (behave == behave_link) {
+                } else if (behave == linkBehave.link) {
                     $app.addHash(path + "?SelectedId=" + id);
-                } else {
+                } else if (behave == linkBehave.call) {
                     loading = $app.loading();
                     $.post(path, {
-                            SelectedId: id
+                        SelectedId: id
                     }).done(function (data) {
                         dealSubmitResult(data, dealMethod.call);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });
+                } else if (behave == linkBehave.self) {
+                    document.location = path + "?SelectedId=" + id;
+                } else if (behave == linkBehave.blank) {
+                    window.open(path + "?SelectedId=" + id);
+                }
             }
-        }
 
             if (tips) {
                 $app.confirm(tips).yes(execute);
             } else {
                 execute();
-        }
+            }
             node.parents(".main-view").data("operator", node.data("datatable"));
         });
         $(document).on("submit", "form:not(.bv-form)", function (e) {
-            e.preventDefault();
-            submitForm($(this));
+            if (!submitForm($(this))) {
+                e.preventDefault();
+            }
+        });
+        $(".webman-main-panel header form i.fa-search").on("click", function () {
+            submitForm($(this).parents("form"));
         });
     }
 

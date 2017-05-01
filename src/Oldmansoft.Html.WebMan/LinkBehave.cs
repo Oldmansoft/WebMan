@@ -12,18 +12,28 @@ namespace Oldmansoft.Html.WebMan
     public enum LinkBehave
     {
         /// <summary>
-        /// 内联
+        /// 内部联接
         /// </summary>
         Link,
 
         /// <summary>
-        /// 弹窗
+        /// 内部弹窗
         /// </summary>
         Open,
 
         /// <summary>
         /// 调用
         /// </summary>
-        Call
+        Call,
+
+        /// <summary>
+        /// 自身
+        /// </summary>
+        Self,
+
+        /// <summary>
+        /// 新窗口
+        /// </summary>
+        Blank
     }
 }

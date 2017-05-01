@@ -117,6 +117,7 @@ namespace Oldmansoft.Html.WebMan
             result.ViewMode = !inputMode;
             result.UseButtonGroup = inputMode;
             if (action != null) result.Attribute(HtmlAttribute.Action, action.Path);
+            action.Behave.SetTargetAttribute(result);
             foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
                 if (item.Hidden)

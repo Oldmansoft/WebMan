@@ -16,8 +16,13 @@ namespace Oldmansoft.Html.Mvc
     {
         private static ILocation CreateLocation(this UrlHelper url, System.Reflection.MethodInfo method)
         {
-            var configuration = ControllerHelper.GetMethodConfiguration(method);
-            return WebMan.Location.Create(configuration.Display, method.GetMethodLocation(url), configuration.Icon, configuration.Behave);
+            var location = ControllerHelper.GetMethodLocation(method);
+            var behave = location.Behave;
+            if (method.ReturnType == typeof(JsonResult) && behave != LinkBehave.Call)
+            {
+                behave = LinkBehave.Call;
+            }
+            return WebMan.Location.Create(location.Display, method.GetMethodLocation(url), location.Icon, behave);
         }
 
         /// <summary>

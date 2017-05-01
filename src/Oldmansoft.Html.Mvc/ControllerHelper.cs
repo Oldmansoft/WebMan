@@ -34,10 +34,10 @@ namespace Oldmansoft.Html.Mvc
         /// 获取最后一个位置配置
         /// </summary>
         /// <returns></returns>
-        public static LocationAttribute GetLastMethodConfiguration()
+        public static LocationAttribute GetLastMethodLocation()
         {
             var method = GetLastMethod();
-            return GetMethodConfiguration(method);
+            return GetMethodLocation(method);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Oldmansoft.Html.Mvc
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationAttribute GetMethodConfiguration(MethodBase method)
+        public static LocationAttribute GetMethodLocation(MethodBase method)
         {
             var result = method.GetCustomAttribute<LocationAttribute>();
             if (result == null)

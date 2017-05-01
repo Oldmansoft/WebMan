@@ -88,7 +88,7 @@ namespace Oldmansoft.Html.Mvc
         /// <param name="source"></param>
         public static void ConfigLoation(this Panel source)
         {
-            var option = ControllerHelper.GetLastMethodConfiguration();
+            var option = ControllerHelper.GetLastMethodLocation();
             source.Caption = option.Display;
             source.Icon = option.Icon;
         }
