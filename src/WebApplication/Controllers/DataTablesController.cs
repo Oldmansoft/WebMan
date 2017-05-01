@@ -86,11 +86,11 @@ namespace WebApplication.Controllers
         {
             if (ModelState.ValidateFail())
             {
-                return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
+                return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
             model.Id = GetDataSource().Max(o => o.Id) + 1;
             GetDataSource().Insert(0, model);
-            return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index)), "添加成功"));
+            return Json(DealResult.Location(Url.Location(Index), "添加成功"));
         }
 
         [Location("修改", Icon = FontAwesome.Anchor)]
@@ -114,7 +114,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.ValidateFail())
             {
-                return Json(DealResult.CreateWrong(ModelState.ValidateMessage()));
+                return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
             var data = GetDataSource().FirstOrDefault(o => o.Id == model.Id);
             if (data != null)
@@ -131,7 +131,7 @@ namespace WebApplication.Controllers
             foreach (var id in selectedId)
             {
                 var model = GetDataSource().FirstOrDefault(o => o.Id == id);
-                if (model == null) return Json(DealResult.CreateWrong("没有删除项"), JsonRequestBehavior.AllowGet);
+                if (model == null) return Json(DealResult.Wrong("没有删除项"), JsonRequestBehavior.AllowGet);
                 GetDataSource().Remove(model);
             }
 

@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan
             col.Append(panel);
             panel.Caption = "登录";
             panel.Icon = FontAwesome.Unlock_Alt;
-
+            panel.AddClass("hide-webapp-close");
             panel.Append(CreateForm(action.Path));
             
             var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seed.Path);

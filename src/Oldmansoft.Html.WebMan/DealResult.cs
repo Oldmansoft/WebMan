@@ -46,7 +46,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static DealResult CreateWrong(string message)
+        public static DealResult Wrong(string message)
         {
             var result = new DealResult();
             result.Success = false;
@@ -65,6 +65,7 @@ namespace Oldmansoft.Html.WebMan
             result.CloseOpen = true;
             result.Path = location.Path;
             result.Behave = location.Behave;
+            result.Success = true;
             return result;
         }
 
@@ -81,6 +82,7 @@ namespace Oldmansoft.Html.WebMan
             result.Path = location.Path;
             result.Behave = location.Behave;
             result.Message = message;
+            result.Success = true;
             return result;
         }
 

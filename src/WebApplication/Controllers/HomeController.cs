@@ -68,11 +68,11 @@ namespace WebApplication.Controllers
         {
             if (model.Account == "root" && !string.IsNullOrEmpty(model.Hash))
             {
-                return Json(DealResult.Location(Url.Location(new Func<ActionResult>(Index))));
+                return Json(DealResult.Location(Url.Location(Index)));
             }
             else
             {
-                return Json(DealResult.CreateWrong("帐号或密码错误"));
+                return Json(DealResult.Wrong("帐号或密码错误"));
             }
         }
 
@@ -83,16 +83,11 @@ namespace WebApplication.Controllers
         }
 
         [Location("Search key...")]
-        public JsonResult Search(string keyword)
+        public ActionResult Search(string keyword)
         {
-            return Json(DealResult.Location(Url.Location(Call)));
+            return Content("Search" + keyword);
         }
-
-        public JsonResult Call()
-        {
-            return Json(DealResult.Location(Url.Location(Male)), JsonRequestBehavior.AllowGet);
-        }
-
+        
         public ActionResult Welcome()
         {
             var panel = new Panel();

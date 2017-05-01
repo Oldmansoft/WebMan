@@ -439,6 +439,10 @@ header .dropdown-menu a {
     display: none;
 }
 
+.hide-webapp-close .webman-panel-tools a.webapp-close {
+    display: none;
+}
+
 .webman-panel>.webman-body {
     clear: both;
     position: relative;
