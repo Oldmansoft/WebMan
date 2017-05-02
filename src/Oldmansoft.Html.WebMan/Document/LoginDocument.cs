@@ -18,13 +18,17 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="action">登录处理地址</param>
         public LoginDocument(ILocation seed, ILocation action)
         {
+            if (seed == null) throw new ArgumentNullException("seed");
+            if (action == null) throw new ArgumentNullException("action");
+            if (action.Behave != LinkBehave.Call) throw new ArgumentException("需要返回 DealResult JSON", "action");
+
             var container = new HtmlElement(HtmlTag.Div).AddClass("container-fluid");
             Body.Append(container);
 
             var row = new HtmlElement(HtmlTag.Div).AddClass("row");
             container.Append(row);
 
-            var col = new HtmlElement(HtmlTag.Div).AddClass("col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3");
+            var col = new HtmlElement(HtmlTag.Div).AddClass("col-sm-6 col-sm-offset-3");
             row.Append(col);
 
             var panel = new Panel();

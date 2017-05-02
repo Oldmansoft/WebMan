@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.21
+* v0.1.22
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -213,8 +213,20 @@ window.oldmansoft.webman = new (function () {
     }
 
     this.setLoginSubmit = function (loginForm, seedPath, accountInput, passwordInput) {
+        $(accountInput).on("keypress", function () {
+            $(this).parent().parent().removeClass("has-error");
+        });
+        $(accountInput).on("change", function () {
+            $(this).parent().parent().removeClass("has-error");
+        });
+        $(passwordInput).on("keypress", function () {
+            $(this).parent().parent().removeClass("has-error");
+        });
+        $(passwordInput).on("change", function () {
+            $(this).parent().parent().removeClass("has-error");
+        });
         $(loginForm).submit(function () {
-            var loading = $app.loading(),
+            var loading,
                 account,
                 password,
                 seedResponse,
@@ -223,8 +235,21 @@ window.oldmansoft.webman = new (function () {
 
             account = $.trim($(accountInput).val());
             password = $(passwordInput).val();
+
+            if (account == "") {
+                $(accountInput).parent().parent().addClass("has-error");
+            }
+            if (password == "") {
+                $(passwordInput).parent().parent().addClass("has-error");
+            }
+            if (account == "" || password == "") {
+                return false;
+            }
+
+            loading = $app.loading()
             seedResponse = $.ajax({ url: seedPath + "?" + new Date().getTime(), async: false });
             if (seedResponse.status != 200) {
+                loading.hide();
                 $app.alert(seedResponse.statusText);
                 return false;
             }
@@ -236,6 +261,9 @@ window.oldmansoft.webman = new (function () {
                 Hash: doubleHash
             }).done(function (data) {
                 loading.hide();
+                data.NewData = false;
+                data.CloseOpen = false;
+                data.Behave = linkBehave.self;
                 dealSubmitResult(data, dealMethod.form);
             }).fail(function (error) {
                 loading.hide();

@@ -43,7 +43,7 @@ namespace Oldmansoft.Html.WebMan.FormValidate
         /// 创建 Json
         /// </summary>
         /// <returns></returns>
-        public string Create()
+        internal string Create()
         {
             var result = new JsonObject();
             foreach (var item in Fields)

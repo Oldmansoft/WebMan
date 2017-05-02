@@ -22,7 +22,8 @@ namespace Oldmansoft.Html.WebMan
         public TreeListItem(ILocation location)
             : base(HtmlTag.Li)
         {
-            Location = location ?? throw new ArgumentNullException();
+            if (location == null) throw new ArgumentNullException();
+            Location = location;
             Leafs = new HtmlElement(HtmlTag.Ul);
         }
 
