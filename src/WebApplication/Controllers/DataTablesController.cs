@@ -41,7 +41,7 @@ namespace WebApplication.Controllers
         public ActionResult Index()
         {
             var panel = new Panel();
-            panel.ConfigLoation();
+            panel.ConfigLocation();
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
             table.AddActionTable(Url.Location(Create));
@@ -74,7 +74,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.ConfigLoation();
+            panel.ConfigLocation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
             panel.Append(form);
 
@@ -102,7 +102,7 @@ namespace WebApplication.Controllers
             source["Age"].Add(new ListDataItem("2", "2"));
 
             var panel = new Panel();
-            panel.ConfigLoation();
+            panel.ConfigLocation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), source);
             panel.Append(form);
 
@@ -144,7 +144,7 @@ namespace WebApplication.Controllers
             var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
 
             var panel = new Panel();
-            panel.ConfigLoation();
+            panel.ConfigLocation();
             var form = FormHorizontal.Create(model);
             panel.Append(form);
 

@@ -364,6 +364,12 @@ header .dropdown-menu a {
     margin-right: 5px;
 }
 
+.webman-account i {
+    font-size: 26px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 .webman-main-panel>nav {
     background-color: #f7f7f7;
     border-bottom: 1px solid #e7eaec;

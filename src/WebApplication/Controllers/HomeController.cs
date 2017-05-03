@@ -91,7 +91,7 @@ namespace WebApplication.Controllers
         public ActionResult Welcome()
         {
             var panel = new Panel();
-            panel.ConfigLoation();
+            panel.ConfigLocation();
             var form = new FormHorizontal();
             form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
             form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));

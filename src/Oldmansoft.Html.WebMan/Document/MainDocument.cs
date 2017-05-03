@@ -150,7 +150,11 @@ namespace Oldmansoft.Html.WebMan
             if (Quick.Avatar.Photo == null && Quick.Avatar.Display == null) return;
 
             var account = new HtmlElement(HtmlTag.A).AddClass("webman-account");
-            if (!string.IsNullOrEmpty(Quick.Avatar.Photo))
+            if (string.IsNullOrEmpty(Quick.Avatar.Photo))
+            {
+                account.Append(FontAwesome.User.CreateElement());
+            }
+            else
             {
                 account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Quick.Avatar.Photo));
             }
@@ -162,6 +166,7 @@ namespace Oldmansoft.Html.WebMan
             nav.Append(quick);
             quick.AddClass("dropdown");
 
+            if (Quick.Items.Count == 0) return;
             var quickItems = new HtmlElement(HtmlTag.Ul);
             quick.Append(quickItems);
             quickItems.AddClass("dropdown-menu");
