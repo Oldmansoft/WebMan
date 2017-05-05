@@ -91,7 +91,7 @@
     <Compile Include="FormInputCreator\Inputs\Bool.cs" />
     <Compile Include="FormInputCreator\Inputs\CheckBoxList.cs" />
     <Compile Include="FormInputCreator\Inputs\Date.cs" />
-    <Compile Include="FormInputCreator\Inputs\DateTime.cs" />
+    <Compile Include="FormInputCreator\Inputs\DateTimeInput.cs" />
     <Compile Include="FormInputCreator\Inputs\File.cs" />
     <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
     <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />

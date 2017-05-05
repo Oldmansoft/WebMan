@@ -12,7 +12,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
         {
             if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.DateTime)
             {
-                result = new Inputs.DateTime();
+                result = new Inputs.DateTimeInput();
                 result.Init(input.ModelItem.Name, input.Value, null, null);
                 return true;
             }

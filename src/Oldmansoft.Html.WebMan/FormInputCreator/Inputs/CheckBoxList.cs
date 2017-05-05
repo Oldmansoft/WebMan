@@ -7,25 +7,46 @@ using Oldmansoft.Html.WebMan.Input;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
-    class CheckBoxList : FormInput
+    /// <summary>
+    /// 多选框列表组件
+    /// </summary>
+    public class CheckBoxList : FormInput
     {
+        /// <summary>
+        /// 名称
+        /// </summary>
         protected string Name { get; set; }
 
+        /// <summary>
+        /// 值
+        /// </summary>
         protected IEnumerable<string> Values { get; set; }
 
+        /// <summary>
+        /// 选项列表
+        /// </summary>
         protected IList<ListDataItem> Options { get; set; }
         
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="options"></param>
+        /// <param name="scripts"></param>
         public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
         {
             Name = name;
             Values = value.GetListString();
-            if (Values == null)
-            {
-                Values = new string[] { };
-            }
             Options = options;
         }
 
+        /// <summary>
+        /// 设置输入模式
+        /// </summary>
+        /// <param name="disabled"></param>
+        /// <param name="readony"></param>
+        /// <param name="hint"></param>
         public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Div;
@@ -49,6 +70,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             }
         }
 
+        /// <summary>
+        /// 设置查看模式
+        /// </summary>
         public override void SetViewMode()
         {
             Tag = HtmlTag.Ul;

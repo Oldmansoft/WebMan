@@ -200,9 +200,13 @@ namespace Oldmansoft.Html.WebMan
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
                     span.Text(item.Text);
+
+                    if (item.IsSupportParameter)
+                    {
+                        IsDisplayCheckboxColumn = true;
+                    }
                 }
                 ((IHtmlElement)tableAction).Format(outer);
-                IsDisplayCheckboxColumn = true;
             }
 
             foreach(var item in FrontNodes)

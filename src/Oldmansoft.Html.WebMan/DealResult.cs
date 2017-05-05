@@ -55,6 +55,21 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 刷新数据
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static DealResult WrongRefresh(string message)
+        {
+            var result = new DealResult();
+            result.CloseOpen = true;
+            result.NewData = true;
+            result.Message = message;
+            result.Success = false;
+            return result;
+        }
+
+        /// <summary>
         /// 重定向
         /// </summary>
         /// <param name="location"></param>

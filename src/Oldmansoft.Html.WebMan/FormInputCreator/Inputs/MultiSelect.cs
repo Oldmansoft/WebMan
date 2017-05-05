@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
-    class MultiSelect : CheckBoxList
+    /// <summary>
+    /// 多选下拉列表组件
+    /// </summary>
+    public class MultiSelect : CheckBoxList
     {
+        /// <summary>
+        /// 设置输入模式
+        /// </summary>
+        /// <param name="disabled"></param>
+        /// <param name="readony"></param>
+        /// <param name="hint"></param>
         public override void SetInputMode(bool disabled, bool readony, string hint)
         {
             Tag = HtmlTag.Select;
