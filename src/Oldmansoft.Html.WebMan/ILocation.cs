@@ -19,7 +19,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 路径
         /// </summary>
-        string Path { get; }
+        string Path { get; set; }
 
         /// <summary>
         /// 图标
@@ -30,5 +30,10 @@ namespace Oldmansoft.Html.WebMan
         /// 行为
         /// </summary>
         LinkBehave Behave { get; set; }
+
+        /// <summary>
+        /// 路径所指向的方法
+        /// </summary>
+        System.Reflection.MethodInfo Method { get; set; }
     }
 }

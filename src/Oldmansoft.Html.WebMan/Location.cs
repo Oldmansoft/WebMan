@@ -32,6 +32,11 @@ namespace Oldmansoft.Html.WebMan
         public LinkBehave Behave { get; set; }
 
         /// <summary>
+        /// 路径所指向的方法
+        /// </summary>
+        public System.Reflection.MethodInfo Method { get; set; }
+
+        /// <summary>
         /// 创建路径
         /// </summary>
         /// <param name="path"></param>

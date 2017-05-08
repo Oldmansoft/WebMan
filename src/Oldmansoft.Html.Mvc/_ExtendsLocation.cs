@@ -22,7 +22,9 @@ namespace Oldmansoft.Html.Mvc
             {
                 behave = LinkBehave.Call;
             }
-            return WebMan.Location.Create(location.Display, method.GetMethodLocation(url), location.Icon, behave);
+            var result = WebMan.Location.Create(location.Display, method.GetMethodLocation(url), location.Icon, behave);
+            result.Method = method;
+            return result;
         }
 
         /// <summary>

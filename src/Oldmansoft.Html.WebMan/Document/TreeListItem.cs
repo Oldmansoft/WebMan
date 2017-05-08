@@ -11,7 +11,10 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public class TreeListItem : HtmlElement
     {
-        private ILocation Location { get; set; }
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public ILocation Location { get; private set; }
 
         private IHtmlElement Leafs { get; set; }
 
