@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Reflection;
 
-namespace Oldmansoft.Html.Mvc
+namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 路径扩展

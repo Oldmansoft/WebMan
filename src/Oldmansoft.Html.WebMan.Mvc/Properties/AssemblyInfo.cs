@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Oldmansoft.Html.Mvc")]
+[assembly: AssemblyTitle("Oldmansoft.Html.WebMan.Mvc")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Oldmansoft.Html.Mvc")]
+[assembly: AssemblyProduct("Oldmansoft.Html.WebMan.Mvc")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -7,8 +7,8 @@
     <ProjectGuid>{0F3A33E2-FF1B-473A-B6AC-77EAE8287D27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Oldmansoft.Html.Mvc</RootNamespace>
-    <AssemblyName>Oldmansoft.Html.Mvc</AssemblyName>
+    <RootNamespace>Oldmansoft.Html.WebMan</RootNamespace>
+    <AssemblyName>Oldmansoft.Html.WebMan.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Oldmansoft.Html.Mvc.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Oldmansoft.Html.WebMan.Mvc.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

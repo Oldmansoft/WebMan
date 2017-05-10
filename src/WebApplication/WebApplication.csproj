@@ -205,9 +205,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Oldmansoft.Html.Mvc\Oldmansoft.Html.Mvc.csproj">
+    <ProjectReference Include="..\Oldmansoft.Html.WebMan.Mvc\Oldmansoft.Html.WebMan.Mvc.csproj">
       <Project>{0f3a33e2-ff1b-473a-b6ac-77eae8287d27}</Project>
-      <Name>Oldmansoft.Html.Mvc</Name>
+      <Name>Oldmansoft.Html.WebMan.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Oldmansoft.Html.WebMan\Oldmansoft.Html.WebMan.csproj">
       <Project>{22770d16-1e7f-4775-909f-a6db1ba3091c}</Project>

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html.Mvc
+namespace Oldmansoft.Html.WebMan
 {
     class ControllerHelper
     {

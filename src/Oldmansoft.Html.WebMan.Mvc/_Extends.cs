@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Oldmansoft.Html.Mvc
+namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 扩展方法
