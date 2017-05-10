@@ -35,5 +35,10 @@ namespace Oldmansoft.Html.WebMan
         /// 路径所指向的方法
         /// </summary>
         System.Reflection.MethodInfo Method { get; set; }
+
+        /// <summary>
+        /// 路径所指向对象的类型
+        /// </summary>
+        Type TargetType { get; set; }
     }
 }

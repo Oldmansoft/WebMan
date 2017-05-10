@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.23
+* v0.1.24
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -14,6 +14,7 @@ window.oldmansoft.webman = new (function () {
         dataTable: {
             info: "Showing _START_ to _END_ of _TOTAL_ entries",
             infoEmpty: "Empty",
+            emptyTable: "No data available in table",
             processing: "Processing...",
             paginate: {
                 first: "First",
@@ -338,7 +339,7 @@ window.oldmansoft.webman = new (function () {
             ordering: false,
             language: text.dataTable,
             dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-            initComplete: function () {
+            drawCallback: function () {
                 var table = view.node.find("." + className);
 
                 var maxWidth = 0;
