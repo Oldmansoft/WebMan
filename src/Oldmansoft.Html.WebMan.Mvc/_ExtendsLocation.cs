@@ -59,9 +59,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static ILocation Location(this UrlHelper source, Delegate method)
+        public static LocationBind<object> Location(this UrlHelper source, Delegate method)
         {
-            return CreateLocation(source, method.Method, method.Target.GetType());
+            return new LocationBind<object>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
         
         /// <summary>
@@ -87,14 +87,47 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 创建路径
+        /// 创建数据列表源路径
         /// </summary>
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<int> Location(this UrlHelper source, Func<int, ActionResult> method)
+        public static LocationBind<int> Location(this UrlHelper source, Func<int, DataTableRequest, JsonResult> method)
         {
-            return new LocationParameter<int>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<int>(CreateLocation(source, method.Method, method.Target.GetType()));
+        }
+
+        /// <summary>
+        /// 创建数据列表源路径
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static LocationBind<long> Location(this UrlHelper source, Func<long, DataTableRequest, JsonResult> method)
+        {
+            return new LocationBind<long>(CreateLocation(source, method.Method, method.Target.GetType()));
+        }
+
+        /// <summary>
+        /// 创建数据列表源路径
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static LocationBind<string> Location(this UrlHelper source, Func<string, DataTableRequest, JsonResult> method)
+        {
+            return new LocationBind<string>(CreateLocation(source, method.Method, method.Target.GetType()));
+        }
+
+        /// <summary>
+        /// 创建数据列表源路径
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static LocationBind<Guid> Location(this UrlHelper source, Func<Guid, DataTableRequest, JsonResult> method)
+        {
+            return new LocationBind<Guid>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -103,9 +136,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<int[]> Location(this UrlHelper source, Func<int[], ActionResult> method)
+        public static LocationBind<int> Location(this UrlHelper source, Func<int, ActionResult> method)
         {
-            return new LocationParameter<int[]>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<int>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -114,9 +147,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<long> Location(this UrlHelper source, Func<long, ActionResult> method)
+        public static LocationBind<int[]> Location(this UrlHelper source, Func<int[], ActionResult> method)
         {
-            return new LocationParameter<long>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<int[]>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -125,9 +158,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<long[]> Location(this UrlHelper source, Func<long[], ActionResult> method)
+        public static LocationBind<long> Location(this UrlHelper source, Func<long, ActionResult> method)
         {
-            return new LocationParameter<long[]>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<long>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -136,9 +169,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<string> Location(this UrlHelper source, Func<string, ActionResult> method)
+        public static LocationBind<long[]> Location(this UrlHelper source, Func<long[], ActionResult> method)
         {
-            return new LocationParameter<string>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<long[]>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -147,9 +180,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<string[]> Location(this UrlHelper source, Func<string[], ActionResult> method)
+        public static LocationBind<string> Location(this UrlHelper source, Func<string, ActionResult> method)
         {
-            return new LocationParameter<string[]>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<string>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -158,9 +191,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<Guid> Location(this UrlHelper source, Func<Guid, ActionResult> method)
+        public static LocationBind<string[]> Location(this UrlHelper source, Func<string[], ActionResult> method)
         {
-            return new LocationParameter<Guid>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<string[]>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -169,9 +202,20 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<Guid[]> Location(this UrlHelper source, Func<Guid[], ActionResult> method)
+        public static LocationBind<Guid> Location(this UrlHelper source, Func<Guid, ActionResult> method)
         {
-            return new LocationParameter<Guid[]>(CreateLocation(source, method.Method, method.Target.GetType()));
+            return new LocationBind<Guid>(CreateLocation(source, method.Method, method.Target.GetType()));
+        }
+
+        /// <summary>
+        /// 创建路径
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static LocationBind<Guid[]> Location(this UrlHelper source, Func<Guid[], ActionResult> method)
+        {
+            return new LocationBind<Guid[]>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
 
         /// <summary>
@@ -191,9 +235,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<int> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<int, ActionResult>>> method) where TController : Controller
+        public static LocationBind<int> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<int, ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<int>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<int>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -202,9 +246,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<int[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<int[], ActionResult>>> method) where TController : Controller
+        public static LocationBind<int[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<int[], ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<int[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<int[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -213,9 +257,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<long> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<long, ActionResult>>> method) where TController : Controller
+        public static LocationBind<long> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<long, ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<long>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<long>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -224,9 +268,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<long[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<long[], ActionResult>>> method) where TController : Controller
+        public static LocationBind<long[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<long[], ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<long[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<long[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -235,9 +279,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<string> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<string, ActionResult>>> method) where TController : Controller
+        public static LocationBind<string> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<string, ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<string>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<string>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -246,9 +290,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<string[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<string[], ActionResult>>> method) where TController : Controller
+        public static LocationBind<string[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<string[], ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<string[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<string[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -257,9 +301,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<Guid> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<Guid, ActionResult>>> method) where TController : Controller
+        public static LocationBind<Guid> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<Guid, ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<Guid>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<Guid>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
 
         /// <summary>
@@ -268,9 +312,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationParameter<Guid[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<Guid[], ActionResult>>> method) where TController : Controller
+        public static LocationBind<Guid[]> Location<TController>(this UrlHelper source, Expression<Func<TController, Func<Guid[], ActionResult>>> method) where TController : Controller
         {
-            return new LocationParameter<Guid[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
+            return new LocationBind<Guid[]>(CreateLocation(source, method.GetMethod(), typeof(TController)));
         }
     }
 }

@@ -8,33 +8,29 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 路径提供者设置参数
+    /// 路径提供者绑定参数
     /// </summary>
     /// <typeparam name="TParameter"></typeparam>
-    public class LocationParameter<TParameter> : ILocation
+    public class LocationBind<TParameter> : ILocation
     {
         /// <summary>
         /// 路径
         /// </summary>
-        protected ILocation Location { get; set; }
-
+        protected ILocation Location { get; private set; }
+        
         /// <summary>
-        /// 键
+        /// 键值对
         /// </summary>
-        protected string Key { get; set; }
-
-        /// <summary>
-        /// 值
-        /// </summary>
-        protected TParameter Value { get; set; }
-
+        protected Dictionary<string, TParameter> KeyValues { get; private set; }
+        
         /// <summary>
         /// 创建
         /// </summary>
         /// <param name="location"></param>
-        public LocationParameter(ILocation location)
+        public LocationBind(ILocation location)
         {
             Location = location;
+            KeyValues = new Dictionary<string, TParameter>();
         }
 
         /// <summary>
@@ -43,10 +39,9 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public LocationParameter<TParameter> Set(string key, TParameter value)
+        public LocationBind<TParameter> Set(string key, TParameter value)
         {
-            Key = key;
-            Value = value;
+            KeyValues[key] = value;
             return this;
         }
 
@@ -117,43 +112,33 @@ namespace Oldmansoft.Html.WebMan
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(Key) || Value == null)
-                {
-                    return Location.Path;
-                }
-                
+                var isFirst = true;
                 var result = new StringBuilder();
                 result.Append(Location.Path);
-                if (Location.Path.IndexOf("?") > -1)
+                foreach (var item in KeyValues)
                 {
-                    result.Append("&");
-                }
-                else
-                {
-                    result.Append("?");
-                }
-                if (Value is System.Collections.IEnumerable)
-                {
-                    var isFirst = true;
-                    foreach (var item in Value as System.Collections.IEnumerable)
+                    if (string.IsNullOrWhiteSpace(item.Key) || item.Value == null)
                     {
-                        if (item == null) continue;
-                        if (!isFirst)
+                        continue;
+                    }
+                    
+                    if (item.Value is System.Collections.IEnumerable)
+                    {
+
+                        foreach (var value in item.Value as System.Collections.IEnumerable)
                         {
-                            result.Append("&");
+                            if (value == null) continue;
+
+                            SetLocationPrefix(isFirst, result);
+                            SetKeyValue(result, item.Key, value);
                         }
-                        else
-                        {
-                            isFirst = false;
-                        }
-                        SetKeyValue(result, item);
+                    }
+                    else
+                    {
+                        SetLocationPrefix(isFirst, result);
+                        SetKeyValue(result, item.Key, item.Value);
                     }
                 }
-                else
-                {
-                    SetKeyValue(result, Value);
-                }
-
                 return result.ToString();
             }
             set
@@ -162,9 +147,28 @@ namespace Oldmansoft.Html.WebMan
             }
         }
 
-        private void SetKeyValue(StringBuilder result, object value)
+        private void SetLocationPrefix(bool isFirst, StringBuilder result)
         {
-            result.Append(System.Web.HttpUtility.UrlEncode(Key));
+            if (isFirst)
+            {
+                if (Location.Path.IndexOf("?") > -1)
+                {
+                    result.Append("&");
+                }
+                else
+                {
+                    result.Append("?");
+                }
+            }
+            else
+            {
+                result.Append("&");
+            }
+        }
+
+        private void SetKeyValue(StringBuilder result, string key, object value)
+        {
+            result.Append(System.Web.HttpUtility.UrlEncode(key));
             result.Append("=");
             if (value is string)
             {

@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.24
+* v0.1.25
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -41,6 +41,13 @@ window.oldmansoft.webman = new (function () {
         call: 2,
         self: 3,
         blank: 4,
+    }
+
+    function bindUrlParamter(path, parameter) {
+        if (!parameter) return path;
+        if (!path) return "?" + parameter;
+        if (path.indexOf("?") > -1) return path + "&" + parameter;
+        return path + "?" + parameter;
     }
 
     function define_menu() {
@@ -434,7 +441,7 @@ window.oldmansoft.webman = new (function () {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
                         }
-                        $app.addHash(path + "?SelectedId=" + ids.join("&SelectedId="));
+                        $app.addHash(bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId=")));
                     }
                 } else if (behave == linkBehave.call) {
                     loading = $app.loading();
@@ -456,7 +463,7 @@ window.oldmansoft.webman = new (function () {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
                         }
-                        document.location = path + "?SelectedId=" + ids.join("&SelectedId=");
+                        document.location = bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId="));
                     }
                 } else if (behave == linkBehave.blank) {
                     if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
@@ -465,7 +472,7 @@ window.oldmansoft.webman = new (function () {
                         for (var i = 0; i < ids.length; i++) {
                             ids[i] = encodeURIComponent(ids[i]);
                         }
-                        window.open(path + "?SelectedId=" + ids.join("&SelectedId="));
+                        window.open(bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId=")));
                     }
                 }
             }
@@ -493,7 +500,7 @@ window.oldmansoft.webman = new (function () {
                 if (behave == linkBehave.open) {
                     $app.open(path, { SelectedId: id });
                 } else if (behave == linkBehave.link) {
-                    $app.addHash(path + "?SelectedId=" + id);
+                    $app.addHash(bindUrlParamter(path, "SelectedId=" + id));
                 } else if (behave == linkBehave.call) {
                     loading = $app.loading();
                     $.post(path, {
@@ -502,9 +509,9 @@ window.oldmansoft.webman = new (function () {
                         dealSubmitResult(data, dealMethod.call);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });
                 } else if (behave == linkBehave.self) {
-                    document.location = path + "?SelectedId=" + id;
+                    document.location = bindUrlParamter(path, "SelectedId=" + id);
                 } else if (behave == linkBehave.blank) {
-                    window.open(path + "?SelectedId=" + id);
+                    window.open(bindUrlParamter(path, "SelectedId=" + id));
                 }
             }
 

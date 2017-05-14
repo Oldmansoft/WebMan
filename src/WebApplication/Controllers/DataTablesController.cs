@@ -37,7 +37,7 @@ namespace WebApplication.Controllers
         }
 
         [Location("表格", Icon = FontAwesome.Tablet)]
-        public ActionResult Index(Guid[] id)
+        public ActionResult Index()
         {
             var panel = new Panel();
             panel.ConfigLocation();
@@ -48,6 +48,7 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(Details));
             table.AddActionItem(Url.Location(Edit));
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
+            table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

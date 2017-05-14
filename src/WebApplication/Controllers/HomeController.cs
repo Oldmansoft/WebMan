@@ -17,7 +17,7 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Resources.Markdown.Enabled = true;
             document.Title = "WebMan";
-            document.Menu.Add(new TreeListItem(Url.Location<DataTablesController>(o => o.Index).Set("id", new Guid[] { Guid.Empty, Guid.Empty })));
+            document.Menu.Add(new TreeListItem(Url.Location<DataTablesController>(o => o.Index)));
             document.Menu.Add(
                 new TreeListItem("一级菜单", FontAwesome.Suitcase)
                 .Add(
