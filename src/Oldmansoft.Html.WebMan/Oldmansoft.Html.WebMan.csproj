@@ -135,6 +135,7 @@
     <Compile Include="Document\LoginDocument.cs" />
     <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="LocationParameter.cs" />
     <Compile Include="Util\ModelItemInfo.cs" />
     <Compile Include="Util\ModelProvider.cs" />
     <Compile Include="Panel.cs" />

@@ -37,7 +37,7 @@ namespace WebApplication.Controllers
         }
 
         [Location("表格", Icon = FontAwesome.Tablet)]
-        public ActionResult Index()
+        public ActionResult Index(Guid[] id)
         {
             var panel = new Panel();
             panel.ConfigLocation();
