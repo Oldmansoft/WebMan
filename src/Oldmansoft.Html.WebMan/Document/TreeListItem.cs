@@ -25,7 +25,9 @@ namespace Oldmansoft.Html.WebMan
         public TreeListItem(ILocation location)
             : base(HtmlTag.Li)
         {
-            if (location == null) throw new ArgumentNullException();
+            if (location == null) throw new ArgumentNullException("location");
+            if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
+
             Location = location;
             Leafs = new HtmlElement(HtmlTag.Ul);
         }
@@ -49,7 +51,7 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public TreeListItem Add(TreeListItem item)
         {
-            if (item == null) throw new ArgumentNullException();
+            if (item == null) throw new ArgumentNullException("item");
             Leafs.Append(item);
             return this;
         }

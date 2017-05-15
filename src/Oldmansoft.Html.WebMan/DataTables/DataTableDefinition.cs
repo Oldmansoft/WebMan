@@ -277,7 +277,28 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public ITableAction AddActionTable(ILocation location)
         {
+            if (location == null) throw new ArgumentNullException("location");
+            if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
+
             var action = new DataTableAction(location.Display, location.Path, location.Behave);
+            TableActions.Add(action);
+            return action;
+        }
+
+
+        /// <summary>
+        /// 添加操作表格
+        /// 被选择的数据项的主键将用脚本变量 $man.parameter 传递
+        /// </summary>
+        /// <param name="display"></param>
+        /// <param name="script"></param>
+        /// <returns></returns>
+        public IItemAction AddActionTable(string display, string script)
+        {
+            if (display == null) throw new ArgumentNullException("display");
+            if (script == null) throw new ArgumentNullException("script");
+
+            var action = new DataTableAction(display, script, LinkBehave.Script);
             TableActions.Add(action);
             return action;
         }
@@ -289,7 +310,27 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="location"></param>
         public IItemAction AddActionItem(ILocation location)
         {
+            if (location == null) throw new ArgumentNullException("location");
+            if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
+
             var action = new DataTableAction(location.Display, location.Path, location.Behave);
+            ItemActions.Add(action);
+            return action;
+        }
+
+        /// <summary>
+        /// 添加操作数据项
+        /// 数据项的主键将用脚本变量 $man.parameter 传递
+        /// </summary>
+        /// <param name="display"></param>
+        /// <param name="script"></param>
+        /// <returns></returns>
+        public IItemAction AddActionItem(string display, string script)
+        {
+            if (display == null) throw new ArgumentNullException("display");
+            if (script == null) throw new ArgumentNullException("script");
+
+            var action = new DataTableAction(display, script, LinkBehave.Script);
             ItemActions.Add(action);
             return action;
         }

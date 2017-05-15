@@ -34,6 +34,11 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 新窗口
         /// </summary>
-        Blank
+        Blank,
+
+        /// <summary>
+        /// 脚本
+        /// </summary>
+        Script
     }
 }

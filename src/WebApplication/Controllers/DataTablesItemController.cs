@@ -38,6 +38,7 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(new Func<int, int, ActionResult>(Details)).Set("parentId", selectedId));
             table.AddActionItem(Url.Location(new Func<int, int, ActionResult>(Edit)).Set("parentId", selectedId));
             table.AddActionItem(Url.Location(new Func<int, int[], JsonResult>(Delete)).Set("parentId", selectedId)).Confirm("是否删除");
+            table.AddActionItem("提示", "$app.alert($man.parameter)");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

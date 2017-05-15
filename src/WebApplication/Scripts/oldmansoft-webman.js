@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.25
+* v0.1.26
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -41,6 +41,7 @@ window.oldmansoft.webman = new (function () {
         call: 2,
         self: 3,
         blank: 4,
+        script: 5
     }
 
     function bindUrlParamter(path, parameter) {
@@ -474,6 +475,9 @@ window.oldmansoft.webman = new (function () {
                         }
                         window.open(bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId=")));
                     }
+                } else if (behave == linkBehave.script) {
+                    $man.parameter = ids;
+                    eval(path);
                 }
             }
 
@@ -512,6 +516,9 @@ window.oldmansoft.webman = new (function () {
                     document.location = bindUrlParamter(path, "SelectedId=" + id);
                 } else if (behave == linkBehave.blank) {
                     window.open(bindUrlParamter(path, "SelectedId=" + id));
+                } else if (behave == linkBehave.script) {
+                    $man.parameter = id;
+                    eval(path);
                 }
             }
 
@@ -534,6 +541,7 @@ window.oldmansoft.webman = new (function () {
 
     window.$man = {
         init: $this.init,
-        configText: $this.configText
+        configText: $this.configText,
+        parameter: null
     }
 })();
