@@ -31,7 +31,11 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         public int PageIndex
         {
-            get { return start / length + 1; }
+            get
+            {
+                if (length == 0) return 1;
+                return start / length + 1;
+            }
         }
 
         /// <summary>

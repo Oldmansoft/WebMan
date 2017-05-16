@@ -22,14 +22,21 @@ namespace Oldmansoft.Html.WebMan
         private string Type { get; set; }
 
         /// <summary>
+        /// 文件地址
+        /// </summary>
+        public string Location { get; private set; }
+
+        /// <summary>
         /// 创建定义 HttpPostedFileBase 内容
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="contentType"></param>
-        public HttpPostedFileCustom(string fileName, string contentType)
+        /// <param name="location"></param>
+        public HttpPostedFileCustom(string fileName, string contentType, string location)
         {
             Name = fileName;
             Type = contentType;
+            Location = location;
         }
 
         /// <summary>
