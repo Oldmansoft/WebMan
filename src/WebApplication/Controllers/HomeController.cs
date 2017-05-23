@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
                 .Add(
                     new TreeListItem("二级菜单", FontAwesome.Home)
                     .Add(
-                        new TreeListItem(Url.Location(Welcome))
+                        new TreeListItem(Url.Location(Female))
                     )
                 )
                 .Add(
@@ -89,14 +89,7 @@ namespace WebApplication.Controllers
         
         public ActionResult Welcome()
         {
-            var panel = new Panel();
-            panel.ConfigLocation();
-            var form = new FormHorizontal();
-            form.Add("名称", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
-            form.Add("内容", new HtmlElement(HtmlTag.Input).AddClass("form-control").CreateGrid(Column.Sm9 | Column.Md10));
-            panel.Append(form);
-
-            return new HtmlResult(panel.CreateGrid());
+            return Content("Welcome");
         }
 
         [Location("人员", Icon = FontAwesome.Male)]
@@ -109,6 +102,12 @@ namespace WebApplication.Controllers
         public ActionResult Envelope()
         {
             return Content("邮件");
+        }
+
+        [Location("女人", Icon = FontAwesome.Female)]
+        public ActionResult Female()
+        {
+            return Content("女人");
         }
     }
 }

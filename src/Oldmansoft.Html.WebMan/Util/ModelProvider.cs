@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Oldmansoft.Html.WebMan.Util
 {
@@ -37,7 +38,15 @@ namespace Oldmansoft.Html.WebMan.Util
                 return result;
             }
 
-            var list = new List<ModelItemInfo>();
+            List<ModelItemInfo> list = new List<ModelItemInfo>();
+            GetItemInfos(list, type);
+            result = list.ToArray();
+            Models.TryAdd(type, result);
+            return result;
+        }
+
+        private void GetItemInfos(List<ModelItemInfo> list, Type type)
+        {
             foreach (var item in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var info = new ModelItemInfo(item);
@@ -48,9 +57,6 @@ namespace Oldmansoft.Html.WebMan.Util
                 }
                 list.Add(info);
             }
-            result = list.ToArray();
-            Models.TryAdd(type, result);
-            return result;
         }
 
         private void SetModelType(ModelItemInfo info, Type modelType)

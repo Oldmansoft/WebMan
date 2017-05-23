@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.26
+* v0.1.27
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -64,6 +64,7 @@ window.oldmansoft.webman = new (function () {
                     $(this).parent().addClass("expand");
                     $(this).find(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
                 }
+                resetMainHeight();
             });
             if ($(this).children("ul").length > 0) {
                 item.node.append($("<i></i>").addClass("arrow").addClass("fa").addClass("fa-plus-circle"));
@@ -120,15 +121,18 @@ window.oldmansoft.webman = new (function () {
         }
 
         this.active = function (links, view, defaultLink) {
-            var node;
+            var node, result;
             setBreadcrumb(links, view, defaultLink);
             $(".webman-left-panel ul.side-menu li").removeClass("active");
             node = findNode(links[links.length - 1], defaultLink);
             if (node) {
                 node.addClass("active").parentsUntil(".side-menu", "li").addClass("expand").children("a").children(".arrow").removeClass("fa-plus-circle").addClass("fa-minus-circle");
-                return true;
+                result = true;
+            } else {
+                result = false;
             }
-            return false;
+            resetMainHeight();
+            return result;
         }
     }
 
@@ -217,6 +221,12 @@ window.oldmansoft.webman = new (function () {
             return true;
         }
         return false;
+    }
+
+    function resetMainHeight() {
+        var leftHeight = $(".webman-left-panel").height(),
+            windowHeight = $(window).height();
+        $(".webman-main-panel").css("min-height", leftHeight > windowHeight ? leftHeight : windowHeight);
     }
 
     this.configText = function (fn) {
@@ -389,10 +399,8 @@ window.oldmansoft.webman = new (function () {
             menu.active(oldmansoft.webapp.hashes(), view, defaultLink);
         }).replacePCScrollBar(true);
 
-        $(".webman-main-panel").css("min-height", $(window).height());
-        $(window).on("resize", function () {
-            $(".webman-main-panel").css("min-height", $(window).height());
-        });
+        resetMainHeight();
+        $(window).on("resize", resetMainHeight);
         $(".webman-bar").on("click", function () {
             var body = $("body"), className = "mini-nav";
             if (body.hasClass(className)) {

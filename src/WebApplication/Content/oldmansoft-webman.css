@@ -234,6 +234,7 @@ section.container-fluid {
 .webman-left-panel nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .webman-left-panel nav ul li .fa {

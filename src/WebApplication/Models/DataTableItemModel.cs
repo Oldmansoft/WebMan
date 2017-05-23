@@ -50,9 +50,21 @@ namespace WebApplication.Models
 
         [Display(Name = "文件")]
         public HttpPostedFileBase File { get; set; }
-
+        /*
+        [Display(Name = "联系方式")]
+        public LinkInfo Link { get; set; }
+        */
         [Display(Name = "创建")]
         public DateTime? CreateTime { get; set; }
+
+        public class LinkInfo
+        {
+            [Display(Name = "联系人")]
+            public string Name { get; set; }
+
+            [Display(Name = "地址")]
+            public string Address { get; set; }
+        }
     }
 
     public enum DataTableItemState
