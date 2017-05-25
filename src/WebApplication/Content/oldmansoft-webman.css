@@ -431,16 +431,16 @@ header .dropdown-menu a {
 .webman-panel>header {
     width: 100%;
     float: left;
-    padding: 20px;
+    padding: 18px;
     border-bottom: 1px solid #e7e7e7;
 }
 
 .webman-panel>header i, .webman-panel header h2 {
     float: left;
+    font-size: 18px;
 }
 
 .webman-panel>header h2 {
-    font-size: 14px;
     margin: 0 0 0 10px;
 }
 
