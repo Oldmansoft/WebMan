@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DataTableAction : ITableAction
+    class DataTableAction : ITableAction, IItemAction
     {
         /// <summary>
         /// 文本
@@ -37,6 +37,16 @@ namespace Oldmansoft.Html.WebMan
         /// 确认内容
         /// </summary>
         public string ConfirmContent { get; set; }
+        
+        /// <summary>
+        /// 隐藏条件
+        /// </summary>
+        public string HideCondition { get; set; }
+
+        /// <summary>
+        /// 禁用条件
+        /// </summary>
+        public string DisableCondition { get; set; }
 
         public DataTableAction(string text, string location, LinkBehave behave)
         {
@@ -45,7 +55,7 @@ namespace Oldmansoft.Html.WebMan
             Behave = behave;
         }
 
-        public ITableAction Confirm(string content)
+        ITableAction ITableAction.Confirm(string content)
         {
             ConfirmContent = content;
             return this;
@@ -60,6 +70,26 @@ namespace Oldmansoft.Html.WebMan
         public ITableAction NeedSelected()
         {
             IsNeedSelected = true;
+            return this;
+        }
+
+        public IItemAction OnClientCondition(ItemActionClient action, string condition)
+        {
+            if (string.IsNullOrWhiteSpace(condition)) return this;
+            if (action == ItemActionClient.Hide)
+            {
+                HideCondition = condition;
+            }
+            else
+            {
+                DisableCondition = condition;
+            }
+            return this;
+        }
+
+        IItemAction IItemAction.Confirm(string content)
+        {
+            ConfirmContent = content;
             return this;
         }
     }

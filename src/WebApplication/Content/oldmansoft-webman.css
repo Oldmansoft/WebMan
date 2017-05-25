@@ -114,6 +114,12 @@ section.container-fluid {
     margin-right: 0;
 }
 
+.disabled, .disabled:hover {
+    color: gray;
+    text-decoration: none;
+    cursor: default;
+}
+
 .webman-left-panel {
     position: absolute;
     width: 220px;

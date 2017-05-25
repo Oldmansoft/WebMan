@@ -169,6 +169,14 @@ namespace Oldmansoft.Html.WebMan
                     operate.Set("path", item.Location);
                     operate.Set("behave", ((int)item.Behave).ToString());
                     operate.Set("tips", item.ConfirmContent);
+                    if (item.HideCondition != null)
+                    {
+                        operate.Set("hide", new JsonRaw(string.Format("function(data){{ return {0}; }}", item.HideCondition)));
+                    }
+                    if (item.DisableCondition != null)
+                    {
+                        operate.Set("disabled", new JsonRaw(string.Format("function(data){{ return {0}; }}", item.DisableCondition)));
+                    }
                     operates.Add(operate);
                 }
                 operateObject.Set("render", new JsonRaw(string.Format("oldmansoft.webman.setDataTableColumnOperate({0})", operates.ToString())));

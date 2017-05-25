@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.27
+* v0.1.28
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -318,16 +318,24 @@ window.oldmansoft.webman = new (function () {
     }
 
     this.setDataTableColumnOperate = function (items) {
-        return function (data) {
+        return function (data, type, row, meta) {
             var div = $("<div></div>");
             div.addClass("dataTable-item-action");
             div.attr("data-id", data);
             for (var i = 0; i < items.length; i++) {
+                if (items[i].hide && items[i].hide(row)) {
+                    continue;
+                }
+
                 var a = $("<a></a>");
                 a.text(items[i].text);
                 a.attr("data-path", items[i].path);
                 a.attr("data-behave", items[i].behave);
                 a.attr("data-tips", items[i].tips);
+
+                if (items[i].disabled && items[i].disabled(row)) {
+                    a.addClass("disabled");
+                }
                 div.append(a);
             }
             return div.wrap('<div></div>').parent().html();
@@ -530,6 +538,7 @@ window.oldmansoft.webman = new (function () {
                 }
             }
 
+            if ($(this).hasClass("disabled")) return;
             if (tips) {
                 $app.confirm(tips).yes(execute);
             } else {

@@ -45,7 +45,7 @@ namespace WebApplication.Controllers
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionItem(Url.Location(Details));
+            table.AddActionItem(Url.Location(Details)).OnClientCondition(ItemActionClient.Hide, "data.Id < 3").OnClientCondition(ItemActionClient.Disable, "data.Id > 5");
             table.AddActionItem(Url.Location(Edit));
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
