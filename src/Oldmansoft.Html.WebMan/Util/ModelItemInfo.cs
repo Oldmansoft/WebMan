@@ -86,9 +86,9 @@ namespace Oldmansoft.Html.WebMan.Util
         public uint FileCount { get; set; }
 
         /// <summary>
-        /// 文件可以删除
+        /// 上传文件扩展名
         /// </summary>
-        public bool FileCanDelete { get; set; }
+        public string[] FileExtensions { get; set; }
 
         /// <summary>
         /// 定制输入

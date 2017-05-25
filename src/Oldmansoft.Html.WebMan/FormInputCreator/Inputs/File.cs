@@ -15,9 +15,22 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         private string Name { get; set; }
 
         /// <summary>
+        /// 验证器
+        /// </summary>
+        protected FormValidate.FormValidator FormValidator { get; set; }
+
+        /// <summary>
         /// 允许的扩展名
         /// </summary>
         public string[] AllowedExtensions { get; set; }
+        
+        /// <summary>
+        /// 创建文件组件
+        /// </summary>
+        public File()
+        {
+            AllowedExtensions = new string[] { "jpeg", "jpg", "gif", "png" };
+        }
         
         /// <summary>
         /// 初始化
@@ -26,10 +39,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value"></param>
         /// <param name="options"></param>
         /// <param name="scripts"></param>
-        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
+        /// <param name="formValidator"></param>
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
         {
             Name = name;
-            AllowedExtensions = new string[] { "jpeg", "jpg", "gif", "png" };
+            FormValidator = formValidator;
         }
 
         /// <summary>
@@ -44,6 +58,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Attribute(HtmlAttribute.Name, Name);
             SetAttribute(this, disabled, readony, hint);
             AddClass("form-control");
+
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", AllowedExtensions))).Message(string.Format("文件扩展名必须在 \"{0}\" 里面", string.Join(" ", AllowedExtensions))));
         }
 
         /// <summary>

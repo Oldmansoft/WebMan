@@ -19,19 +19,19 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                 if (itemType.IsEnum)
                 {
                     result = new Inputs.CheckBoxList();
-                    result.Init(model.Name, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(itemType), null);
+                    result.Init(model.Name, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(itemType), input.Script, input.FormValidator);
                     return true;
                 }
                 else if (itemType == typeof(string))
                 {
                     result = new Inputs.MultiSelect();
-                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), null);
+                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), input.Script, input.FormValidator);
                     return true;
                 }
                 else if (!itemType.IsClass)
                 {
                     result = new Inputs.CheckBoxList();
-                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), null);
+                    result.Init(model.Name, input.Value, input.Source.Get(model.Name), input.Script, input.FormValidator);
                     return true;
                 }
                 else if (itemType == typeof(HttpPostedFileBase))

@@ -14,13 +14,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (type.IsEnum)
             {
                 result = new Inputs.RadioList();
-                result.Init(input.ModelItem.Name, input.Value, Util.EnumProvider.Instance.GetDataItems(type), null);
+                result.Init(input.ModelItem.Name, input.Value, Util.EnumProvider.Instance.GetDataItems(type), input.Script, input.FormValidator);
                 return true;
             }
             else if (Util.EnumProvider.IsNullableEnum(type))
             {
                 result = new Inputs.RadioList();
-                result.Init(input.ModelItem.Name, input.Value, Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]), null);
+                result.Init(input.ModelItem.Name, input.Value, Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]), input.Script, input.FormValidator);
                 return true;
             }
             return false;

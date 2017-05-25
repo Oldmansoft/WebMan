@@ -15,11 +15,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
         /// 数量
         /// </summary>
         public uint Count { get; set; }
-
+        
         /// <summary>
-        /// 能删除
+        /// 允许上传的文件扩展名
         /// </summary>
-        public bool CanDelete { get; set; }
+        public string[] Extensions { get; set; }
 
         /// <summary>
         /// 文件数量
@@ -27,7 +27,6 @@ namespace Oldmansoft.Html.WebMan.Annotations
         public FileOptionAttribute()
         {
             Count = 0;
-            CanDelete = false;
         }
     }
 }

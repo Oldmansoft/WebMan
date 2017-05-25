@@ -28,5 +28,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 脚本
         /// </summary>
         public Input.ScriptRegister Script { get; set; }
+
+        /// <summary>
+        /// 表单验证器
+        /// </summary>
+        public FormValidate.FormValidator FormValidator { get; set; }
     }
 }

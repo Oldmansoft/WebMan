@@ -22,7 +22,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value"></param>
         /// <param name="options"></param>
         /// <param name="scripts"></param>
-        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts)
+        /// <param name="formValidator"></param>
+        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
         {
             Name = name;
             Value = (System.DateTime?)value;

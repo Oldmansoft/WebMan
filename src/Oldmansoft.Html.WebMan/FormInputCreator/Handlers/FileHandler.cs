@@ -14,8 +14,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (input.ModelItem.Property.PropertyType == type ||
                 input.ModelItem.Property.PropertyType.IsSubclassOf(type))
             {
-                result = new Inputs.File();
-                result.Init(input.ModelItem.Name, input.Value, null, null);
+                var file = new Inputs.File();
+                if (input.ModelItem.FileExtensions != null) file.AllowedExtensions = input.ModelItem.FileExtensions;
+                result = file;
+                result.Init(input.ModelItem.Name, input.Value, null, input.Script, input.FormValidator);
                 return true;
             }
             return false;

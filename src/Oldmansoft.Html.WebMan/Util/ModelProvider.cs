@@ -132,7 +132,7 @@ namespace Oldmansoft.Html.WebMan.Util
             if (attribute is FileOptionAttribute)
             {
                 info.FileCount = (attribute as FileOptionAttribute).Count;
-                info.FileCanDelete = (attribute as FileOptionAttribute).CanDelete;
+                info.FileExtensions = (attribute as FileOptionAttribute).Extensions;
                 return;
             }
 

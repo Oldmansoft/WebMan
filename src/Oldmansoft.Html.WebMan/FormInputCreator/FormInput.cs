@@ -45,11 +45,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="options"></param>
-        /// <param name="scripts"></param>
-        public abstract void Init(string name, object value, IList<ListDataItem> options, Input.ScriptRegister scripts);
+        /// <param name="name">名称</param>
+        /// <param name="value">值</param>
+        /// <param name="options">列表项</param>
+        /// <param name="scripts">脚本</param>
+        /// <param name="formValidator">验证器</param>
+        public abstract void Init(string name, object value, IList<ListDataItem> options, Input.ScriptRegister scripts, FormValidate.FormValidator formValidator);
 
         /// <summary>
         /// 设置输入模式
