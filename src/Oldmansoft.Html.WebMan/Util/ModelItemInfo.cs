@@ -81,14 +81,9 @@ namespace Oldmansoft.Html.WebMan.Util
         public bool Hidden { get; set; }
         
         /// <summary>
-        /// 文件数量
-        /// </summary>
-        public uint FileCount { get; set; }
-
-        /// <summary>
         /// 上传文件扩展名
         /// </summary>
-        public string[] FileExtensions { get; set; }
+        public Annotations.FileOptionAttribute FileOption { get; set; }
 
         /// <summary>
         /// 定制输入

@@ -20,17 +20,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         protected FormValidate.FormValidator FormValidator { get; set; }
 
         /// <summary>
-        /// 允许的扩展名
+        /// 文件选项
         /// </summary>
-        public string[] AllowedExtensions { get; set; }
-        
-        /// <summary>
-        /// 创建文件组件
-        /// </summary>
-        public File()
-        {
-            AllowedExtensions = new string[] { "jpeg", "jpg", "gif", "png" };
-        }
+        public Annotations.FileOptionAttribute FileOption { get; set; }
         
         /// <summary>
         /// 初始化
@@ -44,6 +36,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Name = name;
             FormValidator = formValidator;
+            if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
         }
 
         /// <summary>
@@ -59,7 +52,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             SetAttribute(this, disabled, readony, hint);
             AddClass("form-control");
 
-            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", AllowedExtensions))).Message(string.Format("文件扩展名必须在 \"{0}\" 里面", string.Join(" ", AllowedExtensions))));
+            var message = "文件扩展名必须在 \"{0}\" 里面";
+            if (FileOption.ErrorMessage != null)
+            {
+                message = FileOption.ErrorMessage;
+            }
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(message, string.Join(" ", FileOption.Extensions))));
         }
 
         /// <summary>

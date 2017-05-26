@@ -15,7 +15,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                 input.ModelItem.Property.PropertyType.IsSubclassOf(type))
             {
                 var file = new Inputs.File();
-                if (input.ModelItem.FileExtensions != null) file.AllowedExtensions = input.ModelItem.FileExtensions;
+                if (input.ModelItem.FileOption != null)
+                {
+                    file.FileOption = input.ModelItem.FileOption;
+                }
                 result = file;
                 result.Init(input.ModelItem.Name, input.Value, null, input.Script, input.FormValidator);
                 return true;

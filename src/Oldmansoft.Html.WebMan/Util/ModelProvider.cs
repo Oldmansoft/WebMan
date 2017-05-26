@@ -131,8 +131,7 @@ namespace Oldmansoft.Html.WebMan.Util
 
             if (attribute is FileOptionAttribute)
             {
-                info.FileCount = (attribute as FileOptionAttribute).Count;
-                info.FileExtensions = (attribute as FileOptionAttribute).Extensions;
+                info.FileOption = attribute as FileOptionAttribute;
                 return;
             }
 
