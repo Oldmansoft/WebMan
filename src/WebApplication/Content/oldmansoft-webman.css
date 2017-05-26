@@ -543,3 +543,16 @@ table.dataTable tbody td ul li:first-child {
 .form-horizontal .control-value i.fa {
     margin-right: 2px;
 }
+
+.input-group-addon .text {
+    margin-left: 6px;
+}
+.input-group-addon.del-file {
+    cursor: pointer;
+}
+.input-group-addon.del-file.on {
+    border: 1px solid gray;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    color: gray;
+}

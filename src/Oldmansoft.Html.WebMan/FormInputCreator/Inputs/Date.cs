@@ -55,7 +55,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var span = new HtmlElement(HtmlTag.Span);
             Append(span);
             span.AddClass("input-group-addon");
-            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-calendar"));
+            span.Append(FontAwesome.Calendar.CreateElement());
 
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);

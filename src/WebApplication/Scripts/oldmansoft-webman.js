@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.28
+* v0.1.29
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -227,6 +227,28 @@ window.oldmansoft.webman = new (function () {
         var leftHeight = $(".webman-left-panel").height(),
             windowHeight = $(window).height();
         $(".webman-main-panel").css("min-height", leftHeight > windowHeight ? leftHeight : windowHeight);
+    }
+
+    function markFileDelete(container) {
+        var text = container.find(".text");
+        if (text.hasClass("mark")) {
+            return false;
+        }
+        text.addClass("mark");
+        text.wrap("<del></del>");
+        container.find(".del-file-input").val("1");
+        return true;
+    }
+
+    function unmarkFileDelete(container) {
+        var text = container.find(".text");
+        if (!text.hasClass("mark")) {
+            return false;
+        }
+        text.removeClass("mark");
+        text.unwrap("<del></del>");
+        container.find(".del-file-input").val("0");
+        return true;
     }
 
     this.configText = function (fn) {
@@ -545,6 +567,29 @@ window.oldmansoft.webman = new (function () {
                 execute();
             }
             node.parents(".main-view").data("operator", node.data("datatable"));
+        });
+        $(document).on("click", ".input-group-addon.del-file", function () {
+            var container = $(this).parent();
+            if ($(this).hasClass("on")) {
+                if (container.find("input[type=file]").val() == "") {
+                    unmarkFileDelete(container);
+                }
+                $(this).removeClass("on");
+            } else {
+                markFileDelete(container);
+                $(this).addClass("on");
+            }
+        });
+        $(document).on("change", ".input-group input[type=file]", function () {
+            var container = $(this).parent();
+            if (container.find(".del-file-input").length == 0) return;
+            if ($(this).val() == "") {
+                if (!container.find(".del-file").hasClass("on")) {
+                    unmarkFileDelete(container);
+                }
+            } else {
+                markFileDelete(container);
+            }
         });
         $(document).on("submit", "form:not(.bv-form)", function (e) {
             if (!submitForm($(this))) {

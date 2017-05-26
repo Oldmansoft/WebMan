@@ -30,6 +30,7 @@ namespace WebApplication.Controllers
                 item.Time = DateTime.Now;
                 item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
+                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "");
                 list.Add(item);
             }
             DataSource = list;
@@ -89,6 +90,10 @@ namespace WebApplication.Controllers
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
             model.Id = GetDataSource().Max(o => o.Id) + 1;
+            model.DealUpload((file) =>
+            {
+                model.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+            }, o => o.File);
             GetDataSource().Insert(0, model);
             return Json(DealResult.Location(Url.Location(Index), "添加成功"));
         }
@@ -119,7 +124,16 @@ namespace WebApplication.Controllers
             var data = GetDataSource().FirstOrDefault(o => o.Id == model.Id);
             if (data != null)
             {
-                model.CopyTo(data);
+                var mapper = new DataMapper();
+                mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File);
+                mapper.CopyTo(model, data);
+                model.DealUpload((file) =>
+                {
+                    data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                }, () =>
+                {
+                    data.File = null;
+                }, o => o.File);
             }
 
             return Json(DealResult.Refresh("修改成功"));

@@ -33,8 +33,7 @@ namespace Oldmansoft.Html.WebMan
         {
             return source == null ? string.Empty : source.ToString();
         }
-
-
+        
         private static IList<Column> ColumnValues { get; set; }
 
         private static IList<ColumnOffset> ColumnOffsetValues { get; set; }
@@ -249,6 +248,42 @@ namespace Oldmansoft.Html.WebMan
                 }
                 outer.Append("});</script>");
             };
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="delete"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, Action delete, System.Linq.Expressions.Expression<Func<TModel, System.Web.HttpPostedFileBase>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+
+            if (source == null) return;
+            var httpPostedFile = expression.Compile().Invoke(source);
+
+            var isDelete = System.Web.HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1";
+
+            if (isDelete && delete != null) delete();
+
+            if (httpPostedFile == null || httpPostedFile.ContentLength == 0) return;
+            if (upload != null) upload(httpPostedFile);
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, System.Linq.Expressions.Expression<Func<TModel, System.Web.HttpPostedFileBase>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            DealUpload(source, upload, null, expression);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var span = new HtmlElement(HtmlTag.Span);
             Append(span);
             span.AddClass("input-group-addon");
-            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-eye-slash"));
+            span.Append(FontAwesome.Eye_Slash.CreateElement());
 
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);

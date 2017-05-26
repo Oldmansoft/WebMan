@@ -137,6 +137,7 @@
     <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationBind.cs" />
+    <Compile Include="Util\ContentTypeMapping.cs" />
     <Compile Include="Util\ModelItemInfo.cs" />
     <Compile Include="Util\ModelProvider.cs" />
     <Compile Include="Panel.cs" />
