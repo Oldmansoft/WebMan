@@ -482,6 +482,11 @@ header .dropdown-menu a {
     white-space: nowrap;
 }
 
+.dataTables_wrapper td img {
+    width: 40px;
+    border-radius: 6px;
+}
+
 .dataTable-action {
     position: absolute;
     top: -45px;

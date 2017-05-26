@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
                 item.Time = DateTime.Now;
                 item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
-                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "");
+                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg");
                 list.Add(item);
             }
             DataSource = list;

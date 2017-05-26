@@ -49,6 +49,7 @@
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="DataTables\IItemAction.cs" />
     <Compile Include="DataTables\ItemActionClient.cs" />
+    <Compile Include="DataTables\ValueDealer\HttpPostedFileDisplay.cs" />
     <Compile Include="DataTables\ValueDealer\StringDisplay.cs" />
     <Compile Include="DealResult.cs" />
     <Compile Include="Annotations\FileOptionAttribute.cs" />

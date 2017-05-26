@@ -27,6 +27,7 @@ namespace Oldmansoft.Html.WebMan
             SimpleDealers.Add(typeof(bool), new BoolDisplay());
             SimpleDealers.Add(typeof(DateTime), new DateTimeDisplay());
             SimpleDealers.Add(typeof(string), new StringDisplay());
+            SimpleDealers.Add(typeof(System.Web.HttpPostedFileBase), new HttpPostedFileDisplay());
 
             GenericDealers = new Dictionary<Type, Func<Type, object, ModelItemInfo, string>>();
             GenericDealers.Add(typeof(Nullable<>), NullableDeal);
