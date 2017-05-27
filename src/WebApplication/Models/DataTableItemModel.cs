@@ -49,7 +49,7 @@ namespace WebApplication.Models
         public DateTime Time { get; set; }
 
         [Display(Name = "文件")]
-        [Oldmansoft.Html.WebMan.Annotations.ReadOnly]
+        [FileOption(SupportDelete = true)]
         public HttpPostedFileBase File { get; set; }
         /*
         [Display(Name = "联系方式")]

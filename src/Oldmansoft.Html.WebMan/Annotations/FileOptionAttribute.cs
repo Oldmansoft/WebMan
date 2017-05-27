@@ -24,6 +24,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
         public string[] Extensions { get; set; }
 
         /// <summary>
+        /// 提供删除
+        /// </summary>
+        public bool SupportDelete { get; set; }
+
+        /// <summary>
         /// 文件数量
         /// </summary>
         public FileOptionAttribute(params string[] extensions)
@@ -46,6 +51,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
         /// <returns></returns>
         public override bool IsValid(object value)
         {
+            if (value == null) return true;
             var file = value as HttpPostedFileBase;
             if (file != null && file.FileName != null)
             {
@@ -59,7 +65,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
                 }
                 return result;
             }
-            return base.IsValid(value);
+            return false;
         }
     }
 }

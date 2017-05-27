@@ -89,10 +89,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
-                span = new HtmlElement(HtmlTag.Span);
-                Append(span);
-                span.AddClass("input-group-addon del-file");
-                span.Append(FontAwesome.Times.CreateElement());
+                if (FileOption.SupportDelete)
+                {
+                    span = new HtmlElement(HtmlTag.Span);
+                    Append(span);
+                    span.AddClass("input-group-addon del-file");
+                    span.Append(FontAwesome.Times.CreateElement());
+                }
             }
 
             var message = "文件扩展名必须在 \"{0}\" 里面";
