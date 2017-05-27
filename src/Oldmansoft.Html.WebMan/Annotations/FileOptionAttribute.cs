@@ -61,7 +61,6 @@ namespace Oldmansoft.Html.WebMan.Annotations
             if (file == null || file.FileName == null || file.ContentLength == 0) return true;
 
             var result = false;
-
             if (Accept != ContentType.None)
             {
                 foreach (var item in Accept.ToArray())
@@ -71,8 +70,10 @@ namespace Oldmansoft.Html.WebMan.Annotations
                         result = true;
                     }
                 }
+                if (!result) return false;
             }
-            
+
+            result = false;
             foreach (var extendsion in Extensions)
             {
                 if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4) == string.Format(".{0}", extendsion))

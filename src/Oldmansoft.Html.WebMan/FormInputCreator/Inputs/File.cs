@@ -78,6 +78,26 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             }
             input.Attribute(HtmlAttribute.Name, Name);
             SetAttribute(input, disabled, readony, hint);
+            if (FileOption.Accept != Annotations.ContentType.None)
+            {
+                var list = new List<string>();
+                foreach(var item in FileOption.Accept.ToArray())
+                {
+                    var contentType = item.ToString().ToLower().Replace('_', '-');
+                    if (FileOption.Extensions.Length == 0)
+                    {
+                        list.Add(string.Format("{0}/*", contentType));
+                    }
+                    else
+                    {
+                        foreach(var extension in FileOption.Extensions)
+                        {
+                            list.Add(string.Format("{0}/{1}", contentType, extension.ToLower()));
+                        }
+                    }
+                }
+                input.Attribute(HtmlAttribute.Accept, string.Join(",", list));
+            }
             input.AddClass("form-control");
             
             if (Value != null && !readony && !disabled)
