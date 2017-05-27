@@ -29,6 +29,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
         public bool SupportDelete { get; set; }
 
         /// <summary>
+        /// 接受类型
+        /// </summary>
+        public ContentType Accept { get; set; }
+
+        /// <summary>
         /// 文件数量
         /// </summary>
         public FileOptionAttribute(params string[] extensions)
@@ -53,19 +58,29 @@ namespace Oldmansoft.Html.WebMan.Annotations
         {
             if (value == null) return true;
             var file = value as HttpPostedFileBase;
-            if (file != null && file.FileName != null)
+            if (file == null || file.FileName == null || file.ContentLength == 0) return true;
+
+            var result = false;
+
+            if (Accept != ContentType.None)
             {
-                var result = false;
-                foreach (var extendsion in Extensions)
+                foreach (var item in Accept.ToArray())
                 {
-                    if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4) == string.Format(".{0}", extendsion))
+                    if (item.In(file.ContentType))
                     {
                         result = true;
                     }
                 }
-                return result;
             }
-            return false;
+            
+            foreach (var extendsion in Extensions)
+            {
+                if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4) == string.Format(".{0}", extendsion))
+                {
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }

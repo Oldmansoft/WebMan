@@ -1,4 +1,5 @@
 ﻿using Oldmansoft.Html.Util;
+using Oldmansoft.Html.WebMan.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public static class Extends
     {
+        /// <summary>
+        /// 获取字符串列表
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         internal static IList<string> GetListString(this object source)
         {
             var result = new List<string>();
@@ -24,6 +30,30 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
+        private static readonly Util.ContentTypeFlags ContentTypeFlags = new Util.ContentTypeFlags();
+
+        /// <summary>
+        /// 生成数组
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        internal static ContentType[] ToArray(this ContentType source)
+        {
+            return ContentTypeFlags.From(source);
+        }
+
+        /// <summary>
+        /// 是否在类型中
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="contentType"></param>
+        /// <returns></returns>
+        internal static bool In(this ContentType source, string contentType)
+        {
+            var header = source.ToString().ToLower().Replace('_', '-');
+            return contentType.IndexOf(header) == 0;
+        }
+
         /// <summary>
         /// 获取非 null 字符串
         /// </summary>
@@ -33,10 +63,8 @@ namespace Oldmansoft.Html.WebMan
         {
             return source == null ? string.Empty : source.ToString();
         }
-        
-        private static IList<Column> ColumnValues { get; set; }
 
-        private static IList<ColumnOffset> ColumnOffsetValues { get; set; }
+        private static readonly Util.ColumnFlags ColumnFlags = new Util.ColumnFlags();
 
         /// <summary>
         /// 获取样式名称
@@ -45,18 +73,8 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static string GetCssName(this Column source)
         {
-            if (ColumnValues == null)
-            {
-                var list = new List<Column>();
-                foreach (var item in Enum.GetValues(typeof(Column)))
-                {
-                    list.Add((Column)item);
-                }
-                ColumnValues = list;
-            }
-
             var result = new StringBuilder();
-            foreach (var item in ColumnValues)
+            foreach (var item in ColumnFlags.From(source))
             {
                 if ((item & source) == item)
                 {
@@ -70,6 +88,8 @@ namespace Oldmansoft.Html.WebMan
             return result.ToString();
         }
 
+        private static readonly Util.ColumnOffsetFlags ColumnOffsetFlags = new Util.ColumnOffsetFlags();
+
         /// <summary>
         /// 获取样式名称
         /// </summary>
@@ -77,18 +97,8 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static string GetCssName(this ColumnOffset source)
         {
-            if (ColumnOffsetValues == null)
-            {
-                var list = new List<ColumnOffset>();
-                foreach (var item in Enum.GetValues(typeof(ColumnOffset)))
-                {
-                    list.Add((ColumnOffset)item);
-                }
-                ColumnOffsetValues = list;
-            }
-
             var result = new StringBuilder();
-            foreach (var item in ColumnOffsetValues)
+            foreach (var item in ColumnOffsetFlags.From(source))
             {
                 if ((item & source) == item)
                 {

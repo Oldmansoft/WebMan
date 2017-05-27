@@ -49,7 +49,7 @@ namespace WebApplication.Models
         public DateTime Time { get; set; }
 
         [Display(Name = "文件")]
-        [FileOption(SupportDelete = true)]
+        [FileOption(SupportDelete = true, Accept = ContentType.Application | ContentType.Text)]
         public HttpPostedFileBase File { get; set; }
         /*
         [Display(Name = "联系方式")]

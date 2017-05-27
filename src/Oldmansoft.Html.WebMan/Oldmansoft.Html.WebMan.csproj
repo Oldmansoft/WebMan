@@ -47,6 +47,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Annotations\CustomInputAttribute.cs" />
+    <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="DataTables\IItemAction.cs" />
     <Compile Include="DataTables\ItemActionClient.cs" />
     <Compile Include="DataTables\ValueDealer\HttpPostedFileDisplay.cs" />
@@ -138,7 +139,11 @@
     <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationBind.cs" />
+    <Compile Include="Util\ColumnFlags.cs" />
+    <Compile Include="Util\ColumnOffsetFlags.cs" />
+    <Compile Include="Util\ContentTypeFlags.cs" />
     <Compile Include="Util\ContentTypeMapping.cs" />
+    <Compile Include="Util\EnumFlags.cs" />
     <Compile Include="Util\ModelItemInfo.cs" />
     <Compile Include="Util\ModelProvider.cs" />
     <Compile Include="Panel.cs" />
