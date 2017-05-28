@@ -123,9 +123,9 @@ namespace Oldmansoft.Html.WebMan.Util
                 return;
             }
 
-            if (attribute is ReadOnlyAttribute)
+            if (attribute is System.ComponentModel.ReadOnlyAttribute)
             {
-                info.ReadOnly = true;
+                info.ReadOnly = (attribute as System.ComponentModel.ReadOnlyAttribute).IsReadOnly;
                 return;
             }
 

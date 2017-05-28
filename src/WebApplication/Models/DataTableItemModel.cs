@@ -21,6 +21,7 @@ namespace WebApplication.Models
         public string Name { get; set; }
         
         [DataType(DataType.Password)]
+        [ReadOnly(true)]
         public string Password { get; set; }
 
         [Display(Name = "内容")]

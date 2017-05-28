@@ -55,7 +55,6 @@
     <Compile Include="DealResult.cs" />
     <Compile Include="Annotations\FileOptionAttribute.cs" />
     <Compile Include="Annotations\HiddenAttribute.cs" />
-    <Compile Include="Annotations\ReadOnlyAttribute.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
     <Compile Include="DataTables\DataTable.cs" />
