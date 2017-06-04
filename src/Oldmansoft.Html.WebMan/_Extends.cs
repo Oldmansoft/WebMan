@@ -239,25 +239,52 @@ namespace Oldmansoft.Html.WebMan
         /// 添加事件脚本
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="e"></param>
         /// <param name="script"></param>
-        public static void AddEvent(this IHtmlOutput source, string script)
+        public static void AddEvent(this IHtmlOutput source, AppEvent e, string script)
         {
-            source.Items.Add(script);
-            if (source.OnCompleted != null) return;
+            InitEventContent(source);
+            if (!source.Items.ContainsKey(e))
+            {
+                source.Items.Add(e, new List<string>());
+            }
+            var list = source.Items[e] as List<string>;
+            list.Add(script);
+        }
+
+        private static void InitEventContent(IHtmlOutput source)
+        {
+            if (source.Items.ContainsKey(AppEvent.Load)) return;
+            if (source.Items.ContainsKey(AppEvent.Active)) return;
+            if (source.Items.ContainsKey(AppEvent.Inactive)) return;
+            if (source.Items.ContainsKey(AppEvent.Unload)) return;
 
             source.OnCompleted += (outer) =>
             {
-                if (outer.Items.Count == 0) return;
-
-                outer.Append("<script>$app.event().onLoad(function (view) {");
-                outer.Append("\r\n");
-                foreach (var item in outer.Items)
-                {
-                    outer.Append(item);
-                    outer.Append("\r\n");
-                }
-                outer.Append("});</script>");
+                outer.Append("<script>");
+                outer.Append("$app.event()");
+                AddEventContent(outer, AppEvent.Load);
+                AddEventContent(outer, AppEvent.Active);
+                AddEventContent(outer, AppEvent.Inactive);
+                AddEventContent(outer, AppEvent.Unload);
+                outer.Append(";</script>");
             };
+        }
+
+        private static void AddEventContent(IHtmlOutput outer, AppEvent e)
+        {
+            if (!outer.Items.ContainsKey(e)) return;
+
+            outer.Append(".on");
+            outer.Append(e.ToString());
+            outer.Append("(function (view) {");
+            outer.Append("\r\n");
+            foreach (var item in outer.Items[e] as List<string>)
+            {
+                outer.Append(item);
+                outer.Append("\r\n");
+            }
+            outer.Append("})");
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace Oldmansoft.Html
         /// <summary>
         /// 存储项
         /// </summary>
-        IList<string> Items { get; }
+        IDictionary<object, object> Items { get; }
 
         /// <summary>
         /// 当完成时

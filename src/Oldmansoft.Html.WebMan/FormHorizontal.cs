@@ -103,11 +103,11 @@ namespace Oldmansoft.Html.WebMan
             base.Format(outer);
             if (ViewMode)
             {
-                outer.AddEvent(Script.ToString());
+                outer.AddEvent(AppEvent.Load, Script.ToString());
             }
             else
             {
-                outer.AddEvent(string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
+                outer.AddEvent(AppEvent.Load, string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
             }
         }
 

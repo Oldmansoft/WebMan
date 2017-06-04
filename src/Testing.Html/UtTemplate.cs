@@ -56,7 +56,7 @@ namespace Testing.Html
                 }
             }
 
-            public IList<string> Items
+            public IDictionary<object, object> Items
             {
                 get
                 {

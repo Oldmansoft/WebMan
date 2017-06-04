@@ -30,7 +30,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 存储项
         /// </summary>
-        public IList<string> Items
+        public IDictionary<object, object> Items
         {
             get
             {

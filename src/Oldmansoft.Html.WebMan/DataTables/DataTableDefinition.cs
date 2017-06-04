@@ -240,7 +240,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 item.Format(outer);
             }
-            outer.AddEvent(string.Format("oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
+            outer.AddEvent(AppEvent.Load, string.Format("oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
         }
 
         /// <summary>

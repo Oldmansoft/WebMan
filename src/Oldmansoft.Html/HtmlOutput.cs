@@ -32,7 +32,7 @@ namespace Oldmansoft.Html
         /// <summary>
         /// 存储项
         /// </summary>
-        public IList<string> Items { get; private set; }
+        public IDictionary<object, object> Items { get; private set; }
 
         /// <summary>
         /// 当完成时
@@ -48,7 +48,7 @@ namespace Oldmansoft.Html
             Outer = new StringBuilder();
             Generator = new IdGenerator();
             Nodes = new List<IHtmlNode>(node);
-            Items = new List<string>();
+            Items = new Dictionary<object, object>();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Oldmansoft.Html
         /// <returns></returns>
         public string Complete()
         {
-            if (IsCompleted) throw new InvalidOperationException("不同再次执行");
+            if (IsCompleted) throw new InvalidOperationException("不能多次执行");
             IsCompleted = true;
 
             foreach (var node in Nodes)
