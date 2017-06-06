@@ -11,9 +11,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref IFormInput result)
         {
-            if (input.ModelItem.CustomInputType == null) return false;
+            if (input.ModelItem.CustomInput == null) return false;
 
-            result = Activator.CreateInstance(input.ModelItem.CustomInputType) as IFormInput;
+            var customer = Activator.CreateInstance(input.ModelItem.CustomInput.InputType) as ICustomInput;
+            customer.Set(input.ModelItem.CustomInput.Parameter);
+
+            result = customer;
             result.Init(input.ModelItem.Name, input.Value, input.Source.Get(input.ModelItem.Name), input.Script, input.FormValidator);
             return true;
         }

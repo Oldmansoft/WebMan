@@ -172,7 +172,7 @@ namespace Oldmansoft.Html.WebMan.Util
 
             if (attribute is CustomInputAttribute)
             {
-                info.CustomInputType = (attribute as CustomInputAttribute).InputType;
+                info.CustomInput = attribute as CustomInputAttribute;
             }
         }
     }

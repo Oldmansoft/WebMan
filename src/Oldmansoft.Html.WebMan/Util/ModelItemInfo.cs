@@ -88,7 +88,7 @@ namespace Oldmansoft.Html.WebMan.Util
         /// <summary>
         /// 定制输入
         /// </summary>
-        public Type CustomInputType { get; set; }
+        public Annotations.CustomInputAttribute CustomInput { get; set; }
 
         public ModelItemInfo(PropertyInfo property)
         {

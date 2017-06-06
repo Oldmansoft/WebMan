@@ -32,6 +32,10 @@ namespace Oldmansoft.Html.WebMan.Input
             Scripts = scripts;
         }
 
+        void ICustomInput.Set(object[] parameter)
+        {
+        }
+
         /// <summary>
         /// 设置输入模式
         /// </summary>

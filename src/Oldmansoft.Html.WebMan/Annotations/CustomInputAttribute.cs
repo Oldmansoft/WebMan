@@ -18,10 +18,16 @@ namespace Oldmansoft.Html.WebMan.Annotations
         public Type InputType { get; set; }
 
         /// <summary>
+        /// 输入组件的参数
+        /// </summary>
+        public object[] Parameter { get; set; }
+
+        /// <summary>
         /// 创建定制输入
         /// </summary>
         /// <param name="type"></param>
-        public CustomInputAttribute(Type type)
+        /// <param name="paramters"></param>
+        public CustomInputAttribute(Type type, params object[] paramters)
         {
             if (type == null) throw new ArgumentNullException("type");
             if (!type.IsClass) throw new ArgumentException("必须是类", "type");
