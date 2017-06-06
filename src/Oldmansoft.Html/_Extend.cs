@@ -86,5 +86,61 @@ namespace Oldmansoft.Html
             if (source == null) return false;
             return source.GetNodes().Count > 0;
         }
+
+        /// <summary>
+        /// 添加到另一元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IHtmlElement AppendTo(this IHtmlElement source, IHtmlElement element)
+        {
+            if (element == null) return source;
+            if (source == null) return source;
+            element.Append(source);
+            return source;
+        }
+
+        /// <summary>
+        /// 插入到另一元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IHtmlElement PrependTo(this IHtmlElement source, IHtmlElement element)
+        {
+            if (element == null) return source;
+            if (source == null) return source;
+            element.Prepend(source);
+            return source;
+        }
+
+        /// <summary>
+        /// 元素后贴到另一元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IHtmlElement AfterTo(this IHtmlElement source, IHtmlElement element)
+        {
+            if (element == null) return source;
+            if (source == null) return source;
+            element.After(source);
+            return source;
+        }
+
+        /// <summary>
+        /// 元素前贴到另一元素
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IHtmlElement BeforeTo(this IHtmlElement source, IHtmlElement element)
+        {
+            if (element == null) return source;
+            if (source == null) return source;
+            element.Before(source);
+            return source;
+        }
     }
 }
