@@ -120,6 +120,14 @@ section.container-fluid {
     cursor: default;
 }
 
+.clear {
+    clear: both;
+}
+
+.hidden {
+    display: none;
+}
+
 .webman-left-panel {
     position: absolute;
     width: 220px;
@@ -560,4 +568,38 @@ table.dataTable tbody td ul li:first-child {
     border-bottom: 1px solid white;
     border-right: 1px solid white;
     color: gray;
+}
+
+.tagsinput {
+    height: 100px;
+}
+
+.tagsinput div {
+    float: left;
+    margin: 5px 5px 5px 0;
+}
+
+.tagsinput span {
+    padding: 4px;
+    background: #1caf9a;
+    font-size: 13px;
+    border-radius: 2px;
+    color: #fff;
+}
+
+.tagsinput span i.fa {
+    margin-left: 4px;
+}
+
+.tagsinput input {
+    width: 80px;
+    margin: 0px;
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 5px;
+    background: transparent;
+    color: #000;
+    outline: 0px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }

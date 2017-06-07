@@ -17,6 +17,10 @@ namespace Oldmansoft.Html.WebMan.Input
 
         private ScriptRegister Scripts { get; set; }
 
+        void ICustomInput.Set(object[] parameter)
+        {
+        }
+
         /// <summary>
         /// 设值
         /// </summary>
@@ -30,10 +34,6 @@ namespace Oldmansoft.Html.WebMan.Input
             Name = name;
             Value = value.GetString();
             Scripts = scripts;
-        }
-
-        void ICustomInput.Set(object[] parameter)
-        {
         }
 
         /// <summary>

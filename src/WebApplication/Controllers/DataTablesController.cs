@@ -31,6 +31,13 @@ namespace WebApplication.Controllers
                 item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
                 item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg");
+                if (i == 0)
+                {
+                    item.Tags = new List<string>();
+                    item.Tags.Add("hello");
+                    item.Tags.Add("world");
+                    item.Tags.Add("hello");
+                }
                 list.Add(item);
             }
             DataSource = list;

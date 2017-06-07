@@ -121,7 +121,7 @@ namespace Oldmansoft.Html
         /// <param name="source"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static IHtmlElement AfterTo(this IHtmlElement source, IHtmlElement element)
+        public static IHtmlElement InsertAfter(this IHtmlElement source, IHtmlElement element)
         {
             if (element == null) return source;
             if (source == null) return source;
@@ -135,7 +135,7 @@ namespace Oldmansoft.Html
         /// <param name="source"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static IHtmlElement BeforeTo(this IHtmlElement source, IHtmlElement element)
+        public static IHtmlElement InsertBefore(this IHtmlElement source, IHtmlElement element)
         {
             if (element == null) return source;
             if (source == null) return source;

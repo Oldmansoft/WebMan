@@ -1,5 +1,5 @@
 ﻿/*
-* v0.1.29
+* v0.5.30
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -414,6 +414,61 @@ window.oldmansoft.webman = new (function () {
         node.data("datatable", node.DataTable(option));
     }
 
+    this.setTagsInput = function (view, selector) {
+        var target = view.node.find(selector),
+            input,
+            name;
+        input = target.find(".input");
+        name = input.attr("data-name");
+
+        target.on("click", function () {
+            input.focus();
+        });
+
+        function AddValue(value) {
+            var find = false,
+                div,
+                hidden,
+                span;
+            value = $.trim(value);
+            if (value == "") return;
+
+            target.find("input[type=hidden]").each(function () {
+                if ($(this).val() == value) {
+                    find = true;
+                }
+            });
+            if (find) {
+
+            } else {
+                input.val("");
+
+                div = $("<div></div>");
+                hidden = $("<input type='hidden'/>");
+                hidden.attr("name", name);
+                hidden.val(value);
+                hidden.appendTo(div);
+                span = $("<span></span>");
+                span.text(value);
+                span.appendTo(div);
+                span.append("<i class='fa fa-times container-parent-remove'></i>");
+
+                input.before(div);
+            }
+        }
+
+        target.on("blur", ".input", function () {
+            AddValue($(this).val());
+        });
+
+        target.on("keypress", ".input", function (e) {
+            if (e.keyCode == 13) {
+                AddValue($(this).val());
+                return false;
+            }
+        });
+    }
+
     this.init = function (main, defaultLink) {
         oldmansoft.webapp.configTarget(function (target) {
             target["_call"] = function (href) {
@@ -598,6 +653,18 @@ window.oldmansoft.webman = new (function () {
         });
         $(".webman-main-panel header form i.fa-search").on("click", function () {
             submitForm($(this).parents("form"));
+        });
+        $(document).on("click", ".container-remove", function () {
+            var caller = $(this).parent();
+            caller.fadeOut(function () {
+                caller.remove();
+            });
+        });
+        $(document).on("click", ".container-parent-remove", function () {
+            var caller = $(this).parent().parent();
+            caller.fadeOut(function () {
+                caller.remove();
+            });
         });
     }
 

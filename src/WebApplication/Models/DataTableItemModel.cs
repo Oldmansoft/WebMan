@@ -39,6 +39,7 @@ namespace WebApplication.Models
         public int? Age { get; set; }
 
         [Display(Name = "列表")]
+        [Required]
         public List<DataTableItemState> States { get; set; }
 
         [Display(Name = "日期")]
@@ -52,6 +53,11 @@ namespace WebApplication.Models
         [Display(Name = "文件")]
         [FileOption(SupportDelete = true, Accept = ContentType.Image)]
         public HttpPostedFileBase File { get; set; }
+
+        [CustomInput(typeof(TagsInput))]
+        [Required]
+        public List<string> Tags { get; set; }
+
         /*
         [Display(Name = "联系方式")]
         public LinkInfo Link { get; set; }
