@@ -1,5 +1,5 @@
 ﻿/*
-* v0.5.30
+* v0.5.31
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -415,25 +415,25 @@ window.oldmansoft.webman = new (function () {
     }
 
     this.setTagsInput = function (view, selector) {
-        var target = view.node.find(selector),
-            input,
-            name;
-        input = target.find(".input");
-        name = input.attr("data-name");
+        var target = view.node.find(selector);
 
         target.on("click", function () {
-            input.focus();
+            $(this).find(".input").focus();
         });
 
-        function AddValue(value) {
-            var find = false,
+        function AddValue(caller) {
+            var value,
+                find = false,
+                input,
                 div,
                 hidden,
                 span;
-            value = $.trim(value);
-            if (value == "") return;
 
-            target.find("input[type=hidden]").each(function () {
+            input = caller.find(".input");
+            value = $.trim(input.val());
+            if (value == "") return;
+            
+            caller.find("input[type=hidden]").each(function () {
                 if ($(this).val() == value) {
                     find = true;
                 }
@@ -445,7 +445,7 @@ window.oldmansoft.webman = new (function () {
 
                 div = $("<div></div>");
                 hidden = $("<input type='hidden'/>");
-                hidden.attr("name", name);
+                hidden.attr("name", input.attr("data-name"));
                 hidden.val(value);
                 hidden.appendTo(div);
                 span = $("<span></span>");
@@ -457,13 +457,13 @@ window.oldmansoft.webman = new (function () {
             }
         }
 
-        target.on("blur", ".input", function () {
-            AddValue($(this).val());
+        target.on("blur", ".input", function (e) {
+            AddValue($(e.delegateTarget));
         });
 
         target.on("keypress", ".input", function (e) {
             if (e.keyCode == 13) {
-                AddValue($(this).val());
+                AddValue($(e.delegateTarget));
                 return false;
             }
         });
