@@ -301,7 +301,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="display"></param>
         /// <param name="script"></param>
         /// <returns></returns>
-        public IItemAction AddActionTable(string display, string script)
+        public ITableAction AddActionTable(string display, string script)
         {
             if (display == null) throw new ArgumentNullException("display");
             if (script == null) throw new ArgumentNullException("script");
