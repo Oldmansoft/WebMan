@@ -142,5 +142,30 @@ namespace Oldmansoft.Html
             element.Before(source);
             return source;
         }
+
+        /// <summary>
+        /// 查找元素下所有符合标签的
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public static IHtmlElement Find(this IHtmlElement source, HtmlTag tag)
+        {
+            var result = new HtmlElementSeletor();
+            if (source == null) return result;
+            FindChildren(source, tag, result);
+            return result;
+        }
+
+        private static void FindChildren(IHtmlElement source, HtmlTag tag, HtmlElementSeletor result)
+        {
+            foreach (var item in source.Children())
+            {
+                if (!(item is HtmlElement)) continue;
+                var element = item as HtmlElement;
+                if (element.Tag == tag) result.AddElement(element);
+                FindChildren(element, tag, result);
+            }
+        }
     }
 }

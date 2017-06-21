@@ -244,12 +244,20 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 是否显示序数
+        /// 是否显示序数列
         /// </summary>
         /// <param name="value"></param>
         public void DisplayIndexColumn(bool value)
         {
             IsDisplayIndexColumn = value;
+        }
+
+        /// <summary>
+        /// 是否显示多选项框列
+        /// </summary>
+        public void SupportParameter()
+        {
+            IsDisplayCheckboxColumn = true;
         }
 
         /// <summary>

@@ -47,6 +47,7 @@
     <Compile Include="Element\ScriptResource.cs" />
     <Compile Include="HtmlAttribute.cs" />
     <Compile Include="HtmlChar.cs" />
+    <Compile Include="HtmlElementSeletor.cs" />
     <Compile Include="HtmlEvent.cs" />
     <Compile Include="Element\Script.cs" />
     <Compile Include="HtmlOutput.cs" />
