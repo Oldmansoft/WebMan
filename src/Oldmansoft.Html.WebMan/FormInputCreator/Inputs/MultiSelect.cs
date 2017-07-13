@@ -21,6 +21,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Tag = HtmlTag.Select;
             Attribute(HtmlAttribute.Name, Name);
+            Attribute(HtmlAttribute.Multiple, "multiple");
+            AddClass("form-control");
             foreach (var option in Options)
             {
                 var item = new HtmlElement(HtmlTag.Option);
