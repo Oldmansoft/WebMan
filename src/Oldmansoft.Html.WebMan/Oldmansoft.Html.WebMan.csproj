@@ -124,6 +124,8 @@
     <Compile Include="Input\ICustomInput.cs" />
     <Compile Include="Input\IFormInput.cs" />
     <Compile Include="Input\Markdown.cs" />
+    <Compile Include="Input\Select2.cs" />
+    <Compile Include="Input\Select2Resource.cs" />
     <Compile Include="Input\TagsInput.cs" />
     <Compile Include="LinkBehave.cs" />
     <Compile Include="DataTables\ValueDealer\BoolDisplay.cs" />

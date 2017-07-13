@@ -20,7 +20,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                     file.FileOption = input.ModelItem.FileOption;
                 }
                 result = file;
-                result.Init(input.ModelItem.Name, input.Value, null, input.Script, input.FormValidator);
+                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
                 return true;
             }
             return false;

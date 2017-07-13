@@ -13,7 +13,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Password)
             {
                 result = new Inputs.Password();
-                result.Init(input.ModelItem.Name, input.Value, null, input.Script, input.FormValidator);
+                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
                 return true;
             }
             return false;

@@ -67,6 +67,11 @@ namespace Oldmansoft.Html.WebMan
                 Head.Append(Resources.Markdown.Script);
                 Head.Append(Resources.Markdown.Preview);
             }
+            if (Resources.Select2.Enabled)
+            {
+                Head.Append(Resources.Select2.Link);
+                Head.Append(Resources.Select2.Script);
+            }
 
             foreach(var item in Resources.Nodes)
             {

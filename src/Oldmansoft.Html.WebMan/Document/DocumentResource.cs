@@ -65,6 +65,11 @@ namespace Oldmansoft.Html.WebMan
         /// Markdown
         /// </summary>
         public Input.MarkdownResource Markdown { get; private set; }
+
+        /// <summary>
+        /// Select2
+        /// </summary>
+        public Input.Select2Resource Select2 { get; private set; }
         
         /// <summary>
         /// 节点
@@ -127,6 +132,10 @@ namespace Oldmansoft.Html.WebMan
             Markdown.Link = new Element.Link("//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css");
             Markdown.Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js");
             Markdown.Preview = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/markdown.min.js");
+
+            Select2 = new Input.Select2Resource();
+            Select2.Link = new Element.Link("//cdn.bootcss.com/select2/4.0.3/css/select2.min.css");
+            Select2.Script = new Element.ScriptResource("//cdn.bootcss.com/select2/4.0.3/js/select2.min.js");
         }
 
         /// <summary>

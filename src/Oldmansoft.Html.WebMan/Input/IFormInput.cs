@@ -15,11 +15,12 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 初始化
         /// </summary>
         /// <param name="name">名称</param>
+        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
         /// <param name="scripts">脚本</param>
         /// <param name="formValidator">验证器</param>
-        void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator);
+        void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator);
 
         /// <summary>
         /// 设置输入模式

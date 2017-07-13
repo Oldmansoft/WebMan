@@ -26,16 +26,17 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 选项列表
         /// </summary>
         protected IList<ListDataItem> Options { get; set; }
-        
+
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="options"></param>
-        /// <param name="scripts"></param>
-        /// <param name="formValidator"></param>
-        public override void Init(string name, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        /// <param name="name">名称</param>
+        /// <param name="type">值类型</param>
+        /// <param name="value">值</param>
+        /// <param name="options">列表项</param>
+        /// <param name="scripts">脚本</param>
+        /// <param name="formValidator">验证器</param>
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
         {
             Name = name;
             Values = value.GetListString();
