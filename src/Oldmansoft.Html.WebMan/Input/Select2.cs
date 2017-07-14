@@ -64,7 +64,7 @@ namespace Oldmansoft.Html.WebMan.Input
             Tag = HtmlTag.Select;
             Attribute(HtmlAttribute.Name, Name);
             AddClass("form-control");
-            Css("width", "100%;");
+            Css("width", "100%");
             foreach (var option in Options)
             {
                 var item = new HtmlElement(HtmlTag.Option);
