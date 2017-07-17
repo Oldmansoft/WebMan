@@ -64,6 +64,18 @@ namespace Oldmansoft.Html.WebMan
             return source == null ? string.Empty : source.ToString();
         }
 
+        /// <summary>
+        /// 获取修复的脚本尾
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string FixScriptTail(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) return source;
+            if (source.Substring(source.Length - 1, 1) == ";") return source;
+            return string.Format("{0};", source);
+        }
+
         private static readonly Util.ColumnFlags ColumnFlags = new Util.ColumnFlags();
 
         /// <summary>

@@ -126,7 +126,7 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
-        private string GetColumnContent()
+        private string GetColumnContentScript()
         {
             var result = new JsonArray();
 
@@ -166,9 +166,6 @@ namespace Oldmansoft.Html.WebMan
                 {
                     var operate = new JsonObject();
                     operate.Set("text", item.Text);
-                    operate.Set("path", item.Location);
-                    operate.Set("behave", ((int)item.Behave).ToString());
-                    operate.Set("tips", item.ConfirmContent);
                     if (item.HideCondition != null)
                     {
                         operate.Set("hide", new JsonRaw(string.Format("function(data){{ return {0}; }}", item.HideCondition)));
@@ -177,12 +174,59 @@ namespace Oldmansoft.Html.WebMan
                     {
                         operate.Set("disabled", new JsonRaw(string.Format("function(data){{ return {0}; }}", item.DisableCondition)));
                     }
+                    if (item.Behave == LinkBehave.Script)
+                    {
+                        operate.Set("script", new JsonRaw(string.Format("function(id){{ {0} }}", item.Location.FixScriptTail())));
+                    }
                     operates.Add(operate);
                 }
                 operateObject.Set("render", new JsonRaw(string.Format("oldmansoft.webman.setDataTableColumnOperate({0})", operates.ToString())));
                 result.Add(operateObject);
             }
             
+            return result.ToString();
+        }
+
+        private string GetItemActionScript()
+        {
+            var result = new JsonArray();
+            foreach (var item in ItemActions)
+            {
+                var operate = new JsonObject();
+                if (item.Behave == LinkBehave.Script)
+                {
+                    operate.Set("script", new JsonRaw(string.Format("function(selectedId){{ {0} }}", item.Location.FixScriptTail())));
+                }
+                else
+                {
+                    operate.Set("path", item.Location);
+                }
+                operate.Set("behave", (int)item.Behave);
+                operate.Set("tips", item.ConfirmContent);
+                result.Add(operate);
+            }
+            return result.ToString();
+        }
+
+        private string GetTableActionScript()
+        {
+            var result = new JsonArray();
+            foreach(var item in TableActions)
+            {
+                var operate = new JsonObject();
+                if (item.Behave == LinkBehave.Script)
+                {
+                    operate.Set("script", new JsonRaw(string.Format("function(selectedIds){{ {0} }}", item.Location.FixScriptTail())));
+                }
+                else
+                {
+                    operate.Set("path", item.Location);
+                }
+                operate.Set("behave", (int)item.Behave);
+                operate.Set("tips", item.ConfirmContent);
+                operate.Set("other", (item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0));
+                result.Add(operate);
+            }
             return result.ToString();
         }
 
@@ -196,14 +240,16 @@ namespace Oldmansoft.Html.WebMan
             {
                 var tableAction = new HtmlElement(HtmlTag.Div);
                 tableAction.AddClass("dataTable-action btn-group");
-                foreach(var item in TableActions)
+                for (var i = 0; i < TableActions.Count; i++)
                 {
+                    var item = TableActions[i];
                     var a = new HtmlElement(HtmlTag.A);
                     tableAction.Append(a);
                     a.AddClass("btn");
+                    a.Data("index", i.ToString());
                     a.Data("path", item.Location);
                     a.Data("behave", ((int)item.Behave).ToString());
-                    a.Data("action", ((item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0)).ToString());
+                    a.Data("other", ((item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0)).ToString());
                     if (!string.IsNullOrEmpty(item.ConfirmContent)) a.Data("tips", item.ConfirmContent);
                     var span = new HtmlElement(HtmlTag.Span);
                     a.Append(span);
@@ -240,7 +286,16 @@ namespace Oldmansoft.Html.WebMan
             {
                 item.Format(outer);
             }
-            outer.AddEvent(AppEvent.Load, string.Format("oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});", name, DataSourceLoation, GetColumnContent()));
+            outer.AddEvent(AppEvent.Load,
+                string.Format(
+                    "oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2}, {3}, {4});",
+                    name,
+                    DataSourceLoation,
+                    GetTableActionScript(),
+                    GetItemActionScript(),
+                    GetColumnContentScript()
+                )
+            );
         }
 
         /// <summary>
@@ -307,7 +362,7 @@ namespace Oldmansoft.Html.WebMan
         /// 被选择的数据项的主键将用脚本变量 $man.parameter 传递
         /// </summary>
         /// <param name="display"></param>
-        /// <param name="script"></param>
+        /// <param name="script">脚本参数 selectedIds</param>
         /// <returns></returns>
         public ITableAction AddActionTable(string display, string script)
         {
@@ -339,7 +394,7 @@ namespace Oldmansoft.Html.WebMan
         /// 数据项的主键将用脚本变量 $man.parameter 传递
         /// </summary>
         /// <param name="display"></param>
-        /// <param name="script"></param>
+        /// <param name="script">脚本参数 selectedId</param>
         /// <returns></returns>
         public IItemAction AddActionItem(string display, string script)
         {

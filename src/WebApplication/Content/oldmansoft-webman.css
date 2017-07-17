@@ -530,6 +530,7 @@ table.dataTable tbody td a:first-child {
 table.dataTable tbody td ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 table.dataTable tbody td ul li {
     display: inline-block;

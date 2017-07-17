@@ -1,5 +1,5 @@
 ﻿/*
-* v0.5.31
+* v0.6.57
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -351,6 +351,7 @@ window.oldmansoft.webman = new (function () {
 
                 var a = $("<a></a>");
                 a.text(items[i].text);
+                a.attr("data-index", i);
                 a.attr("data-path", items[i].path);
                 a.attr("data-behave", items[i].behave);
                 a.attr("data-tips", items[i].tips);
@@ -364,7 +365,7 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
-    this.setDataTable = function (view, className, source, columns) {
+    this.setDataTable = function (view, className, source, tableActions, itemActions, columns) {
         function computeElementWidth(item) {
             var width = 0;
             item.children().each(function () {
@@ -412,6 +413,8 @@ window.oldmansoft.webman = new (function () {
             node;
         node = view.node.find("." + className);
         node.data("datatable", node.DataTable(option));
+        node.data("table-actions", tableActions);
+        node.data("item-actions", itemActions);
     }
 
     this.setTagsInput = function (view, selector) {
@@ -510,114 +513,109 @@ window.oldmansoft.webman = new (function () {
             $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
         });
         $(document).on("click", ".dataTable-action a", function (e) {
-            var action_nothing = 0,
-                action_supportParameter = 1,
-                action_needSelected = 2,
-                behave = Number($(this).attr("data-behave")),
-                path = $(this).attr("data-path"),
-                action = Number($(this).attr("data-action")),
-                tips = $(this).attr("data-tips"),
-                ids = getDataTableSelectedIds($(this)),
+            var other_nothing = 0,
+                other_supportParameter = 1,
+                other_needSelected = 2,
+                action,
+                selectedIds = getDataTableSelectedIds($(this)),
                 node = $(e.target).parents(".webman-body").find("table.dataTable");
+            action = node.data("table-actions")[Number($(this).attr("data-index"))];
 
             function execute() {
                 var loading;
-                if (behave == linkBehave.open) {
-                    if ((action & action_supportParameter) == action_supportParameter) {
-                        $app.open(path, { SelectedId: ids });
+                if (action.behave == linkBehave.open) {
+                    if ((action.other & other_supportParameter) == other_supportParameter) {
+                        $app.open(action.path, { SelectedId: selectedIds });
                     } else {
-                        $app.open(path);
+                        $app.open(action.path);
                     }
-                } else if (behave == linkBehave.link) {
-                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
-                        $app.addHash(path);
+                } else if (action.behave == linkBehave.link) {
+                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                        $app.addHash(action.path);
                     } else {
-                        for (var i = 0; i < ids.length; i++) {
-                            ids[i] = encodeURIComponent(ids[i]);
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
                         }
-                        $app.addHash(bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId=")));
+                        $app.addHash(bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId=")));
                     }
-                } else if (behave == linkBehave.call) {
+                } else if (action.behave == linkBehave.call) {
                     loading = $app.loading();
-                    if ((action & action_supportParameter) == action_supportParameter) {
-                        $.post(path, {
-                            SelectedId: ids
+                    if ((action.other & other_supportParameter) == other_supportParameter) {
+                        $.post(action.path, {
+                            SelectedId: selectedIds
                         }).done(function (data) {
                             dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
                     } else {
-                        $.get(path).done(function (data) {
+                        $.get(action.path).done(function (data) {
                             dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
                     }
-                } else if (behave == linkBehave.self) {
-                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
-                        document.location = path;
+                } else if (action.behave == linkBehave.self) {
+                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                        document.location = action.path;
                     } else {
-                        for (var i = 0; i < ids.length; i++) {
-                            ids[i] = encodeURIComponent(ids[i]);
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
                         }
-                        document.location = bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId="));
+                        document.location = bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId="));
                     }
-                } else if (behave == linkBehave.blank) {
-                    if ((action & action_supportParameter) == action_nothing || ids.length == 0) {
-                        window.open(path);
+                } else if (action.behave == linkBehave.blank) {
+                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                        window.open(action.path);
                     } else {
-                        for (var i = 0; i < ids.length; i++) {
-                            ids[i] = encodeURIComponent(ids[i]);
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
                         }
-                        window.open(bindUrlParamter(path, "SelectedId=" + ids.join("&SelectedId=")));
+                        window.open(bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId=")));
                     }
-                } else if (behave == linkBehave.script) {
-                    $man.parameter = ids;
-                    eval(path);
+                } else if (action.behave == linkBehave.script) {
+                    action.script(selectedIds);
                 }
             }
 
-            if ((action & action_needSelected) == action_needSelected && ids.length == 0) {
+            if ((action.other & other_needSelected) == other_needSelected && selectedIds.length == 0) {
                 $app.alert(text.please_select_item);
                 return;
             }
-            if (tips) {
-                $app.confirm(tips).yes(execute);
+            if (action.tips) {
+                $app.confirm(action.tips).yes(execute);
             } else {
                 execute();
             }
             node.parents(".main-view").data("operator", node.data("datatable"));
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
-            var behave = Number($(this).attr("data-behave")),
-                path = $(this).attr("data-path"),
-                tips = $(this).attr("data-tips"),
-                id = getDataTableItemId($(this)),
+            var action,
+                itemId = getDataTableItemId($(this)),
                 node = $(e.target).parents("table.dataTable");
+            action = node.data("item-actions")[Number($(this).attr("data-index"))];
 
             function execute() {
                 var loading;
-                if (behave == linkBehave.open) {
-                    $app.open(path, { SelectedId: id });
-                } else if (behave == linkBehave.link) {
-                    $app.addHash(bindUrlParamter(path, "SelectedId=" + id));
-                } else if (behave == linkBehave.call) {
+                if (action.behave == linkBehave.open) {
+                    $app.open(action.path, { SelectedId: itemId });
+                } else if (action.behave == linkBehave.link) {
+                    $app.addHash(bindUrlParamter(action.path, "SelectedId=" + itemId));
+                } else if (action.behave == linkBehave.call) {
                     loading = $app.loading();
-                    $.post(path, {
-                        SelectedId: id
+                    $.post(action.path, {
+                        SelectedId: itemId
                     }).done(function (data) {
                         dealSubmitResult(data, dealMethod.call);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });
-                } else if (behave == linkBehave.self) {
-                    document.location = bindUrlParamter(path, "SelectedId=" + id);
-                } else if (behave == linkBehave.blank) {
-                    window.open(bindUrlParamter(path, "SelectedId=" + id));
-                } else if (behave == linkBehave.script) {
-                    $man.parameter = id;
-                    eval(path);
+                } else if (action.behave == linkBehave.self) {
+                    document.location = bindUrlParamter(action.path, "SelectedId=" + itemId);
+                } else if (action.behave == linkBehave.blank) {
+                    window.open(bindUrlParamter(action.path, "SelectedId=" + itemId));
+                } else if (action.behave == linkBehave.script) {
+                    action.script(itemId);
                 }
             }
 
             if ($(this).hasClass("disabled")) return;
-            if (tips) {
-                $app.confirm(tips).yes(execute);
+            if (action.tips) {
+                $app.confirm(action.tips).yes(execute);
             } else {
                 execute();
             }
@@ -670,7 +668,6 @@ window.oldmansoft.webman = new (function () {
 
     window.$man = {
         init: $this.init,
-        configText: $this.configText,
-        parameter: null
+        configText: $this.configText
     }
 })();
