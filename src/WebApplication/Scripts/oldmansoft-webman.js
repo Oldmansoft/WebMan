@@ -1,5 +1,5 @@
 ﻿/*
-* v0.6.57
+* v0.6.58
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -365,7 +365,7 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
-    this.setDataTable = function (view, className, source, tableActions, itemActions, columns) {
+    this.setDataTable = function (view, className, source, option) {
         function computeElementWidth(item) {
             var width = 0;
             item.children().each(function () {
@@ -373,14 +373,14 @@ window.oldmansoft.webman = new (function () {
             });
             return width;
         }
-        var option = {
+        var tableOption = {
             processing: true,
             serverSide: true,
             ajax: {
                 url: source,
                 type: 'POST'
             },
-            columns: columns,
+            columns: option.columns,
             retrieve: true,
             searching: false,
             lengthChange: false,
@@ -411,10 +411,13 @@ window.oldmansoft.webman = new (function () {
             }
         },
             node;
+        if (option.size) {
+            tableOption.displayLength = option.size;
+        }
         node = view.node.find("." + className);
-        node.data("datatable", node.DataTable(option));
-        node.data("table-actions", tableActions);
-        node.data("item-actions", itemActions);
+        node.data("datatable", node.DataTable(tableOption));
+        node.data("table-actions", option.tableActions);
+        node.data("item-actions", option.itemActions);
     }
 
     this.setTagsInput = function (view, selector) {

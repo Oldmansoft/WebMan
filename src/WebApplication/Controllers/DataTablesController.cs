@@ -59,6 +59,7 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
             table.AddActionItem("提示", "$app.alert(selectedId)");
+            table.SetPageSize(20);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

@@ -65,7 +65,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 分页长度
         /// </summary>
-        public uint? PageLength { get; set; }
+        private uint? PageSize { get; set; }
 
         /// <summary>
         /// 创建表格定义
@@ -126,7 +126,7 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
-        private string GetColumnContentScript()
+        private JsonArray GetColumnContentScript()
         {
             var result = new JsonArray();
 
@@ -184,10 +184,10 @@ namespace Oldmansoft.Html.WebMan
                 result.Add(operateObject);
             }
             
-            return result.ToString();
+            return result;
         }
 
-        private string GetItemActionScript()
+        private JsonArray GetItemActionScript()
         {
             var result = new JsonArray();
             foreach (var item in ItemActions)
@@ -205,10 +205,10 @@ namespace Oldmansoft.Html.WebMan
                 operate.Set("tips", item.ConfirmContent);
                 result.Add(operate);
             }
-            return result.ToString();
+            return result;
         }
 
-        private string GetTableActionScript()
+        private JsonArray GetTableActionScript()
         {
             var result = new JsonArray();
             foreach(var item in TableActions)
@@ -227,6 +227,16 @@ namespace Oldmansoft.Html.WebMan
                 operate.Set("other", (item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0));
                 result.Add(operate);
             }
+            return result;
+        }
+
+        private string GetOptionScript()
+        {
+            var result = new JsonObject();
+            result.Set("tableActions", GetTableActionScript());
+            result.Set("itemActions", GetItemActionScript());
+            result.Set("columns", GetColumnContentScript());
+            if (PageSize.HasValue) result.Set("size", PageSize.Value);
             return result.ToString();
         }
 
@@ -288,12 +298,10 @@ namespace Oldmansoft.Html.WebMan
             }
             outer.AddEvent(AppEvent.Load,
                 string.Format(
-                    "oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2}, {3}, {4});",
+                    "oldmansoft.webman.setDataTable(view, '{0}', '{1}', {2});",
                     name,
                     DataSourceLoation,
-                    GetTableActionScript(),
-                    GetItemActionScript(),
-                    GetColumnContentScript()
+                    GetOptionScript()
                 )
             );
         }
@@ -313,6 +321,16 @@ namespace Oldmansoft.Html.WebMan
         public void SupportParameter()
         {
             IsDisplayCheckboxColumn = true;
+        }
+
+        /// <summary>
+        /// 设置页大小
+        /// </summary>
+        /// <param name="size"></param>
+        public void SetPageSize(uint size)
+        {
+            if (size == 0) return;
+            PageSize = size;
         }
 
         /// <summary>
