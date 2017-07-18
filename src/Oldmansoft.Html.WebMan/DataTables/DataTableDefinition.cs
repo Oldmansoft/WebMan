@@ -377,7 +377,7 @@ namespace Oldmansoft.Html.WebMan
 
         /// <summary>
         /// 添加操作表格
-        /// 被选择的数据项的主键将用脚本变量 $man.parameter 传递
+        /// 被选择的数据项的主键将用脚本参数 selectedIds 传递
         /// </summary>
         /// <param name="display"></param>
         /// <param name="script">脚本参数 selectedIds</param>
@@ -409,7 +409,7 @@ namespace Oldmansoft.Html.WebMan
 
         /// <summary>
         /// 添加操作数据项
-        /// 数据项的主键将用脚本变量 $man.parameter 传递
+        /// 数据项的主键将用脚本参数 selectedId 传递
         /// </summary>
         /// <param name="display"></param>
         /// <param name="script">脚本参数 selectedId</param>
