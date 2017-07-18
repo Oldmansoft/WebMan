@@ -76,7 +76,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
             result = false;
             foreach (var extendsion in Extensions)
             {
-                if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4) == string.Format(".{0}", extendsion))
+                if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4).ToLower() == string.Format(".{0}", extendsion).ToLower())
                 {
                     result = true;
                 }

@@ -13,7 +13,7 @@ namespace Oldmansoft.Html.WebMan.FormValidate
 
         protected override void Set(JsonObject json)
         {
-            json.Set("regexp", Pattern);
+            json.Set("regexp", new JsonRaw(string.Format("/{0}/i", Pattern)));
         }
     }
 }
