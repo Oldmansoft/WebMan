@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Html.WebMan.Mvc", "Oldmansoft.Html.WebMan.Mvc\Oldmansoft.Html.WebMan.Mvc.csproj", "{0F3A33E2-FF1B-473A-B6AC-77EAE8287D27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.Html.WebMan", "Testing.Html.WebMan\Testing.Html.WebMan.csproj", "{619C1856-3177-4D62-A828-D75152793D1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0F3A33E2-FF1B-473A-B6AC-77EAE8287D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F3A33E2-FF1B-473A-B6AC-77EAE8287D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F3A33E2-FF1B-473A-B6AC-77EAE8287D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{619C1856-3177-4D62-A828-D75152793D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619C1856-3177-4D62-A828-D75152793D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619C1856-3177-4D62-A828-D75152793D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619C1856-3177-4D62-A828-D75152793D1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

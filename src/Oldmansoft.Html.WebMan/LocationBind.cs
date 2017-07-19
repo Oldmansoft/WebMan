@@ -122,7 +122,7 @@ namespace Oldmansoft.Html.WebMan
                         continue;
                     }
                     
-                    if (item.Value is System.Collections.IEnumerable)
+                    if (item.Value is System.Collections.IEnumerable && typeof(TParameter) != typeof(string))
                     {
 
                         foreach (var value in item.Value as System.Collections.IEnumerable)
@@ -131,12 +131,14 @@ namespace Oldmansoft.Html.WebMan
 
                             SetLocationPrefix(isFirst, result);
                             SetKeyValue(result, item.Key, value);
+                            isFirst = false;
                         }
                     }
                     else
                     {
                         SetLocationPrefix(isFirst, result);
                         SetKeyValue(result, item.Key, item.Value);
+                        isFirst = false;
                     }
                 }
                 return result.ToString();
