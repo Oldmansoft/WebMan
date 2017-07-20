@@ -482,6 +482,12 @@ header .dropdown-menu a {
 .webman-panel>.webman-body .form-group:first-child {
     border-top: none;
 }
+.webman-panel>.webman-body .form-group .control-line {
+    margin-bottom: 15px;
+}
+.webman-panel>.webman-body .form-group .control-line:last-child {
+    margin-bottom: 0;
+}
 
 .form-control:focus {
     border-color: #999;
@@ -564,13 +570,19 @@ table.dataTable tbody td ul li:first-child {
     margin-right: 2px;
 }
 
-.input-group-addon .text {
+.icon-fa-text {
     margin-left: 6px;
 }
-.input-group-addon.del-file {
+.input-group .single-file-input, .input-group .mulit-file-input {
+    display: none;
+}
+.input-group-addon.del-file, .input-group-addon.del-files, .input-group-addon.del-input-files {
     cursor: pointer;
 }
-.input-group-addon.del-file.on {
+.input-group .virtual-file-input {
+    cursor: pointer;
+}
+.input-group-addon.del-file.on, .input-group-addon.del-files.on {
     border: 1px solid gray;
     border-bottom: 1px solid white;
     border-right: 1px solid white;

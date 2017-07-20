@@ -64,13 +64,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(Value.ContentType, Value.FileName);
                 span.Append(icon.CreateElement());
-                span.Append(new HtmlElement(HtmlTag.A).Text(Value.FileName).AddClass("text").Attribute(HtmlAttribute.Href, Value.Location).Attribute(HtmlAttribute.Target, "_blank"));
+                span.Append(new HtmlElement(HtmlTag.A).Text(Value.FileName).AddClass("icon-fa-text").Attribute(HtmlAttribute.Href, Value.Location).Attribute(HtmlAttribute.Target, "_blank"));
             }
             else
             {
                 span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-file"));
             }
-            
+
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
             if (!readony && !disabled)
@@ -82,7 +82,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
-                foreach(var item in FileOption.Accept.ToArray())
+                foreach (var item in FileOption.Accept.ToArray())
                 {
                     var contentType = item.ToString().ToLower().Replace('_', '-');
                     if (FileOption.Extensions.Length == 0)
@@ -91,7 +91,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                     }
                     else
                     {
-                        foreach(var extension in FileOption.Extensions)
+                        foreach (var extension in FileOption.Extensions)
                         {
                             list.Add(string.Format("{0}/{1}", contentType, extension.ToLower()));
                         }
@@ -99,8 +99,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
                 input.Attribute(HtmlAttribute.Accept, string.Join(",", list));
             }
-            input.AddClass("form-control");
-            
+            input.AddClass("single-file-input");
+
+            var virtualInput = new HtmlElement(HtmlTag.Div);
+            virtualInput.AddClass("form-control virtual-file-input");
+            virtualInput.Text("选择文件");
+            virtualInput.AppendTo(this);
+
             if (Value != null && !readony && !disabled)
             {
                 var delInput = new HtmlElement(HtmlTag.Input);
@@ -119,6 +124,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
             }
 
+            SetFormValidator();
+        }
+
+        private void SetFormValidator()
+        {
             var message = "文件扩展名必须在 \"{0}\" 里面";
             if (FileOption.ErrorMessage != null)
             {
@@ -141,7 +151,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var a = new HtmlElement(HtmlTag.A);
             Append(a);
             a.Text(Value.FileName);
-            a.AddClass("text");
+            a.AddClass("icon-fa-text");
             a.Attribute(HtmlAttribute.Href, Value.Location);
             a.Attribute(HtmlAttribute.Target, "_blank");
         }

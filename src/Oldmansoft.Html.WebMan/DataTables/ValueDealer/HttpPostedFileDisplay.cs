@@ -33,7 +33,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             else
             {
                 var a = new HtmlElement(HtmlTag.A);
-                a.AddClass("text");
+                a.AddClass("icon-fa-text");
                 a.Attribute(HtmlAttribute.Href, file.Location);
                 a.Attribute(HtmlAttribute.Target, "_blank");
                 a.Text(file.FileName);
@@ -45,7 +45,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             var span = new HtmlElement(HtmlTag.Span);
-            span.AddClass("text");
+            span.AddClass("icon-fa-text");
             span.Text(file.FileName);
             return new HtmlOutput(icon.CreateElement(), span).Complete();
         }

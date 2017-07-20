@@ -31,6 +31,9 @@ namespace WebApplication.Controllers
                 item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
                 item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg");
+                item.Files = new List<HttpPostedFileBase>();
+                item.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg"));
+                item.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg"));
                 if (i == 0)
                 {
                     item.Tags = new List<string>();
@@ -135,7 +138,7 @@ namespace WebApplication.Controllers
             if (data != null)
             {
                 var mapper = new DataMapper();
-                mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File);
+                mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
                 mapper.CopyTo(model, data);
                 model.DealUpload((file) =>
                 {
@@ -144,6 +147,13 @@ namespace WebApplication.Controllers
                 {
                     data.File = null;
                 }, o => o.File);
+                model.DealUpload((file) =>
+                {
+                    data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+                }, (index) =>
+                {
+                    data.Files.RemoveAt(index);
+                }, o => o.Files);
             }
 
             return Json(DealResult.Refresh("修改成功"));

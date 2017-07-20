@@ -1,123 +1,58 @@
-﻿// jquery.form 4.2.1
-(function () {
-    /**
-    * Feature detection
-    */
-    var feature = {};
+﻿// BootstrapValidator v0.5.3
+(function ($) {
+    $.fn.bootstrapValidator.i18n.regexp = $.extend($.fn.bootstrapValidator.i18n.regexp || {}, {
+        'default': 'Please enter a value matching the pattern'
+    });
 
-    feature.fileapi = $('<input type="file">').get(0).files !== undefined;
-    feature.formdata = (typeof window.FormData !== 'undefined');
-    $.fn.formToArray = function (semantic, elements, filtering) {
-        var a = [];
+    $.fn.bootstrapValidator.validators.regexp = {
+        html5Attributes: {
+            message: 'message',
+            regexp: 'regexp'
+        },
 
-        if (this.length === 0) {
-            return a;
-        }
-
-        var form = this[0];
-        var formId = this.attr('id');
-        var els = (semantic || typeof form.elements === 'undefined') ? form.getElementsByTagName('*') : form.elements;
-        var els2;
-
-        if (els) {
-            els = $.makeArray(els); // convert to standard array
-        }
-
-        // #386; account for inputs outside the form which use the 'form' attribute
-        // FinesseRus: in non-IE browsers outside fields are already included in form.elements.
-        if (formId && (semantic || /(Edge|Trident)\//.test(navigator.userAgent))) {
-            els2 = $(':input[form="' + formId + '"]').get(); // hat tip @thet
-            if (els2.length) {
-                els = (els || []).concat(els2);
-            }
-        }
-
-        if (!els || !els.length) {
-            return a;
-        }
-
-        if ($.isFunction(filtering)) {
-            els = $.map(els, filtering);
-        }
-
-        var i, j, n, v, el, max, jmax;
-
-        for (i = 0, max = els.length; i < max; i++) {
-            el = els[i];
-            n = el.name;
-            if (!n || el.disabled) {
-                continue;
+        enableByHtml5: function ($field) {
+            var pattern = $field.attr('pattern');
+            if (pattern) {
+                return {
+                    regexp: pattern
+                };
             }
 
-            if (semantic && form.clk && el.type === 'image') {
-                // handle image inputs on the fly when semantic == true
-                if (form.clk === el) {
-                    a.push({ name: n, value: $(el).val(), type: el.type });
-                    a.push({ name: n + '.x', value: form.clk_x }, { name: n + '.y', value: form.clk_y });
+            return false;
+        },
+
+        /**
+         * Check if the element value matches given regular expression
+         *
+         * @param {BootstrapValidator} validator The validator plugin instance
+         * @param {jQuery} $field Field element
+         * @param {Object} options Consists of the following key:
+         * - regexp: The regular expression you need to check
+         * @returns {Boolean}
+         */
+        validate: function (validator, $field, options) {
+            var values = [];
+            if ($field.attr('type') == "file") {
+                var files = $field.get(0).files;
+                if (files.length == 0) return true;
+                for (var i = 0; i < files.length; i++) {
+                    values.push(files[i].name);
                 }
-                continue;
+            } else {
+                var value = $field.val();
+                if (value === '') {
+                    return true;
+                }
+                values.push(value);
             }
 
-            v = $.fieldValue(el, true);
-            if (v && v.constructor === Array) {
-                if (elements) {
-                    elements.push(el);
+            for (var i = 0; i < values.length; i++) {
+                var regexp = ('string' === typeof options.regexp) ? new RegExp(options.regexp) : options.regexp;
+                if (!regexp.test(values[i])) {
+                    return false;
                 }
-                for (j = 0, jmax = v.length; j < jmax; j++) {
-                    a.push({ name: n, value: v[j] });
-                }
-
-            } else if (feature.fileapi && el.type === 'file') {
-                if (elements) {
-                    elements.push(el);
-                }
-
-                var files = el.files;
-
-                if (files.length) {
-                    for (j = 0; j < files.length; j++) {
-                        a.push({ name: n, value: files[j], type: el.type });
-                    }
-                } else {
-                    // #180
-                    // By: Oldman, fix .net mvc model
-                    var blob;
-                    try {
-                        blob = new Blob([], { type: "application/octet-stream" });
-                    } catch (e) {
-                        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-                        if (e.name == 'TypeError' && window.BlobBuilder) {
-                            var builder = new BlobBuilder();
-                            builder.append([]);
-                            blob = builder.getBlob("application/octet-stream");
-                        }
-                        else {
-                            alert("We're screwed, blob constructor unsupported entirely");
-                        }
-                    }
-                    a.push({ name: n, value: blob, type: el.type });
-                }
-
-            } else if (v !== null && typeof v !== 'undefined') {
-                if (elements) {
-                    elements.push(el);
-                }
-                a.push({ name: n, value: v, type: el.type, required: el.required });
             }
+            return true;
         }
-
-        if (!semantic && form.clk) {
-            // input type=='image' are not found in elements array! handle it here
-            var $input = $(form.clk), input = $input[0];
-
-            n = input.name;
-
-            if (n && !input.disabled && input.type === 'image') {
-                a.push({ name: n, value: $input.val() });
-                a.push({ name: n + '.x', value: form.clk_x }, { name: n + '.y', value: form.clk_y });
-            }
-        }
-
-        return a;
     };
-})();
+}(window.jQuery));

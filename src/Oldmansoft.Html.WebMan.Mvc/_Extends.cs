@@ -55,7 +55,14 @@ namespace Oldmansoft.Html.WebMan
             var outer = new StringBuilder();
             foreach (var error in source.Values.SelectMany(v => v.Errors))
             {
-                outer.AppendLine(error.ErrorMessage);
+                if (string.IsNullOrEmpty(error.ErrorMessage) && error.Exception != null)
+                {
+                    outer.AppendLine(error.Exception.Message);
+                }
+                else
+                {
+                    outer.AppendLine(error.ErrorMessage);
+                }
             }
             return outer.ToString();
         }

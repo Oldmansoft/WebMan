@@ -28,19 +28,22 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                     result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(model.Name), input.Script, input.FormValidator);
                     return true;
                 }
+                else if (itemType == typeof(HttpPostedFileBase) || itemType == typeof(HttpPostedFileWrapper))
+                {
+                    var multiFile = new Inputs.MultiFile();
+                    if (input.ModelItem.FileOption != null)
+                    {
+                        multiFile.FileOption = input.ModelItem.FileOption;
+                    }
+                    result = multiFile;
+                    result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
+                    return true;
+                }
                 else if (!itemType.IsClass)
                 {
                     result = new Inputs.CheckBoxList();
                     result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(model.Name), input.Script, input.FormValidator);
                     return true;
-                }
-                else if (itemType == typeof(HttpPostedFileBase))
-                {
-
-                }
-                else if (itemType == typeof(HttpPostedFileWrapper))
-                {
-
                 }
             }
             return false;

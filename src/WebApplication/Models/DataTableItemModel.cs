@@ -55,7 +55,11 @@ namespace WebApplication.Models
         [Display(Name = "文件")]
         [FileOption(SupportDelete = true, Accept = ContentType.Image)]
         public HttpPostedFileBase File { get; set; }
-
+        
+        [Display(Name = "文件组")]
+        [FileOption(SupportDelete = true, Accept = ContentType.Image)]
+        public List<HttpPostedFileBase> Files { get; set; }
+        
         [CustomInput(typeof(TagsInput))]
         [Required]
         public List<string> Tags { get; set; }

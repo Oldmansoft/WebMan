@@ -230,7 +230,7 @@ window.oldmansoft.webman = new (function () {
     }
 
     function markFileDelete(container) {
-        var text = container.find(".text");
+        var text = container.find(".icon-fa-text");
         if (text.hasClass("mark")) {
             return false;
         }
@@ -241,7 +241,7 @@ window.oldmansoft.webman = new (function () {
     }
 
     function unmarkFileDelete(container) {
-        var text = container.find(".text");
+        var text = container.find(".icon-fa-text");
         if (!text.hasClass("mark")) {
             return false;
         }
@@ -636,8 +636,26 @@ window.oldmansoft.webman = new (function () {
                 $(this).addClass("on");
             }
         });
-        $(document).on("change", ".input-group input[type=file]", function () {
+        $(document).on("click", ".input-group-addon.del-files", function () {
             var container = $(this).parent();
+            if ($(this).hasClass("on")) {
+                unmarkFileDelete(container);
+                $(this).removeClass("on");
+            } else {
+                markFileDelete(container);
+                $(this).addClass("on");
+            }
+        });
+        $(document).on("click", ".input-group-addon.del-input-files", function () {
+            var container = $(this).parent();
+            container.remove();
+        });
+        $(document).on("click", ".input-group .virtual-file-input", function () {
+            $(this).prev().click();
+        });
+        $(document).on("change", ".input-group .single-file-input", function () {
+            var container = $(this).parent(),
+                files;
             if (container.find(".del-file-input").length == 0) return;
             if ($(this).val() == "") {
                 if (!container.find(".del-file").hasClass("on")) {
@@ -645,7 +663,68 @@ window.oldmansoft.webman = new (function () {
                 }
             } else {
                 markFileDelete(container);
+                files = $(this).get(0).files;
+                if (files != null && files.length > 0) {
+                    $(this).next().text(files[0].name);
+                }
             }
+        });
+        $(document).on("click", ".input-group .virtual-mulit-file-input", function () {
+            var template = $(this).prev(),
+                input = $("<input type='file' multiple='multiple' />");
+
+            input.attr("name", template.attr("name"));
+            input.attr("accept", template.attr("accept"));
+            input.attr("class", "mulit-file-input");
+            input.attr("data-bv-field", template.attr("data-bv-field"));
+            input.on("change", function () {
+                var container = $(this).parent(),
+                    groups = $(this).parentsUntil(".main-view", ".mulit-file-group"),
+                    group,
+                    control,
+                    files,
+                    ul,
+                    i,
+                    li,
+                    span,
+                    fa;
+
+                group = $("<div></div>");
+                group.addClass("input-group");
+                group.addClass("control-line");
+
+                control = $("<div></div>");
+                control.addClass("form-control");
+                control.css("height", "initial");
+                control.appendTo(group);
+
+                files = $(this).get(0).files;
+                ul = $("<ul><ul>");
+                ul.addClass("control-value");
+                ul.appendTo(control);
+                for (i = 0; i < files.length; i++) {
+                    li = $("<li></li>");
+                    li.appendTo(ul);
+                    li.text(files[i].name);
+                }
+
+                group.append($(this));
+
+                span = $("<span></span>");
+                span.addClass("input-group-addon");
+                span.addClass("del-input-files");
+                span.appendTo(group);
+
+                fa = $("<i></i>");
+                fa.addClass("fa");
+                fa.addClass("fa-times");
+                fa.appendTo(span);
+
+                group.appendTo(groups);
+            });
+
+            template.after(input);
+            input.click();
         });
         $(document).on("submit", "form:not(.bv-form)", function (e) {
             if (!submitForm($(this))) {

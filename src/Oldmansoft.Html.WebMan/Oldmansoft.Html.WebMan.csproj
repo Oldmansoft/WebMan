@@ -97,6 +97,7 @@
     <Compile Include="FormInputCreator\Inputs\DateTimeInput.cs" />
     <Compile Include="FormInputCreator\Inputs\File.cs" />
     <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
+    <Compile Include="FormInputCreator\Inputs\MultiFile.cs" />
     <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />
     <Compile Include="FormInputCreator\Inputs\Number.cs" />
     <Compile Include="FormInputCreator\Inputs\Password.cs" />

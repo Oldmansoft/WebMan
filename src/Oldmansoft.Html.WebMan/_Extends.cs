@@ -310,16 +310,19 @@ namespace Oldmansoft.Html.WebMan
         public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, Action delete, System.Linq.Expressions.Expression<Func<TModel, System.Web.HttpPostedFileBase>> expression)
         {
             if (expression == null) throw new ArgumentNullException("expression");
-
             if (source == null) return;
-            var httpPostedFile = expression.Compile().Invoke(source);
+            
+            if (delete != null)
+            {
+                if (System.Web.HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1") delete();
+            }
 
-            var isDelete = System.Web.HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1";
-
-            if (isDelete && delete != null) delete();
-
-            if (httpPostedFile == null || httpPostedFile.ContentLength == 0) return;
-            if (upload != null) upload(httpPostedFile);
+            if (upload != null)
+            {
+                var httpPostedFile = expression.Compile().Invoke(source);
+                if (httpPostedFile == null || httpPostedFile.ContentLength == 0) return;
+                upload(httpPostedFile);
+            }
         }
 
         /// <summary>
@@ -333,6 +336,40 @@ namespace Oldmansoft.Html.WebMan
         {
             if (expression == null) throw new ArgumentNullException("expression");
             DealUpload(source, upload, null, expression);
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="delete"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, Action<int> delete, System.Linq.Expressions.Expression<Func<TModel, List<System.Web.HttpPostedFileBase>>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            if (source == null) return;
+            
+            if (delete != null)
+            {
+                var isDeletes = System.Web.HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
+                for (var i = isDeletes.Length - 1; i > -1; i--)
+                {
+                    if (isDeletes[i] == "1") delete(i);
+                }
+            }
+
+            if (upload != null)
+            {
+                var httpPostedFiles = expression.Compile().Invoke(source);
+                if (httpPostedFiles == null) return;
+                foreach (var httpPostedFile in httpPostedFiles)
+                {
+                    if (httpPostedFile == null || httpPostedFile.ContentLength == 0) continue;
+                    if (upload != null) upload(httpPostedFile);
+                }
+            }
         }
     }
 }
