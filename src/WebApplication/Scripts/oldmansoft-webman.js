@@ -1,5 +1,5 @@
 ﻿/*
-* v0.6.58
+* v0.6.59
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -672,12 +672,24 @@ window.oldmansoft.webman = new (function () {
         $(document).on("click", ".input-group .virtual-mulit-file-input", function () {
             var template = $(this).prev(),
                 input = $("<input type='file' multiple='multiple' />");
+            if ($(this).attr("readonly") == "readonly" || $(this).attr("disabled") == "disabled") {
+                return;
+            }
+            if (template.attr("data-temporary") == "temporary") {
+                template.click();
+                return;
+            }
 
             input.attr("name", template.attr("name"));
             input.attr("accept", template.attr("accept"));
             input.attr("class", "mulit-file-input");
             input.attr("data-bv-field", template.attr("data-bv-field"));
+            input.attr("data-temporary", "temporary");
+            input.on("blur", function () {
+                console.log("blur " + $(this).val());
+            });
             input.on("change", function () {
+                console.log("change");
                 var container = $(this).parent(),
                     groups = $(this).parentsUntil(".main-view", ".mulit-file-group"),
                     group,
@@ -708,6 +720,7 @@ window.oldmansoft.webman = new (function () {
                     li.text(files[i].name);
                 }
 
+                $(this).removeAttr("data-temporary");
                 group.append($(this));
 
                 span = $("<span></span>");

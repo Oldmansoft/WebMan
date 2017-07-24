@@ -579,8 +579,15 @@ table.dataTable tbody td ul li:first-child {
 .input-group-addon.del-file, .input-group-addon.del-files, .input-group-addon.del-input-files {
     cursor: pointer;
 }
-.input-group .virtual-file-input {
+.input-group .virtual-file-input,
+.input-group .virtual-mulit-file-input {
     cursor: pointer;
+}
+.input-group .virtual-file-input[disabled],
+.input-group .virtual-file-input[readonly],
+.input-group .virtual-mulit-file-input[disabled],
+.input-group .virtual-mulit-file-input[readonly] {
+    cursor: default;
 }
 .input-group-addon.del-file.on, .input-group-addon.del-files.on {
     border: 1px solid gray;
