@@ -57,7 +57,22 @@ namespace Oldmansoft.Html.WebMan.Annotations
         public override bool IsValid(object value)
         {
             if (value == null) return true;
-            var file = value as HttpPostedFileBase;
+            if (value is IEnumerable<HttpPostedFileBase>)
+            {
+                foreach (var item in value as IEnumerable<HttpPostedFileBase>)
+                {
+                    if (!ValidFile(item))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return ValidFile(value as HttpPostedFileBase);
+        }
+
+        private bool ValidFile(HttpPostedFileBase file)
+        {
             if (file == null || file.FileName == null || file.ContentLength == 0) return true;
 
             var result = false;
@@ -72,16 +87,15 @@ namespace Oldmansoft.Html.WebMan.Annotations
                 }
                 if (!result) return false;
             }
-
-            result = false;
+            
             foreach (var extendsion in Extensions)
             {
                 if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4).ToLower() == string.Format(".{0}", extendsion).ToLower())
                 {
-                    result = true;
+                    return true;
                 }
             }
-            return result;
+            return false;
         }
     }
 }

@@ -114,9 +114,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             span.AddClass("input-group-addon");
             span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-files-o"));
 
-            var templateInput = new HtmlElement(HtmlTag.Div);
+            var templateInput = new HtmlElement(HtmlTag.Input);
             templateInput.AppendTo(group);
+            templateInput.Attribute(HtmlAttribute.Type, "file");
             templateInput.Attribute(HtmlAttribute.Name, Name);
+            templateInput.Data("temporary", "temporary");
+            templateInput.Data("temporary-for", Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();

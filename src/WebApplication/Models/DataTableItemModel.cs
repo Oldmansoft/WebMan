@@ -53,10 +53,12 @@ namespace WebApplication.Models
         public DateTime Time { get; set; }
 
         [Display(Name = "文件")]
+        [FileRequired]
         [FileOption(SupportDelete = true, Accept = ContentType.Image)]
         public HttpPostedFileBase File { get; set; }
         
         [Display(Name = "文件组")]
+        [FileRequired]
         [FileOption(SupportDelete = true, Accept = ContentType.Image)]
         public List<HttpPostedFileBase> Files { get; set; }
         

@@ -15,6 +15,7 @@ namespace WebApplication.Controllers
             var document = new MainDocument(Url.Location(Welcome));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
+            document.Resources.BootstrapValidator.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js");
             document.Resources.Markdown.Enabled = true;
             document.Resources.Select2.Enabled = true;
             document.Title = "WebMan";

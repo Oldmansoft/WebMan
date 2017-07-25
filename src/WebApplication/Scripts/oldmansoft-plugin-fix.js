@@ -48,6 +48,10 @@
             if (!n || el.disabled) {
                 continue;
             }
+            // Oldman: ignore temporary
+            if ($(el).attr("data-temporary") == "temporary") {
+                continue;
+            }
 
             if (semantic && form.clk && el.type === 'image') {
                 // handle image inputs on the fly when semantic == true
@@ -68,10 +72,6 @@
                 }
 
             } else if (feature.fileapi && el.type === 'file') {
-                // Oldman: ignore temporary
-                if ($(el).attr("data-temporary") == "temporary") {
-                    continue;
-                }
                 if (elements) {
                     elements.push(el);
                 }
@@ -113,9 +113,15 @@
 
 // BootstrapValidator v0.5.3
 (function ($) {
-    $.fn.bootstrapValidator.i18n.regexp = $.extend($.fn.bootstrapValidator.i18n.regexp || {}, {
-        'default': 'Please enter a value matching the pattern'
-    });
+    function findTargetField($field) {
+        var form = $field.parentsUntil("body", "form"),
+            tempFor = $field.attr("data-temporary-for");
+        if (!tempFor) return $field;
+
+        return form.find("input[name=" + tempFor + "]").filter(function (index) {
+            return !$(this).attr("data-temporary-for");
+        });
+    }
 
     $.fn.bootstrapValidator.validators.regexp = {
         html5Attributes: {
@@ -144,28 +150,92 @@
          * @returns {Boolean}
          */
         validate: function (validator, $field, options) {
-            var values = [];
-            if ($field.attr('type') == "file") {
-                var files = $field.get(0).files;
-                if (files.length == 0) return true;
-                for (var i = 0; i < files.length; i++) {
-                    values.push(files[i].name);
+            var values = [],
+                fields = findTargetField($field),
+                field,
+                files,
+                value,
+                regexp,
+                i,
+                j;
+            for (i = 0; i < fields.length; i++) {
+                field = fields.eq(i);
+                if (field.attr('type') == "file") {
+                    files = field.get(0).files;
+                    for (j = 0; j < files.length; j++) {
+                        values.push(files[j].name);
+                    }
+                } else {
+                    value = field.val();
+                    if (value === '') {
+                        return true;
+                    }
+                    values.push(value);
                 }
-            } else {
-                var value = $field.val();
-                if (value === '') {
-                    return true;
-                }
-                values.push(value);
             }
 
-            for (var i = 0; i < values.length; i++) {
-                var regexp = ('string' === typeof options.regexp) ? new RegExp(options.regexp) : options.regexp;
+            regexp = ('string' === typeof options.regexp) ? new RegExp(options.regexp) : options.regexp;
+            for (i = 0; i < values.length; i++) {
                 if (!regexp.test(values[i])) {
                     return false;
                 }
             }
             return true;
+        }
+    };
+
+    $.fn.bootstrapValidator.validators.notEmpty = {
+        enableByHtml5: function ($field) {
+            var required = $field.attr('required') + '';
+            return ('required' === required || 'true' === required);
+        },
+
+        /**
+         * Check if input value is empty or not
+         *
+         * @param {BootstrapValidator} validator The validator plugin instance
+         * @param {jQuery} $field Field element
+         * @param {Object} options
+         * @returns {Boolean}
+         */
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i;
+            if ('radio' === type || 'checkbox' === type) {
+                return validator
+                            .getFieldElements($field.attr('data-bv-field'))
+                            .filter(':checked')
+                            .length > 0;
+            }
+
+            if ('number' === type && $field.get(0).validity && $field.get(0).validity.badInput === true) {
+                return true;
+            }
+
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    var delInputs = $field.parent().parent().find(".del-file-input");
+                    for (i = 0; i < delInputs.length; i++) {
+                        if ($.trim(delInputs.eq(i).val()) === '0') return true;
+                    }
+
+                    fields = findTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') return true;
+                    }
+                    return false;
+                } else if ($field.hasClass("single-file-input")) {
+                    if ($.trim($field.val()) === '') {
+                        if ($field.parent().find(".del-file").hasClass("on")) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            return $.trim($field.val()) !== '';
         }
     };
 }(window.jQuery));
