@@ -85,7 +85,9 @@ namespace Oldmansoft.Html.WebMan.Input
             input.AppendTo(this);
             input.AddClass("input");
             input.Attribute(HtmlAttribute.PlaceHolder, "add tags");
-            input.Data("name", Name);
+            input.Attribute(HtmlAttribute.Name, Name);
+            input.Data("temporary", "temporary");
+            input.Data("temporary-for", Name);
 
             Scripts.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");
         }

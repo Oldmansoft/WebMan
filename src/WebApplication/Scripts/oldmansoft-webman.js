@@ -1,5 +1,5 @@
 ﻿/*
-* v0.6.60
+* v0.6.61
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -444,14 +444,12 @@ window.oldmansoft.webman = new (function () {
                     find = true;
                 }
             });
-            if (find) {
-
-            } else {
+            if (!find) {
                 input.val("");
 
                 div = $("<div></div>");
                 hidden = $("<input type='hidden'/>");
-                hidden.attr("name", input.attr("data-name"));
+                hidden.attr("name", input.attr("name"));
                 hidden.val(value);
                 hidden.appendTo(div);
                 span = $("<span></span>");
@@ -460,6 +458,7 @@ window.oldmansoft.webman = new (function () {
                 span.append("<i class='fa fa-times container-parent-remove'></i>");
 
                 input.before(div);
+                input.trigger("input");
             }
         }
 
@@ -762,7 +761,9 @@ window.oldmansoft.webman = new (function () {
         $(document).on("click", ".container-parent-remove", function () {
             var caller = $(this).parent().parent();
             caller.fadeOut(function () {
+                var input = caller.parent().children(".input");
                 caller.remove();
+                input.trigger("input");
             });
         });
     }
