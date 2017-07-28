@@ -1,5 +1,5 @@
 ﻿/*
-* v0.6.58
+* v0.6.59
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -137,33 +137,44 @@ window.oldmansoft.webman = new (function () {
     }
 
     function dealSubmitResultAction(data, method) {
-        var operator,
-            loading;
-        if (data.CloseOpen && method == dealMethod.form) {
-            $app.close();
+        function refresh(isNewContent) {
+            var operator;
+            if (data.NewData) {
+                operator = $(".main-view").last().data("operator");
+                if (operator) {
+                    operator.draw(false);
+                } else if (!isNewContent) {
+                    $app.reload();
+                }
+            }
         }
-        if (data.NewData) {
-            operator = $(".main-view").last().data("operator");
-            if (operator) {
-                operator.draw(false);
-            } else {
-                $app.reload();
+
+        function action() {
+            var loading;
+            if (!data.NewData && data.Path != null) {
+                if (data.Behave == linkBehave.link) {
+                    $app.sameHash(data.Path);
+                } else if (data.Behave == linkBehave.open) {
+                    $app.open(data.Path);
+                } else if (data.Behave == linkBehave.call) {
+                    loading = $app.loading();
+                    $.get(data.Path).done(function (data) {
+                        dealSubmitResult(data, dealMethod.call);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                } else if (data.Behave == linkBehave.self) {
+                    document.location = data.Path;
+                } else if (data.Behave == linkBehave.blank) {
+                    window.open(data.Path);
+                }
             }
-        } else if (data.Path != null) {
-            if (data.Behave == linkBehave.link) {
-                $app.sameHash(data.Path);
-            } else if (data.Behave == linkBehave.open) {
-                $app.open(data.Path);
-            } else if (data.Behave == linkBehave.call) {
-                loading = $app.loading();
-                $.get(data.Path).done(function (data) {
-                    dealSubmitResult(data, dealMethod.call);
-                }).fail(dealAjaxError).always(function () { loading.hide(); });
-            } else if (data.Behave == linkBehave.self) {
-                document.location = data.Path;
-            } else if (data.Behave == linkBehave.blank) {
-                window.open(data.Path);
-            }
+        }
+
+        if (data.CloseOpen && method == dealMethod.form) {
+            $app.close(null, refresh);
+            action();
+        } else {
+            refresh(false);
+            action();
         }
     }
 
