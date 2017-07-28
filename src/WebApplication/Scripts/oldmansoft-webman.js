@@ -1,5 +1,5 @@
 ﻿/*
-* v0.6.59
+* v0.6.62
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -455,14 +455,12 @@ window.oldmansoft.webman = new (function () {
                     find = true;
                 }
             });
-            if (find) {
-
-            } else {
+            if (!find) {
                 input.val("");
 
                 div = $("<div></div>");
                 hidden = $("<input type='hidden'/>");
-                hidden.attr("name", input.attr("data-name"));
+                hidden.attr("name", input.attr("name"));
                 hidden.val(value);
                 hidden.appendTo(div);
                 span = $("<span></span>");
@@ -471,6 +469,7 @@ window.oldmansoft.webman = new (function () {
                 span.append("<i class='fa fa-times container-parent-remove'></i>");
 
                 input.before(div);
+                input.trigger("input");
             }
         }
 
@@ -646,9 +645,11 @@ window.oldmansoft.webman = new (function () {
                 markFileDelete(container);
                 $(this).addClass("on");
             }
+            container.find(".single-file-input").trigger("change");
         });
         $(document).on("click", ".input-group-addon.del-files", function () {
-            var container = $(this).parent();
+            var container = $(this).parent(),
+                group = container.parent();
             if ($(this).hasClass("on")) {
                 unmarkFileDelete(container);
                 $(this).removeClass("on");
@@ -656,10 +657,13 @@ window.oldmansoft.webman = new (function () {
                 markFileDelete(container);
                 $(this).addClass("on");
             }
+            group.find(".template-mulit-file-input").eq(0).trigger("change");
         });
         $(document).on("click", ".input-group-addon.del-input-files", function () {
-            var container = $(this).parent();
+            var container = $(this).parent(),
+                group = container.parent();
             container.remove();
+            group.find(".template-mulit-file-input").eq(0).trigger("change");
         });
         $(document).on("click", ".input-group .virtual-file-input", function () {
             $(this).prev().click();
@@ -667,6 +671,15 @@ window.oldmansoft.webman = new (function () {
         $(document).on("change", ".input-group .single-file-input", function () {
             var container = $(this).parent(),
                 files;
+
+            if (!$(this).data("next-text")) $(this).data("next-text", $(this).next().text());
+            files = $(this).get(0).files;
+            if (files != null && files.length > 0) {
+                $(this).next().text(files[0].name);
+            } else {
+                $(this).next().text($(this).data("next-text"));
+            }
+
             if (container.find(".del-file-input").length == 0) return;
             if ($(this).val() == "") {
                 if (!container.find(".del-file").hasClass("on")) {
@@ -674,23 +687,30 @@ window.oldmansoft.webman = new (function () {
                 }
             } else {
                 markFileDelete(container);
-                files = $(this).get(0).files;
-                if (files != null && files.length > 0) {
-                    $(this).next().text(files[0].name);
-                }
             }
         });
         $(document).on("click", ".input-group .virtual-mulit-file-input", function () {
             var template = $(this).prev(),
-                input = $("<input type='file' multiple='multiple' />");
+                input = $("<input type='file' multiple='multiple' />"),
+                caller = $(this);
+            if ($(this).attr("readonly") == "readonly" || $(this).attr("disabled") == "disabled") {
+                return;
+            }
+            if (template.hasClass("mulit-file-input")) {
+                template.click();
+                return;
+            }
 
             input.attr("name", template.attr("name"));
             input.attr("accept", template.attr("accept"));
             input.attr("class", "mulit-file-input");
             input.attr("data-bv-field", template.attr("data-bv-field"));
+            input.attr("data-temporary", "temporary");
             input.on("change", function () {
+                caller.prev().prev().trigger("change");
+
                 var container = $(this).parent(),
-                    groups = $(this).parentsUntil(".main-view", ".mulit-file-group"),
+                    groups = $(this).parentsUntil("form", ".mulit-file-group"),
                     group,
                     control,
                     files,
@@ -703,6 +723,9 @@ window.oldmansoft.webman = new (function () {
                 group = $("<div></div>");
                 group.addClass("input-group");
                 group.addClass("control-line");
+
+                $(this).removeAttr("data-temporary");
+                group.append($(this));
 
                 control = $("<div></div>");
                 control.addClass("form-control");
@@ -718,8 +741,6 @@ window.oldmansoft.webman = new (function () {
                     li.appendTo(ul);
                     li.text(files[i].name);
                 }
-
-                group.append($(this));
 
                 span = $("<span></span>");
                 span.addClass("input-group-addon");
@@ -754,7 +775,9 @@ window.oldmansoft.webman = new (function () {
         $(document).on("click", ".container-parent-remove", function () {
             var caller = $(this).parent().parent();
             caller.fadeOut(function () {
+                var input = caller.parent().children(".input");
                 caller.remove();
+                input.trigger("input");
             });
         });
     }

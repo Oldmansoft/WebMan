@@ -114,7 +114,8 @@ section.container-fluid {
     margin-right: 0;
 }
 
-.disabled, .disabled:hover {
+.disabled,
+.disabled:hover {
     color: gray;
     text-decoration: none;
     cursor: default;
@@ -449,7 +450,8 @@ header .dropdown-menu a {
     border-bottom: 1px solid #e7e7e7;
 }
 
-.webman-panel>header i, .webman-panel header h2 {
+.webman-panel>header i,
+.webman-panel header h2 {
     float: left;
     font-size: 18px;
 }
@@ -498,7 +500,8 @@ header .dropdown-menu a {
     overflow: auto;
 }
 
-.dataTables_wrapper td, .dataTables_wrapper th {
+.dataTables_wrapper td,
+.dataTables_wrapper th {
     white-space: nowrap;
 }
 
@@ -573,16 +576,31 @@ table.dataTable tbody td ul li:first-child {
 .icon-fa-text {
     margin-left: 6px;
 }
-.input-group .single-file-input, .input-group .mulit-file-input {
-    display: none;
+.input-group .template-mulit-file-input,
+.input-group .single-file-input,
+.input-group .mulit-file-input {
+    height: 0px;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
 }
-.input-group-addon.del-file, .input-group-addon.del-files, .input-group-addon.del-input-files {
+.input-group-addon.del-file,
+.input-group-addon.del-files,
+.input-group-addon.del-input-files {
     cursor: pointer;
 }
-.input-group .virtual-file-input {
+.input-group .virtual-file-input,
+.input-group .virtual-mulit-file-input {
     cursor: pointer;
 }
-.input-group-addon.del-file.on, .input-group-addon.del-files.on {
+.input-group .virtual-file-input[disabled],
+.input-group .virtual-file-input[readonly],
+.input-group .virtual-mulit-file-input[disabled],
+.input-group .virtual-mulit-file-input[readonly] {
+    cursor: default;
+}
+.input-group-addon.del-file.on,
+.input-group-addon.del-files.on {
     border: 1px solid gray;
     border-bottom: 1px solid white;
     border-right: 1px solid white;

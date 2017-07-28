@@ -112,12 +112,14 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var span = new HtmlElement(HtmlTag.Span);
             span.AppendTo(group);
             span.AddClass("input-group-addon");
-            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-file"));
+            span.Append(new HtmlElement(HtmlTag.I).AddClass("fa fa-files-o"));
 
-            var templateInput = new HtmlElement(HtmlTag.Div);
+            var templateInput = new HtmlElement(HtmlTag.Input);
             templateInput.AppendTo(group);
+            templateInput.Attribute(HtmlAttribute.Type, "file");
             templateInput.Attribute(HtmlAttribute.Name, Name);
-            SetAttribute(templateInput, disabled, readony, hint);
+            templateInput.Data("temporary", "temporary");
+            templateInput.Data("temporary-for", Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -142,8 +144,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var virtualInput = new HtmlElement(HtmlTag.Div);
             virtualInput.AddClass("form-control virtual-mulit-file-input");
-            virtualInput.Text("选择多个文件");
+            virtualInput.Text(string.IsNullOrEmpty(hint) ? "选择多个文件" : hint);
             virtualInput.AppendTo(group);
+            SetAttribute(virtualInput, disabled, readony, null);
         }
 
         private void SetFormValidator()

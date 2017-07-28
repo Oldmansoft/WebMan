@@ -78,7 +78,6 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 input.Attribute(HtmlAttribute.Type, "file");
             }
             input.Attribute(HtmlAttribute.Name, Name);
-            SetAttribute(input, disabled, readony, hint);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -103,8 +102,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var virtualInput = new HtmlElement(HtmlTag.Div);
             virtualInput.AddClass("form-control virtual-file-input");
-            virtualInput.Text("选择文件");
+            virtualInput.Text(string.IsNullOrEmpty(hint) ? "选择文件" : hint);
             virtualInput.AppendTo(this);
+            SetAttribute(virtualInput, disabled, readony, null);
 
             if (Value != null && !readony && !disabled)
             {
