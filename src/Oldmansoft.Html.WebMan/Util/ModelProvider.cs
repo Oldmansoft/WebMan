@@ -174,6 +174,11 @@ namespace Oldmansoft.Html.WebMan.Util
             {
                 info.CustomInput = attribute as CustomInputAttribute;
             }
+
+            if (attribute is HtmlDataAttribute)
+            {
+                info.HtmlData = attribute as HtmlDataAttribute;
+            }
         }
     }
 }

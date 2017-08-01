@@ -12,11 +12,27 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
     public abstract class FormInput : HtmlElement, Input.IFormInput
     {
         /// <summary>
+        /// 脚本注册器
+        /// </summary>
+        public Input.ScriptRegister ScriptRegister { get; set; }
+
+        /// <summary>
+        /// 表单验证器
+        /// </summary>
+        public FormValidate.FormValidator FormValidator { get; set; }
+
+        /// <summary>
+        /// Data 属性值
+        /// </summary>
+        public Annotations.HtmlDataAttribute HtmlData { get; set; }
+
+        /// <summary>
         /// 创建表单输入组件
         /// </summary>
         public FormInput()
             : base(HtmlTag.Input)
         {
+            HtmlData = Annotations.HtmlDataAttribute.Empty;
         }
 
         /// <summary>
@@ -49,9 +65,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public abstract void Init(string name, Type type, object value, IList<ListDataItem> options, Input.ScriptRegister scripts, FormValidate.FormValidator formValidator);
+        public abstract void Init(string name, Type type, object value, IList<ListDataItem> options);
 
         /// <summary>
         /// 设置输入模式

@@ -16,6 +16,10 @@ namespace WebApplication.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
             document.Resources.BootstrapValidator.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js");
+
+            document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/lity/2.3.0/lity.min.css"));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/lity/2.3.0/lity.min.js"));
+
             document.Resources.Markdown.Enabled = true;
             document.Resources.Select2.Enabled = true;
             document.Title = "WebMan";
@@ -39,7 +43,7 @@ namespace WebApplication.Controllers
             document.Taskbar.Add(Url.Location(Male));
             document.Taskbar.Add(Url.Location(Envelope));
 
-            document.Quick.Avatar.Photo = "http://wx.qlogo.cn/mmopen/Q3auHgzwzM6SkLNbjL7Vq3koXuoq1PSv6Nlhp7AmfQjsB02hYG37blVecGupjK3GXm1iaYUKNh2z3PU8R6mo2HRTGfo066Fc2PCibT5B0asBo/0";
+            document.Quick.Avatar.Photo = "http://oldman.im/Content/Images/head.jpg";
             document.Quick.Avatar.Display = "Oldman 老人";
             document.Quick.Add(Url.Location(Male));
             document.Quick.Add(Url.Location(Logoff));

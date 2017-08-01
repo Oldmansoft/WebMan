@@ -14,9 +14,7 @@ namespace Oldmansoft.Html.WebMan.Input
         private string Name { get; set; }
 
         private HashSet<string> Value { get; set; }
-
-        private ScriptRegister Scripts { get; set; }
-
+        
         private bool WrongValueFormat { get; set; }
 
         void ICustomInput.Set(object[] parameter)
@@ -30,13 +28,10 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             WrongValueFormat = value != null && !(value is IEnumerable<string>);
             Name = name;
-            Scripts = scripts;
 
             Value = new HashSet<string>();
             foreach (var item in value.GetListString())
@@ -89,7 +84,7 @@ namespace Oldmansoft.Html.WebMan.Input
             input.Data("temporary", "temporary");
             input.Data("temporary-for", Name);
 
-            Scripts.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");
+            ScriptRegister.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");
         }
 
         /// <summary>

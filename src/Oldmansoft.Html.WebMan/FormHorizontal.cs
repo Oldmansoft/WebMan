@@ -126,7 +126,7 @@ namespace Oldmansoft.Html.WebMan
                 if (item.Hidden)
                 {
                     var hidden = new FormInputCreator.Inputs.Hidden();
-                    hidden.Init(item.Name, item.Property.PropertyType, model != null ? item.Property.GetValue(model) : string.Empty, null, null, null);
+                    hidden.Init(item.Name, item.Property.PropertyType, model != null ? item.Property.GetValue(model) : string.Empty, null);
                     hidden.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
                     result.Append(hidden);
                     continue;
@@ -136,8 +136,9 @@ namespace Oldmansoft.Html.WebMan
                 parameter.ModelItem = item;
                 if (model != null) parameter.Value = item.Property.GetValue(model);
                 parameter.Source = source;
-                parameter.Script = result.Script;
+                parameter.ScriptRegister = result.Script;
                 parameter.FormValidator = result.Validator;
+                parameter.HtmlData = item.HtmlData;
 
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 if (inputMode)

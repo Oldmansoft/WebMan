@@ -34,6 +34,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 item.Text(option.Text);
             }
             SetAttribute(this, disabled, readony, hint);
+            HtmlData.SetContext(this);
         }
     }
 }

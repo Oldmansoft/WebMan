@@ -46,6 +46,7 @@
     <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Annotations\HtmlDataAttribute.cs" />
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="Annotations\FileRequiredAttribute.cs" />

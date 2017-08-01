@@ -25,9 +25,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
             Options = new Dictionary<bool, string>();
@@ -61,6 +59,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
                 SetAttribute(input, disabled, readony, hint);
+                HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Value.HtmlEncode()));
             }
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan.Annotations
 {
     /// <summary>
-    /// 定制输入
+    /// 使用定制输入组件
     /// </summary>
     public class CustomInputAttribute : Attribute
     {

@@ -15,8 +15,6 @@ namespace Oldmansoft.Html.WebMan.Input
 
         private string Value { get; set; }
 
-        private ScriptRegister Scripts { get; set; }
-
         void ICustomInput.Set(object[] parameter)
         {
         }
@@ -28,13 +26,10 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
             Value = value.GetString();
-            Scripts = scripts;
         }
 
         /// <summary>
@@ -54,7 +49,7 @@ namespace Oldmansoft.Html.WebMan.Input
             AddClass("form-control");
             AddClass("markdown");
 
-            Scripts.Register("MarkdownEdit", "view.node.find('textarea.markdown').markdown({resize : 'vertical'});");
+            ScriptRegister.Register("MarkdownEdit", "view.node.find('textarea.markdown').markdown({resize : 'vertical'});");
         }
 
         /// <summary>
@@ -67,7 +62,7 @@ namespace Oldmansoft.Html.WebMan.Input
             AddClass("markdown");
             Append(new HtmlRaw(Value.HtmlEncode().Replace("\r\n", "<br/>").Replace("\n", "<br/>")));
 
-            Scripts.Register("MarkdownView", "view.node.find('div.markdown').html(markdown.toHTML(view.node.find('div.markdown').text()));");
+            ScriptRegister.Register("MarkdownView", "view.node.find('div.markdown').html(markdown.toHTML(view.node.find('div.markdown').text()));");
         }
     }
 }

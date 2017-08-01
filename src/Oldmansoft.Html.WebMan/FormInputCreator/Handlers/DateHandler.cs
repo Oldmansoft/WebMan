@@ -13,7 +13,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Date)
             {
                 result = new Inputs.Date();
-                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
+                input.SetInputProperty(result);
+                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null);
                 return true;
             }
             return false;

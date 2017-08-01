@@ -22,9 +22,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, System.Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, System.Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
             Value = (System.DateTime?)value;
@@ -65,6 +63,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Value, GetValue());
             SetAttribute(input, disabled, readony, hint);
             input.AddClass("form-control");
+            HtmlData.SetContext(input);
         }
 
         /// <summary>

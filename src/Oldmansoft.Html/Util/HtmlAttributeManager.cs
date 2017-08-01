@@ -21,7 +21,6 @@ namespace Oldmansoft.Html.Util
 
         public void Attribute(string name, string value)
         {
-            if (value == null) return;
             if (string.IsNullOrWhiteSpace(name)) return;
             if (name == HtmlAttribute.Class.ToString().ToLower())
             {
@@ -46,10 +45,13 @@ namespace Oldmansoft.Html.Util
             {
                 outer.Append(HtmlChar.Spaces);
                 outer.Append(item.Key.HtmlEncode());
-                outer.Append(HtmlChar.Equals);
-                outer.Append(HtmlChar.DoubleQuotes);
-                outer.Append(item.Value.HtmlEncode());
-                outer.Append(HtmlChar.DoubleQuotes);
+                if (item.Value != null)
+                {
+                    outer.Append(HtmlChar.Equals);
+                    outer.Append(HtmlChar.DoubleQuotes);
+                    outer.Append(item.Value.HtmlEncode());
+                    outer.Append(HtmlChar.DoubleQuotes);
+                }
             }
         }
     }

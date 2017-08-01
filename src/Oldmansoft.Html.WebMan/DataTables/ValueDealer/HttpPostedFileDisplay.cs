@@ -13,7 +13,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
         {
             if (value is HttpPostedFileCustom)
             {
-                return DealCustom(value as HttpPostedFileCustom);
+                return DealCustom(value as HttpPostedFileCustom, modelItem);
             }
             else
             {
@@ -21,21 +21,27 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             }
         }
 
-        public string DealCustom(HttpPostedFileCustom file)
+        public string DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             if (icon == FontAwesome.Picture_O)
             {
+                var a = new HtmlElement(HtmlTag.A);
+                a.Attribute(HtmlAttribute.Href, file.Location);
+                a.Attribute(HtmlAttribute.Target, "_none");
+                modelItem.HtmlData.SetContext(a);
                 var img = new HtmlElement(HtmlTag.Img);
                 img.Attribute(HtmlAttribute.Src, file.Location);
-                return new HtmlOutput(img).Complete();
+                img.AppendTo(a);
+                return new HtmlOutput(a).Complete();
             }
             else
             {
                 var a = new HtmlElement(HtmlTag.A);
                 a.AddClass("icon-fa-text");
                 a.Attribute(HtmlAttribute.Href, file.Location);
-                a.Attribute(HtmlAttribute.Target, "_blank");
+                a.Attribute(HtmlAttribute.Target, "_none");
+                modelItem.HtmlData.SetContext(a);
                 a.Text(file.FileName);
                 return new HtmlOutput(icon.CreateElement(), a).Complete();
             }

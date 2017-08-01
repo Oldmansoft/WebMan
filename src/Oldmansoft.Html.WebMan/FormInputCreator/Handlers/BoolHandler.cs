@@ -13,7 +13,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (Util.ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(bool)))
             {
                 result = new Inputs.Bool();
-                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
+                input.SetInputProperty(result);
+                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null);
                 return true;
             }
             return false;

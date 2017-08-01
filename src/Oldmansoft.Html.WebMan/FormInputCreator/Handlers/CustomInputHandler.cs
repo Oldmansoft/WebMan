@@ -22,7 +22,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             {
                 options = input.Source.Get(input.ModelItem.Name);
             }
-            result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, options, input.Script, input.FormValidator);
+            input.SetInputProperty(result);
+            result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, options);
             return true;
         }
 

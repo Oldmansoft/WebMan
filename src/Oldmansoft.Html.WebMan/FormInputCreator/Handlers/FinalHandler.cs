@@ -11,7 +11,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             result = new Inputs.Text();
-            result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null, input.Script, input.FormValidator);
+            input.SetInputProperty(result);
+            result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null);
             return true;
         }
     }

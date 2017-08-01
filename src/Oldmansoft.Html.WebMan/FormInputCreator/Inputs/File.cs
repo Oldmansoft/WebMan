@@ -15,11 +15,6 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         private string Name { get; set; }
 
         /// <summary>
-        /// 验证器
-        /// </summary>
-        protected FormValidate.FormValidator FormValidator { get; set; }
-
-        /// <summary>
         /// 文件选项
         /// </summary>
         public Annotations.FileOptionAttribute FileOption { get; set; }
@@ -36,12 +31,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
-            FormValidator = formValidator;
             if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
             Value = value as HttpPostedFileCustom;
         }
@@ -64,7 +56,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(Value.ContentType, Value.FileName);
                 span.Append(icon.CreateElement());
-                span.Append(new HtmlElement(HtmlTag.A).Text(Value.FileName).AddClass("icon-fa-text").Attribute(HtmlAttribute.Href, Value.Location).Attribute(HtmlAttribute.Target, "_blank"));
+                var a = new HtmlElement(HtmlTag.A).Text(Value.FileName).AddClass("icon-fa-text").Attribute(HtmlAttribute.Href, Value.Location).Attribute(HtmlAttribute.Target, "_none");
+                HtmlData.SetContext(a);
+                a.AppendTo(span);
             }
             else
             {
@@ -149,11 +143,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var icon = Util.ContentTypeMapping.Instance.ToIcon(Value.ContentType, Value.FileName);
             Append(icon.CreateElement());
             var a = new HtmlElement(HtmlTag.A);
-            Append(a);
             a.Text(Value.FileName);
             a.AddClass("icon-fa-text");
             a.Attribute(HtmlAttribute.Href, Value.Location);
-            a.Attribute(HtmlAttribute.Target, "_blank");
+            a.Attribute(HtmlAttribute.Target, "_none");
+            HtmlData.SetContext(a);
+            a.AppendTo(this);
         }
     }
 }

@@ -13,7 +13,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (input.Source.Contains(input.ModelItem.Name))
             {
                 result = new Inputs.Select();
-                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(input.ModelItem.Name), input.Script, input.FormValidator);
+                input.SetInputProperty(result);
+                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(input.ModelItem.Name));
                 return true;
             }
             return false;

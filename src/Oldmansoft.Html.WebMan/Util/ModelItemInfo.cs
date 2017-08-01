@@ -90,12 +90,18 @@ namespace Oldmansoft.Html.WebMan.Util
         /// </summary>
         public Annotations.CustomInputAttribute CustomInput { get; set; }
 
+        /// <summary>
+        /// 设置 Html data 属性
+        /// </summary>
+        public Annotations.HtmlDataAttribute HtmlData { get; set; }
+
         public ModelItemInfo(PropertyInfo property)
         {
             Property = property;
             Name = property.Name;
             Display = property.Name;
             Hidden = property.Name.ToLower() == "id";
+            HtmlData = Annotations.HtmlDataAttribute.Empty;
 
             if (IsType(property.PropertyType, typeof(DateTime)))
             {

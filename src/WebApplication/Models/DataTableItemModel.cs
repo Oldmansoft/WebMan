@@ -60,6 +60,7 @@ namespace WebApplication.Models
         [Display(Name = "文件组")]
         [FileRequired]
         [FileOption(SupportDelete = true, Accept = ContentType.Image)]
+        [HtmlData("lity")]
         public List<HttpPostedFileBase> Files { get; set; }
         
         [CustomInput(typeof(TagsInput))]

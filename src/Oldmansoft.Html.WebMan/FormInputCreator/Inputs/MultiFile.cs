@@ -14,12 +14,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     public class MultiFile : FormInput
     {
         private string Name { get; set; }
-
-        /// <summary>
-        /// 验证器
-        /// </summary>
-        protected FormValidate.FormValidator FormValidator { get; set; }
-
+        
         /// <summary>
         /// 文件选项
         /// </summary>
@@ -37,12 +32,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidate.FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
-            FormValidator = formValidator;
             if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
             Value = new List<HttpPostedFileCustom>();
             if (value == null) return;
@@ -79,11 +71,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(item.ContentType, item.FileName);
                 icon.CreateElement().AppendTo(control);
                 var a = new HtmlElement(HtmlTag.A);
-                a.AppendTo(control);
                 a.Text(item.FileName);
                 a.AddClass("icon-fa-text");
                 a.Attribute(HtmlAttribute.Href, item.Location);
-                a.Attribute(HtmlAttribute.Target, "_blank");
+                a.Attribute(HtmlAttribute.Target, "_none");
+                HtmlData.SetContext(a);
+                a.AppendTo(control);
 
                 var delInput = new HtmlElement(HtmlTag.Input);
                 delInput.AppendTo(group);
@@ -175,11 +168,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(item.ContentType, item.FileName);
                 li.Append(icon.CreateElement());
                 var a = new HtmlElement(HtmlTag.A);
-                li.Append(a);
                 a.Text(item.FileName);
                 a.AddClass("icon-fa-text");
                 a.Attribute(HtmlAttribute.Href, item.Location);
-                a.Attribute(HtmlAttribute.Target, "_blank");
+                a.Attribute(HtmlAttribute.Target, "_none");
+                HtmlData.SetContext(a);
+                a.AppendTo(li);
             }
         }
     }

@@ -17,9 +17,7 @@ namespace Oldmansoft.Html.WebMan.Input
         private string Value { get; set; }
 
         private IList<string> Values { get; set; }
-
-        private ScriptRegister Scripts { get; set; }
-
+        
         /// <summary>
         /// 选项列表
         /// </summary>
@@ -36,9 +34,7 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        /// <param name="scripts">脚本</param>
-        /// <param name="formValidator">验证器</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options, ScriptRegister scripts, FormValidator formValidator)
+        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
             if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
@@ -49,7 +45,6 @@ namespace Oldmansoft.Html.WebMan.Input
             {
                 Value = value.GetString();
             }
-            Scripts = scripts;
             Options = options;
         }
 
@@ -93,7 +88,7 @@ namespace Oldmansoft.Html.WebMan.Input
             {
                 Attribute(HtmlAttribute.Multiple, "multiple");
             }
-            Scripts.Register("Select2Edit", "view.node.find('select.select2').select2();");
+            ScriptRegister.Register("Select2Edit", "view.node.find('select.select2').select2();");
         }
 
         /// <summary>
