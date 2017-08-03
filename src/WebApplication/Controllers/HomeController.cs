@@ -32,7 +32,7 @@ namespace WebApplication.Controllers
                 .Add(
                     new TreeListItem("二级菜单", FontAwesome.Home)
                     .Add(
-                        new TreeListItem(Url.Location(Female))
+                        new TreeListItem(Url.Location<StepController>(o => o.Index))
                     )
                 )
                 .Add(
@@ -108,12 +108,6 @@ namespace WebApplication.Controllers
         public ActionResult Envelope()
         {
             return Content("邮件");
-        }
-
-        [Location("女人", Icon = FontAwesome.Female)]
-        public ActionResult Female()
-        {
-            return Content("女人");
         }
     }
 }

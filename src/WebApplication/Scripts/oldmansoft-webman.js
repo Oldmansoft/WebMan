@@ -1,5 +1,5 @@
 ﻿/*
-* v0.7.63
+* v0.8.64
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -227,7 +227,14 @@ window.oldmansoft.webman = new (function () {
         } else if (target == "_open") {
             $app.open(action, form.serialize());
         } else if (!target) {
-            $app.hash(action + "?" + form.serialize().replace(/%23/g, ''));
+            loading = $app.loading();
+            form.ajaxSubmit().data("jqxhr").done(function (data) {
+                loading.hide();
+                $app.current().view.replace(action, data);
+            }).fail(function (error) {
+                loading.hide();
+                $app.alert($(error.responseText).eq(1).text(), error.statusText);
+            });
         } else {
             return true;
         }
