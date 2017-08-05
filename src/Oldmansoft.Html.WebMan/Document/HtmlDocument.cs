@@ -36,7 +36,7 @@ namespace Oldmansoft.Html.WebMan
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Http_Equiv, "x-ua-compatible").Attribute(HtmlAttribute.Content, "ie=9"));
             Head.Append(new HtmlRaw("<![endif]->"));
             Head.Append(new HtmlRaw("<!--[if lt IE 9]>"));
-            Head.Append(new Element.Script("alert('not support! please download new internel explorer.'); document.location = 'http://windows.microsoft.com/zh-cn/internet-explorer/download-ie';"));
+            Head.Append(new Element.Script("if(confirm('not support! please download new internel explorer.')) document.location = 'http://windows.microsoft.com/zh-cn/internet-explorer/download-ie';"));
             Head.Append(new HtmlRaw("<![endif]-->"));
         }
 
