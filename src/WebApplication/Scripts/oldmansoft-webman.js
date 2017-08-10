@@ -1,5 +1,5 @@
 ﻿/*
-* v0.8.64
+* v0.9.65
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -431,6 +431,9 @@ window.oldmansoft.webman = new (function () {
             node;
         if (option.size) {
             tableOption.displayLength = option.size;
+        }
+        if (option.createdRow) {
+            tableOption.createdRow = option.createdRow;
         }
         node = view.node.find("." + className);
         node.data("datatable", node.DataTable(tableOption));

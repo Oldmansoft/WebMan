@@ -63,6 +63,11 @@ namespace Oldmansoft.Html.WebMan
         private List<DataTableAction> ItemActions { get; set; }
 
         /// <summary>
+        /// 行样式条件集
+        /// </summary>
+        private List<KeyValuePair<string, string>> RowClassNameClientConditions { get; set; }
+
+        /// <summary>
         /// 分页长度
         /// </summary>
         private uint? PageSize { get; set; }
@@ -84,6 +89,7 @@ namespace Oldmansoft.Html.WebMan
             AfterNodes = new List<IHtmlNode>();
             TableActions = new List<DataTableAction>();
             ItemActions = new List<DataTableAction>();
+            RowClassNameClientConditions = new List<KeyValuePair<string, string>>();
             PrimaryKeyName = primaryKeyProperty.Name;
             DataSourceLoation = dataSource;
             InitColumns();
@@ -230,6 +236,23 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
+        private JsonRaw GetCreatedRowScript()
+        {
+            var outer = new StringBuilder();
+            outer.AppendLine("function(row, data, dataIndex){");
+            foreach (var item in RowClassNameClientConditions)
+            {
+                outer.Append("if(");
+                outer.Append(item.Value);
+                outer.AppendLine("){");
+                outer.AppendFormat("$(row).addClass('{0}');", item.Key);
+                outer.AppendLine();
+                outer.AppendLine("}");
+            }
+            outer.Append("}");
+            return new JsonRaw(outer.ToString());
+        }
+
         private string GetOptionScript()
         {
             var result = new JsonObject();
@@ -237,6 +260,7 @@ namespace Oldmansoft.Html.WebMan
             result.Set("itemActions", GetItemActionScript());
             result.Set("columns", GetColumnContentScript());
             if (PageSize.HasValue) result.Set("size", PageSize.Value);
+            if (RowClassNameClientConditions.Count >= 0) result.Set("createdRow", GetCreatedRowScript());
             return result.ToString();
         }
 
@@ -281,6 +305,7 @@ namespace Oldmansoft.Html.WebMan
             var name = outer.Generator.GetGeneratorName();
             AddClass(name);
             AddClass("dataTable");
+            AddClass("hover");
 
             var header = new HtmlElement(HtmlTag.THead);
             base.Append(header);
@@ -384,8 +409,8 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public ITableAction AddActionTable(string display, string script)
         {
-            if (display == null) throw new ArgumentNullException("display");
-            if (script == null) throw new ArgumentNullException("script");
+            if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
+            if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
 
             var action = new DataTableAction(display, script, LinkBehave.Script);
             TableActions.Add(action);
@@ -411,17 +436,30 @@ namespace Oldmansoft.Html.WebMan
         /// 添加操作数据项
         /// 数据项的主键将用脚本参数 selectedId 传递
         /// </summary>
-        /// <param name="display"></param>
+        /// <param name="display">显示文字</param>
         /// <param name="script">脚本参数 selectedId</param>
         /// <returns></returns>
         public IItemAction AddActionItem(string display, string script)
         {
-            if (display == null) throw new ArgumentNullException("display");
-            if (script == null) throw new ArgumentNullException("script");
+            if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
+            if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
 
             var action = new DataTableAction(display, script, LinkBehave.Script);
             ItemActions.Add(action);
             return action;
+        }
+
+        /// <summary>
+        /// 根据客户脚本条件设置行样式
+        /// </summary>
+        /// <param name="className">样式名</param>
+        /// <param name="condition">脚本条件</param>
+        public void SetRowClassNameWhenClientCondition(string className, string condition)
+        {
+            if (string.IsNullOrWhiteSpace(className)) throw new ArgumentNullException("className");
+            if (string.IsNullOrWhiteSpace(condition)) throw new ArgumentNullException("condition");
+
+            RowClassNameClientConditions.Add(new KeyValuePair<string, string>(className, condition));
         }
     }
 }
