@@ -583,6 +583,7 @@ table.dataTable tbody td ul li:first-child {
     border: 0px;
     margin: 0px;
     padding: 0px;
+    display: block;
 }
 .input-group-addon.del-file,
 .input-group-addon.del-files,
