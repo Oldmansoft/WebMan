@@ -72,7 +72,7 @@ namespace Oldmansoft.Html.WebMan
                     }
                     else
                     {
-                        dataItem.Add(item.Name, ValueDisplay.Instance.Convert(item.Property.PropertyType, value, item));
+                        dataItem.Add(item.Name, new HtmlOutput(ValueDisplay.Instance.Convert(item.Property.PropertyType, value, item)).Complete());
                     }
                 }
                 data.Add(dataItem);

@@ -24,6 +24,7 @@ namespace WebApplication.Controllers
             document.Resources.Select2.Enabled = true;
             document.Title = "WebMan";
             document.Menu.Add(new TreeListItem(Url.Location<DataTablesController>(o => o.Index)));
+            document.Menu.Add(new TreeListItem(Url.Location<DataTablesController>(o => o.StaticIndex)));
             document.Menu.Add(
                 new TreeListItem("一级菜单", FontAwesome.Suitcase)
                 .Add(

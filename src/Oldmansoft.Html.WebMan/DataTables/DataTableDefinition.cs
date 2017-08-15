@@ -12,46 +12,26 @@ using Oldmansoft.Html.WebMan.Util;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 表格定义
+    /// 数据源表格定义
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class DataTableDefinition<TModel> : HtmlElement where TModel : class
+    public class DataTableDefinition<TModel> : DataTables.Table<TModel> where TModel : class
     {
-        /// <summary>
-        /// 主键名称
-        /// </summary>
-        private string PrimaryKeyName { get; set; }
-
-        /// <summary>
-        /// 是否显示序数列
-        /// </summary>
-        private bool IsDisplayIndexColumn { get; set; }
-
-        /// <summary>
-        /// 是否显示多选框列
-        /// </summary>
-        private bool IsDisplayCheckboxColumn { get; set; }
-
-        /// <summary>
-        /// 列名称
-        /// </summary>
-        private IList<DataTableColumn> Columns { get; set; }
-
         /// <summary>
         /// 请求数据源路径
         /// </summary>
         private string DataSourceLoation { get; set; }
 
         /// <summary>
-        /// 前置节点
+        /// 行样式条件集
         /// </summary>
-        private List<IHtmlNode> FrontNodes { get; set; }
+        private List<KeyValuePair<string, string>> RowClassNameClientConditions { get; set; }
 
         /// <summary>
-        /// 后置节点
+        /// 分页长度
         /// </summary>
-        private List<IHtmlNode> AfterNodes { get; set; }
-
+        private uint? PageSize { get; set; }
+        
         /// <summary>
         /// 表格操作
         /// </summary>
@@ -63,75 +43,21 @@ namespace Oldmansoft.Html.WebMan
         private List<DataTableAction> ItemActions { get; set; }
 
         /// <summary>
-        /// 行样式条件集
-        /// </summary>
-        private List<KeyValuePair<string, string>> RowClassNameClientConditions { get; set; }
-
-        /// <summary>
-        /// 分页长度
-        /// </summary>
-        private uint? PageSize { get; set; }
-
-        /// <summary>
         /// 创建表格定义
         /// </summary>
         /// <param name="primaryKey">主键</param>
         /// <param name="dataSource">数据源路径</param>
         internal DataTableDefinition(Expression<Func<TModel, object>> primaryKey, string dataSource)
-            : base(HtmlTag.Table)
+            : base(primaryKey)
         {
-            if (primaryKey == null) throw new ArgumentNullException("primaryKey");
-            var primaryKeyProperty = primaryKey.GetProperty();
-            if (primaryKeyProperty == null) throw new ArgumentException("指定的属性不存在，请确认不是字段或方法。", "primaryKey");
             if (dataSource == null) throw new ArgumentNullException("dataSource");
 
-            FrontNodes = new List<IHtmlNode>();
-            AfterNodes = new List<IHtmlNode>();
+            DataSourceLoation = dataSource;
+            RowClassNameClientConditions = new List<KeyValuePair<string, string>>();
             TableActions = new List<DataTableAction>();
             ItemActions = new List<DataTableAction>();
-            RowClassNameClientConditions = new List<KeyValuePair<string, string>>();
-            PrimaryKeyName = primaryKeyProperty.Name;
-            DataSourceLoation = dataSource;
-            InitColumns();
         }
         
-        private void InitColumns()
-        {
-            Columns = new List<DataTableColumn>();
-            foreach (var item in ModelProvider.Instance.GetItems( typeof(TModel)))
-            {
-                var column = new DataTableColumn() { Name = item.Property.Name, Text = item.Display, Visible = true };
-                
-                if (item.Property.Name == PrimaryKeyName)
-                {
-                    column.Visible = false;
-                }
-                Columns.Add(column);
-            }
-        }
-
-        private HtmlElement CreateDefinitionColumns()
-        {
-            var result = new HtmlElement(HtmlTag.Tr);
-            if (IsDisplayCheckboxColumn)
-            {
-                result.Append(new HtmlElement(HtmlTag.Th).Append(new HtmlRaw("<input class='webman-datatables-checkbox' type='checkbox'>")));
-            }
-            if (IsDisplayIndexColumn)
-            {
-                result.Append(new HtmlElement(HtmlTag.Th).Text("序数"));
-            }
-            foreach (var item in Columns)
-            {
-                result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
-            }
-            if (ItemActions.Count > 0)
-            {
-                result.Append(new HtmlElement(HtmlTag.Th).Text("操作"));
-            }
-            return result;
-        }
-
         private JsonArray GetColumnContentScript()
         {
             var result = new JsonArray();
@@ -260,8 +186,34 @@ namespace Oldmansoft.Html.WebMan
             result.Set("itemActions", GetItemActionScript());
             result.Set("columns", GetColumnContentScript());
             if (PageSize.HasValue) result.Set("size", PageSize.Value);
-            if (RowClassNameClientConditions.Count >= 0) result.Set("createdRow", GetCreatedRowScript());
+            if (RowClassNameClientConditions.Count > 0) result.Set("createdRow", GetCreatedRowScript());
             return result.ToString();
+        }
+
+        /// <summary>
+        /// 创建头列
+        /// </summary>
+        /// <returns></returns>
+        private HtmlElement CreateDefinitionColumns()
+        {
+            var result = new HtmlElement(HtmlTag.Tr);
+            if (IsDisplayCheckboxColumn)
+            {
+                result.Append(new HtmlElement(HtmlTag.Th).Append(new HtmlRaw("<input class='webman-datatables-checkbox' type='checkbox'>")));
+            }
+            if (IsDisplayIndexColumn)
+            {
+                result.Append(new HtmlElement(HtmlTag.Th).Text("序数"));
+            }
+            foreach (var item in Columns)
+            {
+                result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
+            }
+            if (ItemActions.Count > 0)
+            {
+                result.Append(new HtmlElement(HtmlTag.Th).Text("操作"));
+            }
+            return result;
         }
 
         /// <summary>
@@ -332,23 +284,6 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 是否显示序数列
-        /// </summary>
-        /// <param name="value"></param>
-        public void DisplayIndexColumn(bool value)
-        {
-            IsDisplayIndexColumn = value;
-        }
-
-        /// <summary>
-        /// 是否显示多选项框列
-        /// </summary>
-        public void SupportParameter()
-        {
-            IsDisplayCheckboxColumn = true;
-        }
-
-        /// <summary>
         /// 设置页大小
         /// </summary>
         /// <param name="size"></param>
@@ -385,6 +320,19 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 根据客户脚本条件设置行样式
+        /// </summary>
+        /// <param name="className">样式名</param>
+        /// <param name="condition">脚本条件</param>
+        public void SetRowClassNameWhenClientCondition(string className, string condition)
+        {
+            if (string.IsNullOrWhiteSpace(className)) throw new ArgumentNullException("className");
+            if (string.IsNullOrWhiteSpace(condition)) throw new ArgumentNullException("condition");
+
+            RowClassNameClientConditions.Add(new KeyValuePair<string, string>(className, condition));
+        }
+
+        /// <summary>
         /// 添加操作表格
         /// </summary>
         /// <param name="location"></param>
@@ -398,8 +346,7 @@ namespace Oldmansoft.Html.WebMan
             TableActions.Add(action);
             return action;
         }
-
-
+        
         /// <summary>
         /// 添加操作表格
         /// 被选择的数据项的主键将用脚本参数 selectedIds 传递
@@ -422,7 +369,8 @@ namespace Oldmansoft.Html.WebMan
         /// 数据项的主键将用变量 SelectedId 传递
         /// </summary>
         /// <param name="location"></param>
-        public IItemAction AddActionItem(ILocation location)
+        /// <returns></returns>
+        public IDataTableItemAction AddActionItem(ILocation location)
         {
             if (location == null) throw new ArgumentNullException("location");
             if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
@@ -439,7 +387,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="display">显示文字</param>
         /// <param name="script">脚本参数 selectedId</param>
         /// <returns></returns>
-        public IItemAction AddActionItem(string display, string script)
+        public IDataTableItemAction AddActionItem(string display, string script)
         {
             if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
             if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
@@ -447,19 +395,6 @@ namespace Oldmansoft.Html.WebMan
             var action = new DataTableAction(display, script, LinkBehave.Script);
             ItemActions.Add(action);
             return action;
-        }
-
-        /// <summary>
-        /// 根据客户脚本条件设置行样式
-        /// </summary>
-        /// <param name="className">样式名</param>
-        /// <param name="condition">脚本条件</param>
-        public void SetRowClassNameWhenClientCondition(string className, string condition)
-        {
-            if (string.IsNullOrWhiteSpace(className)) throw new ArgumentNullException("className");
-            if (string.IsNullOrWhiteSpace(condition)) throw new ArgumentNullException("condition");
-
-            RowClassNameClientConditions.Add(new KeyValuePair<string, string>(className, condition));
         }
     }
 }

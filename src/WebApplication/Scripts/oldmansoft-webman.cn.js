@@ -5,7 +5,7 @@
 	text.loading = "加载中";
 });
 $man.configText(function (text) {
-    text.dataTable.info = "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ) 共 _TOTAL_ 条数据";
+    text.dataTable.info = "第 _PAGE_ 页 ( 有 _PAGES_ 页 ) 共 _TOTAL_ 条数据";
     text.dataTable.infoEmpty = "共 _TOTAL_ 条数据";
     text.dataTable.emptyTable = "空";
     text.dataTable.processing = "正在处理中";

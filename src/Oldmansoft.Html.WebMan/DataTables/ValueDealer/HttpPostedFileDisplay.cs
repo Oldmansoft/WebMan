@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class HttpPostedFileDisplay : IValueDisplay
     {
-        public string Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelItemInfo modelItem)
         {
             if (value is HttpPostedFileCustom)
             {
@@ -21,7 +21,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             }
         }
 
-        public string DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
+        public HtmlNode DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             if (icon == FontAwesome.Picture_O)
@@ -33,7 +33,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
                 var img = new HtmlElement(HtmlTag.Img);
                 img.Attribute(HtmlAttribute.Src, file.Location);
                 img.AppendTo(a);
-                return new HtmlOutput(a).Complete();
+                return a;
             }
             else
             {
@@ -43,17 +43,17 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
                 a.Attribute(HtmlAttribute.Target, "_none");
                 modelItem.HtmlData.SetContext(a);
                 a.Text(file.FileName);
-                return new HtmlOutput(icon.CreateElement(), a).Complete();
+                return new HtmlNodeContainer(icon.CreateElement(), a);
             }
         }
 
-        public string DealBase(System.Web.HttpPostedFileBase file)
+        public HtmlNode DealBase(System.Web.HttpPostedFileBase file)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             var span = new HtmlElement(HtmlTag.Span);
             span.AddClass("icon-fa-text");
             span.Text(file.FileName);
-            return new HtmlOutput(icon.CreateElement(), span).Complete();
+            return new HtmlNodeContainer(icon.CreateElement(), span);
         }
     }
 }

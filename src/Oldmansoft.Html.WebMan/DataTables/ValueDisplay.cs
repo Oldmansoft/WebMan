@@ -18,7 +18,7 @@ namespace Oldmansoft.Html.WebMan
 
         private Dictionary<Type, IValueDisplay> SimpleDealers { get; set; }
 
-        private Dictionary<Type, Func<Type, object, ModelItemInfo, string>> GenericDealers { get; set; }
+        private Dictionary<Type, Func<Type, object, ModelItemInfo, HtmlNode>> GenericDealers { get; set; }
 
         private ValueDisplay()
         {
@@ -29,19 +29,19 @@ namespace Oldmansoft.Html.WebMan
             SimpleDealers.Add(typeof(string), new StringDisplay());
             SimpleDealers.Add(typeof(System.Web.HttpPostedFileBase), new HttpPostedFileDisplay());
 
-            GenericDealers = new Dictionary<Type, Func<Type, object, ModelItemInfo, string>>();
+            GenericDealers = new Dictionary<Type, Func<Type, object, ModelItemInfo, HtmlNode>>();
             GenericDealers.Add(typeof(Nullable<>), NullableDeal);
             GenericDealers.Add(typeof(List<>), ListDeal);
         }
 
-        private string NullableDeal(Type type, object value, ModelItemInfo modelItem)
+        private HtmlNode NullableDeal(Type type, object value, ModelItemInfo modelItem)
         {
             return ConvertSimpleType(Nullable.GetUnderlyingType(type), value, modelItem);
         }
 
-        private string ListDeal(Type type, object value, ModelItemInfo modelItem)
+        private HtmlNode ListDeal(Type type, object value, ModelItemInfo modelItem)
         {
-            IHtmlElement ul = new HtmlElement(HtmlTag.Ul);
+            var ul = new HtmlElement(HtmlTag.Ul);
 
             var source = value as System.Collections.IEnumerable;
             var itemType = type.GetGenericArguments()[0];
@@ -50,14 +50,12 @@ namespace Oldmansoft.Html.WebMan
                 if (item == null) continue;
                 var li = new HtmlElement(HtmlTag.Li);
                 ul.Append(li);
-                li.Append(new HtmlRaw(Convert(itemType, item, modelItem)));
+                li.Append(Convert(itemType, item, modelItem));
             }
-            var result = new HtmlOutput();
-            ul.Format(result);
-            return result.Complete();
+            return ul;
         }
 
-        public string Convert(Type type, object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(Type type, object value, ModelItemInfo modelItem)
         {
             if (type.IsGenericType)
             {
@@ -70,7 +68,7 @@ namespace Oldmansoft.Html.WebMan
             return ConvertSimpleType(type, value, modelItem);
         }
 
-        private string ConvertSimpleType(Type type, object value, ModelItemInfo modelItem)
+        private HtmlNode ConvertSimpleType(Type type, object value, ModelItemInfo modelItem)
         {
             if (SimpleDealers.ContainsKey(type))
             {
@@ -79,10 +77,10 @@ namespace Oldmansoft.Html.WebMan
             
             if (type.IsEnum)
             {
-                return EnumProvider.Instance.GetDescription(type, value).HtmlEncode();
+                return new HtmlText(EnumProvider.Instance.GetDescription(type, value).HtmlEncode());
             }
 
-            return value.ToString().HtmlEncode();
+            return new HtmlText(value.ToString().HtmlEncode());
         }
     }
 }

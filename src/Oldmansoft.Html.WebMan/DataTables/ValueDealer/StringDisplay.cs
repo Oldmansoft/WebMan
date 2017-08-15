@@ -9,14 +9,14 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class StringDisplay : IValueDisplay
     {
-        public string Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelItemInfo modelItem)
         {
             if (modelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Password)
             {
-                return "***";
+                return new HtmlText("***");
             }
-            
-            return ((string)value).HtmlEncode();
+
+            return new HtmlText(((string)value).HtmlEncode());
         }
     }
 }

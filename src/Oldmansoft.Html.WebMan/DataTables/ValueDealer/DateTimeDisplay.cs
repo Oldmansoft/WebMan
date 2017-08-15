@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class DateTimeDisplay : IValueDisplay
     {
-        public string Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelItemInfo modelItem)
         {
             var time = (DateTime)value;
             if (time.Kind == DateTimeKind.Utc)
@@ -19,15 +19,15 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 
             if (modelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Date)
             {
-                return time.ToString("yyyy-MM-dd");
+                return new HtmlText(time.ToString("yyyy-MM-dd"));
             }
 
             if (modelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Time)
             {
-                return time.ToString("HH:mm:ss");
+                return new HtmlText(time.ToString("HH:mm:ss"));
             }
-            
-            return time.ToString("yyyy-MM-dd HH:mm:ss");
+
+            return new HtmlText(time.ToString("yyyy-MM-dd HH:mm:ss"));
         }
     }
 }

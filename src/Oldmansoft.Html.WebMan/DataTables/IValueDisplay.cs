@@ -18,6 +18,6 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="value"></param>
         /// <param name="modelItem"></param>
         /// <returns></returns>
-        string Convert(object value, ModelItemInfo modelItem);
+        HtmlNode Convert(object value, ModelItemInfo modelItem);
     }
 }

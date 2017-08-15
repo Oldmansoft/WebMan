@@ -51,8 +51,14 @@
     <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="Annotations\FileRequiredAttribute.cs" />
     <Compile Include="AppEvent.cs" />
-    <Compile Include="DataTables\IItemAction.cs" />
+    <Compile Include="DataTables\StaticTableAction.cs" />
+    <Compile Include="DataTables\IStaticTableItemAction.cs" />
+    <Compile Include="DataTables\IDataTableItemAction.cs" />
     <Compile Include="DataTables\ItemActionClient.cs" />
+    <Compile Include="DataTables\StaticTable.cs" />
+    <Compile Include="DataTables\Table.cs" />
+    <Compile Include="DataTables\TableAction.cs" />
+    <Compile Include="DataTables\TableCreator.cs" />
     <Compile Include="DataTables\ValueDealer\HttpPostedFileDisplay.cs" />
     <Compile Include="DataTables\ValueDealer\StringDisplay.cs" />
     <Compile Include="DealResult.cs" />

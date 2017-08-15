@@ -9,9 +9,9 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class BoolDisplay : IValueDisplay
     {
-        public string Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelItemInfo modelItem)
         {
-            return (bool)value ? "是" : "否";
+            return new HtmlText((bool)value ? "是" : "否");
         }
     }
 }

@@ -32,7 +32,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.ConfigLocation();
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource).Set("parentId", selectedId));
+            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource(selectedId));
             table.AddActionTable(Url.Location(Create).Set("parentId", selectedId));
             table.AddActionTable(Url.Location(new Func<int, int[], JsonResult>(Delete)).Set("parentId", selectedId)).SupportParameter().Confirm("是否删除").NeedSelected();
             table.AddActionItem(Url.Location(new Func<int, int, ActionResult>(Details)).Set("parentId", selectedId));
@@ -41,13 +41,7 @@ namespace WebApplication.Controllers
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
-
-        public JsonResult IndexDataSource(int parentId, DataTableRequest request)
-        {
-            var list = GetDataSource(parentId).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            return Json(DataTable.Source(list, request, GetDataSource(parentId).Count));
-        }
-
+        
         [Location("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Create(int parentId)
         {

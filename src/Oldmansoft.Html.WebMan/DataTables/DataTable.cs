@@ -19,6 +19,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="primaryKey">主键</param>
         /// <param name="dataSource">数据源路径</param>
         /// <returns></returns>
+        [Obsolete("请使用 TableCreator<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)")]
         public static DataTableDefinition<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
             where TModel : class
         {
@@ -51,6 +52,18 @@ namespace Oldmansoft.Html.WebMan
             where TModel : class
         {
             return new DataTableSource<TModel>(source, request, totalCount);
+        }
+
+        /// <summary>
+        /// 定义表格
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="primaryKey"></param>
+        /// <returns>表格创建者</returns>
+        public static TableCreator<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)
+            where TModel : class
+        {
+            return new TableCreator<TModel>(primaryKey);
         }
     }
 }

@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DataTableAction : TableAction, IDataTableItemAction
+    class StaticTableAction<TModel> : TableAction, IStaticTableItemAction<TModel>
     {   
         /// <summary>
         /// 隐藏条件
         /// </summary>
-        public string HideCondition { get; set; }
+        public Func<TModel, bool> HideCondition { get; set; }
 
         /// <summary>
         /// 禁用条件
         /// </summary>
-        public string DisableCondition { get; set; }
+        public Func<TModel, bool> DisableCondition { get; set; }
 
-        public DataTableAction(string text, string location, LinkBehave behave)
+        public StaticTableAction(string text, string location, LinkBehave behave)
             : base(text, location, behave)
         {
         }
 
-        public IDataTableItemAction OnClientCondition(ItemActionClient action, string condition)
+        public IStaticTableItemAction<TModel> OnClientCondition(ItemActionClient action, Func<TModel, bool> condition)
         {
-            if (string.IsNullOrWhiteSpace(condition)) return this;
+            if (condition == null) return this;
             if (action == ItemActionClient.Hide)
             {
                 HideCondition = condition;
@@ -37,7 +37,7 @@ namespace Oldmansoft.Html.WebMan
             return this;
         }
 
-        IDataTableItemAction IDataTableItemAction.Confirm(string content)
+        IStaticTableItemAction<TModel> IStaticTableItemAction<TModel>.Confirm(string content)
         {
             ConfirmContent = content;
             return this;

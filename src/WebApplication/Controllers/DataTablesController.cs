@@ -47,13 +47,13 @@ namespace WebApplication.Controllers
             return DataSource;
         }
 
-        [Location("表格", Icon = FontAwesome.Tablet)]
+        [Location("动态表格", Icon = FontAwesome.Tablet)]
         public ActionResult Index()
         {
             var panel = new Panel();
             panel.ConfigLocation();
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id, Url.Location(IndexDataSource));
+            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(Url.Location(IndexDataSource));
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
             table.AddActionTable("提示", "$app.alert(selectedIds)");
@@ -62,16 +62,38 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
             table.AddActionItem("提示", "$app.alert(selectedId)");
+
             table.SetRowClassNameWhenClientCondition("alert-danger", "data.Id < 3");
             table.SetPageSize(20);
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }
-
+        
         public JsonResult IndexDataSource(DataTableRequest request)
         {
             var list = GetDataSource().Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return Json(DataTable.Source(list, request, GetDataSource().Count));
+        }
+
+        [Location("静态表格", Icon = FontAwesome.Tablet)]
+        public ActionResult StaticIndex()
+        {
+            var panel = new Panel();
+            panel.ConfigLocation();
+
+            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
+            table.AddActionTable(Url.Location(Create));
+            table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
+            table.AddActionTable("提示", "$app.alert(selectedIds)");
+            table.AddActionItem(Url.Location(Details)).OnClientCondition(ItemActionClient.Hide, o => o.Id < 3).OnClientCondition(ItemActionClient.Disable, o => o.Id > 5);
+            table.AddActionItem(Url.Location(Edit));
+            table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
+            table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
+            table.AddActionItem("提示", "$app.alert(selectedId)");
+
+            table.SetRowClassNameWhenCondition("alert-danger", o => o.Id < 3);
+            panel.Append(table);
+            return new HtmlResult(panel.CreateGrid());
         }
 
         [Location("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
