@@ -65,6 +65,7 @@ namespace WebApplication.Controllers
 
             table.SetRowClassNameWhenClientCondition("alert-danger", "data.Id < 3");
             table.SetPageSize(20);
+            table.AddSearchPanel(Url.Location(Index), "key", "");
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

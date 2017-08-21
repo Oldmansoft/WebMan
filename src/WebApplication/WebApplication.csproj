@@ -155,6 +155,7 @@
     <Compile Include="Controllers\DataTablesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StepController.cs" />
+    <Compile Include="Controllers\_Extends.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

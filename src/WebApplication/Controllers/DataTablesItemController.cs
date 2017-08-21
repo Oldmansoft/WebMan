@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
             return list;
         }
 
-        [Location("表格", Icon = FontAwesome.Tablet)]
+        [Location("表格", Icon = FontAwesome.Tablet, Behave = LinkBehave.Open)]
         public ActionResult Index(int selectedId)
         {
             var panel = new Panel();

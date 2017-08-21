@@ -1,5 +1,5 @@
 ﻿/*
-* v0.10.66
+* v0.10.67
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -786,13 +786,24 @@ window.oldmansoft.webman = new (function () {
             input.click();
         });
         $(document).on("submit", "form:not(.bv-form)", function (e) {
-            if (!submitForm($(this))) {
+            var form = $(this);
+            if (form.attr("action") == undefined) {
+                form.attr("action", $app.current().link);
+            }
+            if (form.attr("action") == document.location.pathname) {
+                return;
+            }
+            if (form.attr("onsubmit") != undefined) {
+                return;
+            }
+            if (!submitForm(form)) {
                 e.preventDefault();
             }
         });
         $(".webman-main-panel header form i.fa-search").on("click", function () {
             submitForm($(this).parents("form"));
         });
+        //tags input
         $(document).on("click", ".container-remove", function () {
             var caller = $(this).parent();
             caller.fadeOut(function () {
