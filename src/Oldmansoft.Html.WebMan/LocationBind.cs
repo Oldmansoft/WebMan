@@ -117,14 +117,11 @@ namespace Oldmansoft.Html.WebMan
                 result.Append(Location.Path);
                 foreach (var item in KeyValues)
                 {
-                    if (string.IsNullOrWhiteSpace(item.Key) || item.Value == null)
-                    {
-                        continue;
-                    }
+                    if (string.IsNullOrWhiteSpace(item.Key)) continue;
+                    if (item.Value == null) continue;
                     
-                    if (item.Value is System.Collections.IEnumerable && typeof(TParameter) != typeof(string))
+                    if (item.Value is System.Collections.IEnumerable && item.Value.GetType() != typeof(string))
                     {
-
                         foreach (var value in item.Value as System.Collections.IEnumerable)
                         {
                             if (value == null) continue;
