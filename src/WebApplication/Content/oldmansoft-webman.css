@@ -612,13 +612,18 @@ table.dataTable tbody td ul li:first-child {
     color: gray;
 }
 
-.tagsinput {
+.form-control.tagsinput {
     height: 100px;
+}
+
+.form-control.tagsinput div {
+    float: left;
+    margin: 5px 5px 5px 0;
 }
 
 .tagsinput div {
     float: left;
-    margin: 5px 5px 5px 0;
+    margin: 0 5px 0 0;
 }
 
 .tagsinput span {

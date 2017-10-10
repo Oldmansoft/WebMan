@@ -30,10 +30,10 @@ namespace WebApplication.Controllers
                 item.Time = DateTime.Now;
                 item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
-                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg");
+                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
                 item.Files = new List<HttpPostedFileBase>();
-                item.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg"));
-                item.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "http://oldman.im/Content/Images/head.jpg"));
+                item.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
+                item.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
                 if (i == 0)
                 {
                     item.Tags = new List<string>();
