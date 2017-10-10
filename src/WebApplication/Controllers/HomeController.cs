@@ -44,8 +44,8 @@ namespace WebApplication.Controllers
             document.Taskbar.Add(Url.Location(Male));
             document.Taskbar.Add(Url.Location(Envelope));
 
-            document.Quick.Avatar.Photo = "http://oldman.im/Content/Images/head.jpg";
-            document.Quick.Avatar.Display = "Oldman 老人";
+            document.Quick.Avatar.Photo = "https://avatars.githubusercontent.com/u/1279501";
+            document.Quick.Avatar.Display = "Oldman";
             document.Quick.Add(Url.Location(Male));
             document.Quick.Add(Url.Location(Logoff));
 

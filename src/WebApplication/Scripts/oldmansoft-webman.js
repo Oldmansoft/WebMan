@@ -1,5 +1,5 @@
 ﻿/*
-* v0.10.67
+* v0.10.68
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -484,7 +484,7 @@ window.oldmansoft.webman = new (function () {
             });
             if (!find) {
                 input.val("");
-
+                input.width("");
                 div = $("<div></div>");
                 hidden = $("<input type='hidden'/>");
                 hidden.attr("name", input.attr("name"));
@@ -509,6 +509,8 @@ window.oldmansoft.webman = new (function () {
                 AddValue($(e.delegateTarget));
                 return false;
             }
+            if (this.scrollWidth > $(this).parent().width()) return true;
+            $(this).width(this.scrollWidth);
         });
     }
 
