@@ -46,6 +46,21 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 获取
+        /// 可空
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        internal IList<ListDataItem> GetCanNull(string key)
+        {
+            if (!Contains(key))
+            {
+                return null;
+            }
+            return Source[key];
+        }
+
+        /// <summary>
         /// 设置
         /// </summary>
         /// <param name="key"></param>

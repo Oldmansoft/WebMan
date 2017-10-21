@@ -13,40 +13,41 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             var model = input.ModelItem;
-            if (model.Property.PropertyType.IsGenericType && model.Property.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)))
+            var type = model.Property.PropertyType;
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(IEnumerable)))
             {
-                var itemType = model.Property.PropertyType.GetGenericArguments()[0];
+                var itemType = type.GetGenericArguments()[0];
                 if (itemType.IsEnum)
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(itemType));
+                    result.Init(model.Name, type, input.Value, Util.EnumProvider.Instance.GetDataItems(itemType, input.Source.GetCanNull(model.Name)));
                     return true;
                 }
                 else if (itemType == typeof(string))
                 {
                     result = new Inputs.MultiSelect();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(model.Name));
+                    result.Init(model.Name, type, input.Value, input.Source.Get(model.Name));
                     return true;
                 }
                 else if (itemType == typeof(HttpPostedFileBase) || itemType == typeof(HttpPostedFileWrapper))
                 {
                     var multiFile = new Inputs.MultiFile();
-                    if (input.ModelItem.FileOption != null)
+                    if (model.FileOption != null)
                     {
-                        multiFile.FileOption = input.ModelItem.FileOption;
+                        multiFile.FileOption = model.FileOption;
                     }
                     result = multiFile;
                     input.SetInputProperty(result);
-                    result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, null);
+                    result.Init(model.Name, type, input.Value, null);
                     return true;
                 }
                 else if (!itemType.IsClass)
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(model.Name));
+                    result.Init(model.Name, type, input.Value, input.Source.Get(model.Name));
                     return true;
                 }
             }

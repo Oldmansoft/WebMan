@@ -79,7 +79,10 @@ namespace Oldmansoft.Html.WebMan.Input
                         item.Attribute(HtmlAttribute.Selected, "selected");
                     }
                 }
-                item.Text(option.Text);
+                if (!string.IsNullOrEmpty(option.Text))
+                {
+                    item.Append(new HtmlRaw(option.Text.HtmlEncode().Replace(" ", "&nbsp;")));
+                }
             }
             SetAttribute(this, disabled, readony, hint);
 

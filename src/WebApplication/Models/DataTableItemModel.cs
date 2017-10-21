@@ -29,7 +29,8 @@ namespace WebApplication.Models
         public string Content { get; set; }
         
         [Display(Name = "状态")]
-        public DataTableItemState State { get; set; }
+        [Required]
+        public DataTableItemState? State { get; set; }
 
         [Display(Name = "好吗")]
         public bool? IsGood { get; set; }
@@ -41,7 +42,6 @@ namespace WebApplication.Models
 
         [Display(Name = "列表")]
         [Required]
-        [CustomInput(typeof(Select2))]
         public List<DataTableItemState> States { get; set; }
 
         [Display(Name = "日期")]

@@ -104,6 +104,35 @@ namespace Oldmansoft.Html.WebMan.Util
             return result;
         }
 
+        internal IList<ListDataItem> GetDataItems(Type type, IList<ListDataItem> list)
+        {
+            if (list != null) return list;
+            if (type.IsEnum) return GetDataItems(type);
+            if (IsNullableEnum(type))
+            {
+                var result = new List<ListDataItem>();
+                result.Insert(0, new ListDataItem(" ", ""));
+                foreach(var item in GetDataItems(type.GenericTypeArguments[0]))
+                {
+                    result.Add(item);
+                }
+                return result;
+            }
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                var itemType = type.GetGenericArguments()[0];
+                if (itemType.IsEnum)
+                {
+                    return GetDataItems(itemType);
+                }
+                if (IsNullableEnum(itemType))
+                {
+                    return GetDataItems(itemType.GenericTypeArguments[0]);
+                }
+            }
+            return new List<ListDataItem>();
+        }
+
         /// <summary>
         /// 是否为可空枚举
         /// </summary>
@@ -114,6 +143,16 @@ namespace Oldmansoft.Html.WebMan.Util
             return type.IsGenericType
                 && type.GetGenericTypeDefinition() == typeof(Nullable<>)
                 && type.GenericTypeArguments[0].IsEnum;
+        }
+
+        /// <summary>
+        /// 是否为枚举或可空枚举
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        internal static bool IsEnumOrNullable(Type type)
+        {
+            return type.IsEnum || IsNullableEnum(type);
         }
     }
 }
