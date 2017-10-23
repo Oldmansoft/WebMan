@@ -62,6 +62,8 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
             table.AddActionItem("提示", "$app.alert(selectedId)");
+            table.AddActionItem(Url.Location(Show));
+            table.AddActionItem(Url.Location(ShowAction));
 
             table.SetRowClassNameWhenClientCondition("alert-danger", "data.Id < 3");
             table.SetPageSize(20);
@@ -101,10 +103,6 @@ namespace WebApplication.Controllers
         public ActionResult Create()
         {
             var model = new Models.DataTableItemModel();
-            model.States = new List<Models.DataTableItemState>();
-            model.States.Add(Models.DataTableItemState.Hight);
-            model.Time = DateTime.Now;
-            model.Date = DateTime.Now;
             model.CreateTime = DateTime.UtcNow;
 
             var source = new ListDataSource();
@@ -207,6 +205,36 @@ namespace WebApplication.Controllers
             panel.Append(form);
 
             return new HtmlResult(panel);
+        }
+
+        [Location("显示", Behave = LinkBehave.Open)]
+        public ActionResult Show(int selectedId)
+        {
+            var data = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
+
+            var model = new Models.ShowModel();
+            model.Id = data.Id;
+            model.Name = data.Name;
+
+            var panel = new Panel();
+            panel.ConfigLocation();
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.ShowModel, JsonResult>(ShowResult)));
+            panel.Append(form);
+
+            return new HtmlResult(panel);
+        }
+
+        public JsonResult ShowResult(Models.ShowModel model)
+        {
+            var data = GetDataSource().FirstOrDefault(o => o.Id == model.Id);
+            if (data == null) return Json(DealResult.WrongRefresh("无效操作"));
+            return Json(DealResult.Show(string.Format("显示 {0}", data.Name)));
+        }
+
+        [Location("动作")]
+        public JsonResult ShowAction(int selectedId)
+        {
+            return Json(DealResult.Show(string.Format("显示 {0}", selectedId)));
         }
     }
 }

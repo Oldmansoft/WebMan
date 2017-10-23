@@ -161,6 +161,7 @@
     </Compile>
     <Compile Include="Models\DataTableItemModel.cs" />
     <Compile Include="Models\LoginModels.cs" />
+    <Compile Include="Models\ShowModel.cs" />
     <Compile Include="Models\StepModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

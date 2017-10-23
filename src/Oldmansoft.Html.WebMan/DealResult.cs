@@ -44,7 +44,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建错误内容
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">消息</param>
         /// <returns></returns>
         public static DealResult Wrong(string message)
         {
@@ -57,7 +57,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 刷新数据
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">消息</param>
         /// <returns></returns>
         public static DealResult WrongRefresh(string message)
         {
@@ -72,7 +72,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 重定向
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="location">位置</param>
         /// <returns></returns>
         public static DealResult Location(ILocation location)
         {
@@ -87,8 +87,8 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 显示消息并重定向
         /// </summary>
-        /// <param name="location"></param>
-        /// <param name="message"></param>
+        /// <param name="location">位置</param>
+        /// <param name="message">消息</param>
         /// <returns></returns>
         public static DealResult Location(ILocation location, string message)
         {
@@ -117,7 +117,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 刷新数据
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">消息</param>
         /// <returns></returns>
         public static DealResult Refresh(string message)
         {
@@ -128,5 +128,21 @@ namespace Oldmansoft.Html.WebMan
             result.Success = true;
             return result;
         }
+
+
+        /// <summary>
+        /// 显示消息
+        /// </summary>
+        /// <param name="message">消息</param>
+        /// <returns></returns>
+        public static DealResult Show(string message)
+        {
+            var result = new DealResult();
+            result.CloseOpen = true;
+            result.Success = true;
+            result.Message = message;
+            return result;
+        }
+
     }
 }
