@@ -1,5 +1,5 @@
 ﻿/*
-* v0.10.68
+* v0.11.69
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -189,8 +189,11 @@ window.oldmansoft.webman = new (function () {
     }
 
     function getDataTableSelectedIds(a) {
-        var ids = [];
-        a.parent().next().find("tbody tr td:first-child input[type='checkbox']").each(function () {
+        var ids = [],
+            group = a.parent(),
+            table = group.parent().find(".dataTable");
+
+        table.find("tbody tr td:first-child input[type='checkbox']").each(function () {
             if ($(this).prop("checked")) {
                 ids.push($(this).val());
             }
