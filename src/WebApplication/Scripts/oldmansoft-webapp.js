@@ -1,5 +1,5 @@
 ﻿/*
-* v0.14.65
+* v0.15.69
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -386,13 +386,12 @@ window.oldmansoft.webapp = new (function () {
     function linkManagement() {
         var context = [];
 
-        function item(name, link, level) {
+        function item(name, link, level, option) {
             var eventParameter,
                 visible = true,
                 scrollTop = 0,
                 scrollLeft = 0,
-                localViewEvent,
-                option = { closed: null };
+                localViewEvent;
 
             this.link = link;
             this.node = $("<div></div>").addClass(name + "-view").data("link", link);
@@ -468,8 +467,8 @@ window.oldmansoft.webapp = new (function () {
             }
         }
 
-        this.push = function (name, link) {
-            context.push(new item(name, link, this.count() + 1));
+        this.push = function (name, link, option) {
+            context.push(new item(name, link, this.count() + 1, option));
         }
 
         this.pop = function () {
@@ -497,8 +496,8 @@ window.oldmansoft.webapp = new (function () {
             return context[index];
         }
 
-        this.replace = function (index, name, link) {
-            var newItem = new item(name, link, index + 1);
+        this.replace = function (index, name, link, option) {
+            var newItem = new item(name, link, index + 1, option);
             context[index].node.after(newItem.node);
             context[index].remove();
             context[index] = newItem;
@@ -551,9 +550,9 @@ window.oldmansoft.webapp = new (function () {
                 if (store.length > 0) {
                     current = store.pop();
                     core.append(current.node);
-                    if (fn) fn();
                     element.stop(true, true);
                     element.fadeIn(0);
+                    if (fn) fn();
                     return;
                 }
 
@@ -596,11 +595,13 @@ window.oldmansoft.webapp = new (function () {
 
         this.clear = function () {
             if (!current) return;
+            $this.bodyManagement.shrink();
             if (current.close) current.close();
             current.node.remove();
             while (store.length > 0) {
                 current = store.pop();
                 core.append(current.node);
+                $this.bodyManagement.shrink();
                 if (current.close) current.close();
                 current.node.remove();
             }
@@ -651,9 +652,9 @@ window.oldmansoft.webapp = new (function () {
 
                 if (store.length > 0) {
                     current = store.pop();
-                    if (fn) fn();
                     current.node.stop(true, true);
                     current.node.fadeIn(0);
+                    if (fn) fn();
                     return;
                 }
 
@@ -703,10 +704,12 @@ window.oldmansoft.webapp = new (function () {
 
         this.clear = function () {
             if (!current) return;
+            $this.bodyManagement.shrink();
             if (current.close) current.close();
             current.node.remove();
             while (store.length > 0) {
                 current = store.pop();
+                $this.bodyManagement.shrink();
                 if (current.close) current.close();
                 current.node.remove();
             }
@@ -978,16 +981,16 @@ window.oldmansoft.webapp = new (function () {
 
     function modalArea() {
         var links = new linkManagement(),
-            loadOption = { closed: null };
+            loadOption;
 
-        function setView(link, first, second) {
+        function setView(link, data, type, first, second) {
             var last;
 
             if (links.count() == 0) {
                 _activeView.push(_modalView);
             }
 
-            links.push("modal", link);
+            links.push("modal", link, { closed: loadOption.closed, data: data, type: type });
             last = links.last();
             last.node.addClass("box-panel");
             if (second == undefined) {
@@ -999,10 +1002,22 @@ window.oldmansoft.webapp = new (function () {
                 last.remove();
             });
             last.callLoadAndActive();
-            last.getOption().closed = loadOption.closed;
         }
 
-        this.load = function (link, data, type, loadCompleted) {
+        function setOldView(first, second) {
+            if (links.count() == 0) return;
+
+            var last = links.last();
+            last.callInactiveAndUnload();
+            if (second == undefined) {
+                last.setContext(first);
+            } else {
+                last.setContext(first, second);
+            }
+            last.callLoadAndActive();
+        }
+
+        this.load = function (link, data, type) {
             var loading = $this.loadingTip.show(),
                 loadPath;
 
@@ -1013,7 +1028,7 @@ window.oldmansoft.webapp = new (function () {
                 data: data,
                 type: type,
                 timeout: _setting.timeover
-            }).done(function (data, textStatus, jqXHR) {
+            }).done(function (content, textStatus, jqXHR) {
                 loading.hide();
                 var json = jqXHR.getResponseHeader("X-Responded-JSON"),
 	                responded;
@@ -1030,13 +1045,14 @@ window.oldmansoft.webapp = new (function () {
                     }
                 }
 
-                if (isHtmlDocument(data)) {
+                if (isHtmlDocument(content)) {
                     alert("You try to load wrong content: " + loadPath);
                     return;
                 }
 
-                setView(link, data);
-                if (loadCompleted) loadCompleted(true);
+                if (loadOption.refresh) setOldView(content);
+                else setView(link, data, type, content);
+                if (loadOption.loaded) loadOption.loaded();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 loading.hide();
                 if (jqXHR.status == 401) {
@@ -1052,11 +1068,17 @@ window.oldmansoft.webapp = new (function () {
                     content.text(response.eq(1).text());
                 }
 
-                setView(link, title, content);
-                if (loadCompleted) loadCompleted(true);
+                if (loadOption.refresh) setOldView(title, content);
+                else setView(link, data, type, title, content);
             });
-            loadOption.closed = null;
+            loadOption = { closed: null, loaded: null, link: link, data: data, type: type, refresh: false };
             return loadOption;
+        }
+
+        this.reload = function () {
+            var linkOption = links.last().getOption(),
+                option = this.load(links.last().link, linkOption.data, linkOption.type);
+            option.refresh = true;
         }
 
         this.close = function (parameter, closeCompleted) {
@@ -1083,6 +1105,7 @@ window.oldmansoft.webapp = new (function () {
             _modalBox.clear();
             if (links.count() > 0) {
                 links = new linkManagement();
+                _activeView.pop();
             }
         }
 
@@ -1097,9 +1120,9 @@ window.oldmansoft.webapp = new (function () {
 
     function openArea() {
         var links = new linkManagement(),
-            loadOption = { closed: null };
+            loadOption;
 
-        function setView(link, first, second) {
+        function setView(link, data, type, first, second) {
             var last;
 
             if (links.count() > 0) {
@@ -1109,7 +1132,7 @@ window.oldmansoft.webapp = new (function () {
                 _activeView.push(_openView);
             }
 
-            links.push("open", link);
+            links.push("open", link, { closed: loadOption.closed, data: data, type: type });
             last = links.last();
             if (second == undefined) {
                 last.setContext(first);
@@ -1120,10 +1143,22 @@ window.oldmansoft.webapp = new (function () {
                 last.remove();
             });
             last.callLoadAndActive();
-            last.getOption().closed = loadOption.closed;
         }
 
-        this.load = function (link, data, type, loadCompleted) {
+        function setOldView(first, second) {
+            if (links.count() == 0) return;
+
+            var last = links.last();
+            last.callInactiveAndUnload();
+            if (second == undefined) {
+                last.setContext(first);
+            } else {
+                last.setContext(first, second);
+            }
+            last.callLoadAndActive();
+        }
+
+        this.load = function (link, data, type) {
             var loading = $this.loadingTip.show(),
                 loadPath;
 
@@ -1136,7 +1171,7 @@ window.oldmansoft.webapp = new (function () {
                 data: data,
                 type: type,
                 timeout: _setting.timeover
-            }).done(function (data, textStatus, jqXHR) {
+            }).done(function (content, textStatus, jqXHR) {
                 loading.hide();
                 var json = jqXHR.getResponseHeader("X-Responded-JSON"),
 	                responded;
@@ -1153,13 +1188,14 @@ window.oldmansoft.webapp = new (function () {
                     }
                 }
 
-                if (isHtmlDocument(data)) {
+                if (isHtmlDocument(content)) {
                     alert("You try to load wrong content: " + loadPath);
                     return;
                 }
 
-                setView(link, data);
-                if (loadCompleted) loadCompleted(true);
+                if (loadOption.refresh) setOldView(content);
+                else setView(link, data, type, content);
+                if (loadOption.loaded) loadOption.loaded();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 loading.hide();
                 if (jqXHR.status == 401) {
@@ -1175,11 +1211,17 @@ window.oldmansoft.webapp = new (function () {
                     content.text(response.eq(1).text());
                 }
 
-                setView(link, title, content);
-                if (loadCompleted) loadCompleted(true);
+                if (loadOption.refresh) setView(title, content);
+                else setOldView(link, data, type, title, content);
             });
-            loadOption.closed = null;
+            loadOption = { closed: null, loaded: null, link: link, data: data, type: type, refresh: false };
             return loadOption;
+        }
+
+        this.reload = function () {
+            var linkOption = links.last().getOption(),
+                option = this.load(links.last().link, linkOption.data, linkOption.type);
+            option.refresh = true;
         }
 
         this.close = function (parameter, closeCompleted) {
@@ -1209,6 +1251,7 @@ window.oldmansoft.webapp = new (function () {
             _windowBox.clear();
             if (links.count() > 0) {
                 links = new linkManagement();
+                _activeView.pop();
             }
         }
 
@@ -1227,7 +1270,7 @@ window.oldmansoft.webapp = new (function () {
             defaultLink = link,
             links = new linkManagement();
 
-        function setView(link, first, second) {
+        function setView(first, second) {
             var last;
 
             last = links.last();
@@ -1242,13 +1285,11 @@ window.oldmansoft.webapp = new (function () {
             $this.dealScrollToVisibleLoading();
         }
 
-        function loadContent(link, basePath, loadContentCompleted, loadCompleted) {
+        function loadContent(link, baseLink, loadContentCompleted, loadCompleted) {
             var currentId = ++loadId,
-                loading,
-                loadPath;
+                loading = $this.loadingTip.show(),
+                loadPath = getAbsolutePath(link, baseLink, defaultLink);
 
-            loading = $this.loadingTip.show();
-            loadPath = getAbsolutePath(link, basePath, defaultLink);
             $.ajax({
                 mimeType: 'text/html; charset=utf-8',
                 url: loadPath,
@@ -1280,7 +1321,7 @@ window.oldmansoft.webapp = new (function () {
                     return;
                 }
                 loadContentCompleted();
-                setView(link, data);
+                setView(data);
                 if (loadCompleted) loadCompleted(true);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (currentId != loadId) {
@@ -1289,7 +1330,7 @@ window.oldmansoft.webapp = new (function () {
                 loading.hide();
 
                 if (jqXHR.status == 401) {
-                    _fnOnUnauthorized(link);
+                    _fnOnUnauthorized(loadPath);
                 }
                 var response = $(jqXHR.responseText),
                     title = $("<h4></h4>").text(errorThrown),
@@ -1301,8 +1342,7 @@ window.oldmansoft.webapp = new (function () {
                     content.text(response.eq(1).text());
                 }
                 loadContentCompleted();
-                setView(link, title, content);
-                if (loadCompleted) loadCompleted(true);
+                setView(title, content);
             });
         }
 
@@ -1325,7 +1365,6 @@ window.oldmansoft.webapp = new (function () {
                 if (loadCompleted) loadCompleted(false);
                 return;
             }
-
             loadContent(hrefs[hrefs.length - 1], getPathHasAbsolutePathFromArray(hrefs, hrefs.length - 2, defaultLink), function () {
                 var i,
                     linksCount;
@@ -1341,12 +1380,12 @@ window.oldmansoft.webapp = new (function () {
                     for (i = 0; i < hrefs.length; i++) {
                         if (linksCount > i) {
                             if (links.get(i).link != hrefs[i] || (linksCount == i + 1 && hrefs.length == linksCount)) {
-                                links.replace(i, "main", hrefs[i]);
+                                links.replace(i, "main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, hrefs[i - 1], defaultLink) });
                             } else {
                                 links.get(i).hide();
                             }
                         } else {
-                            links.push("main", hrefs[i]);
+                            links.push("main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, hrefs[i - 1], defaultLink) });
                             element.append(links.last().node);
                         }
                     }
@@ -1354,7 +1393,12 @@ window.oldmansoft.webapp = new (function () {
             }, loadCompleted);
         }
 
-        // this parameter just for like openView.close
+        this.reload = function () {
+            loadContent(links.last().link, links.last().getOption().baseLink, function () {
+                links.last().callInactiveAndUnload();
+            });
+        }
+
         this.close = function (parameter, closeCompleted) {
             if (links.count() > 1) {
                 if (links.get(links.count() - 2).valid) {
@@ -1451,6 +1495,10 @@ window.oldmansoft.webapp = new (function () {
         _activeView.get().close(parameter, closeCompleted);
     }
 
+    this.viewReload = function () {
+        _activeView.get().reload();
+    }
+
     this.dealScrollToVisibleLoading = function () {
         var loading = $(".webapp-loading:visible"),
 	        src;
@@ -1525,6 +1573,9 @@ window.oldmansoft.webapp = new (function () {
             this.closed = function (fn) {
                 option.closed = fn;
             }
+            this.loaded = function (fn) {
+                option.loaded = fn;
+            }
         }
     }
 
@@ -1538,6 +1589,9 @@ window.oldmansoft.webapp = new (function () {
         return new function () {
             this.closed = function (fn) {
                 option.closed = fn;
+            }
+            this.loaded = function (fn) {
+                option.loaded = fn;
             }
         }
     }
@@ -1650,10 +1704,10 @@ window.oldmansoft.webapp = new (function () {
         baseHash: $this.linker.hash,
         addHash: $this.linker.addHash,
         sameHash: $this.linker.sameHash,
-        reload: $this.linker.refresh,
         open: $this.open,
         modal: $this.modal,
         event: $this.event,
+        reload: $this.viewReload,
         close: $this.viewClose,
         current: $this.current,
         init: $this.init

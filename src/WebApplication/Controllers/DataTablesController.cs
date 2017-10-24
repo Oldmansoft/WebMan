@@ -54,14 +54,15 @@ namespace WebApplication.Controllers
             panel.ConfigLocation();
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(Url.Location(IndexDataSource));
+            table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionTable("提示", "$app.alert(selectedIds)");
+            table.AddActionTable("提示", "$app.alert(id)");
             table.AddActionItem(Url.Location(Details)).OnClientCondition(ItemActionClient.Hide, "data.Id < 3").OnClientCondition(ItemActionClient.Disable, "data.Id > 5");
             table.AddActionItem(Url.Location(Edit));
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
-            table.AddActionItem("提示", "$app.alert(selectedId)");
+            table.AddActionItem("提示", "$app.alert(id)");
             table.AddActionItem(Url.Location(Show));
             table.AddActionItem(Url.Location(ShowAction));
 
@@ -85,6 +86,7 @@ namespace WebApplication.Controllers
             panel.ConfigLocation();
 
             var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
+            table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
             table.AddActionTable("提示", "$app.alert(selectedIds)");
@@ -124,19 +126,29 @@ namespace WebApplication.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            model.Id = GetDataSource().Max(o => o.Id) + 1;
+            var data = new Models.DataTableItemModel();
+            var mapper = new DataMapper();
+            mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
+            mapper.CopyTo(model, data);
+
+            data.Id = GetDataSource().Max(o => o.Id) + 1;
             model.DealUpload((file) =>
             {
-                model.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
             }, o => o.File);
-            GetDataSource().Insert(0, model);
+            data.Files = new List<HttpPostedFileBase>();
+            model.DealUpload((file) =>
+            {
+                data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+            }, o => o.Files);
+            GetDataSource().Insert(0, data);
             return Json(DealResult.Location(Url.Location(Index), "添加成功"));
         }
 
         [Location("修改", Icon = FontAwesome.Anchor)]
-        public ActionResult Edit(int selectedId)
+        public ActionResult Edit(int id)
         {
-            var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
+            var model = GetDataSource().FirstOrDefault(o => o.Id == id);
             var source = new ListDataSource();
             source["Age"].Add(new ListDataItem("1", "1"));
             source["Age"].Add(new ListDataItem("2", "2"));
@@ -182,11 +194,11 @@ namespace WebApplication.Controllers
         }
 
         [Location("删除")]
-        public JsonResult Delete(params int[] selectedId)
+        public JsonResult Delete(params int[] id)
         {
-            foreach (var id in selectedId)
+            foreach (var item in id)
             {
-                var model = GetDataSource().FirstOrDefault(o => o.Id == id);
+                var model = GetDataSource().FirstOrDefault(o => o.Id == item);
                 if (model == null) return Json(DealResult.Wrong("没有删除项"), JsonRequestBehavior.AllowGet);
                 GetDataSource().Remove(model);
             }
@@ -195,9 +207,9 @@ namespace WebApplication.Controllers
         }
 
         [Location("详情", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
-        public ActionResult Details(int selectedId)
+        public ActionResult Details(int id)
         {
-            var model = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
+            var model = GetDataSource().FirstOrDefault(o => o.Id == id);
 
             var panel = new Panel();
             panel.ConfigLocation();
@@ -208,9 +220,9 @@ namespace WebApplication.Controllers
         }
 
         [Location("显示", Behave = LinkBehave.Open)]
-        public ActionResult Show(int selectedId)
+        public ActionResult Show(int id)
         {
-            var data = GetDataSource().FirstOrDefault(o => o.Id == selectedId);
+            var data = GetDataSource().FirstOrDefault(o => o.Id == id);
 
             var model = new Models.ShowModel();
             model.Id = data.Id;
@@ -232,9 +244,9 @@ namespace WebApplication.Controllers
         }
 
         [Location("动作")]
-        public JsonResult ShowAction(int selectedId)
+        public JsonResult ShowAction(int id)
         {
-            return Json(DealResult.Show(string.Format("显示 {0}", selectedId)));
+            return Json(DealResult.Show(string.Format("显示 {0}", id)));
         }
     }
 }

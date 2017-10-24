@@ -16,6 +16,8 @@ namespace Oldmansoft.Html.WebMan.DataTables
     public abstract class Table<TModel> : HtmlElement
         where TModel : class
     {
+        private string SelectedParameterName;
+
         /// <summary>
         /// 主键方法
         /// </summary>
@@ -98,6 +100,27 @@ namespace Oldmansoft.Html.WebMan.DataTables
         public void SupportParameter()
         {
             IsDisplayCheckboxColumn = true;
+        }
+
+        /// <summary>
+        /// 设置表格的动作参数名称
+        /// </summary>
+        /// <param name="name"></param>
+        public void SetSelectedParameterName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return;
+            SelectedParameterName = name.Trim();
+        }
+
+        /// <summary>
+        /// 获取表格的动作参数名称
+        /// </summary>
+        /// <returns></returns>
+        public string GetSelectedParameterName()
+        {
+            if (!string.IsNullOrWhiteSpace(SelectedParameterName)) return SelectedParameterName;
+            if (!string.IsNullOrWhiteSpace(GlobalOption.TableSelectedParameterName)) return GlobalOption.TableSelectedParameterName;
+            return "selectedId";
         }
     }
 }

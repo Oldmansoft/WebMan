@@ -126,6 +126,7 @@
     <Compile Include="FormValidate\StringLength.cs" />
     <Compile Include="FormValidate\Validator.cs" />
     <Compile Include="FormValidate\ValidatorManager.cs" />
+    <Compile Include="GlobalOption.cs" />
     <Compile Include="HttpPostedFileCustom.cs" />
     <Compile Include="DataTables\ITableAction.cs" />
     <Compile Include="Input\MarkdownResource.cs" />

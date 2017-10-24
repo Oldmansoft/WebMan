@@ -311,7 +311,7 @@ namespace Oldmansoft.Html.WebMan
         {
             if (expression == null) throw new ArgumentNullException("expression");
             if (source == null) return;
-            
+
             if (delete != null)
             {
                 if (System.Web.HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1") delete();
@@ -350,7 +350,7 @@ namespace Oldmansoft.Html.WebMan
         {
             if (expression == null) throw new ArgumentNullException("expression");
             if (source == null) return;
-            
+
             if (delete != null)
             {
                 var isDeletes = System.Web.HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
@@ -370,6 +370,19 @@ namespace Oldmansoft.Html.WebMan
                     if (upload != null) upload(httpPostedFile);
                 }
             }
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, System.Linq.Expressions.Expression<Func<TModel, List<System.Web.HttpPostedFileBase>>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            DealUpload(source, upload, null, expression);
         }
     }
 }

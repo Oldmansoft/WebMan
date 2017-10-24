@@ -1,5 +1,5 @@
 ﻿/*
-* v0.11.69
+* v0.12.71
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -140,7 +140,7 @@ window.oldmansoft.webman = new (function () {
         function refresh(isNewContent) {
             var operator;
             if (data.NewData) {
-                operator = $(".main-view").last().data("operator");
+                operator = $app.current().node.data("operator");
                 if (operator) {
                     operator.draw(false);
                 } else if (!isNewContent) {
@@ -188,10 +188,20 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
+    function getDataTableFromActionLink(element) {
+        var group = element.parents(".dataTable-action"),
+            body = group.parents(".webman-body"),
+            table = body.find("table.dataTable"),
+            target = group.attr("data-target");
+        if (target) {
+            table = body.find("." + target);
+        }
+        return table;
+    }
+
     function getDataTableSelectedIds(a) {
         var ids = [],
-            group = a.parent(),
-            table = group.parent().find(".dataTable");
+            table = getDataTableFromActionLink(a);
 
         table.find("tbody tr td:first-child input[type='checkbox']").each(function () {
             if ($(this).prop("checked")) {
@@ -561,16 +571,30 @@ window.oldmansoft.webman = new (function () {
             var other_nothing = 0,
                 other_supportParameter = 1,
                 other_needSelected = 2,
-                action,
                 selectedIds = getDataTableSelectedIds($(this)),
-                node = $(e.target).parents(".webman-body").find("table.dataTable");
-            action = node.data("table-actions")[Number($(this).attr("data-index"))];
+                node = getDataTableFromActionLink($(e.target)),
+                action = node.data("table-actions")[Number($(this).attr("data-index"))],
+                parameter_name = node.attr("data-parameter");
+            if (!parameter_name) parameter_name = "selectedId";
+
+            function getJsonValue() {
+                var result = {};
+                result[parameter_name] = selectedIds;
+                return result;
+            }
+
+            function getFormValue() {
+                for (var i = 0; i < selectedIds.length; i++) {
+                    selectedIds[i] = encodeURIComponent(selectedIds[i]);
+                }
+                return parameter_name + "=" + selectedIds.join("&" + parameter_name + "=");
+            }
 
             function execute() {
                 var loading;
                 if (action.behave == linkBehave.open) {
                     if ((action.other & other_supportParameter) == other_supportParameter) {
-                        $app.open(action.path, { SelectedId: selectedIds });
+                        $app.open(action.path, getJsonValue());
                     } else {
                         $app.open(action.path);
                     }
@@ -578,17 +602,12 @@ window.oldmansoft.webman = new (function () {
                     if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
                         $app.addHash(action.path);
                     } else {
-                        for (var i = 0; i < selectedIds.length; i++) {
-                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
-                        }
-                        $app.addHash(bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId=")));
+                        $app.addHash(bindUrlParamter(action.path, getFormValue()));
                     }
                 } else if (action.behave == linkBehave.call) {
                     loading = $app.loading();
                     if ((action.other & other_supportParameter) == other_supportParameter) {
-                        $.post(action.path, {
-                            SelectedId: selectedIds
-                        }).done(function (data) {
+                        $.post(action.path, getJsonValue()).done(function (data) {
                             dealSubmitResult(data, dealMethod.call);
                         }).fail(dealAjaxError).always(function () { loading.hide(); });
                     } else {
@@ -600,19 +619,13 @@ window.oldmansoft.webman = new (function () {
                     if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
                         document.location = action.path;
                     } else {
-                        for (var i = 0; i < selectedIds.length; i++) {
-                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
-                        }
-                        document.location = bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId="));
+                        document.location = bindUrlParamter(action.path, getFormValue());
                     }
                 } else if (action.behave == linkBehave.blank) {
                     if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
                         window.open(action.path);
                     } else {
-                        for (var i = 0; i < selectedIds.length; i++) {
-                            selectedIds[i] = encodeURIComponent(selectedIds[i]);
-                        }
-                        window.open(bindUrlParamter(action.path, "SelectedId=" + selectedIds.join("&SelectedId=")));
+                        window.open(bindUrlParamter(action.path, getFormValue()));
                     }
                 } else if (action.behave == linkBehave.script) {
                     action.script(selectedIds);
@@ -628,31 +641,36 @@ window.oldmansoft.webman = new (function () {
             } else {
                 execute();
             }
-            node.parents(".main-view").data("operator", node.data("datatable"));
+            $app.current().node.data("operator", node.data("datatable"));
         });
         $(document).on("click", ".dataTable-item-action a", function (e) {
-            var action,
-                itemId = getDataTableItemId($(this)),
-                node = $(e.target).parents("table.dataTable");
-            action = node.data("item-actions")[Number($(this).attr("data-index"))];
+            var itemId = getDataTableItemId($(this)),
+                node = $(e.target).parents("table.dataTable"),
+                action = node.data("item-actions")[Number($(this).attr("data-index"))],
+                parameter_name = node.attr("data-parameter");
+            if (!parameter_name) parameter_name = "selectedId";
+
+            function getJsonValue() {
+                var result = {};
+                result[parameter_name] = itemId;
+                return result;
+            }
 
             function execute() {
                 var loading;
                 if (action.behave == linkBehave.open) {
-                    $app.open(action.path, { SelectedId: itemId });
+                    $app.open(action.path, getJsonValue());
                 } else if (action.behave == linkBehave.link) {
-                    $app.addHash(bindUrlParamter(action.path, "SelectedId=" + itemId));
+                    $app.addHash(bindUrlParamter(action.path, parameter_name + "=" + itemId));
                 } else if (action.behave == linkBehave.call) {
                     loading = $app.loading();
-                    $.post(action.path, {
-                        SelectedId: itemId
-                    }).done(function (data) {
+                    $.post(action.path, getJsonValue()).done(function (data) {
                         dealSubmitResult(data, dealMethod.call);
                     }).fail(dealAjaxError).always(function () { loading.hide(); });
                 } else if (action.behave == linkBehave.self) {
-                    document.location = bindUrlParamter(action.path, "SelectedId=" + itemId);
+                    document.location = bindUrlParamter(action.path, parameter_name + "=" + itemId);
                 } else if (action.behave == linkBehave.blank) {
-                    window.open(bindUrlParamter(action.path, "SelectedId=" + itemId));
+                    window.open(bindUrlParamter(action.path, parameter_name + "=" + itemId));
                 } else if (action.behave == linkBehave.script) {
                     action.script(itemId);
                 }
@@ -664,7 +682,7 @@ window.oldmansoft.webman = new (function () {
             } else {
                 execute();
             }
-            node.parents(".main-view").data("operator", node.data("datatable"));
+            $app.current().node.data("operator", node.data("datatable"));
         });
         $(document).on("click", ".input-group-addon.del-file", function () {
             var container = $(this).parent();

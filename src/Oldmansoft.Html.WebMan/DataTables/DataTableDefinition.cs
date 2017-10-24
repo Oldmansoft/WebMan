@@ -127,7 +127,7 @@ namespace Oldmansoft.Html.WebMan
                 var operate = new JsonObject();
                 if (item.Behave == LinkBehave.Script)
                 {
-                    operate.Set("script", new JsonRaw(string.Format("function(selectedId){{ {0} }}", item.Location.FixScriptTail())));
+                    operate.Set("script", new JsonRaw(string.Format("function({0}){{ {1} }}", GetSelectedParameterName(), item.Location.FixScriptTail())));
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace Oldmansoft.Html.WebMan
                 var operate = new JsonObject();
                 if (item.Behave == LinkBehave.Script)
                 {
-                    operate.Set("script", new JsonRaw(string.Format("function(selectedIds){{ {0} }}", item.Location.FixScriptTail())));
+                    operate.Set("script", new JsonRaw(string.Format("function({0}){{ {1} }}", GetSelectedParameterName(), item.Location.FixScriptTail())));
                 }
                 else
                 {
@@ -222,42 +222,18 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
-            if (TableActions.Count > 0)
-            {
-                var tableAction = new HtmlElement(HtmlTag.Div);
-                tableAction.AddClass("dataTable-action btn-group");
-                for (var i = 0; i < TableActions.Count; i++)
-                {
-                    var item = TableActions[i];
-                    var a = new HtmlElement(HtmlTag.A);
-                    tableAction.Append(a);
-                    a.AddClass("btn");
-                    a.Data("index", i.ToString());
-                    a.Data("path", item.Location);
-                    a.Data("behave", ((int)item.Behave).ToString());
-                    a.Data("other", ((item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0)).ToString());
-                    if (!string.IsNullOrEmpty(item.ConfirmContent)) a.Data("tips", item.ConfirmContent);
-                    var span = new HtmlElement(HtmlTag.Span);
-                    a.Append(span);
-                    span.Text(item.Text);
+            var name = outer.Generator.GetGeneratorName();
+            SetTableAction(outer, name);
 
-                    if (item.IsSupportParameter)
-                    {
-                        IsDisplayCheckboxColumn = true;
-                    }
-                }
-                ((IHtmlElement)tableAction).Format(outer);
-            }
-
-            foreach(var item in FrontNodes)
+            foreach (var item in FrontNodes)
             {
                 item.Format(outer);
             }
 
-            var name = outer.Generator.GetGeneratorName();
             AddClass(name);
             AddClass("dataTable");
             AddClass("hover");
+            Data("parameter", GetSelectedParameterName());
 
             var header = new HtmlElement(HtmlTag.THead);
             base.Append(header);
@@ -281,6 +257,36 @@ namespace Oldmansoft.Html.WebMan
                     GetOptionScript()
                 )
             );
+        }
+
+        private void SetTableAction(IHtmlOutput outer, string name)
+        {
+            if (TableActions.Count == 0) return;
+
+            var tableAction = new HtmlElement(HtmlTag.Div);
+            tableAction.AddClass("dataTable-action btn-group");
+            tableAction.Data("target", name);
+            for (var i = 0; i < TableActions.Count; i++)
+            {
+                var item = TableActions[i];
+                var a = new HtmlElement(HtmlTag.A);
+                tableAction.Append(a);
+                a.AddClass("btn");
+                a.Data("index", i.ToString());
+                a.Data("path", item.Location);
+                a.Data("behave", ((int)item.Behave).ToString());
+                a.Data("other", ((item.IsSupportParameter ? 1 : 0) + (item.IsNeedSelected ? 2 : 0)).ToString());
+                if (!string.IsNullOrEmpty(item.ConfirmContent)) a.Data("tips", item.ConfirmContent);
+                var span = new HtmlElement(HtmlTag.Span);
+                a.Append(span);
+                span.Text(item.Text);
+
+                if (item.IsSupportParameter)
+                {
+                    IsDisplayCheckboxColumn = true;
+                }
+            }
+            ((IHtmlElement)tableAction).Format(outer);
         }
 
         /// <summary>
@@ -346,13 +352,13 @@ namespace Oldmansoft.Html.WebMan
             TableActions.Add(action);
             return action;
         }
-        
+
         /// <summary>
         /// 添加操作表格
-        /// 被选择的数据项的主键将用脚本参数 selectedIds 传递
+        /// 被选择的数据项的主键将用脚本参数 (默认 selectedId) 传递
         /// </summary>
         /// <param name="display"></param>
-        /// <param name="script">脚本参数 selectedIds</param>
+        /// <param name="script">脚本参数 (默认 selectedId)</param>
         /// <returns></returns>
         public ITableAction AddActionTable(string display, string script)
         {
@@ -366,7 +372,7 @@ namespace Oldmansoft.Html.WebMan
 
         /// <summary>
         /// 添加操作数据项
-        /// 数据项的主键将用变量 SelectedId 传递
+        /// 数据项的主键将用变量 (默认 selectedId) 传递
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
@@ -382,10 +388,10 @@ namespace Oldmansoft.Html.WebMan
 
         /// <summary>
         /// 添加操作数据项
-        /// 数据项的主键将用脚本参数 selectedId 传递
+        /// 数据项的主键将用脚本参数 (默认 selectedId) 传递
         /// </summary>
         /// <param name="display">显示文字</param>
-        /// <param name="script">脚本参数 selectedId</param>
+        /// <param name="script">脚本参数 (默认 selectedId)</param>
         /// <returns></returns>
         public IDataTableItemAction AddActionItem(string display, string script)
         {
