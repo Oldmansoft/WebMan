@@ -128,8 +128,7 @@ namespace Oldmansoft.Html.WebMan
             result.Success = true;
             return result;
         }
-
-
+        
         /// <summary>
         /// 显示消息
         /// </summary>
@@ -143,6 +142,5 @@ namespace Oldmansoft.Html.WebMan
             result.Message = message;
             return result;
         }
-
     }
 }
