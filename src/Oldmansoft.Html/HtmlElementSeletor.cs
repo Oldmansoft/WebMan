@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Oldmansoft.Html
     /// <summary>
     /// 网页元素选择器
     /// </summary>
-    class HtmlElementSeletor : IHtmlElement
+    class HtmlElementSeletor : IHtmlElement, IEnumerable<IHtmlElement>
     {
         private IList<IHtmlElement> Elements { get; set; }
 
@@ -177,6 +178,16 @@ namespace Oldmansoft.Html
         {
             if (Elements.Count > 0) Elements[0].Text(text);
             return this;
+        }
+
+        IEnumerator<IHtmlElement> IEnumerable<IHtmlElement>.GetEnumerator()
+        {
+            return Elements.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Elements.GetEnumerator();
         }
     }
 }
