@@ -59,6 +59,7 @@
     <Compile Include="HtmlText.cs" />
     <Compile Include="IGenerator.cs" />
     <Compile Include="IHtmlElement.cs" />
+    <Compile Include="IHtmlElementEnumerable.cs" />
     <Compile Include="IHtmlNode.cs" />
     <Compile Include="EmptyNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

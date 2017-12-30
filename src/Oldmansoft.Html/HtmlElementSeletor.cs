@@ -10,7 +10,7 @@ namespace Oldmansoft.Html
     /// <summary>
     /// 网页元素选择器
     /// </summary>
-    class HtmlElementSeletor : IHtmlElement, IEnumerable<IHtmlElement>
+    class HtmlElementSeletor : IHtmlElementEnumerable
     {
         private IList<IHtmlElement> Elements { get; set; }
 

@@ -149,7 +149,7 @@ namespace Oldmansoft.Html
         /// <param name="source"></param>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public static IHtmlElement Find(this IHtmlElement source, HtmlTag tag)
+        public static IHtmlElementEnumerable Find(this IHtmlElement source, HtmlTag tag)
         {
             var result = new HtmlElementSeletor();
             if (source == null) return result;
