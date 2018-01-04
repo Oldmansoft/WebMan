@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.69
+* v0.16.74
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -35,6 +35,54 @@ window.oldmansoft.webapp = new (function () {
     _messageBox,
     _windowBox,
     _modalBox;
+
+    function linkParser(input) {
+        var store = [],
+            hashContent;
+
+        function getHashContent(hash) {
+            if (!hash) return "";
+            if (hash.substr(0, 1) == "#") return hash.substr(1);
+            return hash;
+        }
+
+        if (input instanceof Array) store = input.slice();
+        else {
+            hashContent = getHashContent(input);
+            if (hashContent.indexOf("#") > -1) {
+                store = hashContent.replace(/%23/g, "#").split("#");
+            } else {
+                store = hashContent.split("~");
+                for (var i = 0; i < store.length; i++) {
+                    store[i] = store[i].replace(/%7e/g, "~").replace(/%23/g, "#").replace(/%25/g, "%");
+                }
+            }
+        }
+
+        this.getLinks = function () {
+            return store.slice();
+        }
+
+        this.push = function (item) {
+            return store.push(getHashContent(item));
+        }
+
+        this.pop = function () {
+            return store.pop();
+        }
+
+        this.last = function () {
+            return store[store.length - 1];
+        }
+
+        this.getContent = function () {
+            var links = [];
+            for (var i = 0; i < store.length; i++) {
+                links.push(store[i].replace(/~/g, "%7e").replace(/#/g, "%23").replace(/%/g, "%25"));
+            }
+            return links.join("~");
+        }
+    }
 
     function getAbsolutePath(path, basePath, fullLink) {
         var indexOfAmpersand,
@@ -504,16 +552,14 @@ window.oldmansoft.webapp = new (function () {
         }
 
         this.getBackLink = function () {
-            var link = this.getLinks().slice();
-            link.splice(0, 0, "");
-            link.splice(link.length - 1, 1);
-            return link.join("#");
+            var link = new linkParser(this.getLinks());
+            link.pop();
+            return link.getContent();
         }
 
         this.getLink = function () {
-            var link = this.getLinks().slice();
-            link.splice(0, 0, "");
-            return link.join("#");
+            var link = new linkParser(this.getLinks());
+            return link.getContent();
         }
 
         this.getLinks = function () {
@@ -727,7 +773,14 @@ window.oldmansoft.webapp = new (function () {
                 element.append(header);
             }
             this.setBody = function (text) {
-                var body = $("<div></div>").addClass("dialog-body").text(text);;
+                var body = $("<div></div>").addClass("dialog-body");
+                if (text.indexOf("\n") > -1) {
+                    $.each(text.split("\n"), function (i, n) {
+                        body.append($("<p></p>").text(n));
+                    });
+                } else {
+                    body.text(text);
+                }
                 element.append(body);
             }
             this.setFooter = function () {
@@ -905,7 +958,7 @@ window.oldmansoft.webapp = new (function () {
             changeCallback(lastHash);
         }
         function hashChange() {
-            var href = fixHref(window.location.hash);
+            var href = new linkParser(window.location.hash).getContent();
             if (lastHash == href) {
                 return;
             }
@@ -925,7 +978,7 @@ window.oldmansoft.webapp = new (function () {
 
         this.modify = function (href) {
             window.location.hash = href;
-            lastHash = fixHref(href);
+            lastHash = new linkParser(href).getContent();
         }
         this.hash = function (href) {
             if (href == undefined) return window.location.hash;
@@ -937,23 +990,16 @@ window.oldmansoft.webapp = new (function () {
             return href;
         }
         this.addHash = function (href) {
-            href = fixHref(href);
-            if (window.location.hash == "") {
-                window.location.hash = "##" + href;
-            } else {
-                window.location.hash += "#" + href;
-            }
+            var link = new linkParser(window.location.hash);
+            link.push(href);
+            window.location.hash = link.getContent();
         }
         this.sameHash = function (href) {
-            href = fixHref(href);
-            var source = window.location.hash.split("#");
-            if (source.length == 1) {
-                source = ["", ""];
-            }
-            source.pop();
-            source.push(href);
-            window.location.hash = source.join("#");
-            if (href == lastHash) {
+            var link = new linkParser(window.location.hash);
+            link.pop();
+            link.push(href);
+            window.location.hash = link.getContent();
+            if (link.getContent() == lastHash) {
                 callLeave();
             }
         }
@@ -1350,8 +1396,7 @@ window.oldmansoft.webapp = new (function () {
             var hrefs,
                 i;
 
-            link = link.replace(/%23/g, '#');
-            hrefs = link.split("#")
+            hrefs = new linkParser(link).getLinks();
             _modalView.clear();
             _openView.clear();
             _messageBox.clear();
@@ -1380,12 +1425,12 @@ window.oldmansoft.webapp = new (function () {
                     for (i = 0; i < hrefs.length; i++) {
                         if (linksCount > i) {
                             if (links.get(i).link != hrefs[i] || (linksCount == i + 1 && hrefs.length == linksCount)) {
-                                links.replace(i, "main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, hrefs[i - 1], defaultLink) });
+                                links.replace(i, "main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, i - 1, defaultLink) });
                             } else {
                                 links.get(i).hide();
                             }
                         } else {
-                            links.push("main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, hrefs[i - 1], defaultLink) });
+                            links.push("main", hrefs[i], { baseLink: getPathHasAbsolutePathFromArray(hrefs, i - 1, defaultLink) });
                             element.append(links.last().node);
                         }
                     }

@@ -89,12 +89,12 @@ namespace WebApplication.Controllers
             table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
-            table.AddActionTable("提示", "$app.alert(selectedIds)");
+            table.AddActionTable("提示", "$app.alert(id)");
             table.AddActionItem(Url.Location(Details)).OnClientCondition(ItemActionClient.Hide, o => o.Id < 3).OnClientCondition(ItemActionClient.Disable, o => o.Id > 5);
             table.AddActionItem(Url.Location(Edit));
             table.AddActionItem(Url.Location(Delete)).Confirm("是否删除");
             table.AddActionItem(Url.Location<DataTablesItemController>(o => o.Index));
-            table.AddActionItem("提示", "$app.alert(selectedId)");
+            table.AddActionItem("提示", "$app.alert(id)");
 
             table.SetRowClassNameWhenCondition("alert-danger", o => o.Id < 3);
             panel.Append(table);
