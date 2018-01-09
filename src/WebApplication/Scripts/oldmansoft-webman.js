@@ -1,5 +1,5 @@
 ﻿/*
-* v0.12.71
+* v0.12.74
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};

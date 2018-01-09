@@ -101,19 +101,23 @@ namespace WebApplication.Controllers
             return new HtmlResult(panel.CreateGrid());
         }
 
+        private ListDataSource GetListSource()
+        {
+            var source = new ListDataSource();
+            source["Age"].Add(new ListDataItem("1", "1"));
+            source["Age"].Add(new ListDataItem("2", "2"));
+            return source;
+        }
+
         [Location("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Create()
         {
             var model = new Models.DataTableItemModel();
             model.CreateTime = DateTime.UtcNow;
-
-            var source = new ListDataSource();
-            source["Age"].Add(new ListDataItem("1", "1"));
-            source["Age"].Add(new ListDataItem("2", "2"));
-
+            
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), source);
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), GetListSource());
             panel.Append(form);
 
             return new HtmlResult(panel);
@@ -149,13 +153,9 @@ namespace WebApplication.Controllers
         public ActionResult Edit(int id)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
-            var source = new ListDataSource();
-            source["Age"].Add(new ListDataItem("1", "1"));
-            source["Age"].Add(new ListDataItem("2", "2"));
-
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), source);
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), GetListSource());
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
@@ -213,7 +213,7 @@ namespace WebApplication.Controllers
 
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model);
+            var form = FormHorizontal.Create(model, GetListSource());
             panel.Append(form);
 
             return new HtmlResult(panel);

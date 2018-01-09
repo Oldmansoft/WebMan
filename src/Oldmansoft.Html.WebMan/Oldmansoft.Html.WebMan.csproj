@@ -91,7 +91,8 @@
     <Compile Include="FormInputCreator\Handlers\FileHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\ListHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\MultilineTextHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\NumberHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\IntegerHandler.cs" />
+    <Compile Include="FormInputCreator\Handlers\NumericHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\PasswordHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\TimeHandler.cs" />
     <Compile Include="FormInputCreator\InputCreator.cs" />
@@ -107,7 +108,9 @@
     <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
     <Compile Include="FormInputCreator\Inputs\MultiFile.cs" />
     <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />
+    <Compile Include="FormInputCreator\Inputs\Integer.cs" />
     <Compile Include="FormInputCreator\Inputs\Number.cs" />
+    <Compile Include="FormInputCreator\Inputs\Numeric.cs" />
     <Compile Include="FormInputCreator\Inputs\Password.cs" />
     <Compile Include="FormInputCreator\Inputs\RadioList.cs" />
     <Compile Include="FormInputCreator\Inputs\Select.cs" />

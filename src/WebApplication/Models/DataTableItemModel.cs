@@ -66,22 +66,14 @@ namespace WebApplication.Models
         [CustomInput(typeof(TagsInput))]
         [Required]
         public List<string> Tags { get; set; }
+        
+        public double? DoubleValue { get; set; }
 
-        /*
-        [Display(Name = "联系方式")]
-        public LinkInfo Link { get; set; }
-        */
+        [CustomInput(typeof(CustomInput.TestInput))]
+        public string HideValue { get; set; }
+        
         [Display(Name = "创建")]
         public DateTime? CreateTime { get; set; }
-
-        public class LinkInfo
-        {
-            [Display(Name = "联系人")]
-            public string Name { get; set; }
-
-            [Display(Name = "地址")]
-            public string Address { get; set; }
-        }
     }
 
     public enum DataTableItemState

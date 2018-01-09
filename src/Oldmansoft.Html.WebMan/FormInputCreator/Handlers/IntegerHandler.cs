@@ -7,33 +7,33 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
-    class NumberHandler : Handler
+    class IntegerHandler : Handler
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
             if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(byte)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(short)))
+            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(short)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(uint)))
+            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(uint)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(ulong)))
+            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(ulong)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(int)))
+            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(int)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(long)))
+            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(long)))
             {
-                result = new Inputs.Number();
+                result = new Inputs.Integer();
             }
             if (result == null) return false;
 
