@@ -21,7 +21,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             }
         }
 
-        public HtmlNode DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
+        private HtmlNode DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             if (icon == FontAwesome.Picture_O)
@@ -47,7 +47,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             }
         }
 
-        public HtmlNode DealBase(System.Web.HttpPostedFileBase file)
+        private HtmlNode DealBase(System.Web.HttpPostedFileBase file)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             var span = new HtmlElement(HtmlTag.Span);
