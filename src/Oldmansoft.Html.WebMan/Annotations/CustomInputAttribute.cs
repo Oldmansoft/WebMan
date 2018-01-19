@@ -39,6 +39,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
             }
             
             InputType = type;
+            Parameter = paramters;
         }
     }
 }
