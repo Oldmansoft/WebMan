@@ -117,7 +117,9 @@ namespace Oldmansoft.Html.WebMan
             foreach (var item in Taskbar)
             {
                 item.Display = null;
-                nav.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
+                var a = item.CreateElement();
+                a.AddClass("badge-container");
+                nav.Append(new HtmlElement(HtmlTag.Li).Append(a));
             }
 
             SetQuickMenu(nav);

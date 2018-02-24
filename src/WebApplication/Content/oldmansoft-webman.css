@@ -114,6 +114,17 @@ section.container-fluid {
     margin-right: 0;
 }
 
+a.badge-container {
+    position: relative;
+}
+
+a.badge-container .badge{
+    position: absolute;
+    right: 2px;
+    top: 6px;
+    background-color: #D9534F;
+}
+
 .disabled,
 .disabled:hover {
     color: gray;
