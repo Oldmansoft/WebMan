@@ -96,7 +96,12 @@ namespace WebApplication.Controllers
         
         public ActionResult Welcome()
         {
-            return Content("Welcome");
+            var scriptMale = new Badge(Url.Location(Male), 1);
+            var scriptEnvelope = new Badge(Url.Location(Envelope), 0);
+            var script = new Oldmansoft.Html.Element.Script(scriptMale, scriptEnvelope);
+            var result = new HtmlResult();
+            result.AddEvent(AppEvent.Load, script);
+            return result;
         }
 
         [Location("人员", Icon = FontAwesome.Male)]

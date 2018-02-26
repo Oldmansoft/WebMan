@@ -1,5 +1,5 @@
 ﻿/*
-* v0.13.75
+* v0.13.76
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -8,7 +8,8 @@ window.oldmansoft.webman = new (function () {
         menu,
         text,
         dealMethod,
-        linkBehave;
+        linkBehave,
+        badgeRefreshParentExecuteCount = 0;
 
     text = {
         dataTable: {
@@ -527,14 +528,50 @@ window.oldmansoft.webman = new (function () {
         });
     }
 
+    function setBadge(container, text) {
+        var node = container.children(".badge");
+        if (node.length == 0) {
+            container.append($("<span></span>").addClass("badge"));
+            node = container.children(".badge");
+        }
+        if (text == " ") {
+            node.html("&nbsp");
+        } else {
+            node.text(text);
+        }
+    }
+
+    function badgeSetContent() {
+        var hasValue = false;
+
+        $(this).children(".branch").each(badgeSetContent);
+        $(this).children("ul").children("li").find(".badge").each(function () {
+            if ($(this).text() != "") {
+                hasValue = true;
+                return false;
+            }
+        });
+        if (hasValue) {
+            setBadge($(this).children("a"), " ");
+        } else {
+            setBadge($(this).children("a"), "");
+        }
+    }
+
+    function badgeRefreshParent() {
+        badgeRefreshParentExecuteCount--;
+        if (badgeRefreshParentExecuteCount > 0) return;
+        $(".side-menu").children(".branch").each(badgeSetContent);
+        $(".dropdown").each(badgeSetContent);
+    }
+
     this.badge = function (href, text) {
         var container = $(".badge-container[href='" + href + "']");
         if (container.length == 0) return;
-        if (container.children(".badge").length == 0) {
-            container.append($("<span></span>").addClass("badge").text(text));
-        } else {
-            container.children(".badge").text(text);
-        }
+
+        setBadge(container, text);
+        badgeRefreshParentExecuteCount++;
+        setTimeout(badgeRefreshParent, 1);
     }
 
     this.init = function (main, defaultLink) {

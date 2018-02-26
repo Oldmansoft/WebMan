@@ -118,11 +118,28 @@ a.badge-container {
     position: relative;
 }
 
-a.badge-container .badge{
-    position: absolute;
+a.badge-bar .badge,
+.dropdown-menu a.badge-container .badge{
     right: 2px;
     top: 6px;
+}
+.side-menu a.badge-container .badge{
+    right: 10px;
+    top: 15px;
+}
+.branch>a>.badge {
+    right: auto !important;
+    left: 14px;
+}
+
+a.badge-container .badge,
+.dropdown>a>.badge {
+    position: absolute;
     background-color: #D9534F;
+}
+.dropdown>a>.badge {
+    right: 3px;
+    top: 6px;
 }
 
 .disabled,

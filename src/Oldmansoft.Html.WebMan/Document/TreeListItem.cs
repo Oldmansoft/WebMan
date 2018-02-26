@@ -62,9 +62,12 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="outer"></param>
         protected override void Format(IHtmlOutput outer)
         {
-            Append(Location.CreateElement());
+            var a = Location.CreateElement();
+            a.AddClass("badge-container");
+            Append(a);
             if (Leafs.HasChild())
             {
+                AddClass("branch");
                 Append(Leafs);
             }
             base.Format(outer);

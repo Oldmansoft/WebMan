@@ -51,6 +51,7 @@
     <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="Annotations\FileRequiredAttribute.cs" />
     <Compile Include="AppEvent.cs" />
+    <Compile Include="Badge.cs" />
     <Compile Include="DataTables\StaticTableAction.cs" />
     <Compile Include="DataTables\IStaticTableItemAction.cs" />
     <Compile Include="DataTables\IDataTableItemAction.cs" />

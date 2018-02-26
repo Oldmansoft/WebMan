@@ -255,13 +255,40 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="script"></param>
         public static void AddEvent(this IHtmlOutput source, AppEvent e, string script)
         {
+            if (string.IsNullOrWhiteSpace(script)) return;
             InitEventContent(source);
             if (!source.Items.ContainsKey(e))
             {
                 source.Items.Add(e, new List<string>());
             }
             var list = source.Items[e] as List<string>;
-            list.Add(script);
+            if (script.Last() == ';')
+            {
+                list.Add(script);
+            }
+            else
+            {
+                list.Add(string.Format("{0};", script));
+            }
+        }
+
+        /// <summary>
+        /// 添加事件脚本
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        /// <param name="script"></param>
+        public static void AddEvent(this IHtmlOutput source, AppEvent e, Element.Script script)
+        {
+            if (script == null) return;
+            if (!script.HasContent()) return;
+            InitEventContent(source);
+            if (!source.Items.ContainsKey(e))
+            {
+                source.Items.Add(e, new List<string>());
+            }
+            var list = source.Items[e] as List<string>;
+            script.SetListFromContent(list);
         }
 
         private static void InitEventContent(IHtmlOutput source)
@@ -275,15 +302,15 @@ namespace Oldmansoft.Html.WebMan
             {
                 outer.Append("<script>");
                 outer.Append("$app.event()");
-                AddEventContent(outer, AppEvent.Load);
-                AddEventContent(outer, AppEvent.Active);
-                AddEventContent(outer, AppEvent.Inactive);
-                AddEventContent(outer, AppEvent.Unload);
+                AddAppEventContent(outer, AppEvent.Load);
+                AddAppEventContent(outer, AppEvent.Active);
+                AddAppEventContent(outer, AppEvent.Inactive);
+                AddAppEventContent(outer, AppEvent.Unload);
                 outer.Append(";</script>");
             };
         }
 
-        private static void AddEventContent(IHtmlOutput outer, AppEvent e)
+        private static void AddAppEventContent(IHtmlOutput outer, AppEvent e)
         {
             if (!outer.Items.ContainsKey(e)) return;
 

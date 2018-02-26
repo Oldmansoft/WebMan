@@ -118,7 +118,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 item.Display = null;
                 var a = item.CreateElement();
-                a.AddClass("badge-container");
+                a.AddClass("badge-container badge-bar");
                 nav.Append(new HtmlElement(HtmlTag.Li).Append(a));
             }
 
@@ -160,7 +160,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 account.Append(new HtmlElement(HtmlTag.Img).Attribute(HtmlAttribute.Src, Quick.Avatar.Photo));
             }
-            account.Append(new HtmlText(Quick.Avatar.Display));
+            account.Append(new HtmlElement(HtmlTag.Span).Text(Quick.Avatar.Display));
             account.AddClass("dropdown-toggle");
             account.Data("toggle", "dropdown");
 
@@ -175,7 +175,9 @@ namespace Oldmansoft.Html.WebMan
             quickItems.AddClass("pull-right");
             foreach (var item in Quick.Items)
             {
-                quickItems.Append(new HtmlElement(HtmlTag.Li).Append(item.CreateElement()));
+                var a = item.CreateElement();
+                a.AddClass("badge-container");
+                quickItems.Append(new HtmlElement(HtmlTag.Li).Append(a));
             }
         }
 
