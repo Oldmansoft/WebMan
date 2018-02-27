@@ -640,7 +640,312 @@ window.oldmansoft.webman = new (function () {
         }
     })();
 
+    function web_bar_click() {
+        var body = $("body"),
+            className = "mini-nav";
+        if (body.hasClass(className)) {
+            body.removeClass(className);
+        } else {
+            body.addClass(className);
+        }
+    }
+
+    function side_menu_li_a_click(e) {
+        if ("ontouchmove" in document && $(window).width() <= 768) {
+            var menu = $(".side-menu"),
+                index = $(".side-menu>li>a").index($(this));
+            if (menu.data("click") != index) {
+                menu.data("click", index);
+                return false;
+            } else {
+                $(document).click();
+            }
+        }
+    }
+
+    function webman_datatables_checkbox_click() {
+        $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
+    }
+
+    function dataTable_action_a_click(e) {
+        var other_nothing = 0,
+            other_supportParameter = 1,
+            other_needSelected = 2,
+            selectedIds = getDataTableSelectedIds($(this)),
+            node = getDataTableFromActionLink($(e.target)),
+            action = node.data("table-actions")[Number($(this).attr("data-index"))],
+            parameter_name = node.attr("data-parameter");
+        if (!parameter_name) parameter_name = "selectedId";
+
+        function getJsonValue() {
+            var result = {};
+            result[parameter_name] = selectedIds;
+            return result;
+        }
+
+        function getFormValue() {
+            for (var i = 0; i < selectedIds.length; i++) {
+                selectedIds[i] = encodeURIComponent(selectedIds[i]);
+            }
+            return parameter_name + "=" + selectedIds.join("&" + parameter_name + "=");
+        }
+
+        function execute() {
+            var loading;
+            if (action.behave == linkBehave.open) {
+                if ((action.other & other_supportParameter) == other_supportParameter) {
+                    $app.open(action.path, getJsonValue());
+                } else {
+                    $app.open(action.path);
+                }
+            } else if (action.behave == linkBehave.link) {
+                if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                    $app.addHash(action.path);
+                } else {
+                    $app.addHash(bindUrlParamter(action.path, getFormValue()));
+                }
+            } else if (action.behave == linkBehave.call) {
+                loading = $app.loading();
+                if ((action.other & other_supportParameter) == other_supportParameter) {
+                    $.post(action.path, getJsonValue()).done(function (data) {
+                        dealSubmitResult(data, dealMethod.call);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                } else {
+                    $.get(action.path).done(function (data) {
+                        dealSubmitResult(data, dealMethod.call);
+                    }).fail(dealAjaxError).always(function () { loading.hide(); });
+                }
+            } else if (action.behave == linkBehave.self) {
+                if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                    document.location = action.path;
+                } else {
+                    document.location = bindUrlParamter(action.path, getFormValue());
+                }
+            } else if (action.behave == linkBehave.blank) {
+                if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
+                    window.open(action.path);
+                } else {
+                    window.open(bindUrlParamter(action.path, getFormValue()));
+                }
+            } else if (action.behave == linkBehave.script) {
+                action.script(selectedIds);
+            }
+        }
+
+        if ((action.other & other_needSelected) == other_needSelected && selectedIds.length == 0) {
+            $app.alert(text.please_select_item);
+            return;
+        }
+        if (action.tips) {
+            $app.confirm(action.tips).yes(execute);
+        } else {
+            execute();
+        }
+        $app.current().node.data("operator", node.data("datatable"));
+    }
+
+    function dataTable_item_action_a_click(e) {
+        var itemId = getDataTableItemId($(this)),
+            node = $(e.target).parents("table.dataTable"),
+            action = node.data("item-actions")[Number($(this).attr("data-index"))],
+            parameter_name = node.attr("data-parameter");
+        if (!parameter_name) parameter_name = "selectedId";
+
+        function getJsonValue() {
+            var result = {};
+            result[parameter_name] = itemId;
+            return result;
+        }
+
+        function execute() {
+            var loading;
+            if (action.behave == linkBehave.open) {
+                $app.open(action.path, getJsonValue());
+            } else if (action.behave == linkBehave.link) {
+                $app.addHash(bindUrlParamter(action.path, parameter_name + "=" + itemId));
+            } else if (action.behave == linkBehave.call) {
+                loading = $app.loading();
+                $.post(action.path, getJsonValue()).done(function (data) {
+                    dealSubmitResult(data, dealMethod.call);
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            } else if (action.behave == linkBehave.self) {
+                document.location = bindUrlParamter(action.path, parameter_name + "=" + itemId);
+            } else if (action.behave == linkBehave.blank) {
+                window.open(bindUrlParamter(action.path, parameter_name + "=" + itemId));
+            } else if (action.behave == linkBehave.script) {
+                action.script(itemId);
+            }
+        }
+
+        if ($(this).hasClass("disabled")) return;
+        if (action.tips) {
+            $app.confirm(action.tips).yes(execute);
+        } else {
+            execute();
+        }
+        $app.current().node.data("operator", node.data("datatable"));
+    }
+
+    function input_group_addon_del_file_click() {
+        var container = $(this).parent();
+        if ($(this).hasClass("on")) {
+            if (container.find("input[type=file]").val() == "") {
+                unmarkFileDelete(container);
+            }
+            $(this).removeClass("on");
+        } else {
+            markFileDelete(container);
+            $(this).addClass("on");
+        }
+        container.find(".single-file-input").trigger("change");
+    }
+
+    function input_group_addon_del_files_click() {
+        var container = $(this).parent(),
+            group = container.parent();
+        if ($(this).hasClass("on")) {
+            unmarkFileDelete(container);
+            $(this).removeClass("on");
+        } else {
+            markFileDelete(container);
+            $(this).addClass("on");
+        }
+        group.find(".template-mulit-file-input").eq(0).trigger("change");
+    }
+
+    function input_group_addon_del_input_files_click() {
+        var container = $(this).parent(),
+            group = container.parent();
+        container.remove();
+        group.find(".template-mulit-file-input").eq(0).trigger("change");
+    }
+
+    function input_group_single_file_input_change() {
+        var container = $(this).parent(),
+            files;
+
+        if (!$(this).data("next-text")) $(this).data("next-text", $(this).next().text());
+        files = $(this).get(0).files;
+        if (files != null && files.length > 0) {
+            $(this).next().text(files[0].name);
+        } else {
+            $(this).next().text($(this).data("next-text"));
+        }
+
+        if (container.find(".del-file-input").length == 0) return;
+        if ($(this).val() == "") {
+            if (!container.find(".del-file").hasClass("on")) {
+                unmarkFileDelete(container);
+            }
+        } else {
+            markFileDelete(container);
+        }
+    }
+
+    function input_group_virtual_mulit_file_input_click() {
+        var template = $(this).prev(),
+            input = $("<input type='file' multiple='multiple' />"),
+            caller = $(this);
+        if ($(this).attr("readonly") == "readonly" || $(this).attr("disabled") == "disabled") {
+            return;
+        }
+        if (template.hasClass("mulit-file-input")) {
+            template.click();
+            return;
+        }
+
+        input.attr("name", template.attr("name"));
+        input.attr("accept", template.attr("accept"));
+        input.attr("class", "mulit-file-input");
+        input.attr("data-bv-field", template.attr("data-bv-field"));
+        input.attr("data-temporary", "temporary");
+        input.on("change", function () {
+            caller.prev().prev().trigger("change");
+
+            var container = $(this).parent(),
+                groups = $(this).parentsUntil("form", ".mulit-file-group"),
+                group,
+                control,
+                files,
+                ul,
+                i,
+                li,
+                span,
+                fa;
+
+            group = $("<div></div>");
+            group.addClass("input-group");
+            group.addClass("control-line");
+
+            $(this).removeAttr("data-temporary");
+            group.append($(this));
+
+            control = $("<div></div>");
+            control.addClass("form-control");
+            control.css("height", "initial");
+            control.appendTo(group);
+
+            files = $(this).get(0).files;
+            ul = $("<ul><ul>");
+            ul.addClass("control-value");
+            ul.appendTo(control);
+            for (i = 0; i < files.length; i++) {
+                li = $("<li></li>");
+                li.appendTo(ul);
+                li.text(files[i].name);
+            }
+
+            span = $("<span></span>");
+            span.addClass("input-group-addon");
+            span.addClass("del-input-files");
+            span.appendTo(group);
+
+            fa = $("<i></i>");
+            fa.addClass("fa");
+            fa.addClass("fa-times");
+            fa.appendTo(span);
+
+            group.appendTo(groups);
+        });
+
+        template.after(input);
+        input.click();
+    }
+
+    function form_not_bv_form_submit(e) {
+        var form = $(this);
+        if (form.attr("action") == undefined) {
+            form.attr("action", $app.current().link);
+        }
+        if (form.attr("action") == document.location.pathname) {
+            return;
+        }
+        if (form.attr("onsubmit") != undefined) {
+            return;
+        }
+        if (!submitForm(form)) {
+            e.preventDefault();
+        }
+    }
+
+    function container_remove_click() {
+        var caller = $(this).parent();
+        caller.fadeOut(function () {
+            caller.remove();
+        });
+    }
+
+    function container_parent_remove_click() {
+        var caller = $(this).parent().parent();
+        caller.fadeOut(function () {
+            var input = caller.parent().children(".input");
+            caller.remove();
+            input.trigger("input");
+        });
+    }
+
     this.init = function (main, defaultLink) {
+        menu = new define_menu();
         oldmansoft.webapp.configTarget(function (target) {
             target["_call"] = function (href) {
                 var loading = $app.loading();
@@ -649,7 +954,6 @@ window.oldmansoft.webman = new (function () {
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
         });
-        menu = new define_menu();
         $app.init(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
             menu.active(oldmansoft.webapp.hashes(), view, defaultLink);
@@ -657,306 +961,23 @@ window.oldmansoft.webman = new (function () {
 
         resetMainHeight();
         $(window).on("resize", resetMainHeight);
-        $(".webman-bar").on("click", function () {
-            var body = $("body"), className = "mini-nav";
-            if (body.hasClass(className)) {
-                body.removeClass(className);
-            } else {
-                body.addClass(className);
-            }
-        });
-        $(".side-menu>li>a").on("click", function (e) {
-            if ("ontouchmove" in document && $(window).width() <= 768) {
-                var menu = $(".side-menu"),
-                    index = $(".side-menu>li>a").index($(this));
-                if (menu.data("click") != index) {
-                    menu.data("click", index);
-                    return false;
-                } else {
-                    $(document).click();
-                }
-            }
-        });
-        $(document).on("click", ".webman-datatables-checkbox", function () {
-            $(this).parents("table.dataTable").find("input[type='checkbox']").prop("checked", $(this).prop("checked"));
-        });
-        $(document).on("click", ".dataTable-action a", function (e) {
-            var other_nothing = 0,
-                other_supportParameter = 1,
-                other_needSelected = 2,
-                selectedIds = getDataTableSelectedIds($(this)),
-                node = getDataTableFromActionLink($(e.target)),
-                action = node.data("table-actions")[Number($(this).attr("data-index"))],
-                parameter_name = node.attr("data-parameter");
-            if (!parameter_name) parameter_name = "selectedId";
-
-            function getJsonValue() {
-                var result = {};
-                result[parameter_name] = selectedIds;
-                return result;
-            }
-
-            function getFormValue() {
-                for (var i = 0; i < selectedIds.length; i++) {
-                    selectedIds[i] = encodeURIComponent(selectedIds[i]);
-                }
-                return parameter_name + "=" + selectedIds.join("&" + parameter_name + "=");
-            }
-
-            function execute() {
-                var loading;
-                if (action.behave == linkBehave.open) {
-                    if ((action.other & other_supportParameter) == other_supportParameter) {
-                        $app.open(action.path, getJsonValue());
-                    } else {
-                        $app.open(action.path);
-                    }
-                } else if (action.behave == linkBehave.link) {
-                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
-                        $app.addHash(action.path);
-                    } else {
-                        $app.addHash(bindUrlParamter(action.path, getFormValue()));
-                    }
-                } else if (action.behave == linkBehave.call) {
-                    loading = $app.loading();
-                    if ((action.other & other_supportParameter) == other_supportParameter) {
-                        $.post(action.path, getJsonValue()).done(function (data) {
-                            dealSubmitResult(data, dealMethod.call);
-                        }).fail(dealAjaxError).always(function () { loading.hide(); });
-                    } else {
-                        $.get(action.path).done(function (data) {
-                            dealSubmitResult(data, dealMethod.call);
-                        }).fail(dealAjaxError).always(function () { loading.hide(); });
-                    }
-                } else if (action.behave == linkBehave.self) {
-                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
-                        document.location = action.path;
-                    } else {
-                        document.location = bindUrlParamter(action.path, getFormValue());
-                    }
-                } else if (action.behave == linkBehave.blank) {
-                    if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
-                        window.open(action.path);
-                    } else {
-                        window.open(bindUrlParamter(action.path, getFormValue()));
-                    }
-                } else if (action.behave == linkBehave.script) {
-                    action.script(selectedIds);
-                }
-            }
-
-            if ((action.other & other_needSelected) == other_needSelected && selectedIds.length == 0) {
-                $app.alert(text.please_select_item);
-                return;
-            }
-            if (action.tips) {
-                $app.confirm(action.tips).yes(execute);
-            } else {
-                execute();
-            }
-            $app.current().node.data("operator", node.data("datatable"));
-        });
-        $(document).on("click", ".dataTable-item-action a", function (e) {
-            var itemId = getDataTableItemId($(this)),
-                node = $(e.target).parents("table.dataTable"),
-                action = node.data("item-actions")[Number($(this).attr("data-index"))],
-                parameter_name = node.attr("data-parameter");
-            if (!parameter_name) parameter_name = "selectedId";
-
-            function getJsonValue() {
-                var result = {};
-                result[parameter_name] = itemId;
-                return result;
-            }
-
-            function execute() {
-                var loading;
-                if (action.behave == linkBehave.open) {
-                    $app.open(action.path, getJsonValue());
-                } else if (action.behave == linkBehave.link) {
-                    $app.addHash(bindUrlParamter(action.path, parameter_name + "=" + itemId));
-                } else if (action.behave == linkBehave.call) {
-                    loading = $app.loading();
-                    $.post(action.path, getJsonValue()).done(function (data) {
-                        dealSubmitResult(data, dealMethod.call);
-                    }).fail(dealAjaxError).always(function () { loading.hide(); });
-                } else if (action.behave == linkBehave.self) {
-                    document.location = bindUrlParamter(action.path, parameter_name + "=" + itemId);
-                } else if (action.behave == linkBehave.blank) {
-                    window.open(bindUrlParamter(action.path, parameter_name + "=" + itemId));
-                } else if (action.behave == linkBehave.script) {
-                    action.script(itemId);
-                }
-            }
-
-            if ($(this).hasClass("disabled")) return;
-            if (action.tips) {
-                $app.confirm(action.tips).yes(execute);
-            } else {
-                execute();
-            }
-            $app.current().node.data("operator", node.data("datatable"));
-        });
-        $(document).on("click", ".input-group-addon.del-file", function () {
-            var container = $(this).parent();
-            if ($(this).hasClass("on")) {
-                if (container.find("input[type=file]").val() == "") {
-                    unmarkFileDelete(container);
-                }
-                $(this).removeClass("on");
-            } else {
-                markFileDelete(container);
-                $(this).addClass("on");
-            }
-            container.find(".single-file-input").trigger("change");
-        });
-        $(document).on("click", ".input-group-addon.del-files", function () {
-            var container = $(this).parent(),
-                group = container.parent();
-            if ($(this).hasClass("on")) {
-                unmarkFileDelete(container);
-                $(this).removeClass("on");
-            } else {
-                markFileDelete(container);
-                $(this).addClass("on");
-            }
-            group.find(".template-mulit-file-input").eq(0).trigger("change");
-        });
-        $(document).on("click", ".input-group-addon.del-input-files", function () {
-            var container = $(this).parent(),
-                group = container.parent();
-            container.remove();
-            group.find(".template-mulit-file-input").eq(0).trigger("change");
-        });
-        $(document).on("click", ".input-group .virtual-file-input", function () {
-            $(this).prev().click();
-        });
-        $(document).on("change", ".input-group .single-file-input", function () {
-            var container = $(this).parent(),
-                files;
-
-            if (!$(this).data("next-text")) $(this).data("next-text", $(this).next().text());
-            files = $(this).get(0).files;
-            if (files != null && files.length > 0) {
-                $(this).next().text(files[0].name);
-            } else {
-                $(this).next().text($(this).data("next-text"));
-            }
-
-            if (container.find(".del-file-input").length == 0) return;
-            if ($(this).val() == "") {
-                if (!container.find(".del-file").hasClass("on")) {
-                    unmarkFileDelete(container);
-                }
-            } else {
-                markFileDelete(container);
-            }
-        });
-        $(document).on("click", ".input-group .virtual-mulit-file-input", function () {
-            var template = $(this).prev(),
-                input = $("<input type='file' multiple='multiple' />"),
-                caller = $(this);
-            if ($(this).attr("readonly") == "readonly" || $(this).attr("disabled") == "disabled") {
-                return;
-            }
-            if (template.hasClass("mulit-file-input")) {
-                template.click();
-                return;
-            }
-
-            input.attr("name", template.attr("name"));
-            input.attr("accept", template.attr("accept"));
-            input.attr("class", "mulit-file-input");
-            input.attr("data-bv-field", template.attr("data-bv-field"));
-            input.attr("data-temporary", "temporary");
-            input.on("change", function () {
-                caller.prev().prev().trigger("change");
-
-                var container = $(this).parent(),
-                    groups = $(this).parentsUntil("form", ".mulit-file-group"),
-                    group,
-                    control,
-                    files,
-                    ul,
-                    i,
-                    li,
-                    span,
-                    fa;
-
-                group = $("<div></div>");
-                group.addClass("input-group");
-                group.addClass("control-line");
-
-                $(this).removeAttr("data-temporary");
-                group.append($(this));
-
-                control = $("<div></div>");
-                control.addClass("form-control");
-                control.css("height", "initial");
-                control.appendTo(group);
-
-                files = $(this).get(0).files;
-                ul = $("<ul><ul>");
-                ul.addClass("control-value");
-                ul.appendTo(control);
-                for (i = 0; i < files.length; i++) {
-                    li = $("<li></li>");
-                    li.appendTo(ul);
-                    li.text(files[i].name);
-                }
-
-                span = $("<span></span>");
-                span.addClass("input-group-addon");
-                span.addClass("del-input-files");
-                span.appendTo(group);
-
-                fa = $("<i></i>");
-                fa.addClass("fa");
-                fa.addClass("fa-times");
-                fa.appendTo(span);
-
-                group.appendTo(groups);
-            });
-
-            template.after(input);
-            input.click();
-        });
-        $(document).on("submit", "form:not(.bv-form)", function (e) {
-            var form = $(this);
-            if (form.attr("action") == undefined) {
-                form.attr("action", $app.current().link);
-            }
-            if (form.attr("action") == document.location.pathname) {
-                return;
-            }
-            if (form.attr("onsubmit") != undefined) {
-                return;
-            }
-            if (!submitForm(form)) {
-                e.preventDefault();
-            }
-        });
-        
+        $(".webman-bar").on("click", web_bar_click);
+        $(".side-menu>li>a").on("click", side_menu_li_a_click);
+        $(document).on("click", ".webman-datatables-checkbox", webman_datatables_checkbox_click);
+        $(document).on("click", ".dataTable-action a", dataTable_action_a_click);
+        $(document).on("click", ".dataTable-item-action a", dataTable_item_action_a_click);
+        $(document).on("click", ".input-group-addon.del-file", input_group_addon_del_file_click);
+        $(document).on("click", ".input-group-addon.del-files", input_group_addon_del_files_click);
+        $(document).on("click", ".input-group-addon.del-input-files", input_group_addon_del_input_files_click);
+        $(document).on("click", ".input-group .virtual-file-input", function () { $(this).prev().click(); });
+        $(document).on("change", ".input-group .single-file-input", input_group_single_file_input_change);
+        $(document).on("click", ".input-group .virtual-mulit-file-input", input_group_virtual_mulit_file_input_click);
+        $(document).on("submit", "form:not(.bv-form)", form_not_bv_form_submit);
+        $(document).on("click", ".container-remove", container_remove_click);
+        $(document).on("click", ".container-parent-remove", container_parent_remove_click);
+        $(".webman-main-panel header form i.fa-search").on("click", function () { submitForm($(this).parents("form")); });
         tableScroller.init();
-        $(".webman-main-panel header form i.fa-search").on("click", function () {
-            submitForm($(this).parents("form"));
-        });
-        //tags input
-        $(document).on("click", ".container-remove", function () {
-            var caller = $(this).parent();
-            caller.fadeOut(function () {
-                caller.remove();
-            });
-        });
-        $(document).on("click", ".container-parent-remove", function () {
-            var caller = $(this).parent().parent();
-            caller.fadeOut(function () {
-                var input = caller.parent().children(".input");
-                caller.remove();
-                input.trigger("input");
-            });
-        });
-    }
+   }
 
     window.$man = {
         init: $this.init,
