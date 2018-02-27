@@ -1,5 +1,5 @@
 ﻿/*
-* v0.13.77
+* v0.14.78
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -577,6 +577,36 @@ window.oldmansoft.webman = new (function () {
         setTimeout(badgeRefreshParent, 1);
     }
 
+    var tableScroller = new (function () {
+        var x,
+            table;
+        function disabledSelectStart() {
+            return false;
+        }
+        function mousemove(e) {
+            table.scrollLeft(table.scrollLeft() + x - e.clientX);
+            x = e.clientX;
+        }
+        function mouseup() {
+            table.off("selectstart", disabledSelectStart);
+            table.off("mousemove", mousemove);
+            table.off("mouseup", mouseup);
+            table.off("mouseleave ", mouseup);
+        }
+        function mousedown(e) {
+            table = $(this);
+            x = e.clientX;
+            table.addClass("mouse-down");
+            table.on("selectstart", disabledSelectStart);
+            table.on("mousemove", mousemove);
+            table.on("mouseup", mouseup);
+            table.on("mouseleave ", mouseup);
+        }
+        this.init = function () {
+            $(document).on("mousedown", ".dataTables_wrapper", mousedown);
+        }
+    })();
+
     this.init = function (main, defaultLink) {
         oldmansoft.webapp.configTarget(function (target) {
             target["_call"] = function (href) {
@@ -873,6 +903,8 @@ window.oldmansoft.webman = new (function () {
                 e.preventDefault();
             }
         });
+        
+        tableScroller.init();
         $(".webman-main-panel header form i.fa-search").on("click", function () {
             submitForm($(this).parents("form"));
         });
