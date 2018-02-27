@@ -13,6 +13,11 @@ namespace Oldmansoft.Html.WebMan
     public abstract class HtmlDocument : Element.Document
     {
         /// <summary>
+        /// 初始化后运行的脚本
+        /// </summary>
+        protected IList<Element.Script> InitAfterScripts { get; private set; }
+        
+        /// <summary>
         /// 文档资源
         /// </summary>
         public DocumentResource Resources { get; private set; }
@@ -22,6 +27,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         public HtmlDocument()
         {
+            InitAfterScripts = new List<Element.Script>();
             Resources = new DocumentResource();
 
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Http_Equiv, "Content-Type").Attribute(HtmlAttribute.Content, "text/html; charset=utf-8"));
@@ -77,6 +83,15 @@ namespace Oldmansoft.Html.WebMan
             {
                 Head.Append(item);
             }
+        }
+
+        /// <summary>
+        /// 添加初始化完后运行的脚本
+        /// </summary>
+        /// <param name="script"></param>
+        public void AddScript(Element.Script script)
+        {
+            InitAfterScripts.Add(script);
         }
     }
 }

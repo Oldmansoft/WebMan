@@ -74,6 +74,10 @@ namespace Oldmansoft.Html.WebMan
 
             var script = new Element.Script(string.Format("$man.init('.webman-main-panel>.webman-content', '{0}');", DefaultLink));
             Body.Append(script);
+            foreach (var item in InitAfterScripts)
+            {
+                Body.Append(item);
+            }
         }
 
         private void SetLeftPanelContent(IHtmlElement panel)

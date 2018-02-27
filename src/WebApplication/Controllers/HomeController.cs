@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
 
             document.SetSearchAction(Url.Location(Search));
 
-            var scriptMale = new Badge(Url.Location(Male), 1);
+            document.AddScript(new Badge(Url.Location(Male), 1));
             return new HtmlResult(document);
         }
 

@@ -45,6 +45,10 @@ namespace Oldmansoft.Html.WebMan.Document
 
             var script = new Script(string.Format("$man.init('.simple-main', '{0}');", Location.Path));
             Body.Append(script);
+            foreach (var item in InitAfterScripts)
+            {
+                Body.Append(item);
+            }
         }
     }
 }
