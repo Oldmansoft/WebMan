@@ -153,10 +153,6 @@ a.badge-container .badge,
     clear: both;
 }
 
-.hidden {
-    display: none;
-}
-
 /*plugins fixed start*/
 .select2-container--open{
     z-index: 2000;

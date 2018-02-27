@@ -136,23 +136,38 @@ namespace Oldmansoft.Html.WebMan
             return result;
         }
 
-        internal static void SetTargetAttribute(this LinkBehave source, IHtmlElement element)
+        /// <summary>
+        /// 获取目标内容
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        internal static string GetTarget(this LinkBehave source)
         {
             switch (source)
             {
                 case LinkBehave.Open:
-                    element.Attribute(HtmlAttribute.Target, "_open");
-                    break;
+                    return "_open";
                 case LinkBehave.Call:
-                    element.Attribute(HtmlAttribute.Target, "_call");
-                    break;
+                    return "_call";
                 case LinkBehave.Self:
-                    element.Attribute(HtmlAttribute.Target, "_self");
-                    break;
+                    return "_self";
                 case LinkBehave.Blank:
-                    element.Attribute(HtmlAttribute.Target, "_blank");
-                    break;
+                    return "_blank";
+                default:
+                    return null;
             }
+        }
+
+        /// <summary>
+        /// 设置目标属性
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="element"></param>
+        internal static void SetTargetAttribute(this LinkBehave source, IHtmlElement element)
+        {
+            var target = source.GetTarget();
+            if (target == null) return;
+            element.Attribute(HtmlAttribute.Target, target);
         }
 
         /// <summary>
@@ -289,6 +304,25 @@ namespace Oldmansoft.Html.WebMan
             }
             var list = source.Items[e] as List<string>;
             script.SetListFromContent(list);
+        }
+
+        /// <summary>
+        /// 设置当前页搜索栏
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="location"></param>
+        /// <param name="name"></param>
+        public static void SetSearchAction(this IHtmlOutput source, ILocation location, string name = "keyword")
+        {
+            var active = string.Format(
+                "oldmansoft.webman.search.on({{ action: '{0}', target: '{1}', name: '{2}', placeholder: '{3}' }})",
+                location.Path.JavaScriptEncode(),
+                location.Behave.GetTarget(),
+                name.JavaScriptEncode(),
+                location.Display.JavaScriptEncode()
+            );
+            source.AddEvent(AppEvent.Active, active);
+            source.AddEvent(AppEvent.Inactive, "oldmansoft.webman.search.off()");
         }
 
         private static void InitEventContent(IHtmlOutput source)

@@ -15,6 +15,16 @@ namespace Oldmansoft.Html.WebMan
         private string DefaultLink { get; set; }
 
         /// <summary>
+        /// 搜索栏地址
+        /// </summary>
+        private ILocation SearchAction { get; set; }
+
+        /// <summary>
+        /// 搜索输入名称
+        /// </summary>
+        private string SearchInputName { get; set; }
+
+        /// <summary>
         /// 商标名称
         /// </summary>
         public string Logo { get; set; }
@@ -23,11 +33,6 @@ namespace Oldmansoft.Html.WebMan
         /// 菜单
         /// </summary>
         public TreeList Menu { get; private set; }
-
-        /// <summary>
-        /// 搜索栏地址
-        /// </summary>
-        private ILocation SearchAction { get; set; }
 
         /// <summary>
         /// 任务栏
@@ -46,6 +51,7 @@ namespace Oldmansoft.Html.WebMan
         public ManageDocument(ILocation defaultLink)
         {
             DefaultLink = defaultLink.Path;
+            SearchAction = Location.Empty;
             Menu = new TreeList();
             Taskbar = new List<ILocation>();
             Quick = new QuickMenu();
@@ -131,8 +137,6 @@ namespace Oldmansoft.Html.WebMan
 
         private void SetSearchAction(IHtmlElement header)
         {
-            if (SearchAction == null) return;
-
             var form = new HtmlElement(HtmlTag.Form);
             header.Append(form);
             form.Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, SearchAction.Path);
@@ -140,7 +144,7 @@ namespace Oldmansoft.Html.WebMan
 
             var input = new HtmlElement(HtmlTag.Input)
                 .Attribute(HtmlAttribute.Type, "text")
-                .Attribute(HtmlAttribute.Name, "keyword")
+                .Attribute(HtmlAttribute.Name, SearchInputName)
                 .AddClass("form-control");
             if (!string.IsNullOrEmpty(SearchAction.Display))
             {
@@ -149,6 +153,7 @@ namespace Oldmansoft.Html.WebMan
             
             var button = new HtmlElement(HtmlTag.I).AddClass("fa fa-search");
             form.Append(input).Append(button);
+            if (SearchAction == Location.Empty) form.AddClass("hidden");
         }
 
         private void SetQuickMenu(HtmlElement nav)
@@ -195,12 +200,15 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 设置搜索栏路径
+        /// 设置通用搜索栏
         /// </summary>
         /// <param name="location"></param>
-        public void SetSearchAction(ILocation location)
+        /// <param name="name"></param>
+        public void SetSearchAction(ILocation location, string name = "keyword")
         {
+            if (location == null) throw new ArgumentNullException();
             SearchAction = location;
+            SearchInputName = name;
         }
     }
 }

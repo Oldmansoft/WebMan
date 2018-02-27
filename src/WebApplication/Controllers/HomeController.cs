@@ -49,7 +49,6 @@ namespace WebApplication.Controllers
             document.Quick.Add(Url.Location(Logoff));
 
             document.SetSearchAction(Url.Location(Search));
-
             document.AddScript(new Badge(Url.Location(Male), 1));
             return new HtmlResult(document);
         }

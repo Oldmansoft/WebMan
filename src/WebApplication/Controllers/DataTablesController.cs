@@ -70,7 +70,9 @@ namespace WebApplication.Controllers
             table.SetPageSize(20);
             table.AddSearchPanel(Url.Location(Index), "key", "");
             panel.Append(table);
-            return new HtmlResult(panel.CreateGrid());
+            var result = new HtmlResult(panel.CreateGrid());
+            result.SetSearchAction(Url.Location(Index));
+            return result;
         }
         
         public JsonResult IndexDataSource(DataTableRequest request)

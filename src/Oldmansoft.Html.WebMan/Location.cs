@@ -12,6 +12,11 @@ namespace Oldmansoft.Html.WebMan
     public class Location : ILocation
     {
         /// <summary>
+        /// 空
+        /// </summary>
+        public static readonly ILocation Empty = new EmptyLocation();
+
+        /// <summary>
         /// 显示
         /// </summary>
         public string Display { get; set; }

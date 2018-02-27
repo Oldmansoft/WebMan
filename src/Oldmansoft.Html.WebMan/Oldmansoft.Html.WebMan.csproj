@@ -84,6 +84,7 @@
     <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Document\Resource.cs" />
     <Compile Include="Document\SimpleDocument.cs" />
+    <Compile Include="EmptyLocation.cs" />
     <Compile Include="FormInputCreator\FormInput.cs" />
     <Compile Include="FormInputCreator\Handlers\BoolHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\CustomInputHandler.cs" />

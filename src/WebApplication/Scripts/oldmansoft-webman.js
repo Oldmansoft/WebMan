@@ -1,5 +1,5 @@
 ﻿/*
-* v0.14.78
+* v0.15.79
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -604,6 +604,39 @@ window.oldmansoft.webman = new (function () {
         }
         this.init = function () {
             $(document).on("mousedown", ".dataTables_wrapper", mousedown);
+        }
+    })();
+
+    this.search = new (function () {
+        var form,
+            born;
+        this.on = function (option) {
+            if (!form) {
+                form = $(".webman-main-panel>header>form");
+                born = {
+                    action: form.attr("action"),
+                    target: form.attr("target"),
+                    name: form.children("input").attr("name"),
+                    placeholder: form.children("input").attr("placeholder"),
+                    hidden: form.hasClass("hidden")
+                };
+            }
+            form.attr("action", option.action);
+            if (option.target) form.attr("target", option.target);
+            form.children("input").attr("name", option.name);
+            form.children("input").attr("placeholder", option.placeholder);
+            if (born.hidden) {
+                form.removeClass("hidden");
+            }
+        }
+        this.off = function () {
+            form.attr("action", born.action);
+            if (born.target) form.attr("target", born.target);
+            form.children("input").attr("name", born.name);
+            form.children("input").attr("placeholder", born.placeholder);
+            if (born.hidden) {
+                form.addClass("hidden");
+            }
         }
     })();
 
