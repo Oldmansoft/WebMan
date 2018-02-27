@@ -12,10 +12,9 @@ namespace WebApplication.Controllers
     {
         public ActionResult Index()
         {
-            var document = new MainDocument(Url.Location(Welcome));
+            var document = new ManageDocument(Url.Location(Welcome));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
-            document.Resources.BootstrapValidator.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js");
 
             document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/lity/2.3.0/lity.min.css"));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/lity/2.3.0/lity.min.js"));
@@ -50,6 +49,8 @@ namespace WebApplication.Controllers
             document.Quick.Add(Url.Location(Logoff));
 
             document.SetSearchAction(Url.Location(Search));
+
+            var scriptMale = new Badge(Url.Location(Male), 1);
             return new HtmlResult(document);
         }
 
@@ -96,12 +97,7 @@ namespace WebApplication.Controllers
         
         public ActionResult Welcome()
         {
-            var scriptMale = new Badge(Url.Location(Male), 1);
-            var scriptEnvelope = new Badge(Url.Location(Envelope), 0);
-            var script = new Oldmansoft.Html.Element.Script(scriptMale, scriptEnvelope);
-            var result = new HtmlResult();
-            result.AddEvent(AppEvent.Load, script);
-            return result;
+            return Content("welcome");
         }
 
         [Location("人员", Icon = FontAwesome.Male)]

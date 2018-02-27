@@ -81,7 +81,9 @@
     <Compile Include="Document\ILinkResource.cs" />
     <Compile Include="Document\ILinkScriptResource.cs" />
     <Compile Include="Document\IScriptResource.cs" />
+    <Compile Include="Document\MainDocument.cs" />
     <Compile Include="Document\Resource.cs" />
+    <Compile Include="Document\SimpleDocument.cs" />
     <Compile Include="FormInputCreator\FormInput.cs" />
     <Compile Include="FormInputCreator\Handlers\BoolHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\CustomInputHandler.cs" />
@@ -153,7 +155,7 @@
     <Compile Include="GridOption.cs" />
     <Compile Include="ILocation.cs" />
     <Compile Include="Document\LoginDocument.cs" />
-    <Compile Include="Document\MainDocument.cs" />
+    <Compile Include="Document\ManageDocument.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationBind.cs" />
     <Compile Include="Util\ColumnFlags.cs" />

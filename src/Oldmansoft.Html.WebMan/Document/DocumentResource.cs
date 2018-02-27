@@ -87,20 +87,20 @@ namespace Oldmansoft.Html.WebMan
             FontAwesome.Link = new Element.Link("https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css");
 
             JQuery = new Document.Resource();
-            JQuery.Script = new Element.ScriptResource("//code.jquery.com/jquery-1.12.4.min.js");
+            JQuery.Script = new Element.ScriptResource("//cdn.bootcss.com/jquery/1.12.4/jquery.min.js");
             JQuery.Script.Integrity = "sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=";
             JQuery.Script.CrossOrigin = "anonymous";
 
             Bootstrap = new Document.Resource();
-            Bootstrap.Link = new Element.Link("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+            Bootstrap.Link = new Element.Link("//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css");
             Bootstrap.Link.Integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u";
             Bootstrap.Link.CrossOrigin = "anonymous";
-            Bootstrap.Script = new Element.ScriptResource("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
+            Bootstrap.Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js");
             Bootstrap.Script.Integrity = "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa";
             Bootstrap.Script.CrossOrigin = "anonymous";
 
             Sha256 = new Document.Resource();
-            Sha256.Script = new Element.ScriptResource("//cdnjs.cloudflare.com/ajax/libs/js-sha256/0.5.0/sha256.min.js");
+            Sha256.Script = new Element.ScriptResource("//cdn.bootcss.com/js-sha256/0.5.0/sha256.min.js");
             Sha256.Script.Integrity = "sha256-QBdQQL9wDJVDk0eibUblj8jCArYQD+XaeFU47LnWboY=";
             Sha256.Script.CrossOrigin = "anonymous";
 
@@ -113,7 +113,7 @@ namespace Oldmansoft.Html.WebMan
             DataTables.Script = new Element.ScriptResource("//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js");
 
             JQueryForm = new Document.Resource();
-            JQueryForm.Script = new Element.ScriptResource("//cdn.jsdelivr.net/jquery.form/4.2.1/jquery.form.min.js");
+            JQueryForm.Script = new Element.ScriptResource("//cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js");
             JQueryForm.Script.Integrity = "sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer";
             JQueryForm.Script.CrossOrigin = "anonymous";
 
