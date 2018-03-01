@@ -166,6 +166,8 @@ namespace WebApplication.Controllers
         [HttpPost]
         public JsonResult Edit(Models.DataTableItemModel model)
         {
+            System.Threading.Thread.Sleep(1000);
+            return Json(DealResult.Wrong("wrong"));
             if (ModelState.ValidateFail())
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));

@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.79
+* v0.15.80
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -140,36 +140,39 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
-    function dealSubmitResultAction(data, method) {
+    function dealSubmitResultAction(data, method, form) {
         function refresh(isNewContent) {
             var operator;
-            if (data.NewData) {
-                operator = $app.current().node.data("operator");
-                if (operator) {
-                    operator.draw(false);
-                } else if (!isNewContent) {
-                    $app.reload();
-                }
+            if (!data.NewData) {
+                if (method == dealMethod.form && form) form.bootstrapValidator("disableSubmitButtons", false);
+                return;
+            }
+
+            operator = $app.current().node.data("operator");
+            if (operator) {
+                operator.draw(false);
+            } else if (!isNewContent) {
+                $app.reload();
             }
         }
 
         function action() {
             var loading;
-            if (!data.NewData && data.Path != null) {
-                if (data.Behave == linkBehave.link) {
-                    $app.sameHash(data.Path);
-                } else if (data.Behave == linkBehave.open) {
-                    $app.open(data.Path);
-                } else if (data.Behave == linkBehave.call) {
-                    loading = $app.loading();
-                    $.get(data.Path).done(function (data) {
-                        dealSubmitResult(data, dealMethod.call);
-                    }).fail(dealAjaxError).always(function () { loading.hide(); });
-                } else if (data.Behave == linkBehave.self) {
-                    document.location = data.Path;
-                } else if (data.Behave == linkBehave.blank) {
-                    window.open(data.Path);
-                }
+            if (data.NewData || data.Path == null) return;
+
+            if (data.Behave == linkBehave.link) {
+                $app.sameHash(data.Path);
+            } else if (data.Behave == linkBehave.open) {
+                $app.open(data.Path);
+            } else if (data.Behave == linkBehave.call) {
+                loading = $app.loading();
+                $.get(data.Path).done(function (data) {
+                    dealSubmitResult(data, dealMethod.call);
+                }).fail(dealAjaxError).always(function () { loading.hide(); });
+            } else if (data.Behave == linkBehave.self) {
+                document.location = data.Path;
+            } else if (data.Behave == linkBehave.blank) {
+                window.open(data.Path);
             }
         }
 
@@ -182,13 +185,13 @@ window.oldmansoft.webman = new (function () {
         }
     }
 
-    function dealSubmitResult(data, method) {
+    function dealSubmitResult(data, method, form) {
         if (data.Message) {
             $app.alert(data.Message, data.Success ? text.success : text.tips).ok(function () {
-                dealSubmitResultAction(data, method);
+                dealSubmitResultAction(data, method, form);
             });
         } else {
-            dealSubmitResultAction(data, method);
+            dealSubmitResultAction(data, method, form);
         }
     }
 
@@ -236,7 +239,7 @@ window.oldmansoft.webman = new (function () {
             loading = $app.loading();
             form.ajaxSubmit().data("jqxhr").done(function (data) {
                 loading.hide();
-                dealSubmitResult(data, dealMethod.form);
+                dealSubmitResult(data, dealMethod.form, form);
             }).fail(function (error) {
                 loading.hide();
                 $app.alert($(error.responseText).eq(1).text(), error.statusText);
@@ -388,6 +391,7 @@ window.oldmansoft.webman = new (function () {
         form.bootstrapValidator({
             fields: fields
         }).on('success.form.bv', function (e) {
+            form.bootstrapValidator("disableSubmitButtons", true);
             if (!submitForm($(e.target))) {
                 e.preventDefault();
             }

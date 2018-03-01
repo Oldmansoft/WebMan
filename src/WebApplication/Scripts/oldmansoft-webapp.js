@@ -1,5 +1,5 @@
 ﻿/*
-* v0.16.74
+* v0.20.82
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -9,13 +9,15 @@ window.oldmansoft.webapp = new (function () {
     _setting = {
         timeover: 180000,
         loading_show_time: 1000,
-        loading_hide_time: 200
+        loading_hide_time: 200,
+        server_charset: "utf-8"
     },
     _text = {
         ok: "Ok",
         yes: "Yes",
         no: "No",
-        loading: "Loading"
+        loading: "Loading",
+        load_layout_error: "load layout error, click Ok to reload.",
     },
     _mainView = null,
     _openView = null,
@@ -34,7 +36,9 @@ window.oldmansoft.webapp = new (function () {
     _dealHrefTarget,
     _messageBox,
     _windowBox,
-    _modalBox;
+    _modalBox,
+    _canSetup = true,
+    _hideMainViewFirstLoading = false;
 
     function linkParser(input) {
         var store = [],
@@ -55,7 +59,7 @@ window.oldmansoft.webapp = new (function () {
             } else {
                 store = hashContent.split("~");
                 for (i = 0; i < store.length; i++) {
-                    store[i] = store[i].replace(/%7e/g, "~").replace(/%23/g, "#").replace(/%25/g, "%");
+                    store[i] = store[i].replace(/\$7e/g, "~").replace(/\$23/g, "#").replace(/\$2f/g, "/").replace(/\$3f/g, "?").replace(/\$24/g, "$");
                 }
             }
         }
@@ -80,7 +84,7 @@ window.oldmansoft.webapp = new (function () {
             var links = [],
                 i;
             for (i = 0; i < store.length; i++) {
-                links.push(store[i].replace(/~/g, "%7e").replace(/#/g, "%23").replace(/%/g, "%25"));
+                links.push(store[i].replace(/\$/g, "$24").replace(/~/g, "$7e").replace(/#/g, "$23").replace(/\//g, "$2f").replace(/\?/g, "$3f"));
             }
             return links.join("~");
         }
@@ -1071,7 +1075,7 @@ window.oldmansoft.webapp = new (function () {
 
             loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainView.getDefaultLink()), _mainView.getDefaultLink());
             $.ajax({
-                mimeType: 'text/html; charset=utf-8',
+                mimeType: 'text/html; charset=' + _setting.server_charset,
                 url: loadPath,
                 data: data,
                 type: type,
@@ -1214,7 +1218,7 @@ window.oldmansoft.webapp = new (function () {
 
             loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainView.getDefaultLink()), _mainView.getDefaultLink());
             $.ajax({
-                mimeType: 'text/html; charset=utf-8',
+                mimeType: 'text/html; charset=' + _setting.server_charset,
                 url: loadPath,
                 data: data,
                 type: type,
@@ -1312,11 +1316,12 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    function viewArea(viewNode, link) {
+    function viewArea(viewNodeSelector, link) {
         var loadId = 0,
-            element = $(viewNode),
+            element = null,
             defaultLink = link,
-            links = new linkManagement();
+            links = new linkManagement(),
+            firstLoadContent = true;
 
         function setView(first, second) {
             var last;
@@ -1338,8 +1343,14 @@ window.oldmansoft.webapp = new (function () {
                 loading = $this.loadingTip.show(),
                 loadPath = getAbsolutePath(link, baseLink, defaultLink);
 
+            if (_hideMainViewFirstLoading) {
+                loading.hide();
+                loading = null;
+                _hideMainViewFirstLoading = false;
+            }
+
             $.ajax({
-                mimeType: 'text/html; charset=utf-8',
+                mimeType: 'text/html; charset=' + _setting.server_charset,
                 url: loadPath,
                 type: 'GET',
                 timeout: _setting.timeover
@@ -1347,7 +1358,7 @@ window.oldmansoft.webapp = new (function () {
                 if (currentId != loadId) {
                     return;
                 }
-                loading.hide();
+                if (loading) loading.hide();
 
                 var json = jqXHR.getResponseHeader("X-Responded-JSON"),
                     responded;
@@ -1375,7 +1386,7 @@ window.oldmansoft.webapp = new (function () {
                 if (currentId != loadId) {
                     return;
                 }
-                loading.hide();
+                if (loading) loading.hide();
 
                 if (jqXHR.status == 401) {
                     _fnOnUnauthorized(loadPath);
@@ -1397,7 +1408,8 @@ window.oldmansoft.webapp = new (function () {
         this.load = function (link, loadCompleted) {
             var hrefs,
                 i;
-
+            if (element == null) element = $(viewNodeSelector);
+            if (element.is("body")) throw "viewNode can't be <body>";
             hrefs = new linkParser(link).getLinks();
             _modalView.clear();
             _openView.clear();
@@ -1415,6 +1427,11 @@ window.oldmansoft.webapp = new (function () {
             loadContent(hrefs[hrefs.length - 1], getPathHasAbsolutePathFromArray(hrefs, hrefs.length - 2, defaultLink), function () {
                 var i,
                     linksCount;
+
+                if (firstLoadContent) {
+                    element.empty();
+                    firstLoadContent = false;
+                }
                 if (links.count() > hrefs.length && links.like(hrefs)) {
                     for (i = links.count() - 1; i > hrefs.length - 1; i--) {
                         links.pop().remove();
@@ -1473,8 +1490,8 @@ window.oldmansoft.webapp = new (function () {
             return element;
         }
 
-        this.setElement = function (node) {
-            return element = $(node);
+        this.setElement = function (nodeSelector) {
+            return element = $(nodeSelector);
         }
 
         this.getDefaultLink = function () {
@@ -1651,11 +1668,11 @@ window.oldmansoft.webapp = new (function () {
         if (typeof fn == "function") fn(_text);
     }
 
-    this.init = function (viewNode, defaultLink) {
+    this.initialization = function (viewNodeSelector, defaultLink) {
         function option(main) {
-            this.viewNode = function (node) {
-                if (!node) return main.getElement();
-                main.setElement(node);
+            this.viewNode = function (nodeSelector) {
+                if (!nodeSelector) return main.getElement();
+                main.setElement(nodeSelector);
                 return this;
             }
             this.defaultLink = function (link) {
@@ -1729,14 +1746,84 @@ window.oldmansoft.webapp = new (function () {
         $(document).on("touchmove", dealTouchMove);
 
         _globalViewEvent = new viewEvent();
-        _mainView = new viewArea(viewNode, defaultLink);
+        _mainView = new viewArea(viewNodeSelector, defaultLink);
         _openView = new openArea();
         _modalView = new modalArea();
         _activeView.push(_mainView);
+        return new option(_mainView);
+    }
+
+    this.init = function (viewNodeSelector, defaultLink) {
+        var result = $this.initialization(viewNodeSelector, defaultLink);
         $this.linker._init(function (link) {
             _mainView.load(link, $this.linker.callChangeCompleted);
         });
-        return new option(_mainView);
+        return result;
+    }
+
+    this.setup = function (mainViewSelector, defaultLink) {
+        if (_canSetup) {
+            _canSetup = false;
+        } else {
+            throw "Has been setup";
+        }
+        var result = $this.initialization(mainViewSelector, defaultLink);
+        $(function () {
+            $this.linker._init(function (link) {
+                _mainView.load(link, $this.linker.callChangeCompleted);
+            });
+        });
+        return result;
+    }
+
+    this.setupLayout = function (layoutSelector, layoutLink, mainViewSelector, defaultLink) {
+        if (_canSetup) {
+            _canSetup = false;
+        } else {
+            throw "Has been setup";
+        }
+        var result = $this.initialization(mainViewSelector, defaultLink);
+        $(function () {
+            $.ajax({
+                mimeType: 'text/html; charset=' + _setting.server_charset,
+                url: layoutLink,
+                type: 'GET',
+                timeout: _setting.timeover
+            }).done(function (data, textStatus, jqXHR) {
+                var json = jqXHR.getResponseHeader("X-Responded-JSON"),
+                    responded;
+
+                if (json) {
+                    responded = JSON.parse(json);
+                    if (responded.status == 401) {
+                        if (!_fnOnUnauthorized(responded.headers.location)) {
+                            if (responded.headers && responded.headers.location) {
+                                document.location = responded.headers.location;
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                if (isHtmlDocument(data)) {
+                    alert("You try to load wrong content: " + layoutLink);
+                    return;
+                }
+                $(layoutSelector).html(data);
+                _hideMainViewFirstLoading = true;
+                $this.linker._init(function (link) {
+                    _mainView.load(link, $this.linker.callChangeCompleted);
+                });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    _fnOnUnauthorized(layoutLink);
+                }
+                $this.dialog.alert(_text.load_layout_error, errorThrown).ok(function () {
+                    document.location.reload();
+                });
+            });
+        });
+        return result;
     }
 
     window.$app = {
@@ -1757,6 +1844,8 @@ window.oldmansoft.webapp = new (function () {
         reload: $this.viewReload,
         close: $this.viewClose,
         current: $this.current,
-        init: $this.init
+        init: $this.init,
+        setup: $this.setup,
+        setupLayout: $this.setupLayout
     };
 })();
