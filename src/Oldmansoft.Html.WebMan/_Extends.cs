@@ -314,15 +314,15 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="name"></param>
         public static void SetSearchAction(this IHtmlOutput source, ILocation location, string name = "keyword")
         {
-            var active = string.Format(
+            var loadContent = string.Format(
                 "oldmansoft.webman.search.on({{ action: '{0}', target: '{1}', name: '{2}', placeholder: '{3}' }})",
                 location.Path.JavaScriptEncode(),
                 location.Behave.GetTarget(),
                 name.JavaScriptEncode(),
                 location.Display.JavaScriptEncode()
             );
-            source.AddEvent(AppEvent.Active, active);
-            source.AddEvent(AppEvent.Inactive, "oldmansoft.webman.search.off()");
+            source.AddEvent(AppEvent.Load, loadContent);
+            source.AddEvent(AppEvent.Unload, "oldmansoft.webman.search.off()");
         }
 
         private static void InitEventContent(IHtmlOutput source)

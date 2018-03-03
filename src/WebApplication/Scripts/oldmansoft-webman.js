@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.80
+* v0.15.81
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -613,34 +613,45 @@ window.oldmansoft.webman = new (function () {
 
     this.search = new (function () {
         var form,
-            born;
+            input,
+            born,
+            values;
         this.on = function (option) {
             if (!form) {
                 form = $(".webman-main-panel>header>form");
+                input = form.children("input");
                 born = {
                     action: form.attr("action"),
                     target: form.attr("target"),
-                    name: form.children("input").attr("name"),
-                    placeholder: form.children("input").attr("placeholder"),
+                    name: input.attr("name"),
+                    placeholder: input.attr("placeholder"),
                     hidden: form.hasClass("hidden")
                 };
+                values = [];
+                values[born.action] = "";
             }
             form.attr("action", option.action);
             if (option.target) form.attr("target", option.target);
-            form.children("input").attr("name", option.name);
-            form.children("input").attr("placeholder", option.placeholder);
+            input.attr("name", option.name);
+            input.attr("placeholder", option.placeholder);
+
+            values[born.action] = input.val();
+            input.val(values[option.action]);
             if (born.hidden) {
                 form.removeClass("hidden");
             }
         }
         this.off = function () {
-            form.attr("action", born.action);
-            if (born.target) form.attr("target", born.target);
-            form.children("input").attr("name", born.name);
-            form.children("input").attr("placeholder", born.placeholder);
             if (born.hidden) {
                 form.addClass("hidden");
             }
+            values[form.attr("action")] = input.val();
+            input.val(values[born.action]);
+
+            form.attr("action", born.action);
+            if (born.target) form.attr("target", born.target);
+            input.attr("name", born.name);
+            input.attr("placeholder", born.placeholder);
         }
     })();
 
