@@ -307,22 +307,21 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 设置当前页搜索栏
+        /// 设置快速搜索栏
         /// </summary>
         /// <param name="source"></param>
         /// <param name="location"></param>
         /// <param name="name"></param>
-        public static void SetSearchAction(this IHtmlOutput source, ILocation location, string name = "keyword")
+        public static void SetQuickSearch(this IHtmlOutput source, ILocation location, string name = "key")
         {
-            var loadContent = string.Format(
+            var script = string.Format(
                 "oldmansoft.webman.search.on({{ action: '{0}', target: '{1}', name: '{2}', placeholder: '{3}' }})",
                 location.Path.JavaScriptEncode(),
                 location.Behave.GetTarget(),
                 name.JavaScriptEncode(),
                 location.Display.JavaScriptEncode()
             );
-            source.AddEvent(AppEvent.Load, loadContent);
-            source.AddEvent(AppEvent.Unload, "oldmansoft.webman.search.off()");
+            source.AddEvent(AppEvent.Active, script);
         }
 
         private static void InitEventContent(IHtmlOutput source)

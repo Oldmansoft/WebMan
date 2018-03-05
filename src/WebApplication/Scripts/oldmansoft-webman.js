@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.81
+* v0.15.82
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -161,7 +161,7 @@ window.oldmansoft.webman = new (function () {
             if (data.NewData || data.Path == null) return;
 
             if (data.Behave == linkBehave.link) {
-                $app.sameHash(data.Path);
+                $app.same(data.Path);
             } else if (data.Behave == linkBehave.open) {
                 $app.open(data.Path);
             } else if (data.Behave == linkBehave.call) {
@@ -247,14 +247,7 @@ window.oldmansoft.webman = new (function () {
         } else if (target == "_open") {
             $app.open(action, form.serialize());
         } else if (!target) {
-            loading = $app.loading();
-            form.ajaxSubmit().data("jqxhr").done(function (data) {
-                loading.hide();
-                $app.current().view.replace(action, data);
-            }).fail(function (error) {
-                loading.hide();
-                $app.alert($(error.responseText).eq(1).text(), error.statusText);
-            });
+            $app.link(action + "?" + form.serialize());
         } else {
             return true;
         }
@@ -615,39 +608,50 @@ window.oldmansoft.webman = new (function () {
         var form,
             input,
             born,
-            values;
-        this.on = function (option) {
-            if (!form) {
-                form = $(".webman-main-panel>header>form");
-                input = form.children("input");
-                born = {
-                    action: form.attr("action"),
-                    target: form.attr("target"),
-                    name: input.attr("name"),
-                    placeholder: input.attr("placeholder"),
-                    hidden: form.hasClass("hidden")
-                };
-                values = [];
-                values[born.action] = "";
+            values,
+            onExecuted = false;
+        function init() {
+            if (form) {
+                return;
             }
+
+            form = $(".webman-main-panel>header>form");
+            input = form.children("input");
+            born = {
+                action: form.attr("action"),
+                target: form.attr("target"),
+                name: input.attr("name"),
+                placeholder: input.attr("placeholder"),
+                hidden: form.hasClass("hidden")
+            };
+            values = [];
+            values[born.action] = "";
+        }
+
+        this.on = function (option) {
+            init();
+            values[form.attr("action")] = input.val();
+            input.val(values[option.action]);
             form.attr("action", option.action);
             if (option.target) form.attr("target", option.target);
             input.attr("name", option.name);
             input.attr("placeholder", option.placeholder);
-
-            values[born.action] = input.val();
-            input.val(values[option.action]);
             if (born.hidden) {
                 form.removeClass("hidden");
             }
+            onExecuted = true;
         }
         this.off = function () {
+            init();
+            if (onExecuted) {
+                onExecuted = false;
+                return;
+            }
             if (born.hidden) {
                 form.addClass("hidden");
             }
             values[form.attr("action")] = input.val();
             input.val(values[born.action]);
-
             form.attr("action", born.action);
             if (born.target) form.attr("target", born.target);
             input.attr("name", born.name);
@@ -715,9 +719,9 @@ window.oldmansoft.webman = new (function () {
                 }
             } else if (action.behave == linkBehave.link) {
                 if ((action.other & other_supportParameter) == other_nothing || selectedIds.length == 0) {
-                    $app.addHash(action.path);
+                    $app.add(action.path);
                 } else {
-                    $app.addHash(bindUrlParamter(action.path, getFormValue()));
+                    $app.add(bindUrlParamter(action.path, getFormValue()));
                 }
             } else if (action.behave == linkBehave.call) {
                 loading = $app.loading();
@@ -777,7 +781,7 @@ window.oldmansoft.webman = new (function () {
             if (action.behave == linkBehave.open) {
                 $app.open(action.path, getJsonValue());
             } else if (action.behave == linkBehave.link) {
-                $app.addHash(bindUrlParamter(action.path, parameter_name + "=" + itemId));
+                $app.add(bindUrlParamter(action.path, parameter_name + "=" + itemId));
             } else if (action.behave == linkBehave.call) {
                 loading = $app.loading();
                 $.post(action.path, getJsonValue()).done(function (data) {
@@ -930,7 +934,7 @@ window.oldmansoft.webman = new (function () {
     function form_not_bv_form_submit(e) {
         var form = $(this);
         if (form.attr("action") == undefined) {
-            form.attr("action", $app.current().link);
+            form.attr("action", $app.link());
         }
         if (form.attr("action") == document.location.pathname) {
             return;
@@ -972,6 +976,7 @@ window.oldmansoft.webman = new (function () {
         $app.init(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
             menu.active(oldmansoft.webapp.hashes(), view, defaultLink);
+            $this.search.off();
         }).replacePCScrollBar(true);
 
         resetMainHeight();

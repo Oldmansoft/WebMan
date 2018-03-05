@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan
     /// <summary>
     /// 主页文档
     /// </summary>
-    [Obsolete("使用 ManageDoucment 替换")]
+    [Obsolete("请使用 ManageDoucment")]
     public class MainDocument : ManageDocument
     {
         /// <summary>

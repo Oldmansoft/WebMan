@@ -48,7 +48,7 @@ namespace WebApplication.Controllers
             document.Quick.Add(Url.Location(Male));
             document.Quick.Add(Url.Location(Logoff));
 
-            document.SetSearchAction(Url.Location(Search));
+            document.SetQuickSearch(Url.Location(Search));
             document.AddScript(new Badge(Url.Location(Male), 1));
             return new HtmlResult(document);
         }
@@ -89,9 +89,9 @@ namespace WebApplication.Controllers
         }
 
         [Location("Search key...")]
-        public ActionResult Search(string keyword)
+        public ActionResult Search(string key)
         {
-            return Content("Search" + keyword);
+            return Content("Search" + key);
         }
         
         public ActionResult Welcome()

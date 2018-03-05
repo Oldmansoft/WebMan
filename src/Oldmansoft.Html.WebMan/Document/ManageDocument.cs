@@ -101,7 +101,7 @@ namespace Oldmansoft.Html.WebMan
         {
             var header = new HtmlElement(HtmlTag.Header).AddClass("row");
             panel.Append(header);
-            SestHeader(header);
+            SetHeader(header);
 
             var nav = new HtmlElement(HtmlTag.Nav).AddClass("row");
             panel.Append(nav);
@@ -115,7 +115,7 @@ namespace Oldmansoft.Html.WebMan
             panel.Append(main);
         }
 
-        private void SestHeader(IHtmlElement header)
+        private void SetHeader(IHtmlElement header)
         {
             var bar = new HtmlElement(HtmlTag.Div).AddClass("webman-bar");
             header.Append(bar);
@@ -204,7 +204,18 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="location"></param>
         /// <param name="name"></param>
+        [Obsolete("请使用 SetQuickSearch")]
         public void SetSearchAction(ILocation location, string name = "keyword")
+        {
+            SetQuickSearch(location, name);
+        }
+
+        /// <summary>
+        /// 设置快速搜索栏
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="name"></param>
+        public void SetQuickSearch(ILocation location, string name = "key")
         {
             if (location == null) throw new ArgumentNullException();
             SearchAction = location;

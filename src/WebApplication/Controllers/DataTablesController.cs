@@ -71,7 +71,7 @@ namespace WebApplication.Controllers
             table.AddSearchPanel(Url.Location(Index), "key", "");
             panel.Append(table);
             var result = new HtmlResult(panel.CreateGrid());
-            result.SetSearchAction(Url.Location(Index));
+            result.SetQuickSearch(Url.Location(Index));
             return result;
         }
         
@@ -166,8 +166,6 @@ namespace WebApplication.Controllers
         [HttpPost]
         public JsonResult Edit(Models.DataTableItemModel model)
         {
-            System.Threading.Thread.Sleep(1000);
-            return Json(DealResult.Wrong("wrong"));
             if (ModelState.ValidateFail())
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
