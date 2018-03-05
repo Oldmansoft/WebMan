@@ -114,6 +114,14 @@ section.container-fluid {
     margin-right: 0;
 }
 
+.col-container{
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 a.badge-container {
     position: relative;
 }

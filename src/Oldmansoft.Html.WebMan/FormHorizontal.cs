@@ -87,18 +87,17 @@ namespace Oldmansoft.Html.WebMan
                 var group = new HtmlElement(HtmlTag.Div);
                 Append(group);
                 group.AddClass("form-group");
+                
+                var reset = new HtmlElement(HtmlTag.Div);
+                reset.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
+                reset.AddClass("col-container");
+                reset.Append(new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset").AddClass("btn btn-default"));
+                group.Append(reset);
 
-                var buttons = new GridOption(Column.Sm9 | Column.Md10);
-                group.Append(buttons);
-                buttons.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
-
-                var reset = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset");
-                group.Append(reset.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1).AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2));
-                reset.AddClass("btn btn-default");
-
-                var submit = new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit");
-                group.Append(submit.CreateGrid(Column.Sm2 | Column.Xs4 | Column.Md1));
-                submit.AddClass("btn btn-primary");
+                var submit = new HtmlElement(HtmlTag.Div);
+                submit.AddClass("col-container");
+                submit.Append(new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit").AddClass("btn btn-primary"));
+                group.Append(submit);
             }
             base.Format(outer);
             if (ViewMode)
