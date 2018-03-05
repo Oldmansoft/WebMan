@@ -616,6 +616,7 @@ table.dataTable tbody td ul li:first-child {
 .input-group .single-file-input,
 .input-group .mulit-file-input {
     height: 0px;
+    width: 1px;
     border: 0px;
     margin: 0px;
     padding: 0px;
