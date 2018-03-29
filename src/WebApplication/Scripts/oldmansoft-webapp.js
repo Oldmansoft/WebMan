@@ -1,5 +1,5 @@
 ﻿/*
-* v0.21.84
+* v0.21.87
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -64,7 +64,7 @@ window.oldmansoft.webapp = new (function () {
         if (input instanceof Array) store = input.slice();
         else {
             hashContent = getHashContent(input);
-            if (hashContent.indexOf("#") > -1) {
+            if (hashContent.indexOf("#") > -1 || hashContent.indexOf("%23") > -1) {
                 store = hashContent.replace(/%23/g, "#").split("#");
             } else {
                 store = hashContent.split("~");
@@ -1151,9 +1151,9 @@ window.oldmansoft.webapp = new (function () {
                         if (!_fnOnUnauthorized(responded.headers.location)) {
                             if (responded.headers && responded.headers.location) {
                                 document.location = responded.headers.location;
-                                return;
                             }
                         }
+                        return;
                     }
                 }
 
@@ -1296,9 +1296,9 @@ window.oldmansoft.webapp = new (function () {
                         if (!_fnOnUnauthorized(responded.headers.location)) {
                             if (responded.headers && responded.headers.location) {
                                 document.location = responded.headers.location;
-                                return;
                             }
                         }
+                        return;
                     }
                 }
 
@@ -1431,9 +1431,9 @@ window.oldmansoft.webapp = new (function () {
                         if (!_fnOnUnauthorized(responded.headers.location)) {
                             if (responded.headers && responded.headers.location) {
                                 document.location = responded.headers.location;
-                                return;
                             }
                         }
+                        return;
                     }
                 }
 
@@ -1869,9 +1869,9 @@ window.oldmansoft.webapp = new (function () {
                         if (!_fnOnUnauthorized(responded.headers.location)) {
                             if (responded.headers && responded.headers.location) {
                                 document.location = responded.headers.location;
-                                return;
                             }
                         }
+                        return;
                     }
                 }
 
@@ -1879,7 +1879,7 @@ window.oldmansoft.webapp = new (function () {
                     alert("You try to load wrong content: " + layoutLink);
                     return;
                 }
-                $(layoutSelector).html(data);
+                $(layoutSelector).html(data).children().unwrap();
                 _hideMainViewFirstLoading = true;
                 $this.linker._init(function (link) {
                     _mainView.load(link, $this.linker.callChangeCompleted);
