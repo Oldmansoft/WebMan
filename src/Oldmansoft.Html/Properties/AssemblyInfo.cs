@@ -21,6 +21,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("4bf2e2a4-bfab-4574-81a4-1d2563d75908")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
-[assembly: AssemblyVersion("0.15.79")]
+[assembly: AssemblyVersion("0.15.82")]
 
 [assembly: InternalsVisibleTo("Oldmansoft.Html.WebMan")]
