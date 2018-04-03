@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.82
+* v0.15.83
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -262,10 +262,10 @@ window.oldmansoft.webman = new (function () {
 
     function markFileDelete(container) {
         var text = container.find(".icon-fa-text");
-        if (text.hasClass("mark")) {
+        if (text.hasClass("del-mark")) {
             return false;
         }
-        text.addClass("mark");
+        text.addClass("del-mark");
         text.wrap("<del></del>");
         container.find(".del-file-input").val("1");
         return true;
@@ -273,10 +273,10 @@ window.oldmansoft.webman = new (function () {
 
     function unmarkFileDelete(container) {
         var text = container.find(".icon-fa-text");
-        if (!text.hasClass("mark")) {
+        if (!text.hasClass("del-mark")) {
             return false;
         }
-        text.removeClass("mark");
+        text.removeClass("del-mark");
         text.unwrap("<del></del>");
         container.find(".del-file-input").val("0");
         return true;

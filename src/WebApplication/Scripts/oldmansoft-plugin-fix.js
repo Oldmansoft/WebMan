@@ -227,7 +227,10 @@
                     return false;
                 } else if ($field.hasClass("single-file-input")) {
                     if ($.trim($field.val()) === '') {
-                        if ($field.parent().find(".del-file").length == 0 || $field.parent().find(".del-file").hasClass("on")) {
+                        if ($field.parent().find(".del-file-input").val() === '1') {
+                            return false;
+                        }
+                        if ($field.parent().find("a").length == 0) {
                             return false;
                         }
                     }
