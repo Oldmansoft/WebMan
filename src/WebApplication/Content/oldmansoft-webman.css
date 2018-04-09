@@ -471,6 +471,10 @@ header .dropdown-menu a {
     margin-bottom: 15px;
 }
 
+.open-view {
+    padding: 0;
+}
+
 .open-view .webman-panel:first-child {
     margin-top: 0;
 }
