@@ -62,7 +62,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 var group = new HtmlElement(HtmlTag.Div);
                 group.AppendTo(this);
-                group.AddClass("input-group control-line");
+                group.AddClass("control-line");
 
                 var control = new HtmlElement(HtmlTag.Div);
                 control.AppendTo(group);
@@ -87,6 +87,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
                 if (FileOption.SupportDelete)
                 {
+                    group.AddClass("input-group");
+
                     var span = new HtmlElement(HtmlTag.Span);
                     span.AppendTo(group);
                     span.AddClass("input-group-addon del-files");
