@@ -22,6 +22,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Tag = HtmlTag.Select;
             Attribute(HtmlAttribute.Name, Name);
             AddClass("form-control");
+            if (Value == null)
+            {
+                Append(new HtmlElement(HtmlTag.Option).Append(new HtmlRaw("&nbsp;")));
+            }
             foreach (var option in Options)
             {
                 var item = new HtmlElement(HtmlTag.Option);

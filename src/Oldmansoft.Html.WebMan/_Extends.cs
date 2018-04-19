@@ -59,9 +59,19 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string GetString(this object source)
+        public static string GetNotNullString(this object source)
         {
             return source == null ? string.Empty : source.ToString();
+        }
+
+        /// <summary>
+        /// 获取字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetString(this object source)
+        {
+            return source == null ? null : source.ToString();
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
-            Value = value.GetString();
+            Value = value.GetNotNullString();
         }
 
         /// <summary>

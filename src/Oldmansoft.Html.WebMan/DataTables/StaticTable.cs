@@ -280,7 +280,7 @@ namespace Oldmansoft.Html.WebMan
                     td.AppendTo(tr);
                     var input = new HtmlElement(HtmlTag.Input);
                     input.Attribute(HtmlAttribute.Type, "checkbox");
-                    input.Attribute(HtmlAttribute.Value, id.GetString());
+                    input.Attribute(HtmlAttribute.Value, id.GetNotNullString());
                     input.AppendTo(td);
                 }
                 if (IsDisplayIndexColumn)
@@ -303,7 +303,7 @@ namespace Oldmansoft.Html.WebMan
                     td.AppendTo(tr);
                     var div = new HtmlElement(HtmlTag.Div);
                     div.AddClass("dataTable-item-action");
-                    div.Data("id", id.GetString());
+                    div.Data("id", id.GetNotNullString());
                     div.AppendTo(td);
                     for (var i = 0; i < ItemActions.Count; i++)
                     {

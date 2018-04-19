@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void Init(string name, Type type, object value, IList<ListDataItem> options)
         {
             Name = name;
-            Value = value.GetString();
+            Value = value.GetNotNullString();
         }
 
         /// <summary>

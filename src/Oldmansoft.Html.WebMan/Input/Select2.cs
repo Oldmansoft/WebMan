@@ -60,6 +60,15 @@ namespace Oldmansoft.Html.WebMan.Input
             Attribute(HtmlAttribute.Name, Name);
             AddClass("form-control");
             Css("width", "100%");
+            AddClass("select2");
+            if (Values != null)
+            {
+                Attribute(HtmlAttribute.Multiple, "multiple");
+            }
+            else if (Value == null)
+            {
+                Append(new HtmlElement(HtmlTag.Option).Append(new HtmlRaw("&nbsp;")));
+            }
             foreach (var option in Options)
             {
                 var item = new HtmlElement(HtmlTag.Option);
@@ -79,18 +88,10 @@ namespace Oldmansoft.Html.WebMan.Input
                         item.Attribute(HtmlAttribute.Selected, "selected");
                     }
                 }
-                if (!string.IsNullOrEmpty(option.Text))
-                {
-                    item.Append(new HtmlRaw(option.Text.HtmlEncode().Replace(" ", "&nbsp;")));
-                }
+                item.Text(option.Text);
             }
             SetAttribute(this, disabled, readony, hint);
 
-            AddClass("select2");
-            if (Values != null)
-            {
-                Attribute(HtmlAttribute.Multiple, "multiple");
-            }
             ScriptRegister.Register("Select2Edit", "view.node.find('select.select2').select2();");
         }
 
