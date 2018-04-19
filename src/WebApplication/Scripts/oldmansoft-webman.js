@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.83
+* v0.15.84
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -576,7 +576,8 @@ window.oldmansoft.webman = new (function () {
 
     var tableScroller = new (function () {
         var x,
-            table;
+            table,
+            disabled = false;
         function disabledSelectStart() {
             return false;
         }
@@ -591,6 +592,7 @@ window.oldmansoft.webman = new (function () {
             table.off("mouseleave ", mouseup);
         }
         function mousedown(e) {
+            if (disabled) return;
             table = $(this);
             x = e.clientX;
             table.addClass("mouse-down");
@@ -601,6 +603,8 @@ window.oldmansoft.webman = new (function () {
         }
         this.init = function () {
             $(document).on("mousedown", ".dataTables_wrapper", mousedown);
+            $(document).on("keydown", function (key) { if (key.keyCode == 17) disabled = true; });
+            $(document).on("keyup", function (key) { if (key.keyCode == 17) disabled = false; });
         }
     })();
 
