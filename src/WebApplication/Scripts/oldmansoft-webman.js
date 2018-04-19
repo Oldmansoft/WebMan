@@ -1,5 +1,5 @@
 ﻿/*
-* v0.15.84
+* v0.15.85
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -594,6 +594,7 @@ window.oldmansoft.webman = new (function () {
         function mousedown(e) {
             if (disabled) return;
             table = $(this);
+            if (table.get(0).scrollWidth == table.width()) return;
             x = e.clientX;
             table.addClass("mouse-down");
             table.on("selectstart", disabledSelectStart);
