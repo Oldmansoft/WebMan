@@ -85,7 +85,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
-                if (FileOption.SupportDelete)
+                if (FileOption.SupportDelete && (!disabled && !readOnly))
                 {
                     group.AddClass("input-group");
 

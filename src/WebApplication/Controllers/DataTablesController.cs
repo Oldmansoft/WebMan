@@ -226,7 +226,10 @@ namespace WebApplication.Controllers
             var model = data.MapTo(new Models.ShowModel());
             model.Id = data.Id;
             model.Name = data.Name;
-
+            model.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
+            model.Files = new List<HttpPostedFileBase>();
+            model.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
+            model.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
             var panel = new Panel();
             panel.ConfigLocation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.ShowModel, JsonResult>(ShowResult)), GetListSource());
