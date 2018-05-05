@@ -45,9 +45,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             foreach(var option in Options)
@@ -65,7 +65,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                SetAttribute(input, disabled, readony, hint);
+                if (disabled || readOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
                 HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Text.HtmlEncode()));
             }

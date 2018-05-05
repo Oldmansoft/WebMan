@@ -24,7 +24,7 @@ namespace WebApplication.CustomInput
         {
         }
 
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             var hidden = new HtmlElement(HtmlTag.Input);

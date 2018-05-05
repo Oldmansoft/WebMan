@@ -44,9 +44,9 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             AddClass("tagsinput");
@@ -73,11 +73,11 @@ namespace Oldmansoft.Html.WebMan.Input
                 span.AppendTo(div);
                 span.Text(item);
 
-                FontAwesome.Times.CreateElement().AddClass("container-parent-remove").AppendTo(span);
+                if (!disabled && !readOnly) FontAwesome.Times.CreateElement().AddClass("container-parent-remove").AppendTo(span);
             }
 
             var input = new HtmlElement(HtmlTag.Input);
-            input.AppendTo(this);
+            if (!disabled && !readOnly) input.AppendTo(this);
             input.AddClass("input");
             input.Attribute(HtmlAttribute.PlaceHolder, "add tags");
             input.Attribute(HtmlAttribute.Name, Name);

@@ -42,9 +42,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             AddClass("input-group");
@@ -67,7 +67,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
-            if (!readony && !disabled)
+            if (!readOnly && !disabled)
             {
                 input.Attribute(HtmlAttribute.Type, "file");
             }
@@ -98,9 +98,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             virtualInput.AddClass("form-control virtual-file-input");
             virtualInput.Text(string.IsNullOrEmpty(hint) ? "选择文件" : hint);
             virtualInput.AppendTo(this);
-            SetAttribute(virtualInput, disabled, readony, null);
+            SetAttribute(virtualInput, disabled, readOnly, null);
 
-            if (Value != null && !readony && !disabled)
+            if (Value != null && !readOnly && !disabled)
             {
                 var delInput = new HtmlElement(HtmlTag.Input);
                 Append(delInput);

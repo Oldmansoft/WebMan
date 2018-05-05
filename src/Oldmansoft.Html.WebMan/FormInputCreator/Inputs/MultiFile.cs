@@ -51,13 +51,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             AddClass("mulit-file-group");
-            SetFileInput(disabled, readony, hint);
+            SetFileInput(disabled, readOnly, hint);
             foreach (var item in Value)
             {
                 var group = new HtmlElement(HtmlTag.Div);
@@ -98,7 +98,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             SetFormValidator();
         }
 
-        private void SetFileInput(bool disabled, bool readony, string hint)
+        private void SetFileInput(bool disabled, bool readOnly, string hint)
         {
             var group = new HtmlElement(HtmlTag.Div);
             group.AppendTo(this);
@@ -141,7 +141,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             virtualInput.AddClass("form-control virtual-mulit-file-input");
             virtualInput.Text(string.IsNullOrEmpty(hint) ? "选择多个文件" : hint);
             virtualInput.AppendTo(group);
-            SetAttribute(virtualInput, disabled, readony, null);
+            SetAttribute(virtualInput, disabled, readOnly, null);
         }
 
         private void SetFormValidator()

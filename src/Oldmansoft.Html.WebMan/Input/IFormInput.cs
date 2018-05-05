@@ -39,9 +39,9 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled">是否可用</param>
-        /// <param name="readony">只读</param>
+        /// <param name="readOnly">只读</param>
         /// <param name="hint">可描述输入字段预期值的提示信息</param>
-        void SetInputMode(bool disabled, bool readony, string hint);
+        void SetInputMode(bool disabled, bool readOnly, string hint);
 
         /// <summary>
         /// 设置查看模式

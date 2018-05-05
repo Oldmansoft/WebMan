@@ -33,9 +33,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Div;
             AddClass("input-group");
@@ -50,7 +50,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "password");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(input, disabled, readony, hint);
+            SetAttribute(input, disabled, readOnly, hint);
             input.AddClass("form-control");
             HtmlData.SetContext(input);
         }

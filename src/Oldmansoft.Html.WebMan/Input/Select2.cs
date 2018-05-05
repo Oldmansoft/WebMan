@@ -52,9 +52,9 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Tag = HtmlTag.Select;
             Attribute(HtmlAttribute.Name, Name);
@@ -90,7 +90,7 @@ namespace Oldmansoft.Html.WebMan.Input
                 }
                 item.Text(option.Text);
             }
-            SetAttribute(this, disabled, readony, hint);
+            if (disabled || readOnly) Attribute(HtmlAttribute.Disabled, "disabled");
 
             ScriptRegister.Register("Select2Edit", "view.node.find('select.select2').select2();");
         }

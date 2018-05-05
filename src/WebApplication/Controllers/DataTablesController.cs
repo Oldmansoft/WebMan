@@ -1,4 +1,5 @@
-﻿using Oldmansoft.ClassicDomain.Util;
+﻿using Oldmansoft.ClassicDomain;
+using Oldmansoft.ClassicDomain.Util;
 using Oldmansoft.Html.WebMan;
 using System;
 using System.Collections.Generic;
@@ -133,9 +134,7 @@ namespace WebApplication.Controllers
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
             var data = new Models.DataTableItemModel();
-            var mapper = new DataMapper();
-            mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
-            mapper.CopyTo(model, data);
+            model.MapTo(data);
 
             data.Id = GetDataSource().Max(o => o.Id) + 1;
             model.DealUpload((file) =>
@@ -173,9 +172,7 @@ namespace WebApplication.Controllers
             var data = GetDataSource().FirstOrDefault(o => o.Id == model.Id);
             if (data != null)
             {
-                var mapper = new DataMapper();
-                mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
-                mapper.CopyTo(model, data);
+                model.MapTo(data);
                 model.DealUpload((file) =>
                 {
                     data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
@@ -226,13 +223,13 @@ namespace WebApplication.Controllers
         {
             var data = GetDataSource().FirstOrDefault(o => o.Id == id);
 
-            var model = new Models.ShowModel();
+            var model = data.MapTo(new Models.ShowModel());
             model.Id = data.Id;
             model.Name = data.Name;
 
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.ShowModel, JsonResult>(ShowResult)));
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.ShowModel, JsonResult>(ShowResult)), GetListSource());
             panel.Append(form);
 
             return new HtmlResult(panel);

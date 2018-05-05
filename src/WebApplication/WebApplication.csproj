@@ -77,8 +77,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Oldmansoft.ClassicDomain, Version=3.1.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Domain.Net.3.1.58\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=4.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.4.0.13\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

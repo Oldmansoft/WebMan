@@ -1,4 +1,5 @@
-﻿using Oldmansoft.ClassicDomain.Util;
+﻿using Oldmansoft.ClassicDomain;
+using Oldmansoft.ClassicDomain.Util;
 using Oldmansoft.Html.WebMan;
 using System;
 using System.Collections.Generic;
@@ -73,9 +74,7 @@ namespace WebApplication.Controllers
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
             var data = new Models.DataTableItemModel();
-            var mapper = new DataMapper();
-            mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
-            mapper.CopyTo(model, data);
+            model.MapTo(data);
 
             if (GetDataSource(parentId).Count == 0)
             {
@@ -124,9 +123,7 @@ namespace WebApplication.Controllers
             var data = GetDataSource(parentId).FirstOrDefault(o => o.Id == model.Id);
             if (data != null)
             {
-                var mapper = new DataMapper();
-                mapper.SetIgnore<Models.DataTableItemModel>().Add(o => o.File).Add(o => o.Files);
-                mapper.CopyTo(model, data);
+                model.MapTo(data);
                 model.DealUpload((file) =>
                 {
                     data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");

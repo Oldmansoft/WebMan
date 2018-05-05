@@ -40,15 +40,15 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// </summary>
         /// <param name="input"></param>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        protected void SetAttribute(IHtmlElement input, bool disabled, bool readony, string hint)
+        protected void SetAttribute(IHtmlElement input, bool disabled, bool readOnly, string hint)
         {
             if (disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
-            if (readony)
+            if (readOnly)
             {
                 input.Attribute(HtmlAttribute.ReadOnly, "readonly");
             }
@@ -71,9 +71,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public abstract void SetInputMode(bool disabled, bool readony, string hint);
+        public abstract void SetInputMode(bool disabled, bool readOnly, string hint);
 
         /// <summary>
         /// 设置查看模式

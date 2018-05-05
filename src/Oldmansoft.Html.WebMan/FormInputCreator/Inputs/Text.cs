@@ -33,14 +33,14 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 设置输入模式
         /// </summary>
         /// <param name="disabled"></param>
-        /// <param name="readony"></param>
+        /// <param name="readOnly"></param>
         /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readony, string hint)
+        public override void SetInputMode(bool disabled, bool readOnly, string hint)
         {
             Attribute(HtmlAttribute.Type, "text");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(this, disabled, readony, hint);
+            SetAttribute(this, disabled, readOnly, hint);
             AddClass("form-control");
             HtmlData.SetContext(this);
         }
