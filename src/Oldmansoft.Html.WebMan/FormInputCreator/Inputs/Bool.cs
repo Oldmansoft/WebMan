@@ -58,7 +58,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                SetAttribute(input, disabled, readOnly, hint);
+                if (disabled || readOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
                 HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Value.HtmlEncode()));
             }

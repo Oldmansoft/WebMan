@@ -54,7 +54,7 @@ namespace WebApplication.Models
 
         [Display(Name = "文件")]
         [FileRequired]
-        [FileOption(SupportDelete = true, Accept = ContentType.Image)]
+        [FileOption(Accept = ContentType.Image)]
         public HttpPostedFileBase File { get; set; }
         
         [Display(Name = "文件组")]

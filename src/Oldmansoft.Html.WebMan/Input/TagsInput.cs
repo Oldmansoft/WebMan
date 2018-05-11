@@ -51,6 +51,8 @@ namespace Oldmansoft.Html.WebMan.Input
             Tag = HtmlTag.Div;
             AddClass("tagsinput");
             AddClass("form-control");
+            if (readOnly) Attribute(HtmlAttribute.ReadOnly, "readonly");
+            if (disabled) Attribute(HtmlAttribute.ReadOnly, "disabled");
             if (WrongValueFormat)
             {
                 Text("错误数据类型，请使用字符串列表");

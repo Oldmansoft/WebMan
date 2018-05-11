@@ -72,6 +72,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var control = new HtmlElement(HtmlTag.Div);
                 control.AppendTo(group);
                 control.AddClass("form-control");
+                if (readOnly) control.Attribute(HtmlAttribute.ReadOnly, "readonly");
+                if (disabled) control.Attribute(HtmlAttribute.ReadOnly, "disabled");
 
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(item.ContentType, item.FileName);
                 icon.CreateElement().AppendTo(control);
