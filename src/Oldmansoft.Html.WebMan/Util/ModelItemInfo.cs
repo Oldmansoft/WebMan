@@ -95,6 +95,11 @@ namespace Oldmansoft.Html.WebMan.Util
         /// </summary>
         public Annotations.HtmlDataAttribute HtmlData { get; set; }
 
+        /// <summary>
+        /// 固定数量
+        /// </summary>
+        public Annotations.FixedCountAttribute FixedCount { get; set; }
+
         public ModelItemInfo(PropertyInfo property)
         {
             Property = property;

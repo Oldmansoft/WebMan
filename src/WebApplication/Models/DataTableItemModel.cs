@@ -59,7 +59,8 @@ namespace WebApplication.Models
         
         [Display(Name = "文件组")]
         [FileRequired]
-        [FileOption(SupportDelete = true, Accept = ContentType.Image)]
+        [FileOption(SupportDelete = true, Accept = ContentType.Image, LimitContentLength = 1024 * 10)]
+        [FixedCount(3)]
         [HtmlData("lity")]
         public List<HttpPostedFileBase> Files { get; set; }
         

@@ -454,5 +454,24 @@ namespace Oldmansoft.Html.WebMan
             if (expression == null) throw new ArgumentNullException("expression");
             DealUpload(source, upload, null, expression);
         }
+
+        /// <summary>
+        /// 转换为空间容易内容
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        internal static string ToSpaceVolumeString(this uint source)
+        {
+            if (source < 1024)
+            {
+                return string.Format("{0} 字节", source);
+            }
+            if (source < 1024 * 1024)
+            {
+                return string.Format("{0} KB", source / 1024);
+            }
+
+            return string.Format("{0} MB", source / 1024 / 1024);
+        }
     }
 }

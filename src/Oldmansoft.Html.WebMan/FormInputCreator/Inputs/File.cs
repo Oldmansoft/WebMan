@@ -123,12 +123,19 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
         private void SetFormValidator()
         {
-            var message = "文件扩展名必须在 \"{0}\" 里面";
+            var extensionsMessage = "文件扩展名必须在 \"{0}\" 里面";
             if (FileOption.ErrorMessage != null)
             {
-                message = FileOption.ErrorMessage;
+                extensionsMessage = FileOption.ErrorMessage;
             }
-            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(message, string.Join(" ", FileOption.Extensions))));
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extensionsMessage, string.Join(" ", FileOption.Extensions))));
+
+            if (FileOption.LimitContentLength > 0)
+            {
+                var limitContentLengthMessage = "文件大小限制为 {0}";
+                if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
+                FormValidator[Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+            }
         }
 
         /// <summary>

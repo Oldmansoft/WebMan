@@ -162,6 +162,7 @@ namespace Oldmansoft.Html.WebMan.Util
             if (attribute is RangeAttribute)
             {
                 info.Range = attribute as RangeAttribute;
+                return;
             }
 
             if (attribute is System.ComponentModel.DescriptionAttribute)
@@ -173,11 +174,19 @@ namespace Oldmansoft.Html.WebMan.Util
             if (attribute is CustomInputAttribute)
             {
                 info.CustomInput = attribute as CustomInputAttribute;
+                return;
             }
 
             if (attribute is HtmlDataAttribute)
             {
                 info.HtmlData = attribute as HtmlDataAttribute;
+                return;
+            }
+
+            if (attribute is FixedCountAttribute)
+            {
+                info.FixedCount = attribute as FixedCountAttribute;
+                return;
             }
         }
     }

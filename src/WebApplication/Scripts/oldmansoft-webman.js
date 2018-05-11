@@ -1,7 +1,86 @@
 ﻿/*
-* v0.15.85
+* v0.16.86
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
+(function ($) {
+    $.fn.bootstrapValidator.validators.fixedCount = {
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i,
+                delInputs,
+                count = 0;
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    delInputs = $field.parent().parent().find(".del-file-input");
+                    for (i = 0; i < delInputs.length; i++) {
+                        if ($.trim(delInputs.eq(i).val()) === '0') count++;
+                    }
+
+                    fields = findTemporaryTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') count++;
+                    }
+                }
+                return count == options.count;
+            }
+
+            return false;
+        }
+    };
+
+    $.fn.bootstrapValidator.validators.fileLimitContentLength = {
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i,
+                count = 0;
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    fields = findTemporaryTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') {
+                            if (fields.get(i).files[0].size > options.length) return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    $.fn.bootstrapValidator.validators.filesCount = {
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i,
+                delInputs,
+                count = 0;
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    delInputs = $field.parent().parent().find(".del-file-input");
+                    for (i = 0; i < delInputs.length; i++) {
+                        if ($.trim(delInputs.eq(i).val()) === '0') count++;
+                    }
+
+                    fields = findTemporaryTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') count++;
+                    }
+                }
+                if (options.inclusive)
+                    return count >= options.min && count <= options.max;
+                else
+                    return count > options.min && count < options.max;
+            }
+
+            return false;
+        }
+    };
+}(window.jQuery));
+
 if (!window.oldmansoft) window.oldmansoft = {};
 window.oldmansoft.webman = new (function () {
     var $this = this,

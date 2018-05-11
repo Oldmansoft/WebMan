@@ -112,17 +112,16 @@
 }(window.jQuery));
 
 // BootstrapValidator v0.5.3
+function findTemporaryTargetField($field) {
+    var form = $field.parentsUntil("body", "form"),
+        tempFor = $field.attr("data-temporary-for");
+    if (!tempFor) return $field;
+
+    return form.find("input[name=" + tempFor + "]").filter(function (index) {
+        return !$(this).attr("data-temporary-for");
+    });
+}
 (function ($) {
-    function findTargetField($field) {
-        var form = $field.parentsUntil("body", "form"),
-            tempFor = $field.attr("data-temporary-for");
-        if (!tempFor) return $field;
-
-        return form.find("input[name=" + tempFor + "]").filter(function (index) {
-            return !$(this).attr("data-temporary-for");
-        });
-    }
-
     $.fn.bootstrapValidator.validators.regexp = {
         html5Attributes: {
             message: 'message',
@@ -151,7 +150,7 @@
          */
         validate: function (validator, $field, options) {
             var values = [],
-                fields = findTargetField($field),
+                fields = findTemporaryTargetField($field),
                 field,
                 files,
                 value,
@@ -201,7 +200,8 @@
         validate: function (validator, $field, options) {
             var type = $field.attr('type'),
                 fields,
-                i;
+                i,
+                delInputs;
             if ('radio' === type || 'checkbox' === type) {
                 return validator
                             .getFieldElements($field.attr('data-bv-field'))
@@ -215,12 +215,12 @@
 
             if ('file' === type) {
                 if ($field.hasClass("template-mulit-file-input")) {
-                    var delInputs = $field.parent().parent().find(".del-file-input");
+                    delInputs = $field.parent().parent().find(".del-file-input");
                     for (i = 0; i < delInputs.length; i++) {
                         if ($.trim(delInputs.eq(i).val()) === '0') return true;
                     }
 
-                    fields = findTargetField($field);
+                    fields = findTemporaryTargetField($field);
                     for (i = 0; i < fields.length; i++) {
                         if ($.trim(fields.eq(i).val()) !== '') return true;
                     }
@@ -240,7 +240,7 @@
 
             //.tagsinput input 
             if ($field.hasClass("input")) {
-                fields = findTargetField($field);
+                fields = findTemporaryTargetField($field);
                 for (i = 0; i < fields.length; i++) {
                     if ($.trim(fields.eq(i).val()) !== '') return true;
                 }

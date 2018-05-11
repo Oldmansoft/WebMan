@@ -154,5 +154,29 @@ namespace Oldmansoft.Html.WebMan
             result.Value = value;
             return result;
         }
+
+        /// <summary>
+        /// 多文件固定数量
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Validator FixedCount(uint count)
+        {
+            var result = new FormValidate.FixedCount();
+            result.Count = count;
+            return result;
+        }
+
+        /// <summary>
+        /// 文件内容长度限制
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static Validator FileLimitContentLength(uint length)
+        {
+            var result = new FormValidate.FileLimitContentLength();
+            result.Length = length;
+            return result;
+        }
     }
 }

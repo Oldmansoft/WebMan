@@ -46,6 +46,7 @@
     <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Annotations\FixedCountAttribute.cs" />
     <Compile Include="Annotations\HtmlDataAttribute.cs" />
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="Annotations\ContentType.cs" />
@@ -124,6 +125,8 @@
     <Compile Include="FormInputCreator\ListDataItem.cs" />
     <Compile Include="FormInputCreator\ListDataSource.cs" />
     <Compile Include="FormValidate\EmailAddress.cs" />
+    <Compile Include="FormValidate\FileLimitContentLength.cs" />
+    <Compile Include="FormValidate\FixedCount.cs" />
     <Compile Include="FormValidate\FormValidator.cs" />
     <Compile Include="FormValidate\GreaterThan.cs" />
     <Compile Include="FormValidate\Identical.cs" />

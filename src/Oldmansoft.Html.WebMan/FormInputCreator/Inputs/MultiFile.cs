@@ -21,6 +21,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public Annotations.FileOptionAttribute FileOption { get; set; }
 
         /// <summary>
+        /// 固定数量
+        /// </summary>
+        public Annotations.FixedCountAttribute FixedCount { get; set; }
+
+        /// <summary>
         /// 值
         /// </summary>
         public List<HttpPostedFileCustom> Value { get; set; }
@@ -146,12 +151,23 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
         private void SetFormValidator()
         {
-            var message = "文件扩展名必须在 \"{0}\" 里面";
-            if (FileOption.ErrorMessage != null)
+            var extendsionsMessage = "文件扩展名必须在 \"{0}\" 里面";
+            if (FileOption.ErrorMessage != null) extendsionsMessage = FileOption.ErrorMessage;
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
+
+            if (FixedCount != null)
             {
-                message = FileOption.ErrorMessage;
+                var fixedCountMessage = "文件数量限定 {0} 个";
+                if (FixedCount.ErrorMessage != null) fixedCountMessage = FixedCount.ErrorMessage;
+                FormValidator[Name].Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(fixedCountMessage, FixedCount.Value)));
             }
-            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(message, string.Join(" ", FileOption.Extensions))));
+
+            if (FileOption.LimitContentLength > 0)
+            {
+                var limitContentLengthMessage = "文件大小限制为 {0}";
+                if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
+                FormValidator[Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+            }
         }
 
         /// <summary>

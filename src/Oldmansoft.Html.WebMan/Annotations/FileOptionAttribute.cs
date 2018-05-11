@@ -14,9 +14,9 @@ namespace Oldmansoft.Html.WebMan.Annotations
     public class FileOptionAttribute : ValidationAttribute
     {
         /// <summary>
-        /// 数量
+        /// 限制内容大小
         /// </summary>
-        public uint Count { get; set; }
+        public uint LimitContentLength { get; set; }
         
         /// <summary>
         /// 允许上传的文件扩展名
@@ -38,7 +38,6 @@ namespace Oldmansoft.Html.WebMan.Annotations
         /// </summary>
         public FileOptionAttribute(params string[] extensions)
         {
-            Count = 0;
             if (extensions != null && extensions.Length > 0)
             {
                 Extensions = extensions;
@@ -74,6 +73,8 @@ namespace Oldmansoft.Html.WebMan.Annotations
         private bool ValidFile(HttpPostedFileBase file)
         {
             if (file == null || file.FileName == null || file.ContentLength == 0) return true;
+
+            if (LimitContentLength > 0 && file.ContentLength > LimitContentLength) return false;
 
             var result = false;
             if (Accept != ContentType.None)
