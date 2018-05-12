@@ -1,5 +1,5 @@
 ﻿/*
-* v0.16.86
+* v0.16.88
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -22,10 +22,23 @@
                         if ($.trim(fields.eq(i).val()) !== '') count++;
                     }
                 }
-                return count == options.count;
+            } else if ($field.hasClass("input") && $field.parent().hasClass("tagsinput")) {
+                count = findTemporaryTargetField($field).length;
+            } else if ('checkbox' === type) {
+                fields = $("input[name=" + $field.attr("name") + "]");
+                for (i = 0; i < fields.length; i++) {
+                    if (fields.eq(i).prop("checked")) count++;
+                }
+            } else if ($field.is("select")) {
+                fields = $field.children();
+                for (var i = 0; i < fields.length; i++) {
+                    if (fields.eq(i).prop("selected")) count++;
+                }
+            } else {
+                count = $("input[name=" + $field.attr("name") + "]").length;
             }
-
-            return false;
+            if (count == 0) return true;
+            return count == options.count;
         }
     };
 

@@ -38,7 +38,6 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                     {
                         multiFile.FileOption = model.FileOption;
                     }
-                    multiFile.FixedCount = input.ModelItem.FixedCount;
                     result = multiFile;
                     input.SetInputProperty(result);
                     result.Init(model.Name, type, input.Value, null);

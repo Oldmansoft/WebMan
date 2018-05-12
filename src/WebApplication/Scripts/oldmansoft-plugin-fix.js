@@ -238,13 +238,9 @@ function findTemporaryTargetField($field) {
                 }
             }
 
-            //.tagsinput input 
-            if ($field.hasClass("input")) {
+            if ($field.hasClass("input") && $field.parent().hasClass("tagsinput")) {
                 fields = findTemporaryTargetField($field);
-                for (i = 0; i < fields.length; i++) {
-                    if ($.trim(fields.eq(i).val()) !== '') return true;
-                }
-                return false;
+                return fields.length > 0;
             }
 
             return $.trim($field.val()) !== '';

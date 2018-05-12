@@ -19,12 +19,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// 文件选项
         /// </summary>
         public Annotations.FileOptionAttribute FileOption { get; set; }
-
-        /// <summary>
-        /// 固定数量
-        /// </summary>
-        public Annotations.FixedCountAttribute FixedCount { get; set; }
-
+        
         /// <summary>
         /// 值
         /// </summary>
@@ -156,14 +151,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var extendsionsMessage = "文件扩展名必须在 \"{0}\" 里面";
             if (FileOption.ErrorMessage != null) extendsionsMessage = FileOption.ErrorMessage;
             FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
-
-            if (FixedCount != null)
-            {
-                var fixedCountMessage = "文件数量限定 {0} 个";
-                if (FixedCount.ErrorMessage != null) fixedCountMessage = FixedCount.ErrorMessage;
-                FormValidator[Name].Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(fixedCountMessage, FixedCount.Value)));
-            }
-
+            
             if (FileOption.LimitContentLength > 0)
             {
                 var limitContentLengthMessage = "文件大小限制为 {0}";

@@ -38,10 +38,12 @@ namespace WebApplication.Models
         [Display(Name = "年龄")]
         [Range(1, 5)]
         [CustomInput(typeof(Select2))]
-        public int? Age { get; set; }
+        [FixedCount(2)]
+        public List<int> Age { get; set; }
 
         [Display(Name = "列表")]
         [Required]
+        [FixedCount(2)]
         public List<DataTableItemState> States { get; set; }
 
         [Display(Name = "日期")]
@@ -66,6 +68,7 @@ namespace WebApplication.Models
         
         [CustomInput(typeof(TagsInput))]
         [Required]
+        [FixedCount(3)]
         public List<string> Tags { get; set; }
         
         public double? DoubleValue { get; set; }

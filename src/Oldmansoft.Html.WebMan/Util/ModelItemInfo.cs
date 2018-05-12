@@ -169,6 +169,10 @@ namespace Oldmansoft.Html.WebMan.Util
                 validator.Set(Validator.GreaterThan(Range.Minimum).SetMessage(Range));
                 validator.Set(Validator.LessThan(Range.Maximum).SetMessage(Range));
             }
+            if (FixedCount != null)
+            {
+                validator.Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(FixedCount.ErrorMessage == null ? "数量限定 {0} 个" : FixedCount.ErrorMessage, FixedCount.Value)));
+            }
         }
     }
 }
