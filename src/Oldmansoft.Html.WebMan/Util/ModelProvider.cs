@@ -188,6 +188,12 @@ namespace Oldmansoft.Html.WebMan.Util
                 info.FixedCount = attribute as FixedCountAttribute;
                 return;
             }
+
+            if (attribute is RangeCountAttribute)
+            {
+                info.RangeCount = attribute as RangeCountAttribute;
+                return;
+            }
         }
     }
 }

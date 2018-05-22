@@ -100,6 +100,11 @@ namespace Oldmansoft.Html.WebMan.Util
         /// </summary>
         public Annotations.FixedCountAttribute FixedCount { get; set; }
 
+        /// <summary>
+        /// 范围数量
+        /// </summary>
+        public Annotations.RangeCountAttribute RangeCount { get; set; }
+
         public ModelItemInfo(PropertyInfo property)
         {
             Property = property;
@@ -172,6 +177,10 @@ namespace Oldmansoft.Html.WebMan.Util
             if (FixedCount != null)
             {
                 validator.Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(FixedCount.ErrorMessage == null ? "数量限定 {0} 个" : FixedCount.ErrorMessage, FixedCount.Value)));
+            }
+            if (RangeCount != null)
+            {
+                validator.Set(Validator.RangeCount(RangeCount.MinCount, RangeCount.MaxCount, RangeCount.Inclusive).Message(RangeCount.ErrorMessage == null ? "数量限定有误" : RangeCount.ErrorMessage));
             }
         }
     }

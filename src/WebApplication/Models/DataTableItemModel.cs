@@ -36,9 +36,7 @@ namespace WebApplication.Models
         public bool? IsGood { get; set; }
 
         [Display(Name = "年龄")]
-        [Range(1, 5)]
         [CustomInput(typeof(Select2))]
-        [FixedCount(2)]
         public List<int> Age { get; set; }
 
         [Display(Name = "列表")]
@@ -62,13 +60,13 @@ namespace WebApplication.Models
         [Display(Name = "文件组")]
         [FileRequired]
         [FileOption(SupportDelete = true, Accept = ContentType.Image, LimitContentLength = 1024 * 10)]
-        [FixedCount(3)]
         [HtmlData("lity")]
+        [RangeCount(2, 3, ServerValidate = false)]
         public List<HttpPostedFileBase> Files { get; set; }
         
         [CustomInput(typeof(TagsInput))]
         [Required]
-        [FixedCount(3)]
+        [RangeCount(2, 3)]
         public List<string> Tags { get; set; }
         
         public double? DoubleValue { get; set; }

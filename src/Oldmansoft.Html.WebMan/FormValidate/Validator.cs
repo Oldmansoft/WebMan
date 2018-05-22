@@ -156,14 +156,30 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 多文件固定数量
+        /// 列表固定数量
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
         public static Validator FixedCount(uint count)
         {
-            var result = new FormValidate.FixedCount();
-            result.Count = count;
+            var result = new FormValidate.ListCount();
+            result.Fixed = count;
+            return result;
+        }
+
+        /// <summary>
+        /// 列表范围数量
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="inclusive"></param>
+        /// <returns></returns>
+        public static Validator RangeCount(uint min, uint max, bool inclusive)
+        {
+            var result = new FormValidate.ListCount();
+            result.Inclusive = inclusive;
+            if (min > 0) result.Min = min;
+            if (max > 0) result.Max = max;
             return result;
         }
 

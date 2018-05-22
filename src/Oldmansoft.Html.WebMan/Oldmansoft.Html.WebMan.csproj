@@ -51,6 +51,7 @@
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="Annotations\FileRequiredAttribute.cs" />
+    <Compile Include="Annotations\RangeCountAttribute.cs" />
     <Compile Include="AppEvent.cs" />
     <Compile Include="Badge.cs" />
     <Compile Include="DataTables\StaticTableAction.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="FormInputCreator\ListDataSource.cs" />
     <Compile Include="FormValidate\EmailAddress.cs" />
     <Compile Include="FormValidate\FileLimitContentLength.cs" />
-    <Compile Include="FormValidate\FixedCount.cs" />
+    <Compile Include="FormValidate\ListCount.cs" />
     <Compile Include="FormValidate\FormValidator.cs" />
     <Compile Include="FormValidate\GreaterThan.cs" />
     <Compile Include="FormValidate\Identical.cs" />

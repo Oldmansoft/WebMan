@@ -1,9 +1,9 @@
 ﻿/*
-* v0.16.88
+* v0.16.89
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
-    $.fn.bootstrapValidator.validators.fixedCount = {
+    $.fn.bootstrapValidator.validators.listCount = {
         validate: function (validator, $field, options) {
             var type = $field.attr('type'),
                 fields,
@@ -38,7 +38,29 @@
                 count = $("input[name=" + $field.attr("name") + "]").length;
             }
             if (count == 0) return true;
-            return count == options.count;
+            if (options.fixed) return count == options.fixed;
+            if (options.min && options.max) {
+                if (options.inclusive) {
+                    return count >= options.min && count <= options.max;
+                } else {
+                    return count > options.min && count < options.max;
+                }
+            }
+            if (options.min) {
+                if (options.inclusive) {
+                    return count >= options.min;
+                } else {
+                    return count > options.min;
+                }
+            }
+            if (options.max) {
+                if (options.inclusive) {
+                    return count <= options.max;
+                } else {
+                    return count < options.max;
+                }
+            }
+            return true;
         }
     };
 
@@ -58,35 +80,6 @@
                     }
                 }
                 return true;
-            }
-
-            return false;
-        }
-    };
-
-    $.fn.bootstrapValidator.validators.filesCount = {
-        validate: function (validator, $field, options) {
-            var type = $field.attr('type'),
-                fields,
-                i,
-                delInputs,
-                count = 0;
-            if ('file' === type) {
-                if ($field.hasClass("template-mulit-file-input")) {
-                    delInputs = $field.parent().parent().find(".del-file-input");
-                    for (i = 0; i < delInputs.length; i++) {
-                        if ($.trim(delInputs.eq(i).val()) === '0') count++;
-                    }
-
-                    fields = findTemporaryTargetField($field);
-                    for (i = 0; i < fields.length; i++) {
-                        if ($.trim(fields.eq(i).val()) !== '') count++;
-                    }
-                }
-                if (options.inclusive)
-                    return count >= options.min && count <= options.max;
-                else
-                    return count > options.min && count < options.max;
             }
 
             return false;
