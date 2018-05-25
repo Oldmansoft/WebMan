@@ -13,6 +13,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
     public class FixedCountAttribute : ValidationAttribute
     {
         /// <summary>
+        /// 服务器验证
+        /// </summary>
+        public bool ServerValidate { get; set; }
+
+        /// <summary>
         /// 数量
         /// </summary>
         public uint Value { get; private set; }
@@ -34,7 +39,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
         /// <returns></returns>
         public override bool IsValid(object value)
         {
-            return true;
+            if (!ServerValidate) return true;
+
+            var count = 0;
+            if (value is System.Collections.IList) count = (value as System.Collections.IList).Count;
+            return count == Value;
         }
     }
 }

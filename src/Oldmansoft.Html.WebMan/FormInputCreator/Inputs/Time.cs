@@ -18,13 +18,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="info">实体项信息</param>
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public override void Init(string name, System.Type type, object value, IList<ListDataItem> options)
+        public override void Init(ModelItemInfo info, System.Type type, object value, IList<ListDataItem> options)
         {
-            Name = name;
+            Name = info.Name;
             Value = (System.DateTime?)value;
         }
 

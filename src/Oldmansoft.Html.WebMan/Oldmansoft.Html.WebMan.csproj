@@ -51,6 +51,7 @@
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="Annotations\ContentType.cs" />
     <Compile Include="Annotations\FileRequiredAttribute.cs" />
+    <Compile Include="Annotations\InputMaxLengthAttribute.cs" />
     <Compile Include="Annotations\RangeCountAttribute.cs" />
     <Compile Include="AppEvent.cs" />
     <Compile Include="Badge.cs" />

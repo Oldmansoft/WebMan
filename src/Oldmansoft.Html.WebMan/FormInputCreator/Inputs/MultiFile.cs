@@ -18,23 +18,24 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <summary>
         /// 文件选项
         /// </summary>
-        public Annotations.FileOptionAttribute FileOption { get; set; }
+        private Annotations.FileOptionAttribute FileOption { get; set; }
         
         /// <summary>
         /// 值
         /// </summary>
-        public List<HttpPostedFileCustom> Value { get; set; }
+        private List<HttpPostedFileCustom> Value { get; set; }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="info">实体项信息</param>
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
+        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
         {
-            Name = name;
+            Name = info.Name;
+            FileOption = info.FileOption;
             if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
             Value = new List<HttpPostedFileCustom>();
             if (value == null) return;

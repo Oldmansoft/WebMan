@@ -21,33 +21,28 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, type, input.Value, Util.EnumProvider.Instance.GetDataItems(itemType, input.Source.GetCanNull(model.Name)));
+                    result.Init(model, type, input.Value, Util.EnumProvider.Instance.GetDataItems(itemType, input.Source.GetCanNull(model.Name)));
                     return true;
                 }
                 else if (itemType == typeof(string))
                 {
                     result = new Inputs.MultiSelect();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, type, input.Value, input.Source.Get(model.Name));
+                    result.Init(model, type, input.Value, input.Source.Get(model.Name));
                     return true;
                 }
                 else if (itemType == typeof(HttpPostedFileBase) || itemType == typeof(HttpPostedFileWrapper))
                 {
-                    var multiFile = new Inputs.MultiFile();
-                    if (model.FileOption != null)
-                    {
-                        multiFile.FileOption = model.FileOption;
-                    }
-                    result = multiFile;
+                    result = new Inputs.MultiFile();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, type, input.Value, null);
+                    result.Init(model, type, input.Value, null);
                     return true;
                 }
                 else if (!itemType.IsClass)
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model.Name, type, input.Value, input.Source.Get(model.Name));
+                    result.Init(model, type, input.Value, input.Source.Get(model.Name));
                     return true;
                 }
             }

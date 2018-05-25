@@ -6,9 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oldmansoft.Html.WebMan.Util
+namespace Oldmansoft.Html.WebMan
 {
-    class ModelItemInfo
+    /// <summary>
+    /// 实体项信息
+    /// </summary>
+    public class ModelItemInfo
     {
         /// <summary>
         /// 属性信息
@@ -23,89 +26,103 @@ namespace Oldmansoft.Html.WebMan.Util
         /// <summary>
         /// 显示
         /// </summary>
-        public string Display { get; set; }
+        public string Display { get; internal set; }
 
         /// <summary>
         /// 是否必须
         /// </summary>
-        public RequiredAttribute Required { get; set; }
+        public RequiredAttribute Required { get; internal set; }
 
         /// <summary>
         /// 数据类型
         /// </summary>
-        public DataType DataType { get; set; }
+        public DataType DataType { get; internal set; }
 
         /// <summary>
         /// 数据类型不匹配错误消息
         /// </summary>
-        public string DataTypeErrorMessage { get; set; }
+        public string DataTypeErrorMessage { get; internal set; }
 
         /// <summary>
         /// 字符串长度
         /// </summary>
-        public StringLengthAttribute StringLength { get; set; }
+        public StringLengthAttribute StringLength { get; internal set; }
 
         /// <summary>
         /// 比较
         /// </summary>
-        public CompareAttribute Compare { get; set; }
+        public CompareAttribute Compare { get; internal set; }
         
         /// <summary>
         /// 正则表达式
         /// </summary>
-        public RegularExpressionAttribute Regular { get; set; }
+        public RegularExpressionAttribute Regular { get; internal set; }
         
         /// <summary>
         /// 两值之间
         /// </summary>
-        public RangeAttribute Range { get; set; }
+        public RangeAttribute Range { get; internal set; }
         
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; internal set; }
 
         /// <summary>
         /// 是否不可用
         /// </summary>
-        public bool Disabled { get; set; }
+        public bool Disabled { get; internal set; }
 
         /// <summary>
         /// 是否只读
         /// </summary>
-        public bool ReadOnly { get; set; }
+        public bool ReadOnly { get; internal set; }
 
         /// <summary>
         /// 是否隐藏
         /// </summary>
-        public bool Hidden { get; set; }
+        public bool Hidden { get; internal set; }
+
+        /// <summary>
+        /// 属性集
+        /// </summary>
+        public IList<Attribute> Attributes { get; internal set; }
         
         /// <summary>
         /// 上传文件扩展名
         /// </summary>
-        public Annotations.FileOptionAttribute FileOption { get; set; }
+        public Annotations.FileOptionAttribute FileOption { get; internal set; }
 
         /// <summary>
         /// 定制输入
         /// </summary>
-        public Annotations.CustomInputAttribute CustomInput { get; set; }
+        public Annotations.CustomInputAttribute CustomInput { get; internal set; }
 
         /// <summary>
         /// 设置 Html data 属性
         /// </summary>
-        public Annotations.HtmlDataAttribute HtmlData { get; set; }
+        public Annotations.HtmlDataAttribute HtmlData { get; internal set; }
 
         /// <summary>
         /// 固定数量
         /// </summary>
-        public Annotations.FixedCountAttribute FixedCount { get; set; }
+        public Annotations.FixedCountAttribute FixedCount { get; internal set; }
 
         /// <summary>
         /// 范围数量
         /// </summary>
-        public Annotations.RangeCountAttribute RangeCount { get; set; }
+        public Annotations.RangeCountAttribute RangeCount { get; internal set; }
 
-        public ModelItemInfo(PropertyInfo property)
+        /// <summary>
+        /// 输入限制长度
+        /// </summary>
+        public Annotations.InputMaxLengthAttribute InputMaxLength { get; internal set; }
+
+        /// <summary>
+        /// 创建
+        /// </summary>
+        /// <param name="property"></param>
+        internal ModelItemInfo(PropertyInfo property)
         {
             Property = property;
             Name = property.Name;
@@ -126,7 +143,7 @@ namespace Oldmansoft.Html.WebMan.Util
         /// <param name="sourceType"></param>
         /// <param name="targetType"></param>
         /// <returns></returns>
-        public static bool IsType(Type sourceType, Type targetType)
+        internal static bool IsType(Type sourceType, Type targetType)
         {
             if (sourceType == targetType) return true;
             if (!targetType.IsClass && sourceType == typeof(Nullable<>).MakeGenericType(targetType)) return true;
@@ -137,7 +154,7 @@ namespace Oldmansoft.Html.WebMan.Util
         /// 设置验证
         /// </summary>
         /// <param name="form"></param>
-        public void SetValidate(FormValidate.FormValidator form)
+        internal void SetValidate(FormValidate.FormValidator form)
         {
             if (ReadOnly || Disabled) return;
             var validator = form[Name];

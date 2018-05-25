@@ -18,6 +18,7 @@ namespace WebApplication.Models
         [StringLength(int.MaxValue, MinimumLength = 3)]
         [Description("请输入名称")]
         [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
+        [InputMaxLength(3)]
         public string Name { get; set; }
         
         [DataType(DataType.Password)]
@@ -67,6 +68,7 @@ namespace WebApplication.Models
         [CustomInput(typeof(TagsInput))]
         [Required]
         [RangeCount(2, 3)]
+        [InputMaxLength(3)]
         public List<string> Tags { get; set; }
         
         public double? DoubleValue { get; set; }

@@ -51,8 +51,10 @@ namespace Oldmansoft.Html.WebMan.Util
             {
                 var info = new ModelItemInfo(item);
                 SetModelType(info, item.PropertyType);
+                info.Attributes = new List<Attribute>();
                 foreach (var attribute in item.GetCustomAttributes(typeof(Attribute), true))
                 {
+                    info.Attributes.Add(attribute as Attribute);
                     SetAttribute(info, attribute);
                 }
                 list.Add(info);
@@ -192,6 +194,12 @@ namespace Oldmansoft.Html.WebMan.Util
             if (attribute is RangeCountAttribute)
             {
                 info.RangeCount = attribute as RangeCountAttribute;
+                return;
+            }
+
+            if (attribute is InputMaxLengthAttribute)
+            {
+                info.InputMaxLength = attribute as InputMaxLengthAttribute;
                 return;
             }
         }

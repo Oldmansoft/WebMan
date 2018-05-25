@@ -14,9 +14,16 @@ namespace WebApplication.CustomInput
 
         private string Value { get; set; }
 
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="info">实体项信息</param>
+        /// <param name="type">值类型</param>
+        /// <param name="value">值</param>
+        /// <param name="options">列表项</param>
+        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
         {
-            Name = name;
+            Name = info.Name;
             if (value != null) Value = value.ToString();
         }
 

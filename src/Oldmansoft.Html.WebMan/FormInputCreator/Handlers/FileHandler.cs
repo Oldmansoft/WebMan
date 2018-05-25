@@ -14,14 +14,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (input.ModelItem.Property.PropertyType == type ||
                 input.ModelItem.Property.PropertyType.IsSubclassOf(type))
             {
-                var file = new Inputs.File();
-                if (input.ModelItem.FileOption != null)
-                {
-                    file.FileOption = input.ModelItem.FileOption;
-                }
-                result = file;
+                result = new Inputs.File();
                 input.SetInputProperty(result);
-                result.Init(input.ModelItem.Name, input.ModelItem.Property.PropertyType, input.Value, null);
+                result.Init(input.ModelItem, input.ModelItem.Property.PropertyType, input.Value, null);
                 return true;
             }
             return false;

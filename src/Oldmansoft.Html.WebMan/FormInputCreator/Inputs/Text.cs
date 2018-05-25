@@ -16,16 +16,19 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
         private string Value { get; set; }
 
+        private Annotations.InputMaxLengthAttribute InputMaxLength { get; set; }
+
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="info">实体项信息</param>
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
+        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
         {
-            Name = name;
+            Name = info.Name;
+            InputMaxLength = info.InputMaxLength;
             Value = value.GetNotNullString();
         }
 
@@ -40,6 +43,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Attribute(HtmlAttribute.Type, "text");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
+            if (InputMaxLength != null) Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
             SetAttribute(this, disabled, readOnly, hint);
             AddClass("form-control");
             HtmlData.SetContext(this);

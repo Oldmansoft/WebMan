@@ -17,6 +17,8 @@ namespace Oldmansoft.Html.WebMan.Input
         
         private bool WrongValueFormat { get; set; }
 
+        private Annotations.InputMaxLengthAttribute InputMaxLength { get; set; }
+
         void ICustomInput.Set(object[] parameter)
         {
         }
@@ -24,15 +26,15 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="info">实体项信息</param>
         /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public override void Init(string name, Type type, object value, IList<ListDataItem> options)
+        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
         {
             WrongValueFormat = value != null && !(value is IEnumerable<string>);
-            Name = name;
-
+            Name = info.Name;
+            InputMaxLength = info.InputMaxLength;
             Value = new HashSet<string>();
             foreach (var item in value.GetListString())
             {
@@ -85,6 +87,7 @@ namespace Oldmansoft.Html.WebMan.Input
             input.Attribute(HtmlAttribute.Name, Name);
             input.Data("temporary", "temporary");
             input.Data("temporary-for", Name);
+            if (InputMaxLength != null) input.Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
 
             ScriptRegister.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");
         }
