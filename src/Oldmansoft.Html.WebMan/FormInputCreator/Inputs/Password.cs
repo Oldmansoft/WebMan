@@ -12,30 +12,21 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     /// </summary>
     public class Password : FormInput
     {
-        private string Name { get; set; }
-
         private string Value { get; set; }
 
         /// <summary>
-        /// 初始化
+        /// 设置值
         /// </summary>
-        /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
-        /// <param name="options">列表项</param>
-        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
+        protected override void InitValue(object value)
         {
-            Name = info.Name;
             Value = value.GetNotNullString();
         }
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Tag = HtmlTag.Div;
             AddClass("input-group");
@@ -48,9 +39,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
             input.Attribute(HtmlAttribute.Type, "password");
-            input.Attribute(HtmlAttribute.Name, Name);
+            input.Attribute(HtmlAttribute.Name, ModelItem.Name);
             input.Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(input, disabled, readOnly, hint);
+            SetAttributeDisabledReadOnlyPlaceHolder(input);
             input.AddClass("form-control");
             HtmlData.SetContext(input);
         }

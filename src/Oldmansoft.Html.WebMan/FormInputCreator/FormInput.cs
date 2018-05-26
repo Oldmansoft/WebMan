@@ -12,6 +12,16 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
     public abstract class FormInput : HtmlElement, Input.IFormInput
     {
         /// <summary>
+        /// 实体项
+        /// </summary>
+        public ModelItemInfo ModelItem { get; private set; }
+
+        /// <summary>
+        /// 列表源
+        /// </summary>
+        public IList<ListDataItem> Options { get; private set; }
+        
+        /// <summary>
         /// 脚本注册器
         /// </summary>
         public Input.ScriptRegister ScriptRegister { get; set; }
@@ -39,22 +49,35 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 设置属性
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        protected void SetAttribute(IHtmlElement input, bool disabled, bool readOnly, string hint)
+        protected void SetAttributeDisabledReadOnlyPlaceHolder(IHtmlElement input)
         {
-            if (disabled)
+            if (ModelItem.Disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
-            if (readOnly)
+            if (ModelItem.ReadOnly)
             {
                 input.Attribute(HtmlAttribute.ReadOnly, "readonly");
             }
-            if (!string.IsNullOrEmpty(hint))
+            if (!string.IsNullOrEmpty(ModelItem.Description))
             {
-                input.Attribute(HtmlAttribute.PlaceHolder, hint);
+                input.Attribute(HtmlAttribute.PlaceHolder, ModelItem.Description);
+            }
+        }
+
+        /// <summary>
+        /// 设置属性
+        /// </summary>
+        /// <param name="input"></param>
+        protected void SetAttributeDisabledReadOnly(IHtmlElement input)
+        {
+            if (ModelItem.Disabled)
+            {
+                input.Attribute(HtmlAttribute.Disabled, "disabled");
+            }
+            if (ModelItem.ReadOnly)
+            {
+                input.Attribute(HtmlAttribute.ReadOnly, "readonly");
             }
         }
 
@@ -62,18 +85,25 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 初始化
         /// </summary>
         /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public abstract void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options);
+        public void Init(ModelItemInfo info, object value, IList<ListDataItem> options)
+        {
+            ModelItem = info;
+            Options = options;
+            InitValue(value);
+        }
+
+        /// <summary>
+        /// 设置值
+        /// </summary>
+        /// <param name="value"></param>
+        protected abstract void InitValue(object value);
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public abstract void SetInputMode(bool disabled, bool readOnly, string hint);
+        public abstract void SetInputMode();
 
         /// <summary>
         /// 设置查看模式

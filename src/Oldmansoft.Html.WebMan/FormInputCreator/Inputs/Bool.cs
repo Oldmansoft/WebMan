@@ -12,38 +12,29 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     /// </summary>
     public class Bool : FormInput
     {
-        private string Name { get; set; }
-
         private bool? Value { get; set; }
 
-        private Dictionary<bool, string> Options { get; set; }
+        private Dictionary<bool, string> Source { get; set; }
 
         /// <summary>
-        /// 初始化
+        /// 设置值
         /// </summary>
-        /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
-        /// <param name="options">列表项</param>
-        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
+        protected override void InitValue(object value)
         {
-            Name = info.Name;
-            Options = new Dictionary<bool, string>();
-            Options.Add(true, "是");
-            Options.Add(false, "否");
+            Source = new Dictionary<bool, string>();
+            Source.Add(true, "是");
+            Source.Add(false, "否");
             Value = (bool?)value;
         }
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Tag = HtmlTag.Div;
-            foreach (var option in Options)
+            foreach (var option in Source)
             {
                 var label = new HtmlElement(HtmlTag.Label);
                 Append(label);
@@ -52,13 +43,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var input = new HtmlElement(HtmlTag.Input);
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "radio");
-                input.Attribute(HtmlAttribute.Name, Name);
+                input.Attribute(HtmlAttribute.Name, ModelItem.Name);
                 input.Attribute(HtmlAttribute.Value, option.Key.ToString().ToLower());
                 if (Value.HasValue && option.Key == Value.Value)
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                if (disabled || readOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
+                if (ModelItem.Disabled || ModelItem.ReadOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
                 HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Value.HtmlEncode()));
             }
@@ -72,7 +63,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Tag = HtmlTag.Div;
             AddClass("control-value");
             if (!Value.HasValue) return;
-            Text(Options[Value.Value]);
+            Text(Source[Value.Value]);
         }
     }
 }

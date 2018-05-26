@@ -125,8 +125,8 @@ namespace Oldmansoft.Html.WebMan
                 if (item.Hidden)
                 {
                     var hidden = new FormInputCreator.Inputs.Hidden();
-                    hidden.Init(item, item.Property.PropertyType, model != null ? item.Property.GetValue(model) : string.Empty, null);
-                    hidden.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
+                    hidden.Init(item, model != null ? item.Property.GetValue(model) : string.Empty, null);
+                    hidden.SetInputMode();
                     result.Append(hidden);
                     continue;
                 }
@@ -142,7 +142,7 @@ namespace Oldmansoft.Html.WebMan
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 if (inputMode)
                 {
-                    input.SetInputMode(item.Disabled, item.ReadOnly, item.Description);
+                    input.SetInputMode();
                 }
                 else
                 {

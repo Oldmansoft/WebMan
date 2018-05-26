@@ -13,41 +13,23 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     public class CheckBoxList : FormInput
     {
         /// <summary>
-        /// 名称
-        /// </summary>
-        protected string Name { get; set; }
-
-        /// <summary>
         /// 值
         /// </summary>
         protected IEnumerable<string> Values { get; set; }
 
         /// <summary>
-        /// 选项列表
+        /// 设置值
         /// </summary>
-        protected IList<ListDataItem> Options { get; set; }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
-        /// <param name="options">列表项</param>
-        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
+        protected override void InitValue(object value)
         {
-            Name = info.Name;
             Values = value.GetListString();
-            Options = options;
         }
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Tag = HtmlTag.Div;
             foreach(var option in Options)
@@ -59,13 +41,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var input = new HtmlElement(HtmlTag.Input);
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "checkbox");
-                input.Attribute(HtmlAttribute.Name, Name);
+                input.Attribute(HtmlAttribute.Name, ModelItem.Name);
                 input.Attribute(HtmlAttribute.Value, option.Value);
                 if (Values.Contains(option.Value))
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                if (disabled || readOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
+                if (ModelItem.Disabled || ModelItem.ReadOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
                 HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Text.HtmlEncode()));
             }

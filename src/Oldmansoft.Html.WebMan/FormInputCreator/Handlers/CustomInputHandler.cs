@@ -19,7 +19,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             result = customer;
             input.SetInputProperty(result);
             var options = Util.EnumProvider.Instance.GetDataItems(input.ModelItem.Property.PropertyType, input.Source.GetCanNull(input.ModelItem.Name));
-            result.Init(input.ModelItem, input.ModelItem.Property.PropertyType, input.Value, options);
+            result.Init(input.ModelItem, input.Value, options);
             return true;
         }
     }

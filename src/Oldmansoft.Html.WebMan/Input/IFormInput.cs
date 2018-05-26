@@ -30,18 +30,14 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 初始化
         /// </summary>
         /// <param name="info">实体项</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options);
+        void Init(ModelItemInfo info, object value, IList<ListDataItem> options);
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled">是否可用</param>
-        /// <param name="readOnly">只读</param>
-        /// <param name="hint">可描述输入字段预期值的提示信息</param>
-        void SetInputMode(bool disabled, bool readOnly, string hint);
+        void SetInputMode();
 
         /// <summary>
         /// 设置查看模式

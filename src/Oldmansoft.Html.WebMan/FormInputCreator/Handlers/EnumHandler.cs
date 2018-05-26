@@ -16,14 +16,14 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             {
                 result = new Inputs.RadioList();
                 input.SetInputProperty(result);
-                result.Init(model, type, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type));
+                result.Init(model, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type));
                 return true;
             }
             else if (Util.EnumProvider.IsNullableEnum(type))
             {
                 result = new Inputs.RadioList();
                 input.SetInputProperty(result);
-                result.Init(model, type, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]));
+                result.Init(model, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]));
                 return true;
             }
             return false;

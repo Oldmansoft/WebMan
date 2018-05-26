@@ -14,7 +14,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             {
                 result = new Inputs.Select();
                 input.SetInputProperty(result);
-                result.Init(input.ModelItem, input.ModelItem.Property.PropertyType, input.Value, input.Source.Get(input.ModelItem.Name));
+                result.Init(input.ModelItem, input.Value, input.Source.Get(input.ModelItem.Name));
                 return true;
             }
             return false;

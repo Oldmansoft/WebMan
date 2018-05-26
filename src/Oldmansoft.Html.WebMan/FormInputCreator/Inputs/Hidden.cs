@@ -12,35 +12,26 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     /// </summary>
     public class Hidden : FormInput
     {
-        private string Name { get; set; }
-
         private string Value { get; set; }
 
         /// <summary>
-        /// 初始化
+        /// 设置值
         /// </summary>
-        /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
-        /// <param name="options">列表项</param>
-        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
+        protected override void InitValue(object value)
         {
-            Name = info.Name;
             Value = value.GetNotNullString();
         }
 
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Attribute(HtmlAttribute.Type, "hidden");
-            Attribute(HtmlAttribute.Name, Name);
+            Attribute(HtmlAttribute.Name, ModelItem.Name);
             Attribute(HtmlAttribute.Value, Value);
-            SetAttribute(this, disabled, readOnly, hint);
+            SetAttributeDisabledReadOnlyPlaceHolder(this);
             HtmlData.SetContext(this);
         }
 
@@ -49,7 +40,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// </summary>
         public override void SetViewMode()
         {
-            SetInputMode(false, false, null);
+            SetInputMode();
         }
     }
 }

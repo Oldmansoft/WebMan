@@ -14,13 +14,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Tag = HtmlTag.Select;
-            Attribute(HtmlAttribute.Name, Name);
+            Attribute(HtmlAttribute.Name, ModelItem.Name);
             Attribute(HtmlAttribute.Multiple, "multiple");
             AddClass("form-control");
             foreach (var option in Options)
@@ -34,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
                 item.Text(option.Text);
             }
-            SetAttribute(this, disabled, readOnly, hint);
+            SetAttributeDisabledReadOnlyPlaceHolder(this);
             HtmlData.SetContext(this);
         }
     }

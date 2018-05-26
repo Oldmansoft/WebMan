@@ -12,8 +12,6 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
     /// </summary>
     public class File : FormInput
     {
-        private string Name { get; set; }
-
         /// <summary>
         /// 文件选项
         /// </summary>
@@ -25,16 +23,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         private HttpPostedFileCustom Value { get; set; }
 
         /// <summary>
-        /// 初始化
+        /// 设置值
         /// </summary>
-        /// <param name="info">实体项信息</param>
-        /// <param name="type">值类型</param>
         /// <param name="value">值</param>
-        /// <param name="options">列表项</param>
-        public override void Init(ModelItemInfo info, Type type, object value, IList<ListDataItem> options)
+        protected override void InitValue(object value)
         {
-            Name = info.Name;
-            FileOption = info.FileOption;
+            FileOption = ModelItem.FileOption;
             if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
             Value = value as HttpPostedFileCustom;
         }
@@ -42,10 +36,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <summary>
         /// 设置输入模式
         /// </summary>
-        /// <param name="disabled"></param>
-        /// <param name="readOnly"></param>
-        /// <param name="hint"></param>
-        public override void SetInputMode(bool disabled, bool readOnly, string hint)
+        public override void SetInputMode()
         {
             Tag = HtmlTag.Div;
             AddClass("input-group");
@@ -68,11 +59,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
-            if (!readOnly && !disabled)
+            if (!ModelItem.ReadOnly && !ModelItem.Disabled)
             {
                 input.Attribute(HtmlAttribute.Type, "file");
             }
-            input.Attribute(HtmlAttribute.Name, Name);
+            input.Attribute(HtmlAttribute.Name, ModelItem.Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -97,16 +88,16 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var virtualInput = new HtmlElement(HtmlTag.Div);
             virtualInput.AddClass("form-control virtual-file-input");
-            virtualInput.Text(string.IsNullOrEmpty(hint) ? "选择文件" : hint);
+            virtualInput.Text(string.IsNullOrEmpty(ModelItem.Description) ? "选择文件" : ModelItem.Description);
             virtualInput.AppendTo(this);
-            SetAttribute(virtualInput, disabled, readOnly, null);
+            SetAttributeDisabledReadOnly(virtualInput);
 
-            if (Value != null && !readOnly && !disabled)
+            if (Value != null && !ModelItem.ReadOnly && !ModelItem.Disabled)
             {
                 var delInput = new HtmlElement(HtmlTag.Input);
                 Append(delInput);
                 delInput.Attribute(HtmlAttribute.Type, "hidden");
-                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", Name));
+                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", ModelItem.Name));
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
@@ -129,13 +120,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 extensionsMessage = FileOption.ErrorMessage;
             }
-            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extensionsMessage, string.Join(" ", FileOption.Extensions))));
+            FormValidator[ModelItem.Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extensionsMessage, string.Join(" ", FileOption.Extensions))));
 
             if (FileOption.LimitContentLength > 0)
             {
                 var limitContentLengthMessage = "文件大小限制为 {0}";
                 if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
-                FormValidator[Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+                FormValidator[ModelItem.Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
             }
         }
 
