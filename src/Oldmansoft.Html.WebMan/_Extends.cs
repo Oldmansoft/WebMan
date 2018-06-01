@@ -423,10 +423,11 @@ namespace Oldmansoft.Html.WebMan
 
             if (delete != null)
             {
-                var isDeletes = System.Web.HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
-                for (var i = isDeletes.Length - 1; i > -1; i--)
+                var deleteMarks = System.Web.HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
+                if (deleteMarks == null) deleteMarks = new string[0];
+                for (var i = deleteMarks.Length - 1; i > -1; i--)
                 {
-                    if (isDeletes[i] == "1") delete(i);
+                    if (deleteMarks[i] == "1") delete(i);
                 }
             }
 
