@@ -1,5 +1,5 @@
 ﻿/*
-* v0.18.91
+* v0.18.92
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -180,10 +180,9 @@ window.oldmansoft.webman = new (function () {
                 }
 
                 currentLinks = links.slice(0, i + 1);
-                currentLinks.splice(0, 0, "");
                 a = $("<a></a>");
                 if (i < links.length - 1) {
-                    a.attr("href", currentLinks.join("#"));
+                    a.attr("href", "#" + oldmansoft.webapp.parser(currentLinks).getContent());
                 }
                 if (!text) {
                     if (view.node.data("link") == links[i]) {
