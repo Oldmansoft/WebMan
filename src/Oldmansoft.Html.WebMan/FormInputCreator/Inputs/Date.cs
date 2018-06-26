@@ -52,6 +52,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "date");
             input.Attribute(HtmlAttribute.Name, ModelItem.Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
+            if (ModelItem.ReadOnly) ModelItem.Disabled = true;
             SetAttributeDisabledReadOnlyPlaceHolder(input);
             input.AddClass("form-control");
             HtmlData.SetContext(input);

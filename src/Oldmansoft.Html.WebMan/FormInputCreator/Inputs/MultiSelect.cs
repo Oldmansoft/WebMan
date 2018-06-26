@@ -31,6 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
                 item.Text(option.Text);
             }
+            if (ModelItem.ReadOnly) ModelItem.Disabled = true;
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             HtmlData.SetContext(this);
         }
