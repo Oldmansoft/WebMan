@@ -1,5 +1,5 @@
 ﻿/*
-* v0.18.92
+* v0.18.93
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -19,7 +19,7 @@
 
                     fields = findTemporaryTargetField($field);
                     for (i = 0; i < fields.length; i++) {
-                        if ($.trim(fields.eq(i).val()) !== '') count++;
+                        if ($.trim(fields.eq(i).val()) !== '') count += fields.get(i).files.length;
                     }
                 }
             } else if ($field.hasClass("input") && $field.parent().hasClass("tagsinput")) {
@@ -69,13 +69,16 @@
             var type = $field.attr('type'),
                 fields,
                 i,
+                j,
                 count = 0;
             if ('file' === type) {
                 if ($field.hasClass("template-mulit-file-input")) {
                     fields = findTemporaryTargetField($field);
                     for (i = 0; i < fields.length; i++) {
                         if ($.trim(fields.eq(i).val()) !== '') {
-                            if (fields.get(i).files[0].size > options.length) return false;
+                            for (j = 0; j < fields.get(i).files.length; j++) {
+                                if (fields.get(i).files[j].size > options.length) return false;
+                            }
                         }
                     }
                 }
