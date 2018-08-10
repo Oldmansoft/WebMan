@@ -50,9 +50,12 @@ namespace Oldmansoft.Html.WebMan.Input
             {
                 Attribute(HtmlAttribute.Multiple, "multiple");
             }
-            else if (Value == null)
+            else if ((ModelItem.Property.PropertyType.IsGenericType && ModelItem.Property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) || ModelItem.Property.PropertyType == typeof(string))
             {
-                Append(new HtmlElement(HtmlTag.Option).Append(new HtmlRaw("&nbsp;")));
+                if (Value == null || ModelItem.Required == null)
+                {
+                    Append(new HtmlElement(HtmlTag.Option).Append(new HtmlRaw("&nbsp;")));
+                }
             }
             foreach (var option in Options)
             {
