@@ -26,7 +26,7 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            if (ModelItem.Property.PropertyType.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            if (ModelItem.Property.PropertyType.GetInterfaces().Contains(typeof(System.Collections.IList)))
             {
                 Values = value.GetListString();
             }
