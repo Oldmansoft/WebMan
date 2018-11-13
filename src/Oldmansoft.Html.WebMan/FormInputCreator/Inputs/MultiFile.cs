@@ -49,7 +49,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Tag = HtmlTag.Div;
             AddClass("mulit-file-group");
-            SetFileInput();
+            if (!ModelItem.Disabled && !ModelItem.ReadOnly) SetFileInput();
             foreach (var item in Value)
             {
                 var group = new HtmlElement(HtmlTag.Div);

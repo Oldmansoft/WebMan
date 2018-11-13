@@ -1,5 +1,5 @@
 ﻿/*
-* v0.25.94
+* v0.27.102
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -26,6 +26,9 @@ window.oldmansoft.webapp = new (function () {
     _fnOnUnauthorized = function () {
         return false;
     },
+    _fnOnLoadTimeout = function () {
+        return false;
+    },
     _currentViewEvent = null,
     _isDealLinkEmptyTarget = true,
     _isReplacePCScrollBar = true,
@@ -38,6 +41,7 @@ window.oldmansoft.webapp = new (function () {
     _windowBox,
     _modalBox,
     _canSetup = true,
+    _initialization_option,
     _hideMainViewFirstLoading = false;
 
     function linkEncode(text) {
@@ -222,7 +226,7 @@ window.oldmansoft.webapp = new (function () {
                 if (_WindowScrollBar) _WindowScrollBar.show();
             }
             if (count < 0) {
-                throw "shrink error";
+                throw new Error("shrink error");
             }
         }
     }
@@ -456,10 +460,23 @@ window.oldmansoft.webapp = new (function () {
     }
 
     function viewEvent() {
-        this.load = function () { };
-        this.unload = function () { };
-        this.active = function () { };
-        this.inactive = function () { };
+        function events() {
+            var list = [];
+            this.add = function (fn) {
+                if (typeof (fn) != "function") throw new Error("fn is not a function");
+                list.push(fn);
+            }
+            this.execute = function (para) {
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i](para) === false) return false;
+                }
+            }
+        }
+
+        this.load = new events();
+        this.unload = new events();
+        this.active = new events();
+        this.inactive = new events();
     }
 
     function viewEventParameter(node, name, level) {
@@ -490,27 +507,42 @@ window.oldmansoft.webapp = new (function () {
                 var win = $(window);
                 scrollTop = win.scrollTop();
                 scrollLeft = win.scrollLeft();
-                _globalViewEvent.inactive(eventParameter, localViewEvent.inactive(eventParameter));
+                if (localViewEvent.inactive.execute(eventParameter) !== false) {
+                    _globalViewEvent.inactive.execute(eventParameter);
+                }
                 this.node.hide();
                 visible = false;
             }
 
             this.callLoadAndActive = function () {
-                _globalViewEvent.load(eventParameter, localViewEvent.load(eventParameter));
-                _globalViewEvent.active(eventParameter, localViewEvent.active(eventParameter));
+                if (localViewEvent.load.execute(eventParameter) !== false) {
+                    _globalViewEvent.load.execute(eventParameter);
+                }
+                if (localViewEvent.active.execute(eventParameter) !== false) {
+                    _globalViewEvent.active.execute(eventParameter);
+                }
             }
 
             this.callInactiveAndUnload = function () {
-                _globalViewEvent.inactive(eventParameter, localViewEvent.inactive(eventParameter));
-                _globalViewEvent.unload(eventParameter, localViewEvent.unload(eventParameter));
+                if (localViewEvent.inactive.execute(eventParameter) !== false) {
+                    _globalViewEvent.inactive.execute(eventParameter);
+                }
+                if (localViewEvent.unload.execute(eventParameter) !== false) {
+                    _globalViewEvent.unload.execute(eventParameter);
+                }
             }
 
             this.remove = function () {
+                if (localViewEvent.inactive.execute(eventParameter) !== false) {
+                    _globalViewEvent.inactive.execute(eventParameter);
+                }
                 this.node.remove();
                 if (!this.valid) {
                     return;
                 }
-                this.callInactiveAndUnload();
+                if (localViewEvent.unload.execute(eventParameter) !== false) {
+                    _globalViewEvent.unload.execute(eventParameter);
+                }
                 this.node = null;
                 this.valid = false;
                 localViewEvent = null;
@@ -521,7 +553,9 @@ window.oldmansoft.webapp = new (function () {
                     return;
                 }
                 this.node.show();
-                _globalViewEvent.active(eventParameter, localViewEvent.active(eventParameter));
+                if (localViewEvent.active.execute(eventParameter) !== false) {
+                    _globalViewEvent.active.execute(eventParameter);
+                }
                 $(window).scrollLeft(scrollLeft);
                 $(window).scrollTop(scrollTop);
                 visible = true;
@@ -529,25 +563,31 @@ window.oldmansoft.webapp = new (function () {
 
             this.activeEvent = function () {
                 if (!localViewEvent) {
+                    _globalViewEvent.active.execute(eventParameter);
                     return;
                 }
-                _globalViewEvent.active(eventParameter, localViewEvent.active(eventParameter));
+                if (localViewEvent.active.execute(eventParameter) !== false) {
+                    _globalViewEvent.active.execute(eventParameter);
+                }
             }
 
             this.inactiveEvent = function () {
                 if (!localViewEvent) {
+                    _globalViewEvent.inactive.execute(eventParameter);
                     return;
                 }
-                _globalViewEvent.inactive(eventParameter, localViewEvent.inactive(eventParameter));
+                if (localViewEvent.inactive.execute(eventParameter) !== false) {
+                    _globalViewEvent.inactive.execute(eventParameter);
+                }
             }
 
             this.setContext = function () {
                 _currentViewEvent = new viewEvent();
 
+                this.node.empty();
                 if (arguments.length == 1) {
                     this.node.html(arguments[0]);
                 } else {
-                    this.node.empty();
                     for (var i = 0; i < arguments.length; i++) {
                         this.node.append(arguments[i]);
                     }
@@ -675,7 +715,7 @@ window.oldmansoft.webapp = new (function () {
             initElement();
             if (current) {
                 if (current.node.data("type") == "message") {
-                    throw "not allow show again after message show.";
+                    throw new Error("not allow show again after message show.");
                 }
                 store.push({ node: current.node.detach(), close: current.close });
             }
@@ -721,7 +761,7 @@ window.oldmansoft.webapp = new (function () {
         }
         this.pop = function () {
             if (stack.length == 1) {
-                throw "error call";
+                throw new Error("error call");
             }
             current = stack.pop();
             return current;
@@ -1186,6 +1226,13 @@ window.oldmansoft.webapp = new (function () {
                 loading.hide();
                 if (jqXHR.status == 401) {
                     _fnOnUnauthorized(loadPath);
+                } else if (jqXHR.status == 0 && textStatus == "timeout") {
+                    var onLoadTimeoutResult = _fnOnLoadTimeout();
+                    if (onLoadTimeoutResult) {
+                        if (loadOption.refresh) setOldView(onLoadTimeoutResult);
+                        else setView(link, data, type, onLoadTimeoutResult);
+                        return;
+                    }
                 }
                 var response = $(jqXHR.responseText),
                     title = $("<h4></h4>").text(errorThrown),
@@ -1333,6 +1380,13 @@ window.oldmansoft.webapp = new (function () {
                 loading.hide();
                 if (jqXHR.status == 401) {
                     _fnOnUnauthorized(loadPath);
+                } else if (jqXHR.status == 0 && textStatus == "timeout") {
+                    var onLoadTimeoutResult = _fnOnLoadTimeout();
+                    if (onLoadTimeoutResult) {
+                        if (loadOption.refresh) setOldView(onLoadTimeoutResult);
+                        else setView(link, data, type, onLoadTimeoutResult);
+                        return;
+                    }
                 }
                 var response = $(jqXHR.responseText),
                     title = $("<h4></h4>").text(errorThrown),
@@ -1344,8 +1398,8 @@ window.oldmansoft.webapp = new (function () {
                     content.text(response.eq(1).text());
                 }
 
-                if (loadOption.refresh) setView(title, content);
-                else setOldView(link, data, type, title, content);
+                if (loadOption.refresh) setOldView(title, content);
+                else setView(link, data, type, title, content);
             });
             loadOption = { closed: null, loaded: null, link: link, data: data, type: type, refresh: false };
             return loadOption;
@@ -1358,9 +1412,9 @@ window.oldmansoft.webapp = new (function () {
         }
 
         this.close = function (parameter, closeCompleted) {
-            var lastClosed = links.pop().getOption().closed;
             _windowBox.close(null, function () {
-                var current = links.last();
+                var lastClosed = links.pop().getOption().closed,
+                    current = links.last();
                 if (current) {
                     current.show();
                 } else {
@@ -1421,13 +1475,13 @@ window.oldmansoft.webapp = new (function () {
 
         function loadContent(link, baseLink, loadContentCompleted, loadCompleted) {
             var currentId = ++loadId,
-                loading = $this.loadingTip.show(),
+                loading = null,
                 loadPath = getAbsolutePath(link, baseLink, defaultLink);
 
             if (_hideMainViewFirstLoading) {
-                loading.hide();
-                loading = null;
                 _hideMainViewFirstLoading = false;
+            } else {
+                loading = $this.loadingTip.show();
             }
 
             $.ajax({
@@ -1471,6 +1525,13 @@ window.oldmansoft.webapp = new (function () {
 
                 if (jqXHR.status == 401) {
                     _fnOnUnauthorized(loadPath);
+                } else if (jqXHR.status == 0 && textStatus == "timeout") {
+                    var onLoadTimeoutResult = _fnOnLoadTimeout();
+                    if (onLoadTimeoutResult) {
+                        loadContentCompleted();
+                        setView(onLoadTimeoutResult);
+                        return;
+                    }
                 }
                 var response = $(jqXHR.responseText),
                     title = $("<h4></h4>").text(errorThrown),
@@ -1490,7 +1551,7 @@ window.oldmansoft.webapp = new (function () {
             var hrefs,
                 i;
             if (element == null) element = $(viewNodeSelector);
-            if (element.is("body")) throw "viewNode can't be <body>";
+            if (element.is("body")) throw new Error("viewNode can't be <body>");
             hrefs = new linkParser(link).getLinks();
             _modalView.clear();
             _openView.clear();
@@ -1615,22 +1676,22 @@ window.oldmansoft.webapp = new (function () {
     this.event = function () {
         return new function () {
             this.onLoad = function (fn) {
-                _currentViewEvent.load = fn;
+                _currentViewEvent.load.add(fn);
                 return this;
             }
 
             this.onUnload = function (fn) {
-                _currentViewEvent.unload = fn;
+                _currentViewEvent.unload.add(fn);
                 return this;
             }
 
             this.onActive = function (fn) {
-                _currentViewEvent.active = fn;
+                _currentViewEvent.active.add(fn);
                 return this;
             }
 
             this.onInactive = function (fn) {
-                _currentViewEvent.inactive = fn;
+                _currentViewEvent.inactive.add(fn);
                 return this;
             }
         }
@@ -1645,7 +1706,7 @@ window.oldmansoft.webapp = new (function () {
     }
 
     this.dealScrollToVisibleLoading = function () {
-        var loading = $(".webapp-loading:visible"),
+        var loading = $(".webapp-loading:visible").first(),
 	        src;
 
         if (loading.length > 0 && !loading.data("work") && $(window).scrollTop() + $(window).height() > loading.offset().top) {
@@ -1669,7 +1730,8 @@ window.oldmansoft.webapp = new (function () {
             isCancel = true;
 
         if ($("body").hasClass("layout-expanded")) {
-            path = e.originalEvent.path
+            path = e.originalEvent.path;
+            if (!path) return;
             for (i = 0; i < path.length; i++) {
                 if (path[i].tagName == "BODY") break;
                 if (path[i].scrollHeight > path[i].clientHeight) {
@@ -1759,6 +1821,10 @@ window.oldmansoft.webapp = new (function () {
         if (typeof fn == "function") fn(_text);
     }
 
+    this.option = function () {
+        return _initialization_option;
+    }
+
     this.initialization = function (viewNodeSelector, defaultLink) {
         function option(main) {
             this.viewNode = function (nodeSelector) {
@@ -1775,6 +1841,10 @@ window.oldmansoft.webapp = new (function () {
                 _fnOnUnauthorized = fn;
                 return this;
             }
+            this.loadTimeout = function (fn) {
+                _fnOnLoadTimeout = fn;
+                return this;
+            }
             this.dealLinkEmptyTarget = function (b) {
                 if (b == undefined) return _isDealLinkEmptyTarget;
                 _isDealLinkEmptyTarget = b;
@@ -1785,19 +1855,19 @@ window.oldmansoft.webapp = new (function () {
                 return this;
             }
             this.viewLoaded = function (fn) {
-                _globalViewEvent.load = fn;
+                _globalViewEvent.load.add(fn);
                 return this;
             }
             this.viewActived = function (fn) {
-                _globalViewEvent.active = fn;
+                _globalViewEvent.active.add(fn);
                 return this;
             }
             this.viewInactived = function (fn) {
-                _globalViewEvent.inactive = fn;
+                _globalViewEvent.inactive.add(fn);
                 return this;
             }
             this.viewUnloaded = function (fn) {
-                _globalViewEvent.unload = fn;
+                _globalViewEvent.unload.add(fn);
                 return this;
             }
         }
@@ -1843,25 +1913,28 @@ window.oldmansoft.webapp = new (function () {
         _openView = new openArea();
         _modalView = new modalArea();
         _activeView.push(_mainView);
-        return new option(_mainView);
+        _initialization_option = new option(_mainView);
+        return _initialization_option;
     }
 
-    this.init = function (viewNodeSelector, defaultLink) {
+    this.init = function (viewNodeSelector, defaultLink, hideFirstLoading) {
         var result = $this.initialization(viewNodeSelector, defaultLink);
+        if (hideFirstLoading) _hideMainViewFirstLoading = true;
         $this.linker._init(function (link) {
             _mainView.load(link, $this.linker.callChangeCompleted);
         });
         return result;
     }
 
-    this.setup = function (mainViewSelector, defaultLink) {
+    this.setup = function (mainViewSelector, defaultLink, hideFirstLoading) {
         if (_canSetup) {
             _canSetup = false;
         } else {
-            throw "Has been setup";
+            throw new Error("Has been setup");
         }
         var result = $this.initialization(mainViewSelector, defaultLink);
         $(function () {
+            if (hideFirstLoading) _hideMainViewFirstLoading = true;
             $this.linker._init(function (link) {
                 _mainView.load(link, $this.linker.callChangeCompleted);
             });
@@ -1873,7 +1946,7 @@ window.oldmansoft.webapp = new (function () {
         if (_canSetup) {
             _canSetup = false;
         } else {
-            throw "Has been setup";
+            throw new Error("Has been setup");
         }
         var result = $this.initialization(mainViewSelector, defaultLink);
         $(function () {
@@ -1910,6 +1983,12 @@ window.oldmansoft.webapp = new (function () {
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 401) {
                     _fnOnUnauthorized(layoutLink);
+                } else if (jqXHR.status == 0 && textStatus == "timeout") {
+                    var onLoadTimeoutResult = _fnOnLoadTimeout();
+                    if (onLoadTimeoutResult) {
+                        $(layoutSelector).html(onLoadTimeoutResult).children().unwrap();
+                        return;
+                    }
                 }
                 $this.dialog.alert(_text.load_layout_error, errorThrown).ok(function () {
                     document.location.reload();
@@ -1944,6 +2023,7 @@ window.oldmansoft.webapp = new (function () {
         close: $this.viewClose,
         current: $this.current,
         find: $this.find,
+        option: $this.option,
         init: $this.init,
         setup: $this.setup,
         setupLayout: $this.setupLayout

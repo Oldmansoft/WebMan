@@ -150,20 +150,20 @@ namespace WebApplication.Controllers
             return Json(DealResult.Location(Url.Location(Index), "添加成功"));
         }
 
-        [Location("修改", Icon = FontAwesome.Anchor)]
+        [Location("修改", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Edit(int id)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Edit)), GetListSource());
+            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
             panel.Append(form);
 
             return new HtmlResult(panel.CreateGrid());
         }
 
         [HttpPost]
-        public JsonResult Edit(Models.DataTableItemModel model)
+        public JsonResult EditResult(Models.DataTableItemModel model)
         {
             if (ModelState.ValidateFail())
             {
@@ -189,7 +189,7 @@ namespace WebApplication.Controllers
                 }, o => o.Files);
             }
 
-            return Json(DealResult.Refresh("修改成功"));
+            return Json(DealResult.Refresh());
         }
 
         [Location("删除")]
