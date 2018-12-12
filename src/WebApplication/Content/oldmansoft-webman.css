@@ -72,6 +72,10 @@
         margin-left: 28px;
     }
 
+    .webman-left-panel nav ul.side-menu > li:hover > a span:empty {
+        display: none;
+    }
+
     .webman-left-panel nav ul.side-menu > li > ul {
         left: 50px !important;
         top: 49px !important;
