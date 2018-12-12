@@ -102,7 +102,7 @@ namespace WebApplication.Controllers
         [Location("人员", Icon = FontAwesome.Male)]
         public ActionResult Male()
         {
-            return new HtmlResult(new Badge(Url.Location(Male), 0));
+            return new HtmlResult(new Badge(Url.Location(Male), 2));
         }
 
         [Location("邮件", Icon = FontAwesome.Envelope, Behave = LinkBehave.Open)]

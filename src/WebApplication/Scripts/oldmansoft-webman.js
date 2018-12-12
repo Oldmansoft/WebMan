@@ -1,5 +1,5 @@
 ﻿/*
-* v0.18.93
+* v0.18.94
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -176,7 +176,7 @@ window.oldmansoft.webman = new (function () {
                 icon = null;
                 for (j = 0; j < store.length; j++) {
                     if (link == store[j].node.attr("href")) {
-                        text = store[j].node.children("span").text();
+                        text = store[j].node.children("span").first().text();
                         icon = store[j].node.children("i").clone();
                         break;
                     }
