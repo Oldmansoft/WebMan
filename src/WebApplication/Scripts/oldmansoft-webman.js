@@ -1,5 +1,5 @@
 ﻿/*
-* v0.18.94
+* v0.18.95
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -1055,6 +1055,17 @@ window.oldmansoft.webman = new (function () {
         });
     }
 
+    function header_form_search_click() {
+        var form = $(this).parents("form"),
+            input = form.find("input[type=text]");
+        if ($.trim(input.val()) == "")
+        {
+            input.get(0).focus();
+            return;
+        }
+        submitForm(form);
+    }
+
     this.init = function (main, defaultLink) {
         menu = new define_menu();
         oldmansoft.webapp.configTarget(function (target) {
@@ -1087,7 +1098,7 @@ window.oldmansoft.webman = new (function () {
         $(document).on("submit", "form:not(.bv-form)", form_not_bv_form_submit);
         $(document).on("click", ".container-remove", container_remove_click);
         $(document).on("click", ".container-parent-remove", container_parent_remove_click);
-        $(".webman-main-panel header form i.fa-search").on("click", function () { submitForm($(this).parents("form")); });
+        $(".webman-main-panel header form i.fa-search").on("click", header_form_search_click);
         tableScroller.init();
    }
 
