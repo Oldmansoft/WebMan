@@ -12,29 +12,51 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <summary>
         /// 实体信息
         /// </summary>
-        public ModelItemInfo ModelItem { get; set; }
+        public ModelItemInfo ModelItem { get; private set; }
 
         /// <summary>
         /// 值
         /// </summary>
-        public object Value { get; set; }
+        public object Value { get; private set; }
 
         /// <summary>
         /// 数据源
         /// </summary>
-        public ListDataSource Source { get; set; }
+        public ListDataSource Source { get; private set; }
 
         /// <summary>
         /// 脚本注册
         /// </summary>
-        public Input.ScriptRegister ScriptRegister { get; set; }
+        public Input.ScriptRegister ScriptRegister { get; private set; }
 
         /// <summary>
         /// 表单验证器
         /// </summary>
-        public FormValidate.FormValidator FormValidator { get; set; }
+        public FormValidate.FormValidator FormValidator { get; private set; }
 
-        public Annotations.HtmlDataAttribute HtmlData { get; set; }
+        /// <summary>
+        /// 数据属性
+        /// </summary>
+        public Annotations.HtmlDataAttribute HtmlData { get; private set; }
+
+        /// <summary>
+        /// 创建
+        /// </summary>
+        /// <param name="modelItem"></param>
+        /// <param name="model"></param>
+        /// <param name="source"></param>
+        /// <param name="script"></param>
+        /// <param name="validator"></param>
+        /// <param name="htmlData"></param>
+        public HandlerParameter(ModelItemInfo modelItem, object model, ListDataSource source, Input.ScriptRegister script, FormValidate.FormValidator validator, Annotations.HtmlDataAttribute htmlData)
+        {
+            ModelItem = modelItem;
+            Value = modelItem.Property.GetValue(model);
+            Source = source;
+            ScriptRegister = script;
+            FormValidator = validator;
+            HtmlData = htmlData;
+        }
 
         /// <summary>
         /// 设置输入组件属性

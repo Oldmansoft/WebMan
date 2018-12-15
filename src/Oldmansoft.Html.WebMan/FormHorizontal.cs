@@ -112,13 +112,13 @@ namespace Oldmansoft.Html.WebMan
 
         private static FormHorizontal CreateForm<TModel>(TModel model, ILocation action, ListDataSource source, bool inputMode)
         {
-            var result = new FormHorizontal();
-            result.ViewMode = !inputMode;
-            result.UseButtonGroup = inputMode;
+            var form = new FormHorizontal();
+            form.ViewMode = !inputMode;
+            form.UseButtonGroup = inputMode;
             if (action != null)
             {
-                result.Attribute(HtmlAttribute.Action, action.Path);
-                action.Behave.SetTargetAttribute(result);
+                form.Attribute(HtmlAttribute.Action, action.Path);
+                action.Behave.SetTargetAttribute(form);
             }
             foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
             {
@@ -127,18 +127,11 @@ namespace Oldmansoft.Html.WebMan
                     var hidden = new FormInputCreator.Inputs.Hidden();
                     hidden.Init(item, model != null ? item.Property.GetValue(model) : string.Empty, null);
                     hidden.SetInputMode();
-                    result.Append(hidden);
+                    hidden.AppendTo(form);
                     continue;
                 }
 
-                var parameter = new FormInputCreator.HandlerParameter();
-                parameter.ModelItem = item;
-                if (model != null) parameter.Value = item.Property.GetValue(model);
-                parameter.Source = source;
-                parameter.ScriptRegister = result.Script;
-                parameter.FormValidator = result.Validator;
-                parameter.HtmlData = item.HtmlData;
-
+                var parameter = new FormInputCreator.HandlerParameter(item, model, source, form.Script, form.Validator, item.HtmlData);
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 if (inputMode)
                 {
@@ -148,10 +141,10 @@ namespace Oldmansoft.Html.WebMan
                 {
                     input.SetViewMode();
                 }
-                result.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
-                item.SetValidate(result.Validator);
+                form.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
+                item.SetValidate(form.Validator);
             }
-            return result;
+            return form;
         }
 
         /// <summary>
