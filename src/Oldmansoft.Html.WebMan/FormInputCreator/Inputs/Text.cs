@@ -22,7 +22,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            InputMaxLength = ModelItem.InputMaxLength;
+            InputMaxLength = PropertyContent.InputMaxLength;
             Value = value.GetNotNullString();
         }
 
@@ -32,7 +32,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Attribute(HtmlAttribute.Type, "text");
-            Attribute(HtmlAttribute.Name, ModelItem.Name);
+            Attribute(HtmlAttribute.Name, PropertyContent.Name);
             Attribute(HtmlAttribute.Value, Value);
             if (InputMaxLength != null) Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
             SetAttributeDisabledReadOnlyPlaceHolder(this);

@@ -28,7 +28,7 @@ namespace Oldmansoft.Html.WebMan.Input
         protected override void InitValue(object value)
         {
             WrongValueFormat = value != null && !(value is IEnumerable<string>);
-            InputMaxLength = ModelItem.InputMaxLength;
+            InputMaxLength = PropertyContent.InputMaxLength;
             Value = new HashSet<string>();
             foreach (var item in value.GetListString())
             {
@@ -44,8 +44,8 @@ namespace Oldmansoft.Html.WebMan.Input
             Tag = HtmlTag.Div;
             AddClass("tagsinput");
             AddClass("form-control");
-            if (ModelItem.ReadOnly) Attribute(HtmlAttribute.ReadOnly, "readonly");
-            if (ModelItem.Disabled) Attribute(HtmlAttribute.ReadOnly, "disabled");
+            if (PropertyContent.ReadOnly) Attribute(HtmlAttribute.ReadOnly, "readonly");
+            if (PropertyContent.Disabled) Attribute(HtmlAttribute.ReadOnly, "disabled");
             if (WrongValueFormat)
             {
                 Text("错误数据类型，请使用字符串列表");
@@ -61,23 +61,23 @@ namespace Oldmansoft.Html.WebMan.Input
                 var hidden = new HtmlElement(HtmlTag.Input);
                 hidden.AppendTo(div);
                 hidden.Attribute(HtmlAttribute.Type, "hidden");
-                hidden.Attribute(HtmlAttribute.Name, ModelItem.Name);
+                hidden.Attribute(HtmlAttribute.Name, PropertyContent.Name);
                 hidden.Attribute(HtmlAttribute.Value, item.Trim());
 
                 var span = new HtmlElement(HtmlTag.Span);
                 span.AppendTo(div);
                 span.Text(item);
 
-                if (!ModelItem.Disabled && !ModelItem.ReadOnly) FontAwesome.Times.CreateElement().AddClass("container-parent-remove").AppendTo(span);
+                if (!PropertyContent.Disabled && !PropertyContent.ReadOnly) FontAwesome.Times.CreateElement().AddClass("container-parent-remove").AppendTo(span);
             }
 
             var input = new HtmlElement(HtmlTag.Input);
-            if (!ModelItem.Disabled && !ModelItem.ReadOnly) input.AppendTo(this);
+            if (!PropertyContent.Disabled && !PropertyContent.ReadOnly) input.AppendTo(this);
             input.AddClass("input");
             input.Attribute(HtmlAttribute.PlaceHolder, "add tags");
-            input.Attribute(HtmlAttribute.Name, ModelItem.Name);
+            input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
             input.Data("temporary", "temporary");
-            input.Data("temporary-for", ModelItem.Name);
+            input.Data("temporary-for", PropertyContent.Name);
             if (InputMaxLength != null) input.Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
 
             ScriptRegister.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");

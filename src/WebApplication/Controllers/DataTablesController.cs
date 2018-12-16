@@ -156,8 +156,9 @@ namespace WebApplication.Controllers
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
             var panel = new Panel();
             panel.ConfigLocation();
-            var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
-            panel.Append(form);
+            var form = FormHorizontal.Define(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
+            form[o => o.Age].Hidden = true;
+            panel.Append(form.Create());
 
             return new HtmlResult(panel.CreateGrid());
         }

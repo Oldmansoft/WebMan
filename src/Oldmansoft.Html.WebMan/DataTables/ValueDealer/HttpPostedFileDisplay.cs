@@ -9,11 +9,11 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class HttpPostedFileDisplay : IValueDisplay
     {
-        public HtmlNode Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelPropertyContent propertyContent)
         {
             if (value is HttpPostedFileCustom)
             {
-                return DealCustom(value as HttpPostedFileCustom, modelItem);
+                return DealCustom(value as HttpPostedFileCustom, propertyContent);
             }
             else
             {
@@ -21,7 +21,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
             }
         }
 
-        private HtmlNode DealCustom(HttpPostedFileCustom file, ModelItemInfo modelItem)
+        private HtmlNode DealCustom(HttpPostedFileCustom file, ModelPropertyContent propertyContent)
         {
             var icon = ContentTypeMapping.Instance.ToIcon(file.ContentType, file.FileName);
             if (icon == FontAwesome.Picture_O)
@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
                 var a = new HtmlElement(HtmlTag.A);
                 a.Attribute(HtmlAttribute.Href, file.Location);
                 a.Attribute(HtmlAttribute.Target, "_none");
-                modelItem.HtmlData.SetContext(a);
+                propertyContent.HtmlData.SetContext(a);
                 var img = new HtmlElement(HtmlTag.Img);
                 img.Attribute(HtmlAttribute.Src, file.Location);
                 img.AppendTo(a);
@@ -41,7 +41,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
                 a.AddClass("icon-fa-text");
                 a.Attribute(HtmlAttribute.Href, file.Location);
                 a.Attribute(HtmlAttribute.Target, "_none");
-                modelItem.HtmlData.SetContext(a);
+                propertyContent.HtmlData.SetContext(a);
                 a.Text(file.FileName);
                 return new HtmlNodeContainer(icon.CreateElement(), a);
             }

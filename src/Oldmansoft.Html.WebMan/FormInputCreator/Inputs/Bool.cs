@@ -43,13 +43,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var input = new HtmlElement(HtmlTag.Input);
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "radio");
-                input.Attribute(HtmlAttribute.Name, ModelItem.Name);
+                input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
                 input.Attribute(HtmlAttribute.Value, option.Key.ToString().ToLower());
                 if (Value.HasValue && option.Key == Value.Value)
                 {
                     input.Attribute(HtmlAttribute.Checked, "checked");
                 }
-                if (ModelItem.Disabled || ModelItem.ReadOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
+                if (PropertyContent.Disabled || PropertyContent.ReadOnly) input.Attribute(HtmlAttribute.Disabled, "disabled");
                 HtmlData.SetContext(input);
                 label.Append(new HtmlRaw(option.Value.HtmlEncode()));
             }

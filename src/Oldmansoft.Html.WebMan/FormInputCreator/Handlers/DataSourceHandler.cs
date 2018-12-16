@@ -10,11 +10,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            if (input.Source.Contains(input.ModelItem.Name))
+            if (input.Source.Contains(input.PropertyContent.Name))
             {
                 result = new Inputs.Select();
                 input.SetInputProperty(result);
-                result.Init(input.ModelItem, input.Value, input.Source.Get(input.ModelItem.Name));
+                result.Init(input.PropertyContent, input.Value, input.Source.Get(input.PropertyContent.Name));
                 return true;
             }
             return false;

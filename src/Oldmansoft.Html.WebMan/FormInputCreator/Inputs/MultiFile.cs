@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            FileOption = ModelItem.FileOption;
+            FileOption = PropertyContent.FileOption;
             if (FileOption == null) FileOption = new Annotations.FileOptionAttribute();
             Value = new List<HttpPostedFileCustom>();
             if (value == null) return;
@@ -49,7 +49,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Tag = HtmlTag.Div;
             AddClass("mulit-file-group");
-            if (!ModelItem.Disabled && !ModelItem.ReadOnly) SetFileInput();
+            if (!PropertyContent.Disabled && !PropertyContent.ReadOnly) SetFileInput();
             foreach (var item in Value)
             {
                 var group = new HtmlElement(HtmlTag.Div);
@@ -59,8 +59,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var control = new HtmlElement(HtmlTag.Div);
                 control.AppendTo(group);
                 control.AddClass("form-control");
-                if (ModelItem.ReadOnly) control.Attribute(HtmlAttribute.ReadOnly, "readonly");
-                if (ModelItem.Disabled) control.Attribute(HtmlAttribute.ReadOnly, "disabled");
+                if (PropertyContent.ReadOnly) control.Attribute(HtmlAttribute.ReadOnly, "readonly");
+                if (PropertyContent.Disabled) control.Attribute(HtmlAttribute.ReadOnly, "disabled");
 
                 var icon = Util.ContentTypeMapping.Instance.ToIcon(item.ContentType, item.FileName);
                 icon.CreateElement().AppendTo(control);
@@ -75,11 +75,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var delInput = new HtmlElement(HtmlTag.Input);
                 delInput.AppendTo(group);
                 delInput.Attribute(HtmlAttribute.Type, "hidden");
-                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", ModelItem.Name));
+                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", PropertyContent.Name));
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
-                if (FileOption.SupportDelete && (!ModelItem.Disabled && !ModelItem.ReadOnly))
+                if (FileOption.SupportDelete && (!PropertyContent.Disabled && !PropertyContent.ReadOnly))
                 {
                     group.AddClass("input-group");
 
@@ -106,9 +106,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var templateInput = new HtmlElement(HtmlTag.Input);
             templateInput.AppendTo(group);
             templateInput.Attribute(HtmlAttribute.Type, "file");
-            templateInput.Attribute(HtmlAttribute.Name, ModelItem.Name);
+            templateInput.Attribute(HtmlAttribute.Name, PropertyContent.Name);
             templateInput.Data("temporary", "temporary");
-            templateInput.Data("temporary-for", ModelItem.Name);
+            templateInput.Data("temporary-for", PropertyContent.Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -133,7 +133,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 
             var virtualInput = new HtmlElement(HtmlTag.Div);
             virtualInput.AddClass("form-control virtual-mulit-file-input");
-            virtualInput.Text(string.IsNullOrEmpty(ModelItem.Description) ? "选择多个文件" : ModelItem.Description);
+            virtualInput.Text(string.IsNullOrEmpty(PropertyContent.Description) ? "选择多个文件" : PropertyContent.Description);
             virtualInput.AppendTo(group);
             SetAttributeDisabledReadOnly(virtualInput);
         }
@@ -142,13 +142,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             var extendsionsMessage = "文件扩展名必须在 \"{0}\" 里面";
             if (FileOption.ErrorMessage != null) extendsionsMessage = FileOption.ErrorMessage;
-            FormValidator[ModelItem.Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
+            FormValidator[PropertyContent.Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
             
             if (FileOption.LimitContentLength > 0)
             {
                 var limitContentLengthMessage = "文件大小限制为 {0}";
                 if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
-                FormValidator[ModelItem.Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+                FormValidator[PropertyContent.Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
             }
         }
 

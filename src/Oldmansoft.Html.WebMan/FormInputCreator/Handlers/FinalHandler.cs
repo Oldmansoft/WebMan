@@ -12,7 +12,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
         {
             result = new Inputs.Text();
             input.SetInputProperty(result);
-            result.Init(input.ModelItem, input.Value, null);
+            result.Init(input.PropertyContent, input.Value, null);
             return true;
         }
     }

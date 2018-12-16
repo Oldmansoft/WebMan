@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class BoolDisplay : IValueDisplay
     {
-        public HtmlNode Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelPropertyContent propertyContent)
         {
             return new HtmlText((bool)value ? "是" : "否");
         }

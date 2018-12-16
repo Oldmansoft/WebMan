@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class GuidDisplay : IValueDisplay
     {
-        public HtmlNode Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelPropertyContent propertyContent)
         {
             return new HtmlText(((Guid)value).ToString("N"));
         }

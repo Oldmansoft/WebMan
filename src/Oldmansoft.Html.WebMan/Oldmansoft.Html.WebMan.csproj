@@ -88,6 +88,7 @@
     <Compile Include="Document\Resource.cs" />
     <Compile Include="Document\SimpleDocument.cs" />
     <Compile Include="EmptyLocation.cs" />
+    <Compile Include="FormHorizontalDefining.cs" />
     <Compile Include="FormInputCreator\FormInput.cs" />
     <Compile Include="FormInputCreator\Handlers\BoolHandler.cs" />
     <Compile Include="FormInputCreator\Handlers\CustomInputHandler.cs" />
@@ -169,7 +170,7 @@
     <Compile Include="Util\ContentTypeFlags.cs" />
     <Compile Include="Util\ContentTypeMapping.cs" />
     <Compile Include="Util\EnumFlags.cs" />
-    <Compile Include="Util\ModelItemInfo.cs" />
+    <Compile Include="Util\ModelPropertyContent.cs" />
     <Compile Include="Util\ModelProvider.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Document\QuickMenu.cs" />

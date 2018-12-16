@@ -11,22 +11,22 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(float)))
+            if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(float)))
             {
                 result = new Inputs.Numeric();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(double)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(double)))
             {
                 result = new Inputs.Numeric();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(decimal)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(decimal)))
             {
                 result = new Inputs.Numeric();
             }
             if (result == null) return false;
 
             input.SetInputProperty(result);
-            result.Init(input.ModelItem, input.Value, null);
+            result.Init(input.PropertyContent, input.Value, null);
             return true;
         }
     }

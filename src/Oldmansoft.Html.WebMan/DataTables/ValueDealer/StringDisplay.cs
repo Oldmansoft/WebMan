@@ -9,9 +9,9 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class StringDisplay : IValueDisplay
     {
-        public HtmlNode Convert(object value, ModelItemInfo modelItem)
+        public HtmlNode Convert(object value, ModelPropertyContent propertyContent)
         {
-            if (modelItem.DataType == System.ComponentModel.DataAnnotations.DataType.Password)
+            if (propertyContent.DataType == System.ComponentModel.DataAnnotations.DataType.Password)
             {
                 return new HtmlText("***");
             }

@@ -12,7 +12,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            var model = input.ModelItem;
+            var model = input.PropertyContent;
             var type = model.Property.PropertyType;
             if (type.IsGenericType && type.GetInterfaces().Contains(typeof(IEnumerable)))
             {

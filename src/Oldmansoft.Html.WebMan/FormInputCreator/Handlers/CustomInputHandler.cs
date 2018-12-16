@@ -11,15 +11,15 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref IFormInput result)
         {
-            if (input.ModelItem.CustomInput == null) return false;
+            if (input.PropertyContent.CustomInput == null) return false;
 
-            var customer = Activator.CreateInstance(input.ModelItem.CustomInput.InputType) as ICustomInput;
-            customer.Set(input.ModelItem.CustomInput.Parameter);
+            var customer = Activator.CreateInstance(input.PropertyContent.CustomInput.InputType) as ICustomInput;
+            customer.Set(input.PropertyContent.CustomInput.Parameter);
 
             result = customer;
             input.SetInputProperty(result);
-            var options = Util.EnumProvider.Instance.GetDataItems(input.ModelItem.Property.PropertyType, input.Source.GetCanNull(input.ModelItem.Name));
-            result.Init(input.ModelItem, input.Value, options);
+            var options = Util.EnumProvider.Instance.GetDataItems(input.PropertyContent.Property.PropertyType, input.Source.GetCanNull(input.PropertyContent.Name));
+            result.Init(input.PropertyContent, input.Value, options);
             return true;
         }
     }

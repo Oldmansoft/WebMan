@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             Data("bv-integer", "false");
             Attribute(HtmlAttribute.Type, "number");
-            Attribute(HtmlAttribute.Name, ModelItem.Name);
+            Attribute(HtmlAttribute.Name, PropertyContent.Name);
             Attribute(HtmlAttribute.Value, Value == null ? string.Empty : Value.ToString());
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             AddClass("form-control");

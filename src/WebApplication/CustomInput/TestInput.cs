@@ -30,7 +30,7 @@ namespace WebApplication.CustomInput
             Tag = HtmlTag.Div;
             var hidden = new HtmlElement(HtmlTag.Input);
             hidden.Attribute(HtmlAttribute.Type, "hidden");
-            hidden.Attribute(HtmlAttribute.Name, ModelItem.Name);
+            hidden.Attribute(HtmlAttribute.Name, PropertyContent.Name);
             hidden.Attribute(HtmlAttribute.Value, Value);
             hidden.AppendTo(this);
 

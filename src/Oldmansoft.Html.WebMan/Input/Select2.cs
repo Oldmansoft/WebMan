@@ -26,7 +26,7 @@ namespace Oldmansoft.Html.WebMan.Input
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            if (ModelItem.Property.PropertyType.GetInterfaces().Contains(typeof(System.Collections.IList)))
+            if (PropertyContent.Property.PropertyType.GetInterfaces().Contains(typeof(System.Collections.IList)))
             {
                 Values = value.GetListString();
             }
@@ -42,7 +42,7 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void SetInputMode()
         {
             Tag = HtmlTag.Select;
-            Attribute(HtmlAttribute.Name, ModelItem.Name);
+            Attribute(HtmlAttribute.Name, PropertyContent.Name);
             AddClass("form-control");
             Css("width", "100%");
             AddClass("select2");
@@ -50,9 +50,9 @@ namespace Oldmansoft.Html.WebMan.Input
             {
                 Attribute(HtmlAttribute.Multiple, "multiple");
             }
-            else if ((ModelItem.Property.PropertyType.IsGenericType && ModelItem.Property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) || ModelItem.Property.PropertyType == typeof(string))
+            else if ((PropertyContent.Property.PropertyType.IsGenericType && PropertyContent.Property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) || PropertyContent.Property.PropertyType == typeof(string))
             {
-                if (Value == null || ModelItem.Required == null)
+                if (Value == null || PropertyContent.Required == null)
                 {
                     Append(new HtmlElement(HtmlTag.Option).Append(new HtmlRaw("&nbsp;")));
                 }
@@ -78,7 +78,7 @@ namespace Oldmansoft.Html.WebMan.Input
                 }
                 item.Text(option.Text);
             }
-            if (ModelItem.Disabled || ModelItem.ReadOnly) Attribute(HtmlAttribute.Disabled, "disabled");
+            if (PropertyContent.Disabled || PropertyContent.ReadOnly) Attribute(HtmlAttribute.Disabled, "disabled");
 
             ScriptRegister.Register("Select2Edit", "view.node.find('select.select2').select2();");
         }

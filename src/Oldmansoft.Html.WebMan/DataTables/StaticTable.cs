@@ -331,7 +331,7 @@ namespace Oldmansoft.Html.WebMan
             return property.GetValue(model);
         }
 
-        private HtmlNode GetContentFromModel(object model, Type type, ModelItemInfo[] modelInfos, PropertyInfo property)
+        private HtmlNode GetContentFromModel(object model, Type type, IList<ModelPropertyContent> modelInfos, PropertyInfo property)
         {
             var value = GetValueFromModel(model, type, property);
             if (value == null) return new HtmlText(string.Empty);

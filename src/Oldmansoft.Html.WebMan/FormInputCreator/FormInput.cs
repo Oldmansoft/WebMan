@@ -12,9 +12,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
     public abstract class FormInput : HtmlElement, Input.IFormInput
     {
         /// <summary>
-        /// 实体项
+        /// 属性内容
         /// </summary>
-        public ModelItemInfo ModelItem { get; private set; }
+        public ModelPropertyContent PropertyContent { get; private set; }
 
         /// <summary>
         /// 列表源
@@ -51,17 +51,17 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <param name="input"></param>
         protected void SetAttributeDisabledReadOnlyPlaceHolder(IHtmlElement input)
         {
-            if (ModelItem.Disabled)
+            if (PropertyContent.Disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
-            if (ModelItem.ReadOnly)
+            if (PropertyContent.ReadOnly)
             {
                 input.Attribute(HtmlAttribute.ReadOnly, "readonly");
             }
-            if (!string.IsNullOrEmpty(ModelItem.Description))
+            if (!string.IsNullOrEmpty(PropertyContent.Description))
             {
-                input.Attribute(HtmlAttribute.PlaceHolder, ModelItem.Description);
+                input.Attribute(HtmlAttribute.PlaceHolder, PropertyContent.Description);
             }
         }
 
@@ -71,11 +71,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <param name="input"></param>
         protected void SetAttributeDisabledReadOnly(IHtmlElement input)
         {
-            if (ModelItem.Disabled)
+            if (PropertyContent.Disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
-            if (ModelItem.ReadOnly)
+            if (PropertyContent.ReadOnly)
             {
                 input.Attribute(HtmlAttribute.ReadOnly, "readonly");
             }
@@ -84,12 +84,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="info">实体项信息</param>
+        /// <param name="propertyContent">属性内容</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public void Init(ModelItemInfo info, object value, IList<ListDataItem> options)
+        public void Init(ModelPropertyContent propertyContent, object value, IList<ListDataItem> options)
         {
-            ModelItem = info;
+            PropertyContent = propertyContent;
             Options = options;
             InitValue(value);
         }

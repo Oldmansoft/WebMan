@@ -17,7 +17,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Tag = HtmlTag.Select;
-            Attribute(HtmlAttribute.Name, ModelItem.Name);
+            Attribute(HtmlAttribute.Name, PropertyContent.Name);
             Attribute(HtmlAttribute.Multiple, "multiple");
             AddClass("form-control");
             foreach (var option in Options)
@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 }
                 item.Text(option.Text);
             }
-            if (ModelItem.ReadOnly) ModelItem.Disabled = true;
+            if (PropertyContent.ReadOnly) PropertyContent.Disabled = true;
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             HtmlData.SetContext(this);
         }

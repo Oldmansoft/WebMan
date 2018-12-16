@@ -25,12 +25,12 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 使用按钮组
         /// </summary>
-        public bool UseButtonGroup { get; set; }
+        public bool UseButtonGroup { get; internal set; }
 
         /// <summary>
         /// 查看模式
         /// </summary>
-        private bool ViewMode { get; set; }
+        internal bool ViewMode { get; set; }
 
         /// <summary>
         /// 创建横表单
@@ -109,44 +109,7 @@ namespace Oldmansoft.Html.WebMan
                 outer.AddEvent(AppEvent.Load, string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
             }
         }
-
-        private static FormHorizontal CreateForm<TModel>(TModel model, ILocation action, ListDataSource source, bool inputMode)
-        {
-            var form = new FormHorizontal();
-            form.ViewMode = !inputMode;
-            form.UseButtonGroup = inputMode;
-            if (action != null)
-            {
-                form.Attribute(HtmlAttribute.Action, action.Path);
-                action.Behave.SetTargetAttribute(form);
-            }
-            foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
-            {
-                if (item.Hidden)
-                {
-                    var hidden = new FormInputCreator.Inputs.Hidden();
-                    hidden.Init(item, model != null ? item.Property.GetValue(model) : string.Empty, null);
-                    hidden.SetInputMode();
-                    hidden.AppendTo(form);
-                    continue;
-                }
-
-                var parameter = new FormInputCreator.HandlerParameter(item, model, source, form.Script, form.Validator, item.HtmlData);
-                var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
-                if (inputMode)
-                {
-                    input.SetInputMode();
-                }
-                else
-                {
-                    input.SetViewMode();
-                }
-                form.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
-                item.SetValidate(form.Validator);
-            }
-            return form;
-        }
-
+        
         /// <summary>
         /// 根据模型创建提交表单
         /// </summary>
@@ -158,7 +121,21 @@ namespace Oldmansoft.Html.WebMan
         public static FormHorizontal Create<TModel>(TModel model, ILocation action, ListDataSource source)
         {
             if (source == null) throw new ArgumentNullException("source");
-            return CreateForm(model, action, source, true);
+            return new FormHorizontalDefining<TModel>(model, action, source, true).Create();
+        }
+
+        /// <summary>
+        /// 根据模型定义查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="action"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static FormHorizontalDefining<TModel> Define<TModel>(TModel model, ILocation action, ListDataSource source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return new FormHorizontalDefining<TModel>(model, action, source, true);
         }
 
         /// <summary>
@@ -174,6 +151,18 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 根据模型定义查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static FormHorizontalDefining<TModel> Define<TModel>(TModel model, ILocation action)
+        {
+            return Define(model, action, new ListDataSource());
+        }
+
+        /// <summary>
         /// 根据模型创建查看表单
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
@@ -183,7 +172,20 @@ namespace Oldmansoft.Html.WebMan
         public static FormHorizontal Create<TModel>(TModel model, ListDataSource source)
         {
             if (source == null) throw new ArgumentNullException("source");
-            return CreateForm(model, null, source, false);
+            return new FormHorizontalDefining<TModel>(model, null, source, false).Create();
+        }
+
+        /// <summary>
+        /// 根据模型定义查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static FormHorizontalDefining<TModel> Define<TModel>(TModel model, ListDataSource source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return new FormHorizontalDefining<TModel>(model, null, source, false);
         }
 
         /// <summary>
@@ -195,6 +197,17 @@ namespace Oldmansoft.Html.WebMan
         public static FormHorizontal Create<TModel>(TModel model)
         {
             return Create(model, new ListDataSource());
+        }
+
+        /// <summary>
+        /// 根据模型定义查看表单
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static FormHorizontalDefining<TModel> Define<TModel>(TModel model)
+        {
+            return Define(model, new ListDataSource());
         }
     }
 }

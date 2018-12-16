@@ -10,11 +10,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            if (input.ModelItem.DataType == System.ComponentModel.DataAnnotations.DataType.DateTime)
+            if (input.PropertyContent.DataType == System.ComponentModel.DataAnnotations.DataType.DateTime)
             {
                 result = new Inputs.DateTimeInput();
                 input.SetInputProperty(result);
-                result.Init(input.ModelItem, input.Value, null);
+                result.Init(input.PropertyContent, input.Value, null);
                 return true;
             }
             return false;

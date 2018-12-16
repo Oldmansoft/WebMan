@@ -32,11 +32,11 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void SetInputMode()
         {
             Tag = HtmlTag.Textarea;
-            Attribute(HtmlAttribute.Name, ModelItem.Name);
+            Attribute(HtmlAttribute.Name, PropertyContent.Name);
             Attribute(HtmlAttribute.Rows, "5");
             Data("provide", "markdown");
-            if (ModelItem.Disabled || ModelItem.ReadOnly) Attribute(HtmlAttribute.Disabled, "disabled");
-            if (!string.IsNullOrEmpty(ModelItem.Description)) Attribute(HtmlAttribute.PlaceHolder, ModelItem.Description);
+            if (PropertyContent.Disabled || PropertyContent.ReadOnly) Attribute(HtmlAttribute.Disabled, "disabled");
+            if (!string.IsNullOrEmpty(PropertyContent.Description)) Attribute(HtmlAttribute.PlaceHolder, PropertyContent.Description);
             Text(Value);
             AddClass("form-control");
             AddClass("markdown");

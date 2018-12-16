@@ -10,9 +10,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
     class HandlerParameter
     {
         /// <summary>
-        /// 实体信息
+        /// 属性内容
         /// </summary>
-        public ModelItemInfo ModelItem { get; private set; }
+        public ModelPropertyContent PropertyContent { get; private set; }
 
         /// <summary>
         /// 值
@@ -42,16 +42,16 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// <summary>
         /// 创建
         /// </summary>
-        /// <param name="modelItem"></param>
+        /// <param name="propertyContent"></param>
         /// <param name="model"></param>
         /// <param name="source"></param>
         /// <param name="script"></param>
         /// <param name="validator"></param>
         /// <param name="htmlData"></param>
-        public HandlerParameter(ModelItemInfo modelItem, object model, ListDataSource source, Input.ScriptRegister script, FormValidate.FormValidator validator, Annotations.HtmlDataAttribute htmlData)
+        public HandlerParameter(ModelPropertyContent propertyContent, object model, ListDataSource source, Input.ScriptRegister script, FormValidate.FormValidator validator, Annotations.HtmlDataAttribute htmlData)
         {
-            ModelItem = modelItem;
-            Value = modelItem.Property.GetValue(model);
+            PropertyContent = propertyContent;
+            Value = propertyContent.Property.GetValue(model);
             Source = source;
             ScriptRegister = script;
             FormValidator = validator;

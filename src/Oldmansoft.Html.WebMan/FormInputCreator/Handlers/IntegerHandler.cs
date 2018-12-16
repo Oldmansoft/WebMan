@@ -11,34 +11,34 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(byte)))
+            if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(byte)))
             {
                 result = new Inputs.Integer();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(short)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(short)))
             {
                 result = new Inputs.Integer();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(uint)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(uint)))
             {
                 result = new Inputs.Integer();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(ulong)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(ulong)))
             {
                 result = new Inputs.Integer();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(int)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(int)))
             {
                 result = new Inputs.Integer();
             }
-            else if (ModelItemInfo.IsType(input.ModelItem.Property.PropertyType, typeof(long)))
+            else if (ModelPropertyContent.IsType(input.PropertyContent.Property.PropertyType, typeof(long)))
             {
                 result = new Inputs.Integer();
             }
             if (result == null) return false;
 
             input.SetInputProperty(result);
-            result.Init(input.ModelItem, input.Value, null);
+            result.Init(input.PropertyContent, input.Value, null);
             return true;
         }
     }
