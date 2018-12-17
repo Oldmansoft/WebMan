@@ -33,10 +33,16 @@ namespace Oldmansoft.Html.WebMan.Util
                 return result;
             }
 
-            List<PropertyInfo> list = new List<PropertyInfo>();
+            var store = new Dictionary<Type, List<PropertyInfo>>();
             foreach (var item in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                list.Add(item);
+                if (!store.ContainsKey(item.DeclaringType)) store.Add(item.DeclaringType, new List<PropertyInfo>());
+                store[item.DeclaringType].Add(item);
+            }
+            var list = new List<PropertyInfo>();
+            foreach(var item in store.Reverse())
+            {
+                list.AddRange(item.Value);
             }
             result = list.ToArray();
             Properties.TryAdd(type, result);
@@ -44,7 +50,7 @@ namespace Oldmansoft.Html.WebMan.Util
         }
 
         /// <summary>
-        /// 获取实体信息
+        /// 获取实体属性内容
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
