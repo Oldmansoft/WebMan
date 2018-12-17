@@ -25,7 +25,7 @@ namespace Oldmansoft.Html.WebMan.Util
             Properties = new ConcurrentDictionary<Type, PropertyInfo[]>();
         }
 
-        private PropertyInfo[] GetProperties(Type type)
+        private PropertyInfo[] GetPropertiesFromCache(Type type)
         {
             PropertyInfo[] result;
             if (Properties.TryGetValue(type, out result))
@@ -33,20 +33,26 @@ namespace Oldmansoft.Html.WebMan.Util
                 return result;
             }
 
-            var store = new Dictionary<Type, List<PropertyInfo>>();
-            foreach (var item in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                if (!store.ContainsKey(item.DeclaringType)) store.Add(item.DeclaringType, new List<PropertyInfo>());
-                store[item.DeclaringType].Add(item);
-            }
-            var list = new List<PropertyInfo>();
-            foreach(var item in store.Reverse())
-            {
-                list.AddRange(item.Value);
-            }
+            var list = GetProperties(type);
             result = list.ToArray();
             Properties.TryAdd(type, result);
             return result;
+        }
+
+        private List<PropertyInfo> GetProperties(Type type)
+        {
+            var store = new Dictionary<Type, List<PropertyInfo>>();
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!store.ContainsKey(property.DeclaringType)) store.Add(property.DeclaringType, new List<PropertyInfo>());
+                store[property.DeclaringType].Add(property);
+            }
+            var list = new List<PropertyInfo>();
+            foreach (var item in store.Reverse())
+            {
+                list.AddRange(item.Value);
+            }
+            return list;
         }
 
         /// <summary>
@@ -57,7 +63,7 @@ namespace Oldmansoft.Html.WebMan.Util
         public IList<ModelPropertyContent> GetItems(Type type)
         {
             List<ModelPropertyContent> list = new List<ModelPropertyContent>();
-            foreach (var item in GetProperties(type))
+            foreach (var item in GetPropertiesFromCache(type))
             {
                 list.Add(new ModelPropertyContent(item));
             }

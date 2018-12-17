@@ -8,12 +8,22 @@ namespace Oldmansoft.Html.WebMan
 {
     class DataTableColumn
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public System.Reflection.PropertyInfo Property { get; set; }
+        public System.Reflection.PropertyInfo Property { get; private set; }
 
-        public string Text { get; set; }
+        public string Text { get; private set; }
+        
+        public DataTableColumn(string name, System.Reflection.PropertyInfo property, string text)
+        {
+            Name = name;
+            Property = property;
+            Text = text;
+        }
 
-        public bool Visible { get; set; }
+        public bool Visible(string primaryKey)
+        {
+            return Name != primaryKey;
+        }
     }
 }

@@ -40,6 +40,7 @@ namespace WebApplication.Controllers
                     item.Tags.Add("world");
                     item.Tags.Add("hello");
                 }
+                item.Sub = new Models.SubClass() { First = "1", Second = "2" };
                 list.Add(item);
             }
             DataSource = list;

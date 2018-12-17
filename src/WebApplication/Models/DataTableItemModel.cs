@@ -67,6 +67,12 @@ namespace WebApplication.Models
 
         [CustomInput(typeof(CustomInput.TestInput))]
         public string HideValue { get; set; }
+
+        [Expansion]
+        public EmptyClass Empty { get; set; }
+
+        [Expansion]
+        public SubClass Sub { get; set; }
         
         [Display(Name = "创建")]
         public DateTime? CreateTime { get; set; }
@@ -80,5 +86,19 @@ namespace WebApplication.Models
         Low,
         [Description("高")]
         Hight
+    }
+
+    public class EmptyClass
+    {
+        public string EmptyElement { get; set; }
+    }
+
+    public class SubClass
+    {
+        [Display(Name = "第一")]
+        public string First { get; set; }
+
+        [Display(Name = "第二")]
+        public string Second { get; set; }
     }
 }

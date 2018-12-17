@@ -63,19 +63,31 @@ namespace Oldmansoft.Html.WebMan
             foreach(var model in source)
             {
                 var dataItem = new Dictionary<string, string>();
-                foreach (var item in items)
-                {
-                    var value = item.Property.GetValue(model);
-                    if (value == null)
-                    {
-                        dataItem.Add(item.Name, string.Empty);
-                    }
-                    else
-                    {
-                        dataItem.Add(item.Name, new HtmlOutput(ValueDisplay.Instance.Convert(item.Property.PropertyType, value, item)).Complete());
-                    }
-                }
+                SetItems(typeof(TModel), model, dataItem, new List<string>());
                 data.Add(dataItem);
+            }
+        }
+
+        private void SetItems(Type type, object model, Dictionary<string, string> dataItem, List<string> parents)
+        {
+            foreach(var item in ModelProvider.Instance.GetItems(type))
+            {
+                var parentsAndCurrent = new List<string>();
+                parentsAndCurrent.AddRange(parents);
+                parentsAndCurrent.Add(item.Name);
+                var value = model == null ? null : item.Property.GetValue(model);
+                if (item.Expansion)
+                {
+                    SetItems(item.Property.PropertyType, value, dataItem, parentsAndCurrent);
+                    continue;
+                }
+                var itemName = string.Join("-", parentsAndCurrent);
+                if (value == null)
+                {
+                    dataItem.Add(itemName, null);
+                    continue;
+                }
+                dataItem.Add(itemName, new HtmlOutput(ValueDisplay.Instance.Convert(item.Property.PropertyType, value, item)).Complete());
             }
         }
     }

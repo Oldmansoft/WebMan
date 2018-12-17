@@ -125,7 +125,7 @@ namespace Oldmansoft.Html.WebMan
             }
             foreach (var item in Columns)
             {
-                if (!item.Visible) continue;
+                if (!item.Visible(PrimaryKeyName)) continue;
                 result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
             }
             if (ItemActions.Count > 0)
@@ -221,7 +221,7 @@ namespace Oldmansoft.Html.WebMan
             if (IsDisplayIndexColumn) columnLength++;
             foreach (var column in Columns)
             {
-                if (!column.Visible) continue;
+                if (!column.Visible(PrimaryKeyName)) continue;
                 columnLength++;
             }
             if (ItemActions.Count > 0) columnLength++;
@@ -265,7 +265,6 @@ namespace Oldmansoft.Html.WebMan
                 index++;
                 if (model == null) continue;
                 var modelType = model.GetType();
-                var modelInfos = ModelProvider.Instance.GetItems(modelType);
                 var id = PrimaryKeyFunc(model);
 
                 var tr = new HtmlElement(HtmlTag.Tr);
@@ -289,14 +288,7 @@ namespace Oldmansoft.Html.WebMan
                     td.AppendTo(tr);
                     td.Text(index.ToString());
                 }
-                foreach (var column in Columns)
-                {
-                    if (!column.Visible) continue;
-                    var content = GetContentFromModel(model, modelType, modelInfos, column.Property);
-                    var td = new HtmlElement(HtmlTag.Td);
-                    td.Append(content);
-                    td.AppendTo(tr);
-                }
+                SetColumns(model, modelType, true, tr);
                 if (ItemActions.Count > 0)
                 {
                     var td = new HtmlElement(HtmlTag.Td);
@@ -325,20 +317,35 @@ namespace Oldmansoft.Html.WebMan
             return index;
         }
 
-        private object GetValueFromModel(object model, Type type, PropertyInfo property)
+        private void SetColumns(object model, Type modelType, bool firstLevel, HtmlElement tr)
         {
+            foreach (var item in ModelProvider.Instance.GetItems(modelType))
+            {
+                if (firstLevel && item.Name == PrimaryKeyName) continue;
+                if (item.Expansion)
+                {
+                    SetColumns(GetValueFromModel(model, item.Property), item.Property.PropertyType, false, tr);
+                    continue;
+                }
+                var node = CreateNodeFromModel(model, item);
+                var td = new HtmlElement(HtmlTag.Td);
+                td.Append(node);
+                td.AppendTo(tr);
+            }
+        }
+
+        private object GetValueFromModel(object model, PropertyInfo property)
+        {
+            if (model == null) return null;
             if (!property.CanRead) return null;
             return property.GetValue(model);
         }
 
-        private HtmlNode GetContentFromModel(object model, Type type, IList<ModelPropertyContent> modelInfos, PropertyInfo property)
+        private HtmlNode CreateNodeFromModel(object model, ModelPropertyContent propertyContent)
         {
-            var value = GetValueFromModel(model, type, property);
+            var value = GetValueFromModel(model, propertyContent.Property);
             if (value == null) return new HtmlText(string.Empty);
-
-            var modelInfo = modelInfos.FirstOrDefault(o => o.Property == property);
-            if (modelInfo == null) return new HtmlText(string.Empty);
-            return ValueDisplay.Instance.Convert(modelInfo.Property.PropertyType, value, modelInfo);
+            return ValueDisplay.Instance.Convert(propertyContent.Property.PropertyType, value, propertyContent);
         }
         
         /// <summary>

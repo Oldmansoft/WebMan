@@ -73,18 +73,27 @@ namespace Oldmansoft.Html.WebMan.DataTables
         private void InitColumns()
         {
             Columns = new List<DataTableColumn>();
-            foreach (var item in ModelProvider.Instance.GetItems(typeof(TModel)))
-            {
-                var column = new DataTableColumn() { Name = item.Property.Name, Property = item.Property, Text = item.Display, Visible = true };
+            SetItems(typeof(TModel), new List<string>());
+        }
 
-                if (item.Property.Name == PrimaryKeyName)
+        private void SetItems(Type type, List<string> parents)
+        {
+            foreach (var item in ModelProvider.Instance.GetItems(type))
+            {
+                var parentsAndCurrent = new List<string>();
+                parentsAndCurrent.AddRange(parents);
+                parentsAndCurrent.Add(item.Name);
+                if (item.Expansion)
                 {
-                    column.Visible = false;
+                    SetItems(item.Property.PropertyType, parentsAndCurrent);
+                    continue;
                 }
+                var itemName = string.Join("-", parentsAndCurrent);
+                var column = new DataTableColumn(itemName, item.Property, item.Display);
                 Columns.Add(column);
             }
         }
-        
+
         /// <summary>
         /// 是否显示序数列
         /// </summary>

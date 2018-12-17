@@ -57,7 +57,12 @@ namespace Oldmansoft.Html.WebMan
         /// 是否隐藏
         /// </summary>
         public bool Hidden { get; set; }
-        
+
+        /// <summary>
+        /// 展开
+        /// </summary>
+        public bool Expansion { get; private set; }
+
         /// <summary>
         /// 是否必须
         /// </summary>
@@ -275,6 +280,12 @@ namespace Oldmansoft.Html.WebMan
             if (attribute is Annotations.InputMaxLengthAttribute)
             {
                 InputMaxLength = attribute as Annotations.InputMaxLengthAttribute;
+                return;
+            }
+
+            if (attribute is Annotations.ExpansionAttribute)
+            {
+                Expansion = true;
                 return;
             }
         }

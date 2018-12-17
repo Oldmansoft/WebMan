@@ -82,7 +82,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 var item = new JsonObject();
                 item.Set("data", Columns[i].Name);
-                if (!Columns[i].Visible)
+                if (!Columns[i].Visible(PrimaryKeyName))
                 {
                     item.Set("visible", false);
                 }
