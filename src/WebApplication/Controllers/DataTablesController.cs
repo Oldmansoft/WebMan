@@ -28,8 +28,6 @@ namespace WebApplication.Controllers
                 item.States = new List<Models.DataTableItemState>();
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);
-                item.Time = DateTime.Now;
-                item.Date = DateTime.Now;
                 item.CreateTime = DateTime.UtcNow;
                 item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
                 item.Files = new List<HttpPostedFileBase>();
@@ -157,7 +155,6 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.ConfigLocation();
             var form = FormHorizontal.Define(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
-            form[o => o.Age].Hidden = true;
             panel.Append(form.Create());
 
             return new HtmlResult(panel.CreateGrid());
@@ -189,7 +186,7 @@ namespace WebApplication.Controllers
                     data.Files.RemoveAt(index);
                 }, o => o.Files);
             }
-
+            return Json(DealResult.Location(Url.Location(Index), "添加成功"));
             return Json(DealResult.Refresh());
         }
 

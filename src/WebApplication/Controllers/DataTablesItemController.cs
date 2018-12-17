@@ -50,8 +50,6 @@ namespace WebApplication.Controllers
             var model = new Models.DataTableItemModel();
             model.States = new List<Models.DataTableItemState>();
             model.States.Add(Models.DataTableItemState.Hight);
-            model.Time = DateTime.Now;
-            model.Date = DateTime.Now;
             model.CreateTime = DateTime.UtcNow;
 
             var source = new ListDataSource();

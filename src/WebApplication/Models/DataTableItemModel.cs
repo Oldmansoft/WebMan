@@ -18,7 +18,7 @@ namespace WebApplication.Models
         [StringLength(int.MaxValue, MinimumLength = 3)]
         [Description("请输入名称")]
         [RegularExpression(@"^[a-zA-Z0-9_\.]+$", ErrorMessage = "请使用字母和数字")]
-        [InputMaxLength(3)]
+        [InputMaxLength(10)]
         public string Name { get; set; }
         
         [DataType(DataType.Password)]
@@ -44,15 +44,7 @@ namespace WebApplication.Models
         [Required]
         [FixedCount(2)]
         public List<DataTableItemState> States { get; set; }
-
-        [Display(Name = "日期")]
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
-
-        [Display(Name = "时间")]
-        [DataType(DataType.Time)]
-        public DateTime Time { get; set; }
-
+        
         [Display(Name = "文件")]
         [FileRequired]
         [FileOption(Accept = ContentType.Image)]
@@ -60,15 +52,15 @@ namespace WebApplication.Models
         
         [Display(Name = "文件组")]
         [FileRequired]
-        [FileOption(SupportDelete = true, Accept = ContentType.Image, LimitContentLength = 1024 * 100)]
+        [FileOption(SupportDelete = true, Accept = ContentType.Image, LimitContentLength = 1024 * 1000)]
         [HtmlData("lity")]
         [RangeCount(2, 3, ServerValidate = false)]
         public List<HttpPostedFileBase> Files { get; set; }
         
         [CustomInput(typeof(TagsInput))]
         [Required]
-        [RangeCount(2, 3)]
-        [InputMaxLength(3)]
+        [RangeCount(1, 3)]
+        [InputMaxLength(10)]
         public List<string> Tags { get; set; }
         
         public double? DoubleValue { get; set; }

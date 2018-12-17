@@ -1,5 +1,5 @@
 ﻿/*
-* v0.18.95
+* v0.18.96
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -232,6 +232,7 @@ window.oldmansoft.webman = new (function () {
             var operator;
             if (!data.NewData) {
                 if (method == dealMethod.form && form) form.bootstrapValidator("disableSubmitButtons", false);
+                action();
                 return;
             }
 
@@ -241,6 +242,7 @@ window.oldmansoft.webman = new (function () {
             } else if (!isNewContent) {
                 $app.reload();
             }
+            action();
         }
 
         function action() {
@@ -265,10 +267,8 @@ window.oldmansoft.webman = new (function () {
 
         if (data.CloseOpen && method == dealMethod.form) {
             $app.close(null, refresh);
-            action();
         } else {
             refresh(false);
-            action();
         }
     }
 
