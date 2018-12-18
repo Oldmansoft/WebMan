@@ -63,7 +63,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 input.Attribute(HtmlAttribute.Type, "file");
             }
-            input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            input.Attribute(HtmlAttribute.Name, Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -97,7 +97,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var delInput = new HtmlElement(HtmlTag.Input);
                 Append(delInput);
                 delInput.Attribute(HtmlAttribute.Type, "hidden");
-                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", PropertyContent.Name));
+                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", Name));
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
@@ -120,13 +120,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             {
                 extensionsMessage = FileOption.ErrorMessage;
             }
-            FormValidator[PropertyContent.Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extensionsMessage, string.Join(" ", FileOption.Extensions))));
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extensionsMessage, string.Join(" ", FileOption.Extensions))));
 
             if (FileOption.LimitContentLength > 0)
             {
                 var limitContentLengthMessage = "文件大小限制为 {0}";
                 if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
-                FormValidator[PropertyContent.Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+                FormValidator[Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
             }
         }
 

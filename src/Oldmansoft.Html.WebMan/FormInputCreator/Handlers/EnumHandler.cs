@@ -10,20 +10,20 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            var model = input.PropertyContent;
-            var type = model.Property.PropertyType;
+            var content = input.PropertyContent;
+            var type = content.Property.PropertyType;
             if (type.IsEnum)
             {
                 result = new Inputs.RadioList();
                 input.SetInputProperty(result);
-                result.Init(model, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type));
+                result.Init(content, input.Name, input.Value, input.Source.Contains(input.Name) ? input.Source.Get(input.Name) : Util.EnumProvider.Instance.GetDataItems(type));
                 return true;
             }
             else if (Util.EnumProvider.IsNullableEnum(type))
             {
                 result = new Inputs.RadioList();
                 input.SetInputProperty(result);
-                result.Init(model, input.Value, input.Source.Contains(model.Name) ? input.Source.Get(model.Name) : Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]));
+                result.Init(content, input.Name, input.Value, input.Source.Contains(input.Name) ? input.Source.Get(input.Name) : Util.EnumProvider.Instance.GetDataItems(type.GenericTypeArguments[0]));
                 return true;
             }
             return false;

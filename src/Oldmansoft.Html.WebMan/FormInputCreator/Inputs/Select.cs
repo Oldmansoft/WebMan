@@ -17,7 +17,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Tag = HtmlTag.Select;
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             AddClass("form-control");
             if (Value == null)
             {

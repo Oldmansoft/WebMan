@@ -321,7 +321,7 @@ namespace Oldmansoft.Html.WebMan
         {
             foreach (var item in ModelProvider.Instance.GetItems(modelType))
             {
-                if (firstLevel && item.Name == PrimaryKeyName) continue;
+                if (firstLevel && item.Property == PrimaryKeyProperty) continue;
                 if (item.Expansion)
                 {
                     SetColumns(GetValueFromModel(model, item.Property), item.Property.PropertyType, false, tr);

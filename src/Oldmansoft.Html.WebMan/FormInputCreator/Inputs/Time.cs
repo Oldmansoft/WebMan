@@ -50,7 +50,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
             input.Attribute(HtmlAttribute.Type, "time");
-            input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
             if (PropertyContent.ReadOnly) PropertyContent.Disabled = true;
             SetAttributeDisabledReadOnlyPlaceHolder(input);

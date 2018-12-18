@@ -75,7 +75,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var delInput = new HtmlElement(HtmlTag.Input);
                 delInput.AppendTo(group);
                 delInput.Attribute(HtmlAttribute.Type, "hidden");
-                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", PropertyContent.Name));
+                delInput.Attribute(HtmlAttribute.Name, string.Format("{0}_DeleteMark", Name));
                 delInput.AddClass("del-file-input");
                 delInput.Attribute(HtmlAttribute.Value, "0");
 
@@ -106,9 +106,9 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var templateInput = new HtmlElement(HtmlTag.Input);
             templateInput.AppendTo(group);
             templateInput.Attribute(HtmlAttribute.Type, "file");
-            templateInput.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            templateInput.Attribute(HtmlAttribute.Name, Name);
             templateInput.Data("temporary", "temporary");
-            templateInput.Data("temporary-for", PropertyContent.Name);
+            templateInput.Data("temporary-for", Name);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
@@ -142,13 +142,13 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         {
             var extendsionsMessage = "文件扩展名必须在 \"{0}\" 里面";
             if (FileOption.ErrorMessage != null) extendsionsMessage = FileOption.ErrorMessage;
-            FormValidator[PropertyContent.Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
+            FormValidator[Name].Set(Validator.Regexp(string.Format("\\.({0})$", string.Join("|", FileOption.Extensions))).Message(string.Format(extendsionsMessage, string.Join(" ", FileOption.Extensions))));
             
             if (FileOption.LimitContentLength > 0)
             {
                 var limitContentLengthMessage = "文件大小限制为 {0}";
                 if (FileOption.ErrorMessage != null) limitContentLengthMessage = FileOption.ErrorMessage;
-                FormValidator[PropertyContent.Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
+                FormValidator[Name].Set(Validator.FileLimitContentLength(FileOption.LimitContentLength).Message(string.Format(limitContentLengthMessage, FileOption.LimitContentLength.ToSpaceVolumeString())));
             }
         }
 

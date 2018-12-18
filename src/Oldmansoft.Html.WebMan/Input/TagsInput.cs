@@ -61,7 +61,7 @@ namespace Oldmansoft.Html.WebMan.Input
                 var hidden = new HtmlElement(HtmlTag.Input);
                 hidden.AppendTo(div);
                 hidden.Attribute(HtmlAttribute.Type, "hidden");
-                hidden.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+                hidden.Attribute(HtmlAttribute.Name, Name);
                 hidden.Attribute(HtmlAttribute.Value, item.Trim());
 
                 var span = new HtmlElement(HtmlTag.Span);
@@ -75,9 +75,9 @@ namespace Oldmansoft.Html.WebMan.Input
             if (!PropertyContent.Disabled && !PropertyContent.ReadOnly) input.AppendTo(this);
             input.AddClass("input");
             input.Attribute(HtmlAttribute.PlaceHolder, "add tags");
-            input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            input.Attribute(HtmlAttribute.Name, Name);
             input.Data("temporary", "temporary");
-            input.Data("temporary-for", PropertyContent.Name);
+            input.Data("temporary-for", Name);
             if (InputMaxLength != null) input.Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
 
             ScriptRegister.Register("TagsInputEdit", "oldmansoft.webman.setTagsInput(view, 'div.tagsinput');");

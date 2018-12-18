@@ -14,6 +14,11 @@ namespace Oldmansoft.Html.WebMan
     public class ModelPropertyContent
     {
         /// <summary>
+        /// 名称
+        /// </summary>
+        internal string Name { get; private set; }
+
+        /// <summary>
         /// 属性信息
         /// </summary>
         public PropertyInfo Property { get; private set; }
@@ -22,11 +27,6 @@ namespace Oldmansoft.Html.WebMan
         /// 数据类型
         /// </summary>
         public DataType DataType { get; private set; }
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; private set; }
 
         /// <summary>
         /// 显示
@@ -308,10 +308,11 @@ namespace Oldmansoft.Html.WebMan
         /// 设置验证
         /// </summary>
         /// <param name="form"></param>
-        internal void SetValidate(FormValidate.FormValidator form)
+        /// <param name="inputName"></param>
+        internal void SetValidate(FormValidate.FormValidator form, string inputName)
         {
             if (ReadOnly || Disabled) return;
-            var validator = form[Name];
+            var validator = form[inputName];
             if (Required != null && !Required.AllowEmptyStrings)
             {
                 validator.Set(Validator.NoEmpty().SetMessage(Required));
@@ -338,7 +339,7 @@ namespace Oldmansoft.Html.WebMan
             if (Compare != null && !string.IsNullOrEmpty(Compare.OtherProperty))
             {
                 validator.Set(Validator.Identical(Compare.OtherProperty).SetMessage(Compare));
-                form[Compare.OtherProperty].Set(Validator.Identical(Name).SetMessage(Compare));
+                form[Compare.OtherProperty].Set(Validator.Identical(inputName).SetMessage(Compare));
             }
             if (Range != null)
             {

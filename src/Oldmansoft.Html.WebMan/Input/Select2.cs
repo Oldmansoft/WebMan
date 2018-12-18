@@ -42,7 +42,7 @@ namespace Oldmansoft.Html.WebMan.Input
         public override void SetInputMode()
         {
             Tag = HtmlTag.Select;
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             AddClass("form-control");
             Css("width", "100%");
             AddClass("select2");

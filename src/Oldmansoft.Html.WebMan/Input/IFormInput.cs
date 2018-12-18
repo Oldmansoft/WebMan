@@ -30,9 +30,10 @@ namespace Oldmansoft.Html.WebMan.Input
         /// 初始化
         /// </summary>
         /// <param name="info">实体项</param>
+        /// <param name="name">名称</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        void Init(ModelPropertyContent info, object value, IList<ListDataItem> options);
+        void Init(ModelPropertyContent info, string name, object value, IList<ListDataItem> options);
 
         /// <summary>
         /// 设置输入模式

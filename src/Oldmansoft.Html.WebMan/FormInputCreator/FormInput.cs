@@ -12,6 +12,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
     public abstract class FormInput : HtmlElement, Input.IFormInput
     {
         /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
         /// 属性内容
         /// </summary>
         public ModelPropertyContent PropertyContent { get; private set; }
@@ -85,10 +90,12 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 初始化
         /// </summary>
         /// <param name="propertyContent">属性内容</param>
+        /// <param name="name">名称</param>
         /// <param name="value">值</param>
         /// <param name="options">列表项</param>
-        public void Init(ModelPropertyContent propertyContent, object value, IList<ListDataItem> options)
+        public void Init(ModelPropertyContent propertyContent, string name, object value, IList<ListDataItem> options)
         {
+            Name = name;
             PropertyContent = propertyContent;
             Options = options;
             InitValue(value);

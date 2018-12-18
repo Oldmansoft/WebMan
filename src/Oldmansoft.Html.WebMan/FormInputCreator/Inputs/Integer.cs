@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Attribute(HtmlAttribute.Type, "number");
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value == null ? string.Empty : Value.ToString());
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             AddClass("form-control");

@@ -12,8 +12,8 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref Input.IFormInput result)
         {
-            var model = input.PropertyContent;
-            var type = model.Property.PropertyType;
+            var content = input.PropertyContent;
+            var type = content.Property.PropertyType;
             if (type.IsGenericType && type.GetInterfaces().Contains(typeof(IEnumerable)))
             {
                 var itemType = type.GetGenericArguments()[0];
@@ -21,28 +21,28 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model, input.Value, Util.EnumProvider.Instance.GetDataItems(itemType, input.Source.GetCanNull(model.Name)));
+                    result.Init(content, input.Name, input.Value, Util.EnumProvider.Instance.GetDataItems(itemType, input.Source.GetCanNull(input.Name)));
                     return true;
                 }
                 else if (itemType == typeof(string))
                 {
                     result = new Inputs.MultiSelect();
                     input.SetInputProperty(result);
-                    result.Init(model, input.Value, input.Source.Get(model.Name));
+                    result.Init(content, input.Name, input.Value, input.Source.Get(input.Name));
                     return true;
                 }
                 else if (itemType == typeof(HttpPostedFileBase) || itemType == typeof(HttpPostedFileWrapper))
                 {
                     result = new Inputs.MultiFile();
                     input.SetInputProperty(result);
-                    result.Init(model, input.Value, null);
+                    result.Init(content, input.Name, input.Value, null);
                     return true;
                 }
                 else if (!itemType.IsClass)
                 {
                     result = new Inputs.CheckBoxList();
                     input.SetInputProperty(result);
-                    result.Init(model, input.Value, input.Source.Get(model.Name));
+                    result.Init(content, input.Name, input.Value, input.Source.Get(input.Name));
                     return true;
                 }
             }

@@ -149,7 +149,7 @@ namespace WebApplication.Controllers
             return Json(DealResult.Location(Url.Location(Index), "添加成功"));
         }
 
-        [Location("修改", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
+        [Location("修改", Icon = FontAwesome.Anchor)]
         public ActionResult Edit(int id)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
@@ -187,7 +187,6 @@ namespace WebApplication.Controllers
                     data.Files.RemoveAt(index);
                 }, o => o.Files);
             }
-            return Json(DealResult.Location(Url.Location(Index), "添加成功"));
             return Json(DealResult.Refresh());
         }
 

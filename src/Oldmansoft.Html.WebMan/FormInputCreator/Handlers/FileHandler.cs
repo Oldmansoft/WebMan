@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             {
                 result = new Inputs.File();
                 input.SetInputProperty(result);
-                result.Init(input.PropertyContent, input.Value, null);
+                result.Init(input.PropertyContent, input.Name, input.Value, null);
                 return true;
             }
             return false;

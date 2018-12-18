@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Tag = HtmlTag.Textarea;
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Rows, "5");
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             Text(Value);

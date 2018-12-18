@@ -41,7 +41,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 var input = new HtmlElement(HtmlTag.Input);
                 label.Append(input);
                 input.Attribute(HtmlAttribute.Type, "checkbox");
-                input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+                input.Attribute(HtmlAttribute.Name, Name);
                 input.Attribute(HtmlAttribute.Value, option.Value);
                 if (Values.Contains(option.Value))
                 {

@@ -15,6 +15,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         public ModelPropertyContent PropertyContent { get; private set; }
 
         /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
         /// 值
         /// </summary>
         public object Value { get; private set; }
@@ -43,15 +48,17 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 创建
         /// </summary>
         /// <param name="propertyContent"></param>
-        /// <param name="model"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         /// <param name="source"></param>
         /// <param name="script"></param>
         /// <param name="validator"></param>
         /// <param name="htmlData"></param>
-        public HandlerParameter(ModelPropertyContent propertyContent, object model, ListDataSource source, Input.ScriptRegister script, FormValidate.FormValidator validator, Annotations.HtmlDataAttribute htmlData)
+        public HandlerParameter(ModelPropertyContent propertyContent, string name, object value, ListDataSource source, Input.ScriptRegister script, FormValidate.FormValidator validator, Annotations.HtmlDataAttribute htmlData)
         {
             PropertyContent = propertyContent;
-            Value = propertyContent.Property.GetValue(model);
+            Name = name;
+            Value = value;
             Source = source;
             ScriptRegister = script;
             FormValidator = validator;

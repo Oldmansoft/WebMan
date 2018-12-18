@@ -29,7 +29,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Attribute(HtmlAttribute.Type, "hidden");
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
             SetAttributeDisabledReadOnlyPlaceHolder(this);
             HtmlData.SetContext(this);

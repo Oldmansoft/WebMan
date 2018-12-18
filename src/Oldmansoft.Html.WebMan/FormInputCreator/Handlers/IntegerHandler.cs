@@ -38,7 +38,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
             if (result == null) return false;
 
             input.SetInputProperty(result);
-            result.Init(input.PropertyContent, input.Value, null);
+            result.Init(input.PropertyContent, input.Name, input.Value, null);
             return true;
         }
     }

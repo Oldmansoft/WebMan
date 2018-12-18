@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Oldmansoft.Html.WebMan
 
         private bool InputMode { get; set; }
 
-        private Dictionary<string, ModelPropertyContent> Items { get; set; }
+        private Dictionary<PropertyInfo, ModelPropertyContent> Items { get; set; }
 
         internal FormHorizontalDefining(TModel model, ILocation action, ListDataSource source, bool inputMode)
         {
@@ -28,10 +29,20 @@ namespace Oldmansoft.Html.WebMan
             Action = action;
             Source = source;
             InputMode = inputMode;
-            Items = new Dictionary<string, ModelPropertyContent>();
-            foreach (var item in Util.ModelProvider.Instance.GetItems(typeof(TModel)))
+            Items = new Dictionary<PropertyInfo, ModelPropertyContent>();
+            InitItems(typeof(TModel));
+        }
+
+        private void InitItems(Type type)
+        {
+            foreach (var item in Util.ModelProvider.Instance.GetItems(type))
             {
-                Items.Add(item.Name, item);
+                if (item.Expansion)
+                {
+                    InitItems(item.Property.PropertyType);
+                    continue;
+                }
+                Items.Add(item.Property, item);
             }
         }
 
@@ -44,9 +55,9 @@ namespace Oldmansoft.Html.WebMan
         {
             get
             {
-                var name = property.GetProperty().Name;
-                if (!Items.ContainsKey(name)) return null;
-                return Items[name];
+                var key = property.GetProperty();
+                if (!Items.ContainsKey(key)) return null;
+                return Items[key];
             }
         }
 
@@ -64,18 +75,35 @@ namespace Oldmansoft.Html.WebMan
                 form.Attribute(HtmlAttribute.Action, Action.Path);
                 Action.Behave.SetTargetAttribute(form);
             }
-            foreach (var item in Items.Values)
+            CreateInput(form, typeof(TModel), Model, new List<string>());
+            return form;
+        }
+
+        private void CreateInput(FormHorizontal form, Type type, object model, List<string> parents)
+        {
+            foreach (var item in Util.ModelProvider.Instance.GetItems(type))
             {
-                if (item.Hidden)
+                var parentsAndCurrent = new List<string>();
+                parentsAndCurrent.AddRange(parents);
+                parentsAndCurrent.Add(item.Name);
+                if (item.Expansion)
+                {
+                    CreateInput(form, item.Property.PropertyType, model == null ? null : item.Property.GetValue(model), parentsAndCurrent);
+                    continue;
+                }
+                var name = string.Join(".", parentsAndCurrent);
+                var content = Items[item.Property];
+                var value = model == null ? null : content.Property.GetValue(model);
+                if (content.Hidden)
                 {
                     var hidden = new FormInputCreator.Inputs.Hidden();
-                    hidden.Init(item, Model != null ? item.Property.GetValue(Model) : string.Empty, null);
+                    hidden.Init(content, name, value != null ? value : string.Empty, null);
                     hidden.SetInputMode();
                     hidden.AppendTo(form);
                     continue;
                 }
-
-                var parameter = new FormInputCreator.HandlerParameter(item, Model, Source, form.Script, form.Validator, item.HtmlData);
+                
+                var parameter = new FormInputCreator.HandlerParameter(content, name, value, Source, form.Script, form.Validator, content.HtmlData);
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 if (InputMode)
                 {
@@ -85,10 +113,9 @@ namespace Oldmansoft.Html.WebMan
                 {
                     input.SetViewMode();
                 }
-                form.Add(item.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
-                item.SetValidate(form.Validator);
+                form.Add(content.Display, input.CreateGrid(Column.Sm9 | Column.Md10));
+                content.SetValidate(form.Validator, name);
             }
-            return form;
         }
     }
 }

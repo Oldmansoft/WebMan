@@ -33,6 +33,33 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 获取属性表达式的全名
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static string GetPropertyFullName<TEntity>(this Expression<Func<TEntity, object>> expression)
+        {
+            var member = expression.Body;
+            if (member.NodeType == ExpressionType.Convert && expression.Body is UnaryExpression)
+            {
+                member = ((UnaryExpression)member).Operand;
+            }
+            if (!(member is MemberExpression)) return null;
+
+            var names = new List<string>();
+            var memberExpression = (MemberExpression)member;
+            names.Add(memberExpression.Member.Name);
+            while (memberExpression.Expression.GetType().Name == "PropertyExpression")
+            {
+                memberExpression = (MemberExpression)memberExpression.Expression;
+                names.Add(memberExpression.Member.Name);
+            }
+            names.Reverse();
+            return string.Join(".", names);
+        }
+
+        /// <summary>
         /// 获取字符串列表
         /// </summary>
         /// <param name="source"></param>

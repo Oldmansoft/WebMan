@@ -24,6 +24,11 @@ namespace Oldmansoft.Html.WebMan.DataTables
         protected Func<TModel, object> PrimaryKeyFunc { get; private set; }
 
         /// <summary>
+        /// 主键属性
+        /// </summary>
+        protected System.Reflection.PropertyInfo PrimaryKeyProperty { get; private set; }
+
+        /// <summary>
         /// 主键名称
         /// </summary>
         protected string PrimaryKeyName { get; private set; }
@@ -60,10 +65,10 @@ namespace Oldmansoft.Html.WebMan.DataTables
             : base(HtmlTag.Table)
         {
             if (primaryKey == null) throw new ArgumentNullException("primaryKey");
-            var primaryKeyProperty = primaryKey.GetProperty();
-            if (primaryKeyProperty == null) throw new ArgumentException("指定的属性不存在，请确认不是字段或方法。", "primaryKey");
+            PrimaryKeyProperty = primaryKey.GetProperty();
+            if (PrimaryKeyProperty == null) throw new ArgumentException("指定的属性不存在，请确认不是字段或方法。", "primaryKey");
 
-            PrimaryKeyName = primaryKeyProperty.Name;
+            PrimaryKeyName = PrimaryKeyProperty.Name;
             PrimaryKeyFunc = primaryKey.Compile();
             FrontNodes = new List<IHtmlNode>();
             AfterNodes = new List<IHtmlNode>();

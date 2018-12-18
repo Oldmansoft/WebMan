@@ -38,7 +38,7 @@ namespace WebApplication.Controllers
                 .Add(
                     new TreeListItem(Url.Location(Envelope))
                 )
-            );
+            ).Add(new TreeListItem(Url.Location(MoreLevel)));
 
             document.Taskbar.Add(Url.Location(Male));
             document.Taskbar.Add(Url.Location(Envelope));
@@ -109,6 +109,25 @@ namespace WebApplication.Controllers
         public ActionResult Envelope()
         {
             return Content("邮件");
+        }
+
+        private static Models.MoreLevelModel LevelModel = new Models.MoreLevelModel();
+
+        [Location("多层对象", Icon = FontAwesome.Envelope)]
+        public ActionResult MoreLevel()
+        {
+            var model = LevelModel;
+            var form = FormHorizontal.Define(model, Url.Location(new Func<Models.MoreLevelModel, JsonResult>(MoreLevelResult))).Create();
+            var panel = new Panel();
+            panel.Append(form);
+            panel.ConfigLocation();
+            return new HtmlResult(panel.CreateGrid());
+        }
+
+        public JsonResult MoreLevelResult(Models.MoreLevelModel model)
+        {
+            LevelModel = model;
+            return Json(DealResult.Refresh());
         }
     }
 }

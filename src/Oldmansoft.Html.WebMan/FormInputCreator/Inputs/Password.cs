@@ -39,7 +39,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             var input = new HtmlElement(HtmlTag.Input);
             Append(input);
             input.Attribute(HtmlAttribute.Type, "password");
-            input.Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, Value);
             SetAttributeDisabledReadOnlyPlaceHolder(input);
             input.AddClass("form-control");

@@ -32,7 +32,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         public override void SetInputMode()
         {
             Attribute(HtmlAttribute.Type, "text");
-            Attribute(HtmlAttribute.Name, PropertyContent.Name);
+            Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
             if (InputMaxLength != null) Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
             SetAttributeDisabledReadOnlyPlaceHolder(this);
