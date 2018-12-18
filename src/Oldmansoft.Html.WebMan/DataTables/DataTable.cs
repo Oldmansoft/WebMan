@@ -20,11 +20,11 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="dataSource">数据源路径</param>
         /// <returns></returns>
         [Obsolete("请使用 TableCreator<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)")]
-        public static DataTableDefinition<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
+        public static DynamicTable<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
             where TModel : class
         {
             if (dataSource == null) throw new ArgumentNullException("dataSource");
-            return new DataTableDefinition<TModel>(primaryKey, dataSource.Path);
+            return new DynamicTable<TModel>(primaryKey, dataSource.Path);
         }
 
         /// <summary>
@@ -60,10 +60,23 @@ namespace Oldmansoft.Html.WebMan
         /// <typeparam name="TModel"></typeparam>
         /// <param name="primaryKey"></param>
         /// <returns>表格创建者</returns>
-        public static TableCreator<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)
+        [Obsolete("请使用 DataTableDefining<TModel> Define<TModel>(Expression<Func<TModel, object>> primaryKey)")]
+        public static DataTableDefining<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)
             where TModel : class
         {
-            return new TableCreator<TModel>(primaryKey);
+            return new DataTableDefining<TModel>(primaryKey);
+        }
+        
+        /// <summary>
+        /// 定义表格
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="primaryKey"></param>
+        /// <returns>表格创建者</returns>
+        public static DataTableDefining<TModel> Define<TModel>(Expression<Func<TModel, object>> primaryKey)
+            where TModel : class
+        {
+            return new DataTableDefining<TModel>(primaryKey);
         }
     }
 }

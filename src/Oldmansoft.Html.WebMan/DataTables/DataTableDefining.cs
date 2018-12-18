@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 表格创建者
+    /// 数据表格定义
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class TableCreator<TModel>
+    public class DataTableDefining<TModel>
         where TModel : class
     {
         private Expression<Func<TModel, object>> PrimaryKey { get; set; }
@@ -20,7 +20,7 @@ namespace Oldmansoft.Html.WebMan
         /// 创建表格创建者
         /// </summary>
         /// <param name="primaryKey"></param>
-        public TableCreator(Expression<Func<TModel, object>> primaryKey)
+        public DataTableDefining(Expression<Func<TModel, object>> primaryKey)
         {
             PrimaryKey = primaryKey;
         }
@@ -36,14 +36,14 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 创建数据源表格
+        /// 创建动态数据源表格
         /// </summary>
         /// <param name="dataSource">数据源地址</param>
         /// <returns></returns>
-        public DataTableDefinition<TModel> Create(ILocation dataSource)
+        public DynamicTable<TModel> Create(ILocation dataSource)
         {
             if (dataSource == null) throw new ArgumentNullException("dataSource");
-            return new DataTableDefinition<TModel>(PrimaryKey, dataSource.Path);
+            return new DynamicTable<TModel>(PrimaryKey, dataSource.Path);
         }
     }
 }

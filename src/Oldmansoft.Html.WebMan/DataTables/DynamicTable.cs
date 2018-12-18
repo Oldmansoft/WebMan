@@ -12,10 +12,10 @@ using Oldmansoft.Html.WebMan.Util;
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
-    /// 数据源表格定义
+    /// 动态数据源表格
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class DataTableDefinition<TModel> : DataTables.Table<TModel> where TModel : class
+    public class DynamicTable<TModel> : DataTables.Table<TModel> where TModel : class
     {
         /// <summary>
         /// 请求数据源路径
@@ -35,27 +35,27 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 表格操作
         /// </summary>
-        private List<DataTableAction> TableActions { get; set; }
+        private List<DynamicTableAction> TableActions { get; set; }
 
         /// <summary>
         /// 数据项操作
         /// </summary>
-        private List<DataTableAction> ItemActions { get; set; }
+        private List<DynamicTableAction> ItemActions { get; set; }
 
         /// <summary>
         /// 创建表格定义
         /// </summary>
         /// <param name="primaryKey">主键</param>
         /// <param name="dataSource">数据源路径</param>
-        internal DataTableDefinition(Expression<Func<TModel, object>> primaryKey, string dataSource)
+        internal DynamicTable(Expression<Func<TModel, object>> primaryKey, string dataSource)
             : base(primaryKey)
         {
             if (dataSource == null) throw new ArgumentNullException("dataSource");
 
             DataSourceLoation = dataSource;
             RowClassNameClientConditions = new List<KeyValuePair<string, string>>();
-            TableActions = new List<DataTableAction>();
-            ItemActions = new List<DataTableAction>();
+            TableActions = new List<DynamicTableAction>();
+            ItemActions = new List<DynamicTableAction>();
         }
         
         private JsonArray GetColumnContentScript()
@@ -348,7 +348,7 @@ namespace Oldmansoft.Html.WebMan
             if (location == null) throw new ArgumentNullException("location");
             if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
 
-            var action = new DataTableAction(location.Display, location.Path, location.Behave);
+            var action = new DynamicTableAction(location.Display, location.Path, location.Behave);
             TableActions.Add(action);
             return action;
         }
@@ -365,7 +365,7 @@ namespace Oldmansoft.Html.WebMan
             if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
             if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
 
-            var action = new DataTableAction(display, script, LinkBehave.Script);
+            var action = new DynamicTableAction(display, script, LinkBehave.Script);
             TableActions.Add(action);
             return action;
         }
@@ -381,7 +381,7 @@ namespace Oldmansoft.Html.WebMan
             if (location == null) throw new ArgumentNullException("location");
             if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
 
-            var action = new DataTableAction(location.Display, location.Path, location.Behave);
+            var action = new DynamicTableAction(location.Display, location.Path, location.Behave);
             ItemActions.Add(action);
             return action;
         }
@@ -398,7 +398,7 @@ namespace Oldmansoft.Html.WebMan
             if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
             if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
 
-            var action = new DataTableAction(display, script, LinkBehave.Script);
+            var action = new DynamicTableAction(display, script, LinkBehave.Script);
             ItemActions.Add(action);
             return action;
         }

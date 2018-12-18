@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DataTableAction : TableAction, IDataTableItemAction
+    class DynamicTableAction : TableAction, IDataTableItemAction
     {   
         /// <summary>
         /// 隐藏条件
@@ -18,7 +18,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         public string DisableCondition { get; set; }
 
-        public DataTableAction(string text, string location, LinkBehave behave)
+        public DynamicTableAction(string text, string location, LinkBehave behave)
             : base(text, location, behave)
         {
         }

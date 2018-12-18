@@ -65,7 +65,7 @@ namespace WebApplication.Models
         
         public double? DoubleValue { get; set; }
 
-        [CustomInput(typeof(CustomInput.TestInput))]
+        [Hidden]
         public string HideValue { get; set; }
 
         [Expansion]

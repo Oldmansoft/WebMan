@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="placeHolder"></param>
-        public static void AddSearchPanel<TModel>(this DataTableDefinition<TModel> source, ILocation location, string key, string value, string placeHolder = null) where TModel : class
+        public static void AddSearchPanel<TModel>(this DynamicTable<TModel> source, ILocation location, string key, string value, string placeHolder = null) where TModel : class
         {
             if (source == null) return;
             if (location == null) throw new ArgumentNullException("location");

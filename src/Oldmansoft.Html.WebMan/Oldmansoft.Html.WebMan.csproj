@@ -63,7 +63,7 @@
     <Compile Include="DataTables\StaticTable.cs" />
     <Compile Include="DataTables\Table.cs" />
     <Compile Include="DataTables\TableAction.cs" />
-    <Compile Include="DataTables\TableCreator.cs" />
+    <Compile Include="DataTables\DataTableDefining.cs" />
     <Compile Include="DataTables\ValueDealer\HttpPostedFileDisplay.cs" />
     <Compile Include="DataTables\ValueDealer\StringDisplay.cs" />
     <Compile Include="DealResult.cs" />
@@ -72,9 +72,9 @@
     <Compile Include="Column.cs" />
     <Compile Include="ColumnOffset.cs" />
     <Compile Include="DataTables\DataTable.cs" />
-    <Compile Include="DataTables\DataTableAction.cs" />
+    <Compile Include="DataTables\DynamicTableAction.cs" />
     <Compile Include="DataTables\DataTableColumn.cs" />
-    <Compile Include="DataTables\DataTableDefinition.cs" />
+    <Compile Include="DataTables\DynamicTable.cs" />
     <Compile Include="DataTables\DataTableRequest.cs" />
     <Compile Include="DataTables\DataTableSource.cs" />
     <Compile Include="DataTables\IValueDisplay.cs" />
