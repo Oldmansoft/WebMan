@@ -88,6 +88,7 @@ namespace WebApplication.Controllers
             panel.ConfigLocation();
 
             var table = DataTable.Define<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
+            table[o => o.Id].Visible = true;
             table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();

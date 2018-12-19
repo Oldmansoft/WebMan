@@ -9,7 +9,7 @@ namespace Oldmansoft.Html.WebMan
     /// <summary>
     /// 表格列
     /// </summary>
-    class DataTableColumn
+    class DataTableColumn : ITableColumn
     {
         /// <summary>
         /// 名称

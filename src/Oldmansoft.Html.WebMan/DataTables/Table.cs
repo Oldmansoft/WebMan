@@ -100,6 +100,21 @@ namespace Oldmansoft.Html.WebMan.DataTables
         }
 
         /// <summary>
+        /// 获取表格列
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public ITableColumn this[Expression<Func<TModel, object>> property]
+        {
+            get
+            {
+                var key = property.GetPropertyFullName().Replace(".", "-");
+                if (!Columns.ContainsKey(key)) return null;
+                return Columns[key];
+            }
+        }
+
+        /// <summary>
         /// 是否显示序数列
         /// </summary>
         /// <param name="value"></param>

@@ -11,6 +11,7 @@ namespace WebApplication.Models
 {
     public class DataTableItemModel
     {
+        [Display(Name = "序号")]
         public int Id { get; set; }
 
         [Display(Name = "名称")]
