@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.ConfigLocation();
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource(id));
+            var table = DataTable.Define<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource(id));
             GlobalOption.TableSelectedParameterName = "index";
             table.AddActionTable(Url.Location(Create).Set("parentId", id));
             table.AddActionTable(Url.Location(new Func<int, int[], JsonResult>(Delete)).Set("parentId", id)).SupportParameter().Confirm("是否删除").NeedSelected();

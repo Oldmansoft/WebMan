@@ -78,11 +78,11 @@ namespace Oldmansoft.Html.WebMan
                 result.Add(indexObject);
             }
 
-            for (var i = 0; i < Columns.Count; i++)
+            foreach (var column in Columns.Values)
             {
                 var item = new JsonObject();
-                item.Set("data", Columns[i].Name);
-                if (!Columns[i].Visible(PrimaryKeyName))
+                item.Set("data", column.Name);
+                if (!column.Visible)
                 {
                     item.Set("visible", false);
                 }
@@ -205,9 +205,9 @@ namespace Oldmansoft.Html.WebMan
             {
                 result.Append(new HtmlElement(HtmlTag.Th).Text("序数"));
             }
-            foreach (var item in Columns)
+            foreach (var column in Columns.Values)
             {
-                result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
+                result.Append(new HtmlElement(HtmlTag.Th).Text(column.Text));
             }
             if (ItemActions.Count > 0)
             {

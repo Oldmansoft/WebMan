@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan.DataTables
     public abstract class Table<TModel> : HtmlElement
         where TModel : class
     {
-        private string SelectedParameterName;
+        private string SelectedParameterName { get; set; }
 
         /// <summary>
         /// 主键方法
@@ -46,7 +46,7 @@ namespace Oldmansoft.Html.WebMan.DataTables
         /// <summary>
         /// 列名称
         /// </summary>
-        internal IList<DataTableColumn> Columns { get; private set; }
+        internal Dictionary<string, DataTableColumn> Columns { get; private set; }
 
         /// <summary>
         /// 前置节点
@@ -77,7 +77,7 @@ namespace Oldmansoft.Html.WebMan.DataTables
         
         private void InitColumns()
         {
-            Columns = new List<DataTableColumn>();
+            Columns = new Dictionary<string, DataTableColumn>();
             SetItems(typeof(TModel), new List<string>());
         }
 
@@ -94,8 +94,8 @@ namespace Oldmansoft.Html.WebMan.DataTables
                     continue;
                 }
                 var itemName = string.Join("-", parentsAndCurrent);
-                var column = new DataTableColumn(itemName, item.Property, item.Display);
-                Columns.Add(column);
+                var column = new DataTableColumn(itemName, item.Property, item.Display, item.Property != PrimaryKeyProperty && !item.Hidden);
+                Columns.Add(itemName, column);
             }
         }
 

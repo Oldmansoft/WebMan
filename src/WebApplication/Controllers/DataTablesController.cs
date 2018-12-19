@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.ConfigLocation();
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(Url.Location(IndexDataSource));
+            var table = DataTable.Define<Models.DataTableItemModel>(o => o.Id).Create(Url.Location(IndexDataSource));
             table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();
@@ -87,7 +87,7 @@ namespace WebApplication.Controllers
             var panel = new Panel();
             panel.ConfigLocation();
 
-            var table = DataTable.Definition<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
+            var table = DataTable.Define<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
             table.SetSelectedParameterName("id");
             table.AddActionTable(Url.Location(Create));
             table.AddActionTable(Url.Location(Delete)).SupportParameter().Confirm("是否删除").NeedSelected();

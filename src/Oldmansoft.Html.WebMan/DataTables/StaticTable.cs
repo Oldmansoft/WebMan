@@ -123,10 +123,10 @@ namespace Oldmansoft.Html.WebMan
             {
                 result.Append(new HtmlElement(HtmlTag.Th).Text("序数"));
             }
-            foreach (var item in Columns)
+            foreach (var column in Columns.Values)
             {
-                if (!item.Visible(PrimaryKeyName)) continue;
-                result.Append(new HtmlElement(HtmlTag.Th).Text(item.Text));
+                if (!column.Visible) continue;
+                result.Append(new HtmlElement(HtmlTag.Th).Text(column.Text));
             }
             if (ItemActions.Count > 0)
             {
@@ -219,9 +219,9 @@ namespace Oldmansoft.Html.WebMan
             var columnLength = 0;
             if (IsDisplayCheckboxColumn) columnLength++;
             if (IsDisplayIndexColumn) columnLength++;
-            foreach (var column in Columns)
+            foreach (var column in Columns.Values)
             {
-                if (!column.Visible(PrimaryKeyName)) continue;
+                if (!column.Visible) continue;
                 columnLength++;
             }
             if (ItemActions.Count > 0) columnLength++;
@@ -288,7 +288,7 @@ namespace Oldmansoft.Html.WebMan
                     td.AppendTo(tr);
                     td.Text(index.ToString());
                 }
-                SetColumns(model, modelType, true, tr);
+                SetColumns(model, modelType, new List<string>(), tr);
                 if (ItemActions.Count > 0)
                 {
                     var td = new HtmlElement(HtmlTag.Td);
@@ -317,16 +317,21 @@ namespace Oldmansoft.Html.WebMan
             return index;
         }
 
-        private void SetColumns(object model, Type modelType, bool firstLevel, HtmlElement tr)
+        private void SetColumns(object model, Type modelType, List<string> parents, HtmlElement tr)
         {
             foreach (var item in ModelProvider.Instance.GetItems(modelType))
             {
-                if (firstLevel && item.Property == PrimaryKeyProperty) continue;
+                var parentsAndCurrent = new List<string>();
+                parentsAndCurrent.AddRange(parents);
+                parentsAndCurrent.Add(item.Name);
                 if (item.Expansion)
                 {
-                    SetColumns(GetValueFromModel(model, item.Property), item.Property.PropertyType, false, tr);
+                    SetColumns(GetValueFromModel(model, item.Property), item.Property.PropertyType, parentsAndCurrent, tr);
                     continue;
                 }
+                var itemName = string.Join("-", parentsAndCurrent);
+                if (!Columns[itemName].Visible) continue;
+
                 var node = CreateNodeFromModel(model, item);
                 var td = new HtmlElement(HtmlTag.Td);
                 td.Append(node);
