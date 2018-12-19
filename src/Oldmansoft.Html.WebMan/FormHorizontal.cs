@@ -12,6 +12,8 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public class FormHorizontal : HtmlElement
     {
+        private IList<IHtmlElement> Buttons { get; set; }
+
         /// <summary>
         /// 脚本
         /// </summary>
@@ -25,17 +27,19 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 使用按钮组
         /// </summary>
-        public bool UseButtonGroup { get; internal set; }
+        private bool UseButtonGroup { get; set; }
 
         /// <summary>
         /// 查看模式
         /// </summary>
-        internal bool ViewMode { get; set; }
+        public bool ViewMode { get; private set; }
 
         /// <summary>
-        /// 创建横表单
+        /// 创建
         /// </summary>
-        public FormHorizontal()
+        /// <param name="viewMode"></param>
+        /// <param name="buttons"></param>
+        public FormHorizontal(bool viewMode, IList<IHtmlElement> buttons)
             :base(HtmlTag.Form)
         {
             AddClass("form-horizontal");
@@ -43,7 +47,9 @@ namespace Oldmansoft.Html.WebMan
 
             Script = new Input.ScriptRegister();
             Validator = new FormValidate.FormValidator();
-            UseButtonGroup = true;
+            ViewMode = viewMode;
+            UseButtonGroup = !viewMode;
+            Buttons = buttons == null ? new List<IHtmlElement>() : buttons;
         }
 
         /// <summary>
@@ -82,23 +88,7 @@ namespace Oldmansoft.Html.WebMan
                 AddClass("view-mode");
             }
 
-            if (UseButtonGroup)
-            {
-                var group = new HtmlElement(HtmlTag.Div);
-                Append(group);
-                group.AddClass("form-group");
-                
-                var reset = new HtmlElement(HtmlTag.Div);
-                reset.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
-                reset.AddClass("col-container");
-                reset.Append(new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "reset").AddClass("btn btn-default"));
-                group.Append(reset);
-
-                var submit = new HtmlElement(HtmlTag.Div);
-                submit.AddClass("col-container");
-                submit.Append(new HtmlElement(HtmlTag.Input).Attribute(HtmlAttribute.Type, "submit").AddClass("btn btn-primary"));
-                group.Append(submit);
-            }
+            AddButtonGroup();
             base.Format(outer);
             if (ViewMode)
             {
@@ -109,7 +99,24 @@ namespace Oldmansoft.Html.WebMan
                 outer.AddEvent(AppEvent.Load, string.Format("oldmansoft.webman.setFormValidate(view, '{0}', {1});{2}", name, Validator.Create(), Script.ToString()));
             }
         }
-        
+
+        private void AddButtonGroup()
+        {
+            if (Buttons.Count == 0) return;
+
+            var group = new HtmlElement(HtmlTag.Div);
+            Append(group);
+            group.AddClass("form-group");
+            for (var i = 0; i < Buttons.Count; i++)
+            {
+                var container = new HtmlElement(HtmlTag.Div);
+                if (i == 0) container.AddClass(ColumnOffset.Sm3 | ColumnOffset.Md2);
+                container.AddClass("col-container");
+                container.Append(Buttons[i]);
+                container.AppendTo(group);
+            }
+        }
+
         /// <summary>
         /// 根据模型创建提交表单
         /// </summary>
