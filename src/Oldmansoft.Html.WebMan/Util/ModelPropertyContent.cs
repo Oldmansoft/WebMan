@@ -74,6 +74,16 @@ namespace Oldmansoft.Html.WebMan
         public StringLengthAttribute StringLength { get; private set; }
 
         /// <summary>
+        /// 最大长度
+        /// </summary>
+        public MaxLengthAttribute MaxLength { get; private set; }
+
+        /// <summary>
+        /// 最小长度
+        /// </summary>
+        public MinLengthAttribute MinLength { get; private set; }
+
+        /// <summary>
         /// 比较
         /// </summary>
         public CompareAttribute Compare { get; private set; }
@@ -229,6 +239,18 @@ namespace Oldmansoft.Html.WebMan
                 return;
             }
 
+            if (attribute is MaxLengthAttribute)
+            {
+                MaxLength = attribute as MaxLengthAttribute;
+                return;
+            }
+
+            if (attribute is MinLengthAttribute)
+            {
+                MinLength = attribute as MinLengthAttribute;
+                return;
+            }
+
             if (attribute is CompareAttribute)
             {
                 Compare = attribute as CompareAttribute;
@@ -317,6 +339,7 @@ namespace Oldmansoft.Html.WebMan
             {
                 validator.Set(Validator.NoEmpty().SetMessage(Required));
             }
+
             if (StringLength != null)
             {
                 if (StringLength.MinimumLength > 0 && StringLength.MaximumLength == int.MaxValue)
@@ -328,28 +351,46 @@ namespace Oldmansoft.Html.WebMan
                     validator.Set(Validator.StringLength(StringLength.MinimumLength, StringLength.MaximumLength).SetMessage(StringLength));
                 }
             }
+            else if (MinLength != null && MaxLength != null)
+            {
+                validator.Set(Validator.StringLength(MinLength.Length, MaxLength.Length).SetMessage(MaxLength));
+            }
+            else if (MinLength != null)
+            {
+                validator.Set(Validator.StringLength(MinLength.Length).SetMessage(MinLength));
+            }
+            else if (MaxLength != null)
+            {
+                validator.Set(Validator.StringLength(0, MaxLength.Length).SetMessage(MaxLength));
+            }
+
             if (Regular != null && !string.IsNullOrEmpty(Regular.Pattern))
             {
                 validator.Set(Validator.Regexp(Regular.Pattern).SetMessage(Regular));
             }
+
             if (DataType == DataType.EmailAddress)
             {
                 validator.Set(Validator.EmailAddress().Message(DataTypeErrorMessage));
             }
+
             if (Compare != null && !string.IsNullOrEmpty(Compare.OtherProperty))
             {
                 validator.Set(Validator.Identical(Compare.OtherProperty).SetMessage(Compare));
                 form[Compare.OtherProperty].Set(Validator.Identical(inputName).SetMessage(Compare));
             }
+
             if (Range != null)
             {
                 validator.Set(Validator.GreaterThan(Range.Minimum).SetMessage(Range));
                 validator.Set(Validator.LessThan(Range.Maximum).SetMessage(Range));
             }
+
             if (FixedCount != null)
             {
                 validator.Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(FixedCount.ErrorMessage == null ? "数量限定 {0} 个" : FixedCount.ErrorMessage, FixedCount.Value)));
             }
+
             if (RangeCount != null)
             {
                 validator.Set(Validator.RangeCount(RangeCount.MinCount, RangeCount.MaxCount, RangeCount.Inclusive).Message(RangeCount.ErrorMessage == null ? "数量限定有误" : RangeCount.ErrorMessage));
