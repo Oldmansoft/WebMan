@@ -24,6 +24,11 @@ namespace Oldmansoft.Html.WebMan
         public string Caption { get; set; }
 
         /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// 图标
         /// </summary>
         public FontAwesome Icon { get; set; }
@@ -57,6 +62,12 @@ namespace Oldmansoft.Html.WebMan
         {
             Header.Prepend(Icon.CreateElement());
             HeaderCaption.Text(Caption);
+            if (!string.IsNullOrWhiteSpace(Description))
+            {
+                var span = new HtmlElement(HtmlTag.Span);
+                span.Text(Description);
+                HeaderCaption.After(span);
+            }
             AddClass("webman-panel");
             base.Format(outer);
         }

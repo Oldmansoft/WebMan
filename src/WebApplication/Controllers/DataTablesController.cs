@@ -155,6 +155,7 @@ namespace WebApplication.Controllers
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
             var panel = new Panel();
+            panel.Description = "hello, world";
             panel.ConfigLocation();
             var form = FormHorizontal.Define(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
             panel.Append(form.Create());

@@ -496,17 +496,20 @@ header .dropdown-menu a {
     padding: 18px;
     border-bottom: 1px solid #e7e7e7;
 }
-
 .webman-panel>header i,
-.webman-panel header h2 {
+.webman-panel>header h2 {
     float: left;
     font-size: 18px;
 }
-
 .webman-panel>header h2 {
     margin: 0 0 0 10px;
 }
-
+.webman-panel>header>span {
+    float: left;
+    margin: 5px 0 0 10px;
+    line-height: 14px;
+    color: gray;
+}
 .webman-panel-tools {
     float: right;
 }
