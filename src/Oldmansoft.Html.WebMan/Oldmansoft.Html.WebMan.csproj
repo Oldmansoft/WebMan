@@ -56,10 +56,10 @@
     <Compile Include="Annotations\RangeCountAttribute.cs" />
     <Compile Include="AppEvent.cs" />
     <Compile Include="Badge.cs" />
+    <Compile Include="DataTables\IDynamicTableAction.cs" />
     <Compile Include="DataTables\ITableColumn.cs" />
     <Compile Include="DataTables\StaticTableAction.cs" />
     <Compile Include="DataTables\IStaticTableItemAction.cs" />
-    <Compile Include="DataTables\IDataTableItemAction.cs" />
     <Compile Include="DataTables\ItemActionClient.cs" />
     <Compile Include="DataTables\StaticTable.cs" />
     <Compile Include="DataTables\Table.cs" />
