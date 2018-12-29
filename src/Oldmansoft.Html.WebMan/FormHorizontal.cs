@@ -23,12 +23,7 @@ namespace Oldmansoft.Html.WebMan
         /// 验证器
         /// </summary>
         public FormValidate.FormValidator Validator { get; private set; }
-
-        /// <summary>
-        /// 使用按钮组
-        /// </summary>
-        private bool UseButtonGroup { get; set; }
-
+        
         /// <summary>
         /// 查看模式
         /// </summary>
@@ -48,7 +43,6 @@ namespace Oldmansoft.Html.WebMan
             Script = new Input.ScriptRegister();
             Validator = new FormValidate.FormValidator();
             ViewMode = viewMode;
-            UseButtonGroup = !viewMode;
             Buttons = buttons == null ? new List<IHtmlElement>() : buttons;
         }
 

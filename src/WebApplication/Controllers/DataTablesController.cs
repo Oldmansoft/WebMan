@@ -86,6 +86,7 @@ namespace WebApplication.Controllers
         {
             var panel = new Panel();
             panel.ConfigLocation();
+            panel.Description = "注释";
 
             var table = DataTable.Define<Models.DataTableItemModel>(o => o.Id).Create(GetDataSource());
             table[o => o.Id].Visible = true;

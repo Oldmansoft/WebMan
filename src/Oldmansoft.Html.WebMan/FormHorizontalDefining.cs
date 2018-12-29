@@ -150,8 +150,11 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public FormHorizontal Create()
         {
-            if (SubmitButton != null) Buttons.Insert(0, SubmitButton);
-            if (ResetButton != null) Buttons.Insert(0, ResetButton);
+            if (InputMode)
+            {
+                if (SubmitButton != null) Buttons.Insert(0, SubmitButton);
+                if (ResetButton != null) Buttons.Insert(0, ResetButton);
+            }
             var form = new FormHorizontal(!InputMode, Buttons);
             if (Action != null)
             {

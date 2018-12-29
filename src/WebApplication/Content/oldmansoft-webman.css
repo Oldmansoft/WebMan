@@ -508,7 +508,7 @@ header .dropdown-menu a {
     float: left;
     margin: 5px 0 0 10px;
     line-height: 14px;
-    color: gray;
+    color: #666;
 }
 .webman-panel-tools {
     float: right;

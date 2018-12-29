@@ -69,5 +69,14 @@ namespace Oldmansoft.Html.WebMan.Util
             }
             return list;
         }
+
+        /// <summary>
+        /// 重置
+        /// 有时候获取类的属性会出现奇怪的顺序
+        /// </summary>
+        public void Reset()
+        {
+            Properties.Clear();
+        }
     }
 }
