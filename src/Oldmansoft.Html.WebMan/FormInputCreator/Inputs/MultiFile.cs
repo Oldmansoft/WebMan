@@ -135,7 +135,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             virtualInput.AddClass("form-control virtual-mulit-file-input");
             virtualInput.Text(string.IsNullOrEmpty(PropertyContent.Description) ? "选择多个文件" : PropertyContent.Description);
             virtualInput.AppendTo(group);
-            SetAttributeDisabledReadOnly(virtualInput);
+            SetAttributeDisabledReadOnly(virtualInput, PropertyContent.Disabled);
         }
 
         private void SetFormValidator()

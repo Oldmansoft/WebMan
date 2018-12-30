@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 名称
         /// </summary>
-        internal string Name { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// 属性信息
@@ -31,32 +31,32 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 显示
         /// </summary>
-        public string Display { get; set; }
+        public string Display { get; private set; }
 
         /// <summary>
         /// 数据类型不匹配错误消息
         /// </summary>
-        public string DataTypeErrorMessage { get; set; }
+        public string DataTypeErrorMessage { get; private set; }
 
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
         /// <summary>
         /// 是否不可用
         /// </summary>
-        public bool Disabled { get; set; }
+        public bool Disabled { get; private set; }
 
         /// <summary>
         /// 是否只读
         /// </summary>
-        public bool ReadOnly { get; set; }
+        public bool ReadOnly { get; private set; }
 
         /// <summary>
         /// 是否隐藏
         /// </summary>
-        public bool Hidden { get; set; }
+        public bool Hidden { get; private set; }
 
         /// <summary>
         /// 展开

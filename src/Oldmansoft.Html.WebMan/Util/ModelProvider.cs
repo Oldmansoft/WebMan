@@ -11,7 +11,10 @@ using System.Web;
 
 namespace Oldmansoft.Html.WebMan.Util
 {
-    class ModelProvider
+    /// <summary>
+    /// 模型内容提供者
+    /// </summary>
+    public class ModelProvider
     {
         /// <summary>
         /// 单例
@@ -68,15 +71,6 @@ namespace Oldmansoft.Html.WebMan.Util
                 list.Add(new ModelPropertyContent(item));
             }
             return list;
-        }
-
-        /// <summary>
-        /// 重置
-        /// 有时候获取类的属性会出现奇怪的顺序
-        /// </summary>
-        public void Reset()
-        {
-            Properties.Clear();
         }
     }
 }

@@ -52,8 +52,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "time");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue());
-            if (PropertyContent.ReadOnly) PropertyContent.Disabled = true;
-            SetAttributeDisabledReadOnlyPlaceHolder(input);
+            SetAttributeDisabledReadOnlyPlaceHolder(input, PropertyContent.ReadOnly || PropertyContent.Disabled);
             input.AddClass("form-control");
             HtmlData.SetContext(input);
         }

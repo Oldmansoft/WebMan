@@ -90,7 +90,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             virtualInput.AddClass("form-control virtual-file-input");
             virtualInput.Text(string.IsNullOrEmpty(PropertyContent.Description) ? "选择文件" : PropertyContent.Description);
             virtualInput.AppendTo(this);
-            SetAttributeDisabledReadOnly(virtualInput);
+            SetAttributeDisabledReadOnly(virtualInput, PropertyContent.Disabled);
 
             if (Value != null && !PropertyContent.ReadOnly && !PropertyContent.Disabled)
             {

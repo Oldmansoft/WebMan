@@ -52,8 +52,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             input.Attribute(HtmlAttribute.Type, "datetime-local");
             input.Attribute(HtmlAttribute.Name, Name);
             input.Attribute(HtmlAttribute.Value, GetValue().Replace(" ", "T"));
-            if (PropertyContent.ReadOnly) PropertyContent.Disabled = true;
-            SetAttributeDisabledReadOnlyPlaceHolder(input);
+            SetAttributeDisabledReadOnlyPlaceHolder(input, PropertyContent.ReadOnly || PropertyContent.Disabled);
             input.AddClass("form-control");
             HtmlData.SetContext(input);
         }

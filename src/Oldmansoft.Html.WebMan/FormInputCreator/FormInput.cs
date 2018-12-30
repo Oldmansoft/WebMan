@@ -54,9 +54,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 设置属性
         /// </summary>
         /// <param name="input"></param>
-        protected void SetAttributeDisabledReadOnlyPlaceHolder(IHtmlElement input)
+        /// <param name="disabled"></param>
+        protected void SetAttributeDisabledReadOnlyPlaceHolder(IHtmlElement input, bool disabled)
         {
-            if (PropertyContent.Disabled)
+            if (disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }
@@ -74,9 +75,10 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator
         /// 设置属性
         /// </summary>
         /// <param name="input"></param>
-        protected void SetAttributeDisabledReadOnly(IHtmlElement input)
+        /// <param name="disabled"></param>
+        protected void SetAttributeDisabledReadOnly(IHtmlElement input, bool disabled)
         {
-            if (PropertyContent.Disabled)
+            if (disabled)
             {
                 input.Attribute(HtmlAttribute.Disabled, "disabled");
             }

@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Tag = HtmlTag.Textarea;
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Rows, "5");
-            SetAttributeDisabledReadOnlyPlaceHolder(this);
+            SetAttributeDisabledReadOnlyPlaceHolder(this, PropertyContent.Disabled);
             Text(Value);
             AddClass("form-control");
             HtmlData.SetContext(this);

@@ -35,7 +35,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
             if (InputMaxLength != null) Attribute(HtmlAttribute.MaxLength, InputMaxLength.Length.ToString());
-            SetAttributeDisabledReadOnlyPlaceHolder(this);
+            SetAttributeDisabledReadOnlyPlaceHolder(this, PropertyContent.Disabled);
             AddClass("form-control");
             HtmlData.SetContext(this);
         }

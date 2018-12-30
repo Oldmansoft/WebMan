@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Attribute(HtmlAttribute.Type, "number");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value == null ? string.Empty : Value.ToString());
-            SetAttributeDisabledReadOnlyPlaceHolder(this);
+            SetAttributeDisabledReadOnlyPlaceHolder(this, PropertyContent.Disabled);
             AddClass("form-control");
             HtmlData.SetContext(this);
         }

@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             Attribute(HtmlAttribute.Type, "hidden");
             Attribute(HtmlAttribute.Name, Name);
             Attribute(HtmlAttribute.Value, Value);
-            SetAttributeDisabledReadOnlyPlaceHolder(this);
+            SetAttributeDisabledReadOnlyPlaceHolder(this, PropertyContent.Disabled);
             HtmlData.SetContext(this);
         }
 
