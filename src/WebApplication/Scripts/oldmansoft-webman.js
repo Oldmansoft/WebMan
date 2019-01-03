@@ -1,5 +1,5 @@
 ﻿/*
-* v0.24.105
+* v0.26.108
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
