@@ -33,6 +33,11 @@ body,
         margin-left: 0 !important;
     }
 
+    .branch>a>.badge { 
+        display: block;
+        background-color: rgba(217,83,79,0.6) !important;
+    }
+
     .webman-left-panel {
         width: 50px !important;
         margin-top: 50px;
@@ -84,7 +89,7 @@ body,
         display: block !important;
     }
 
-    .webman-left-panel nav ul.side-menu>li:hover>a span {
+    .webman-left-panel nav ul.side-menu>li:hover>a span:not(.badge) {
         display: inline-block;
         margin-left: 28px;
     }
@@ -153,6 +158,10 @@ a.badge-bar .badge,
 .branch>a>.badge {
     right: auto !important;
     left: 14px;
+}
+.mini-nav .branch>a>.badge { 
+    display: block;
+    background-color: rgba(217,83,79,0.6);
 }
 
 a.badge-container .badge,
@@ -247,7 +256,7 @@ span.badge:empty {
     display: block;
 }
 
-.mini-nav .webman-left-panel nav ul.side-menu>li:hover>a span {
+.mini-nav .webman-left-panel nav ul.side-menu>li:hover>a span:not(.badge) {
     display: inline-block;
     margin-left: 28px;
 }
