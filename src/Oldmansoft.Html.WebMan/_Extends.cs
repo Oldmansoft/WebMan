@@ -365,17 +365,18 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 设置快速搜索栏
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="location"></param>
-        /// <param name="name"></param>
-        public static void SetQuickSearch(this IHtmlOutput source, ILocation location, string name = "key")
+        /// <param name="source">输出组件</param>
+        /// <param name="location">位置</param>
+        /// <param name="key">参数键</param>
+        /// <param name="placeholder">占位符</param>
+        public static void SetQuickSearch(this IHtmlOutput source, ILocation location, string key = "key", string placeholder = null)
         {
             var script = string.Format(
                 "oldmansoft.webman.search.on({{ action: '{0}', target: '{1}', name: '{2}', placeholder: '{3}' }})",
                 location.Path.JavaScriptEncode(),
                 location.Behave.GetTarget(),
-                name.JavaScriptEncode(),
-                location.Display.JavaScriptEncode()
+                key.JavaScriptEncode(),
+                string.IsNullOrEmpty(placeholder) ? location.Display.JavaScriptEncode() : placeholder.JavaScriptEncode()
             );
             source.AddEvent(AppEvent.Active, script);
         }
