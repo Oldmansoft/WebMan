@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
-    class DynamicTableAction : TableAction, IDynamicTableAction
+    class DynamicTableAction : TableAction, IDynamicTableItemAction
     {   
         /// <summary>
         /// 隐藏条件
@@ -23,7 +23,7 @@ namespace Oldmansoft.Html.WebMan
         {
         }
 
-        public IDynamicTableAction OnClientCondition(ItemActionClient action, string condition)
+        public IDynamicTableItemAction OnClientCondition(ItemActionClient action, string condition)
         {
             if (string.IsNullOrWhiteSpace(condition)) return this;
             if (action == ItemActionClient.Hide)
@@ -37,7 +37,7 @@ namespace Oldmansoft.Html.WebMan
             return this;
         }
 
-        IDynamicTableAction IDynamicTableAction.Confirm(string content)
+        IDynamicTableItemAction IDynamicTableItemAction.Confirm(string content)
         {
             ConfirmContent = content;
             return this;

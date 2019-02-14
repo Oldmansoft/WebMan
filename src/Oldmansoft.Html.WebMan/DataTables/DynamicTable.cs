@@ -376,7 +376,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public IDynamicTableAction AddActionItem(ILocation location)
+        public IDynamicTableItemAction AddActionItem(ILocation location)
         {
             if (location == null) throw new ArgumentNullException("location");
             if (location.Behave == LinkBehave.Script) throw new ArgumentException("路径不能设置 LinkBehave.Script", "location.Behave");
@@ -393,7 +393,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="display">显示文字</param>
         /// <param name="script">脚本参数 (默认 selectedId)</param>
         /// <returns></returns>
-        public IDynamicTableAction AddActionItem(string display, string script)
+        public IDynamicTableItemAction AddActionItem(string display, string script)
         {
             if (string.IsNullOrWhiteSpace(display)) throw new ArgumentNullException("display");
             if (string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException("script");
