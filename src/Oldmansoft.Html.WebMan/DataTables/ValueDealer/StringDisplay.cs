@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
                 return new HtmlText("***");
             }
 
-            return new HtmlText(((string)value).HtmlEncode());
+            return new HtmlText(((string)value));
         }
     }
 }
