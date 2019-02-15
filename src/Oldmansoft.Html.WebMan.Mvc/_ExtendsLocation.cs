@@ -81,7 +81,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static ILocation Location(this UrlHelper source, Func<DataTableRequest, JsonResult> method)
+        public static ILocation Location(this UrlHelper source, Func<DataTable.Request, JsonResult> method)
         {
             return CreateLocation(source, method.Method, method.Target.GetType());
         }
@@ -92,7 +92,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<int> Location(this UrlHelper source, Func<int, DataTableRequest, JsonResult> method)
+        public static LocationBind<int> Location(this UrlHelper source, Func<int, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<int>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -103,7 +103,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<int?> LocationNullable(this UrlHelper source, Func<int?, DataTableRequest, JsonResult> method)
+        public static LocationBind<int?> LocationNullable(this UrlHelper source, Func<int?, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<int?>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -114,7 +114,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<long> Location(this UrlHelper source, Func<long, DataTableRequest, JsonResult> method)
+        public static LocationBind<long> Location(this UrlHelper source, Func<long, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<long>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -125,7 +125,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<long?> LocationNullable(this UrlHelper source, Func<long?, DataTableRequest, JsonResult> method)
+        public static LocationBind<long?> LocationNullable(this UrlHelper source, Func<long?, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<long?>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -136,7 +136,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<string> Location(this UrlHelper source, Func<string, DataTableRequest, JsonResult> method)
+        public static LocationBind<string> Location(this UrlHelper source, Func<string, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<string>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -147,7 +147,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<Guid> Location(this UrlHelper source, Func<Guid, DataTableRequest, JsonResult> method)
+        public static LocationBind<Guid> Location(this UrlHelper source, Func<Guid, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<Guid>(CreateLocation(source, method.Method, method.Target.GetType()));
         }
@@ -158,7 +158,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static LocationBind<Guid?> LocationNullable(this UrlHelper source, Func<Guid?, DataTableRequest, JsonResult> method)
+        public static LocationBind<Guid?> LocationNullable(this UrlHelper source, Func<Guid?, DataTable.Request, JsonResult> method)
         {
             return new LocationBind<Guid?>(CreateLocation(source, method.Method, method.Target.GetType()));
         }

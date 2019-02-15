@@ -45,7 +45,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="request"></param>
         /// <param name="totalCount"></param>
-        internal DataTableSource(IEnumerable<TModel> source, DataTableRequest request, int totalCount)
+        internal DataTableSource(IEnumerable<TModel> source, DataTable.Request request, int totalCount)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (request == null) throw new ArgumentNullException("request");

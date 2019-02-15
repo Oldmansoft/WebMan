@@ -75,7 +75,7 @@ namespace WebApplication.Controllers
             return result;
         }
         
-        public JsonResult IndexDataSource(DataTableRequest request)
+        public JsonResult IndexDataSource(DataTable.Request request)
         {
             var list = GetDataSource().Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return Json(DataTable.Source(list, request, GetDataSource().Count));
