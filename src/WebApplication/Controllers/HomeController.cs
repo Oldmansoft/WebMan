@@ -127,7 +127,7 @@ namespace WebApplication.Controllers
         public JsonResult MoreLevelResult(Models.MoreLevelModel model)
         {
             LevelModel = model;
-            return Json(DealResult.Refresh());
+            return Json(DealResult.Location(Url.Location(Male)));
         }
     }
 }

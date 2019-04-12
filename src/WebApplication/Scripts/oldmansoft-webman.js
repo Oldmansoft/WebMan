@@ -1,5 +1,5 @@
 ﻿/*
-* v0.26.108
+* v0.26.109
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -265,7 +265,7 @@ window.oldmansoft.webman = new (function () {
             }
         }
 
-        if (data.CloseOpen && method == dealMethod.form) {
+        if (data.CloseOpen && (!$app.current().node.hasClass("main-view") || (method == dealMethod.form && $app.current().view.getLinks().length > 1))) {
             $app.close(null, refresh);
         } else {
             refresh(false);
