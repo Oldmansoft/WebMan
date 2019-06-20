@@ -15,6 +15,7 @@ namespace WebApplication.Controllers
             var document = new ManageDocument(Url.Location(Welcome));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
+            document.Resources.JQuery.Script = new Oldmansoft.Html.Element.ScriptResource("/Scripts/jquery-1.10.2.js");
 
             document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/lity/2.3.0/lity.min.css"));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/lity/2.3.0/lity.min.js"));
