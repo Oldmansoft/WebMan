@@ -48,6 +48,7 @@
     </Compile>
     <Compile Include="Annotations\ExpansionAttribute.cs" />
     <Compile Include="Annotations\FixedCountAttribute.cs" />
+    <Compile Include="Annotations\FormatAttribute.cs" />
     <Compile Include="Annotations\HtmlDataAttribute.cs" />
     <Compile Include="Annotations\CustomInputAttribute.cs" />
     <Compile Include="Annotations\ContentType.cs" />

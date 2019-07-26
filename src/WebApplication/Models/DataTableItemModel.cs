@@ -39,6 +39,7 @@ namespace WebApplication.Models
 
         [Display(Name = "年龄")]
         [CustomInput(typeof(Select2))]
+        [Format("{0:D2}")]
         public List<int> Age { get; set; }
 
         [Display(Name = "列表")]
@@ -76,6 +77,7 @@ namespace WebApplication.Models
         public SubClass Sub { get; set; }
         
         [Display(Name = "创建")]
+        [Format("{0:yyyy年MM月dd日 ddd}")]
         public DateTime? CreateTime { get; set; }
     }
 

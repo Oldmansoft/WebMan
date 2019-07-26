@@ -70,17 +70,19 @@ namespace Oldmansoft.Html.WebMan
 
         private HtmlNode ConvertSimpleType(Type type, object value, ModelPropertyContent propertyContent)
         {
+            if (!string.IsNullOrEmpty(propertyContent.Format))
+            {
+                return new HtmlText(string.Format(propertyContent.Format, value));
+            }
             if (SimpleDealers.ContainsKey(type))
             {
                 return SimpleDealers[type].Convert(value, propertyContent);
             }
-            
             if (type.IsEnum)
             {
-                return new HtmlText(EnumProvider.Instance.GetDescription(type, value).HtmlEncode());
+                return new HtmlText(EnumProvider.Instance.GetDescription(type, value));
             }
-
-            return new HtmlText(value.ToString().HtmlEncode());
+            return new HtmlText(value.ToString());
         }
     }
 }

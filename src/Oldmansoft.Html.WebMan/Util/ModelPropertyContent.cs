@@ -44,6 +44,11 @@ namespace Oldmansoft.Html.WebMan
         public string Description { get; private set; }
 
         /// <summary>
+        /// 格式化输出
+        /// </summary>
+        public string Format { get; private set; }
+
+        /// <summary>
         /// 是否不可用
         /// </summary>
         public bool Disabled { get; private set; }
@@ -206,6 +211,12 @@ namespace Oldmansoft.Html.WebMan
                 var dataType = attribute as DataTypeAttribute;
                 DataType = dataType.DataType;
                 DataTypeErrorMessage = dataType.ErrorMessage;
+                return;
+            }
+
+            if (attribute is Annotations.FormatAttribute)
+            {
+                Format = (attribute as Annotations.FormatAttribute).Format;
                 return;
             }
 
