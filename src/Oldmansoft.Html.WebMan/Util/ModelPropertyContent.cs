@@ -31,7 +31,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 显示
         /// </summary>
-        public string Display { get; private set; }
+        public string Display { get; set; }
 
         /// <summary>
         /// 数据类型不匹配错误消息
