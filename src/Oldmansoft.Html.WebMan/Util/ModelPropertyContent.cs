@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 属性信息
@@ -41,7 +41,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// 格式化输出
@@ -51,17 +51,17 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 是否不可用
         /// </summary>
-        public bool Disabled { get; private set; }
+        public bool Disabled { get; set; }
 
         /// <summary>
         /// 是否只读
         /// </summary>
-        public bool ReadOnly { get; private set; }
+        public bool ReadOnly { get; set; }
 
         /// <summary>
         /// 是否隐藏
         /// </summary>
-        public bool Hidden { get; private set; }
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// 展开
