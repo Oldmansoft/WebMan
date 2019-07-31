@@ -16,7 +16,7 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// 属性信息
