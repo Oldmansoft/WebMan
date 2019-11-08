@@ -68,7 +68,6 @@ namespace Oldmansoft.Html.WebMan
         public void Set(string key, IList<ListDataItem> list)
         {
             if (list == null) return;
-            if (list.Count == 0) return;
             if (Contains(key))
             {
                 Source[key] = new List<ListDataItem>(list);
