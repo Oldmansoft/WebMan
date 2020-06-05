@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
             document.Quick.Add(Url.Location(Logoff));
 
             document.SetQuickSearch(Url.Location(Search));
-            document.AddScript(new Badge(Url.Location(Male), 1));
+            document.AddScript(new Badge(Url.Location<StepController>(o => o.Index), 1));
             return new HtmlResult(document);
         }
 

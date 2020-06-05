@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Oldmansoft.Html;
 
 namespace WebApplication.Controllers
 {
@@ -101,6 +102,25 @@ namespace WebApplication.Controllers
             table.AddActionItem("提示", "$app.alert(id)");
 
             table.SetRowClassNameWhenCondition("alert-danger", o => o.Id < 3);
+            table.RenderRowBefore((index, item) => {
+                if (index % 2 == 1) return null;
+                var tr = new HtmlElement(HtmlTag.Tr);
+                var td = new HtmlElement(HtmlTag.Td);
+                td.Attribute(HtmlAttribute.Colspan, "18");
+                td.Text("before");
+                td.AppendTo(tr);
+                return tr;
+            });
+            table.RenderRowAfter((index, item) => {
+                if (index % 2 == 1) return null;
+                var tr = new HtmlElement(HtmlTag.Tr);
+                var td = new HtmlElement(HtmlTag.Td);
+                td.Attribute(HtmlAttribute.Colspan, "18");
+                td.Text("After");
+                td.AppendTo(tr);
+                return tr;
+            });
+
             panel.Append(table);
             return new HtmlResult(panel.CreateGrid());
         }

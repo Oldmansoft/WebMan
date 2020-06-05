@@ -39,6 +39,10 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         private bool IsDisplayTableInfo { get; set; }
 
+        private Func<int, TModel, HtmlElement> RenderRowBeforeContent { get; set; }
+
+        private Func<int, TModel, HtmlElement> RenderRowAfterContent { get; set; }
+
         /// <summary>
         /// 创建静态表格
         /// </summary>
@@ -272,7 +276,10 @@ namespace Oldmansoft.Html.WebMan
                 {
                     if (condition.Value(model)) tr.AddClass(condition.Key);
                 }
+                if (RenderRowBeforeContent != null) RenderRowBeforeContent(index, model).AppendTo(tbody);
                 tr.AppendTo(tbody);
+                if (RenderRowAfterContent != null) RenderRowAfterContent(index, model).AppendTo(tbody);
+
                 if (IsDisplayCheckboxColumn)
                 {
                     var td = new HtmlElement(HtmlTag.Td);
@@ -464,6 +471,24 @@ namespace Oldmansoft.Html.WebMan
         public void DisplayTableInfo(bool value)
         {
             IsDisplayTableInfo = value;
+        }
+
+        /// <summary>
+        /// 宣染行前
+        /// </summary>
+        /// <param name="func"></param>
+        public void RenderRowBefore(Func<int, TModel, HtmlElement> func)
+        {
+            RenderRowBeforeContent = func;
+        }
+
+        /// <summary>
+        /// 宣染行后
+        /// </summary>
+        /// <param name="func"></param>
+        public void RenderRowAfter(Func<int, TModel, HtmlElement> func)
+        {
+            RenderRowAfterContent = func;
         }
     }
 }

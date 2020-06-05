@@ -1,5 +1,5 @@
 ﻿/*
-* v0.27.107
+* v0.34.120
 * https://github.com/Oldmansoft/webapp
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -19,10 +19,10 @@ window.oldmansoft.webapp = new (function () {
         loading: "Loading",
         load_layout_error: "load layout error, click Ok to reload.",
     },
-    _mainView = null,
-    _openView = null,
-    _modalView = null,
-    _activeView = null,
+    _mainViewArea = null,
+    _openViewArea = null,
+    _modalViewArea = null,
+    _activeViewAreaManager = null,
     _fnOnUnauthorized = function () {
         return false;
     },
@@ -30,17 +30,19 @@ window.oldmansoft.webapp = new (function () {
         return false;
     },
     _currentViewEvent = null,
+    _globalViewEvent = null,
+    _visibleLoadingCompleted = [],
     _isDealLinkEmptyTarget = true,
+    _dealHrefTarget,
     _isReplacePCScrollBar = true,
     _WindowScrollBar = null,
     _scrollbar = [],
     _canTouch = null,
-    _globalViewEvent = null,
-    _dealHrefTarget,
     _messageBox,
     _windowBox,
     _modalBox,
     _canSetup = true,
+    _initialledEvents = [],
     _initialization_option,
     _hideMainViewFirstLoading = false;
 
@@ -702,9 +704,8 @@ window.oldmansoft.webapp = new (function () {
             isInit = true;
             element = $("<div></div>").addClass(className).addClass("box-background");
             if (isMiddle) {
-                core = $("<div></div>").addClass("layout-horizontal")
-                element.append(core);
-                element.append($("<div></div>").addClass("layout-vertical"));
+                core = $("<div></div>").addClass("layout-center-content");
+                element.append($("<div></div>").addClass("layout-center").append(core));
             } else {
                 core = element;
             }
@@ -750,7 +751,7 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    _activeView = new function () {
+    _activeViewAreaManager = new function () {
         var current,
             stack = [];
         this.push = function (view) {
@@ -818,16 +819,18 @@ window.oldmansoft.webapp = new (function () {
                 main;
 
             container = $("<div></div>").addClass("modal-background").addClass("box-background");
-            main = $("<div></div>").addClass("layout-horizontal")
+            main = $("<div></div>").addClass("layout-center-content")
             main.append(node);
-            container.append(main);
-            container.append($("<div></div>").addClass("layout-vertical"));
+            container.append($("<div></div>").addClass("layout-center").append(main));
             container.appendTo(element);
             container.on("click", function (e) {
-                if (e.currentTarget != e.target) {
+                if (e.currentTarget != e.target && e.currentTarget != e.target.parentElement) {
                     return;
                 }
-                _modalView.close();
+                if ($(e.currentTarget).find(".force").length > 0) {
+                    return;
+                }
+                _modalViewArea.close();
             });
             return container;
         }
@@ -889,9 +892,9 @@ window.oldmansoft.webapp = new (function () {
                 var footer = $("<div></div>").addClass("dialog-footer");
 
                 function option(node) {
-                    this.set = function (text) {
+                    this.set = function (text, className) {
                         var closeCallback,
-                            button = $("<button></button>").text(text);
+                            button = $("<button></button>").text(text).addClass(className);
 
                         button.click(function (event) {
                             _messageBox.close(event, function () {
@@ -940,7 +943,7 @@ window.oldmansoft.webapp = new (function () {
                 builder.setHead(title);
             }
             builder.setBody(content);
-            okButton = builder.setFooter().set(_text.ok);
+            okButton = builder.setFooter().set(_text.ok, "ok");
             if (fn) {
                 console.warn("fn is obsolete. commend use ok");
                 okButton.setCallback(fn);
@@ -984,12 +987,12 @@ window.oldmansoft.webapp = new (function () {
             }
             builder.setBody(content);
             footer = builder.setFooter();
-            yesButton = footer.set(_text.yes, fnYes);
+            yesButton = footer.set(_text.yes, "yes");
             if (fnYes) {
                 console.warn("fnYes is obsolete.");
                 yesButton.setCallback(fnYes);
             }
-            noButton = footer.set(_text.no, fnNo);
+            noButton = footer.set(_text.no, "no");
             if (fnNo) {
                 console.warn("fnNo is obsolete.");
                 noButton.setCallback(fnNo);
@@ -1024,7 +1027,7 @@ window.oldmansoft.webapp = new (function () {
                 text = $("<span></span>").text(_text.loading);
 
             dialog.append(text);
-            element.append($("<div></div>").addClass("layout-horizontal").append(dialog)).append($("<div></div>").addClass("layout-vertical"));
+            element.append($("<div></div>").addClass("layout-center").append($("<div></div>").addClass("layout-center-content").append(dialog)));
             element.prependTo($("body"));
         }
         this.show = function () {
@@ -1051,7 +1054,8 @@ window.oldmansoft.webapp = new (function () {
         var initHashChange = false,
             lastHash = null,
             changeCallback = null,
-            changeCompleted = null;
+            changeCompleted = null,
+            changeCompletedParameters = null;
 
         function fixHref(href) {
             if (!href) return href;
@@ -1070,18 +1074,31 @@ window.oldmansoft.webapp = new (function () {
             callLeave();
         }
 
-        this.setChangeCompleted = function (fn) {
+        this.setChangeCompleted = function (fn, parameters) {
             changeCompleted = fn;
+            changeCompletedParameters = parameters;
         }
 
         this.callChangeCompleted = function (isNewContent) {
             if (!changeCompleted) {
                 return;
             }
-            changeCompleted(isNewContent);
+            if (changeCompletedParameters == null) {
+                changeCompleted(isNewContent);
+            } else {
+                changeCompletedParameters.unshift(isNewContent);
+                changeCompleted.apply(null, changeCompletedParameters);
+            }
             changeCompleted = null;
+            changeCompletedParameters = null;
         }
 
+        this.createHref = function (href) {
+            var hash = new linkParser(href).getContent(),
+                base = document.location.origin + document.location.pathname;
+            if (hash == "") return base;
+            return base + "#" + hash;
+        }
         this.modify = function (href) {
             window.location.hash = href;
             lastHash = new linkParser(href).getContent();
@@ -1099,7 +1116,7 @@ window.oldmansoft.webapp = new (function () {
         }
         this.link = function (href) {
             if (href == undefined) {
-                return _activeView.get().getLink();
+                return _activeViewAreaManager.get().getLink();
             }
             href = linkEncode(href)
             window.location.hash = href;
@@ -1145,20 +1162,24 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    function modalArea() {
+    function modalViewArea() {
         var links = new linkManagement(),
             loadOption;
 
         function setView(link, data, type, first, second) {
             var last;
 
-            if (links.count() == 0) {
-                _activeView.push(_modalView);
+            if (links.count() > 0) {
+                links.last().inactiveEvent();
+            } else {
+                _activeViewAreaManager.get().inactiveCurrent();
+                _activeViewAreaManager.push(_modalViewArea);
             }
 
-            links.push("modal", link, { closed: loadOption.closed, data: data, type: type });
+            links.push("modal", link, { closed: loadOption.closed, closedParameters: loadOption.closedParameters, data: data, type: type });
             last = links.last();
             last.node.addClass("box-panel");
+            if (loadOption.force) last.node.addClass("force");
             if (second == undefined) {
                 last.setContext(first);
             } else {
@@ -1191,7 +1212,7 @@ window.oldmansoft.webapp = new (function () {
             var loading = $this.loadingTip.show(),
                 loadPath;
 
-            loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainView.getDefaultLink()), _mainView.getDefaultLink());
+            loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainViewArea.getDefaultLink()), _mainViewArea.getDefaultLink());
             $.ajax({
                 mimeType: 'text/html; charset=' + _setting.server_charset,
                 url: loadPath,
@@ -1252,7 +1273,7 @@ window.oldmansoft.webapp = new (function () {
                 if (loadOption.refresh) setOldView(title, content);
                 else setView(link, data, type, title, content);
             });
-            loadOption = { closed: null, loaded: null, link: link, data: data, type: type, refresh: false };
+            loadOption = { closed: null, closedParameters: null, loaded: null, refresh: false, force: false };
             return loadOption;
         }
 
@@ -1262,16 +1283,33 @@ window.oldmansoft.webapp = new (function () {
             option.refresh = true;
         }
 
-        this.close = function (parameter, closeCompleted) {
-            var lastClosed = links.pop().getOption().closed;
+        this.close = function () {
+            var closeCompleted = null,
+                parameters = Array.from(arguments);
             _modalBox.close(null, function () {
-                var current = links.last();
-                if (!current) {
-                    _activeView.pop();
+                var option = links.pop().getOption(),
+                    current = links.last();
+                if (current) {
+                    current.activeEvent();
+                } else {
+                    _activeViewAreaManager.pop();
+                    _activeViewAreaManager.get().activeCurrent();
                 }
-                if (lastClosed) lastClosed(parameter);
+                if (option.closed) {
+                    if (option.closedParameters != null) {
+                        if (parameters.length > 0) option.closedParameters = option.closedParameters.concat(parameters);
+                        option.closed.apply(null, option.closedParameters);
+                    } else {
+                        option.closed.apply(null, parameters);
+                    }
+                }
                 if (closeCompleted) closeCompleted(false);
             });
+            return new function () {
+                this.completed = function (fn) {
+                    closeCompleted = fn;
+                }
+            }
         }
 
         this.replace = function (link, data) {
@@ -1286,7 +1324,7 @@ window.oldmansoft.webapp = new (function () {
             _modalBox.clear();
             if (links.count() > 0) {
                 links = new linkManagement();
-                _activeView.pop();
+                _activeViewAreaManager.pop();
             }
         }
 
@@ -1299,7 +1337,7 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    function openArea() {
+    function openViewArea() {
         var links = new linkManagement(),
             loadOption;
 
@@ -1309,11 +1347,11 @@ window.oldmansoft.webapp = new (function () {
             if (links.count() > 0) {
                 links.last().hide();
             } else {
-                _mainView.inactiveCurrent();
-                _activeView.push(_openView);
+                _activeViewAreaManager.get().inactiveCurrent();
+                _activeViewAreaManager.push(_openViewArea);
             }
 
-            links.push("open", link, { closed: loadOption.closed, data: data, type: type });
+            links.push("open", link, { closed: loadOption.closed, closedParameters: loadOption.closedParameters, data: data, type: type });
             last = links.last();
             if (second == undefined) {
                 last.setContext(first);
@@ -1347,9 +1385,9 @@ window.oldmansoft.webapp = new (function () {
             var loading = $this.loadingTip.show(),
                 loadPath;
 
-            _modalView.clear();
+            _modalViewArea.clear();
 
-            loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainView.getDefaultLink()), _mainView.getDefaultLink());
+            loadPath = getAbsolutePath(link, getPathHasAbsolutePathFromArray(links.getLinks(), links.count() - 2, _mainViewArea.getDefaultLink()), _mainViewArea.getDefaultLink());
             $.ajax({
                 mimeType: 'text/html; charset=' + _setting.server_charset,
                 url: loadPath,
@@ -1410,7 +1448,7 @@ window.oldmansoft.webapp = new (function () {
                 if (loadOption.refresh) setOldView(title, content);
                 else setView(link, data, type, title, content);
             });
-            loadOption = { closed: null, loaded: null, link: link, data: data, type: type, refresh: false };
+            loadOption = { closed: null, closedParameters: null, loaded: null, refresh: false };
             return loadOption;
         }
 
@@ -1420,19 +1458,33 @@ window.oldmansoft.webapp = new (function () {
             option.refresh = true;
         }
 
-        this.close = function (parameter, closeCompleted) {
+        this.close = function () {
+            var closeCompleted = null,
+                parameters = Array.from(arguments);
             _windowBox.close(null, function () {
-                var lastClosed = links.pop().getOption().closed,
+                var option = links.pop().getOption(),
                     current = links.last();
                 if (current) {
                     current.show();
                 } else {
-                    _activeView.pop();
-                    _mainView.activeCurrent();
+                    _activeViewAreaManager.pop();
+                    _mainViewArea.activeCurrent();
                 }
-                if (lastClosed) lastClosed(parameter);
+                if (option.closed) {
+                    if (option.closedParameters != null) {
+                        if (parameters.length > 0) option.closedParameters = option.closedParameters.concat(parameters);
+                        option.closed.apply(null, option.closedParameters);
+                    } else {
+                        option.closed.apply(null, parameters);
+                    }
+                }
                 if (closeCompleted) closeCompleted(false);
             });
+            return new function () {
+                this.completed = function (fn) {
+                    closeCompleted = fn;
+                }
+            }
         }
 
         this.replace = function (link, data) {
@@ -1447,8 +1499,16 @@ window.oldmansoft.webapp = new (function () {
             _windowBox.clear();
             if (links.count() > 0) {
                 links = new linkManagement();
-                _activeView.pop();
+                _activeViewAreaManager.pop();
             }
+        }
+
+        this.activeCurrent = function () {
+            links.last().activeEvent();
+        }
+
+        this.inactiveCurrent = function () {
+            links.last().inactiveEvent();
         }
 
         this.getNode = function () {
@@ -1460,7 +1520,7 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    function viewArea(viewNodeSelector, link) {
+    function mainViewArea(viewNodeSelector, link) {
         var loadId = 0,
             element = null,
             defaultLink = link,
@@ -1566,8 +1626,8 @@ window.oldmansoft.webapp = new (function () {
             if (element == null) element = $(viewNodeSelector);
             if (element.is("body")) throw new Error("viewNode can't be <body>");
             hrefs = new linkParser(link).getLinks();
-            _modalView.clear();
-            _openView.clear();
+            _modalViewArea.clear();
+            _openViewArea.clear();
             _messageBox.clear();
 
             if (links.count() > hrefs.length && links.like(hrefs) && links.get(hrefs.length - 1).valid) {
@@ -1618,17 +1678,29 @@ window.oldmansoft.webapp = new (function () {
             });
         }
 
-        this.close = function (parameter, closeCompleted) {
+        this.close = function () {
+            var closeCompleted = null,
+                parameters = Array.from(arguments);
             if (links.count() > 1) {
                 if (links.get(links.count() - 2).valid) {
                     links.pop().remove();
                     $this.linker.modify(links.getLink());
                     links.last().show();
                     $this.resetWindowScrollbar();
-                    if (closeCompleted) closeCompleted(false);
+                    setTimeout(function () {
+                        parameters.unshift(false);
+                        if (closeCompleted) closeCompleted.apply(null, parameters);
+                    }, 1);
                 } else {
-                    $this.linker.setChangeCompleted(closeCompleted);
-                    $this.linker.hash(links.getBackLink());
+                    setTimeout(function () {
+                        $this.linker.setChangeCompleted(closeCompleted, parameters);
+                        $this.linker.hash(links.getBackLink());
+                    }, 1);
+                }
+            }
+            return new function () {
+                this.completed = function (fn) {
+                    closeCompleted = fn;
                 }
             }
         }
@@ -1680,9 +1752,9 @@ window.oldmansoft.webapp = new (function () {
 
     this.current = function () {
         return {
-            node: _activeView.get().getNode(),
-            link: _activeView.get().getLink(),
-            view: _activeView.get()
+            node: _activeViewAreaManager.get().getNode(),
+            link: _activeViewAreaManager.get().getLink(),
+            view: _activeViewAreaManager.get()
         };
     }
 
@@ -1710,12 +1782,12 @@ window.oldmansoft.webapp = new (function () {
         }
     }
 
-    this.viewClose = function (parameter, closeCompleted) {
-        _activeView.get().close(parameter, closeCompleted);
+    this.viewClose = function (parameter) {
+        return _activeViewAreaManager.get().close(parameter);
     }
 
     this.viewReload = function () {
-        _activeView.get().reload();
+        _activeViewAreaManager.get().reload();
     }
 
     this.dealScrollToVisibleLoading = function (rangeNode) {
@@ -1736,6 +1808,9 @@ window.oldmansoft.webapp = new (function () {
             $.get(src, function (data) {
                 loading.before(data);
                 loading.remove();
+                for (var i = 0; i < _visibleLoadingCompleted.length; i++) {
+                    if (_visibleLoadingCompleted[i]() === false) return false;
+                }
                 $this.resetWindowScrollbar();
                 $this.dealScrollToVisibleLoading(rangeNode);
             });
@@ -1764,7 +1839,6 @@ window.oldmansoft.webapp = new (function () {
     }
 
     _dealHrefTarget = {
-        // Obsolete(_link)
         _base: function (href) {
             $this.linker.link(href);
         },
@@ -1790,19 +1864,25 @@ window.oldmansoft.webapp = new (function () {
     }
 
     this.hashes = function () {
-        return _mainView.getLinks();
+        return _mainViewArea.getLinks();
     }
 
     this.open = function (href, data) {
         var option;
         if (data) {
-            option = _openView.load(href, data, 'POST');
+            option = _openViewArea.load(href, data, 'POST');
         } else {
-            option = _openView.load(href, data, 'GET');
+            option = _openViewArea.load(href, data, 'GET');
         }
         return new function () {
             this.closed = function (fn) {
                 option.closed = fn;
+                if (arguments.length > 1) {
+                    option.closedParameters = [];
+                    for (var i = 1; i < arguments.length; i++) {
+                        option.closedParameters.push(arguments[i]);
+                    }
+                }
             }
             this.loaded = function (fn) {
                 option.loaded = fn;
@@ -1813,16 +1893,25 @@ window.oldmansoft.webapp = new (function () {
     this.modal = function (href, data) {
         var option;
         if (data) {
-            option = _modalView.load(href, data, 'POST');
+            option = _modalViewArea.load(href, data, 'POST');
         } else {
-            option = _modalView.load(href, data, 'GET');
+            option = _modalViewArea.load(href, data, 'GET');
         }
         return new function () {
             this.closed = function (fn) {
                 option.closed = fn;
+                if (arguments.length > 1) {
+                    option.closedParameters = [];
+                    for (var i = 1; i < arguments.length; i++) {
+                        option.closedParameters.push(arguments[i]);
+                    }
+                }
             }
             this.loaded = function (fn) {
                 option.loaded = fn;
+            }
+            this.force = function (b) {
+                option.force = b;
             }
         }
     }
@@ -1841,6 +1930,11 @@ window.oldmansoft.webapp = new (function () {
 
     this.option = function () {
         return _initialization_option;
+    }
+
+    this.initialled = function (fn) {
+        if (typeof fn != "function") return;
+        _initialledEvents.push(fn);
     }
 
     this.initialization = function (viewNodeSelector, defaultLink) {
@@ -1888,6 +1982,11 @@ window.oldmansoft.webapp = new (function () {
                 _globalViewEvent.unload.add(fn);
                 return this;
             }
+            this.visibleLoadingCompleted = function (fn) {
+                if (typeof (fn) != "function") throw new Error("fn is not a function");
+                _visibleLoadingCompleted.push(fn);
+                return this;
+            }
         }
 
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
@@ -1927,11 +2026,14 @@ window.oldmansoft.webapp = new (function () {
         $(document).on("touchmove", dealTouchMove);
 
         _globalViewEvent = new viewEvent();
-        _mainView = new viewArea(viewNodeSelector, defaultLink);
-        _openView = new openArea();
-        _modalView = new modalArea();
-        _activeView.push(_mainView);
-        _initialization_option = new option(_mainView);
+        _mainViewArea = new mainViewArea(viewNodeSelector, defaultLink);
+        _openViewArea = new openViewArea();
+        _modalViewArea = new modalViewArea();
+        _activeViewAreaManager.push(_mainViewArea);
+        _initialization_option = new option(_mainViewArea);
+        for (var i in _initialledEvents) {
+            _initialledEvents[i]();
+        }
         return _initialization_option;
     }
 
@@ -1939,7 +2041,7 @@ window.oldmansoft.webapp = new (function () {
         var result = $this.initialization(viewNodeSelector, defaultLink);
         if (hideFirstLoading) _hideMainViewFirstLoading = true;
         $this.linker._init(function (link) {
-            _mainView.load(link, $this.linker.callChangeCompleted);
+            _mainViewArea.load(link, $this.linker.callChangeCompleted);
         });
         return result;
     }
@@ -1954,7 +2056,7 @@ window.oldmansoft.webapp = new (function () {
         $(function () {
             if (hideFirstLoading) _hideMainViewFirstLoading = true;
             $this.linker._init(function (link) {
-                _mainView.load(link, $this.linker.callChangeCompleted);
+                _mainViewArea.load(link, $this.linker.callChangeCompleted);
             });
         });
         return result;
@@ -1996,7 +2098,7 @@ window.oldmansoft.webapp = new (function () {
                 $(layoutSelector).html(data).children().unwrap();
                 _hideMainViewFirstLoading = true;
                 $this.linker._init(function (link) {
-                    _mainView.load(link, $this.linker.callChangeCompleted);
+                    _mainViewArea.load(link, $this.linker.callChangeCompleted);
                 });
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 var onLoadTimeoutResult;
@@ -2025,13 +2127,8 @@ window.oldmansoft.webapp = new (function () {
         message: $this.dialog.message,
         loading: $this.loadingTip.show,
         loadScript: $this.scriptLoader.load,
+        href: $this.linker.createHref,
         hash: $this.linker.hash,
-        // Obsolete(link)
-        baseHash: $this.linker.hash,
-        // Obsolete(add)
-        addHash: $this.linker.add,
-        // Obsolete(same)
-        sameHash: $this.linker.same,
         link: $this.linker.link,
         add: $this.linker.add,
         same: $this.linker.same,
