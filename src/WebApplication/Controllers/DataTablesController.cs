@@ -71,6 +71,8 @@ namespace WebApplication.Controllers
             table.SetPageSize(20);
             table.AddSearchPanel(Url.Location(Index), "key", "");
             panel.Append(table);
+            panel.Description = "注释内容";
+            panel.SetSearch(Url.Location(Index), "key", Request["key"], "动态表格 示例");
             var result = new HtmlResult(panel.CreateGrid());
             result.SetQuickSearch(Url.Location(Index), "key", "动态表格 示例");
             return result;

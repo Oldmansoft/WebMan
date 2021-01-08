@@ -19,6 +19,9 @@ body,
     .webman-main-panel>header>form {
         display: none;
     }
+    .webman-panel>header form {
+        display: none;
+    }
 }
 @media (max-width: 768px){
     .mini-nav .webman-left-panel {
@@ -363,7 +366,7 @@ span.badge:empty {
     margin: 14px 0 0 15px;
 }
 
-.webman-main-panel header form input {
+.webman-main-panel>header form input {
     float: left;
     width: 250px;
     padding: 18px 20px;
@@ -376,21 +379,34 @@ span.badge:empty {
     font-size: 14px;
 }
 
-.webman-main-panel header form input:focus {
+.webman-main-panel>header form input:focus {
     border-color: #ddd;
 }
 
-.webman-main-panel header form {
+.webman-main-panel>header form {
     position: relative;
     float: left;
 }
 
-.webman-main-panel header form i.fa-search {
+.webman-main-panel>header form i.fa-search {
     position: relative;
     padding-top: 15px;
     padding-bottom: 15px;
     right: 24px;
     font-size: 18px;
+    cursor: pointer;
+}
+
+.webman-panel>header form {
+    float: left;
+    margin-top: -7px;
+    margin-left: 20px;
+}
+.webman-panel>header form .input-group {
+    position: absolute;
+    width: 250px;
+}
+.webman-panel>header form .input-group-addon {
     cursor: pointer;
 }
 

@@ -41,6 +41,7 @@ namespace WebApplication.Controllers
             table.AddActionItem(Url.Location(new Func<int, int, ActionResult>(Edit)).Set("parentId", id));
             table.AddActionItem(Url.Location(new Func<int, int[], JsonResult>(Delete)).Set("parentId", id)).Confirm("是否删除");
             panel.Append(table);
+            panel.SetSearch(Url.Location(Index).Set("id", id), "key");
             return new HtmlResult(panel.CreateGrid());
         }
         

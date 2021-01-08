@@ -18,6 +18,8 @@ namespace Oldmansoft.Html.WebMan
 
         private IHtmlElement Body { get; set; }
 
+        private IHtmlElement HeaderSearchForm { get; set; }
+
         /// <summary>
         /// 标题
         /// </summary>
@@ -62,6 +64,10 @@ namespace Oldmansoft.Html.WebMan
         {
             Header.Prepend(Icon.CreateElement());
             HeaderCaption.Text(Caption);
+            if (HeaderSearchForm != null)
+            {
+                Header.Append(HeaderSearchForm);
+            }
             if (!string.IsNullOrWhiteSpace(Description))
             {
                 var span = new HtmlElement(HtmlTag.Span);
@@ -100,6 +106,34 @@ namespace Oldmansoft.Html.WebMan
         public override IHtmlElement Text(string text)
         {
             return Body.Text(text);
+        }
+
+        /// <summary>
+        /// 设置查找框
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="placeholder"></param>
+        public void SetSearch(ILocation location, string key = "key", string value = null, string placeholder = null)
+        {
+            HeaderSearchForm = new HtmlElement(HtmlTag.Form);
+            HeaderSearchForm.Attribute(HtmlAttribute.Action, location.Path);
+            HeaderSearchForm.Attribute(HtmlAttribute.Target, LinkBehave.Self.GetTarget());
+            var group = new HtmlElement(HtmlTag.Div);
+            group.AddClass("input-group");
+            group.AppendTo(HeaderSearchForm);
+            var input = new HtmlElement(HtmlTag.Input);
+            input.AddClass("form-control");
+            input.Attribute(HtmlAttribute.Name, key);
+            if (!string.IsNullOrWhiteSpace(value)) input.Attribute(HtmlAttribute.Value, value);
+            if (!string.IsNullOrWhiteSpace(placeholder)) input.Attribute(HtmlAttribute.PlaceHolder, placeholder);
+            input.AppendTo(group);
+            var addon = new HtmlElement(HtmlTag.Span);
+            addon.AddClass("input-group-addon");
+            addon.Append(FontAwesome.Search.CreateElement());
+            addon.AppendTo(group);
+            addon.OnClient(HtmlEvent.Click, "$(this).parentsUntil('form').submit();");
         }
     }
 }

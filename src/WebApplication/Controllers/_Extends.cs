@@ -27,10 +27,10 @@ namespace WebApplication.Controllers
 
             var connector = "?";
             if (location.Path.IndexOf("?") > -1) connector = "&";
-            var script = string.Format("$app.sameHash('{0}{1}{2}=' + encodeURIComponent($.trim($(this).parent().parent().find('input[name={2}]').val())))", location.Path, connector, key);
+            var script = string.Format("$app.same('{0}{1}{2}=' + encodeURIComponent($.trim($(this).parent().parent().find('input[name={2}]').val())))", location.Path, connector, key);
 
             var form = new HtmlElement(HtmlTag.Form);
-            form.OnClient(HtmlEvent.Submit, string.Format("$app.sameHash('{0}{1}{2}=' + encodeURIComponent($.trim($(this).find('input[name={2}]').val()))); return false;", location.Path, connector, key));
+            form.OnClient(HtmlEvent.Submit, string.Format("$app.same('{0}{1}{2}=' + encodeURIComponent($.trim($(this).find('input[name={2}]').val()))); return false;", location.Path, connector, key));
             form.PrependTo(source);
 
             var search = new HtmlElement(HtmlTag.Div);

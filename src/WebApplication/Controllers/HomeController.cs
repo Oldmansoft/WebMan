@@ -130,5 +130,14 @@ namespace WebApplication.Controllers
             LevelModel = model;
             return Json(DealResult.Location(Url.Location(Male)));
         }
+
+        public ActionResult Test()
+        {
+            var html = new HtmlElement(HtmlTag.Html);
+            var body = new HtmlElement(HtmlTag.Body);
+            html.Append(body);
+            body.Text("hello, world");
+            return new HtmlResult(html);
+        }
     }
 }
