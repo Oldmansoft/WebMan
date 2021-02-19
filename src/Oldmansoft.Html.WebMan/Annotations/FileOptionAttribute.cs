@@ -88,10 +88,11 @@ namespace Oldmansoft.Html.WebMan.Annotations
                 }
                 if (!result) return false;
             }
-            
+
+            var fileExtensionName = System.IO.Path.GetExtension(file.FileName).ToLower();
             foreach (var extendsion in Extensions)
             {
-                if (file.FileName.Length > extendsion.Length && file.FileName.Substring(file.FileName.Length - extendsion.Length - 1, 4).ToLower() == string.Format(".{0}", extendsion).ToLower())
+                if (fileExtensionName == string.Format(".{0}", extendsion).ToLower())
                 {
                     return true;
                 }
