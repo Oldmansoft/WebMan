@@ -76,6 +76,18 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
+        /// 创建路径
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static ILocation Location<TModel>(this UrlHelper source, Func<TModel, JsonResult> method)
+        {
+            return CreateLocation(source, method.Method, method.Target.GetType());
+        }
+
+        /// <summary>
         /// 创建数据列表源路径
         /// </summary>
         /// <param name="source"></param>
