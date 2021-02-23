@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -98,13 +95,13 @@ namespace Oldmansoft.Html.WebMan
                 if (content.Hidden)
                 {
                     var hidden = new FormInputCreator.Inputs.Hidden();
-                    hidden.Init(content, name, value != null ? value : string.Empty, null);
+                    hidden.Init(content, name, value ?? string.Empty, null);
                     hidden.SetInputMode();
                     hidden.AppendTo(form);
                     continue;
                 }
 
-                var parameter = new FormInputCreator.HandlerParameter(content, name, value, Source, form.Script, form.Validator, content.HtmlData);
+                var parameter = new FormInputCreator.HandlerParameter(content, name, value, Source, form.Script, form.Validator, content.Attributes.Get<Annotations.HtmlDataAttribute>());
                 var input = FormInputCreator.InputCreator.Instance.Handle(parameter);
                 if (InputMode)
                 {

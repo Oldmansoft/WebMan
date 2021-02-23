@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -16,7 +12,9 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="seed">加密种子路径</param>
         /// <param name="action">登录处理地址</param>
-        public LoginDocument(ILocation seed, ILocation action)
+        /// <param name="webRootPath"></param>
+        public LoginDocument(ILocation seed, ILocation action, string webRootPath = "/")
+            : base(webRootPath)
         {
             if (seed == null) throw new ArgumentNullException("seed");
             if (action == null) throw new ArgumentNullException("action");

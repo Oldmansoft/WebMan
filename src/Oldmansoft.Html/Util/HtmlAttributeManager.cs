@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Util
 {
     class HtmlAttributeManager
     {
-        private Dictionary<string, string> Store = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<string, string> Store = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 
         public string Attribute(string name)
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Oldmansoft.Html.Util
 {
@@ -11,7 +7,7 @@ namespace Oldmansoft.Html.Util
     /// </summary>
     public class JsonRaw : JsonBuilder
     {
-        private string Content { get; set; }
+        private readonly string Content;
 
         /// <summary>
         /// 创建 JSON 原文

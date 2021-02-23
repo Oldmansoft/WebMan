@@ -27,12 +27,20 @@ namespace Oldmansoft.Html.WebMan
             Value = value;
         }
 
-        internal override bool HasContent()
+        /// <summary>
+        /// 是否有内容
+        /// </summary>
+        /// <returns></returns>
+        public override bool HasContent()
         {
             return true;
         }
 
-        internal override void SetListFromContent(IList<string> list)
+        /// <summary>
+        /// 设置列表
+        /// </summary>
+        /// <param name="list"></param>
+        public override void SetListFromContent(IList<string> list)
         {
             list.Add(string.Format("$man.badge(\"{0}\", \"{1}\");", Location.Path, Value == 0 ? "" : Value.ToString()));
             base.SetListFromContent(list);

@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.Util;
-
-namespace Oldmansoft.Html
+﻿namespace Oldmansoft.Html
 {
     /// <summary>
     /// 文本结点
     /// </summary>
     public class HtmlText : HtmlNode
     {
-        private string Content = string.Empty;
+        private readonly string Content;
 
         /// <summary>
         /// 创建文本结点

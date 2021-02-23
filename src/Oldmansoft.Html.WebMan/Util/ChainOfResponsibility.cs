@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.Util
 {
@@ -25,9 +21,8 @@ namespace Oldmansoft.Html.WebMan.Util
         {
             if (Handler != null) return Handler;
 
-            var handler = InitChain();
-            if (handler == null) throw new ArgumentNullException("InitChain 方法");
-            Handler = handler;
+            Handler = InitChain();
+            if (Handler == null) throw new ArgumentNullException("InitChain 方法返回空");
             return Handler;
         }
 

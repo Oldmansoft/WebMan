@@ -1,9 +1,5 @@
-﻿using Oldmansoft.Html.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html
 {
@@ -15,7 +11,7 @@ namespace Oldmansoft.Html
         /// <summary>
         /// 子节点
         /// </summary>
-        private List<IHtmlNode> Nodes { get; set; }
+        private readonly List<IHtmlNode> Nodes;
 
         private IHtmlNode _Parent;
 

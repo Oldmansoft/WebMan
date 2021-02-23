@@ -1,14 +1,11 @@
-﻿using Oldmansoft.Html.WebMan.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Oldmansoft.Html.WebMan.DataTables.ValueDealer
 {
     class DateTimeDisplay : IValueDisplay
     {
+        public Type DealType => typeof(DateTime);
+
         public HtmlNode Convert(object value, ModelPropertyContent propertyContent)
         {
             var time = (DateTime)value;

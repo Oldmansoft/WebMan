@@ -1,13 +1,9 @@
-﻿using Oldmansoft.Html.WebMan.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan.FormInputCreator
+﻿namespace Oldmansoft.Html.WebMan.FormInputCreator
 {
-    class HandlerParameter
+    /// <summary>
+    /// 表单输入创建处理参数
+    /// </summary>
+    public class HandlerParameter
     {
         /// <summary>
         /// 属性内容

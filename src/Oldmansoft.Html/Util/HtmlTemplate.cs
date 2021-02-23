@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Util
 {
@@ -12,9 +9,9 @@ namespace Oldmansoft.Html.Util
     /// </summary>
     public class HtmlTemplate
     {
-        private List<string> Content { get; set; }
+        private readonly List<string> Content;
 
-        private List<string> Position { get; set; }
+        private readonly List<string> Position;
 
         /// <summary>
         /// 创建模板

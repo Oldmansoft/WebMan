@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan
+﻿namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 项动作
@@ -25,13 +19,5 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="condition">JS 数据条件，提供 data 数据项。获取数据使用 data.属性名称</param>
         /// <returns></returns>
         IDynamicTableItemAction OnClientCondition(ItemActionClient action, string condition);
-    }
-
-    /// <summary>
-    /// 项动作
-    /// </summary>
-    [Obsolete("请使用 IDynamicTableItemAction")]
-    public interface IDynamicTableAction : IDynamicTableItemAction
-    {
     }
 }

@@ -1,9 +1,5 @@
-﻿using Oldmansoft.Html.WebMan.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -43,7 +39,7 @@ namespace Oldmansoft.Html.WebMan
             Script = new Input.ScriptRegister();
             Validator = new FormValidate.FormValidator();
             ViewMode = viewMode;
-            Buttons = buttons == null ? new List<IHtmlElement>() : buttons;
+            Buttons = buttons ?? new List<IHtmlElement>();
         }
 
         /// <summary>

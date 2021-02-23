@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Oldmansoft.Html.Util
 {
@@ -22,17 +18,17 @@ namespace Oldmansoft.Html.Util
             {
                 result.Append("null");
             }
-            else if (value is string)
+            else if (value is string stringValue)
             {
-                result.Append(string.Format("\"{0}\"", ((string)value).JavaScriptEncode()));
+                result.Append(string.Format("\"{0}\"", stringValue.JavaScriptEncode()));
             }
-            else if (value is bool)
+            else if (value is bool boolValue)
             {
-                result.Append((bool)value ? "true" : "false");
+                result.Append(boolValue ? "true" : "false");
             }
-            else if (value is JsonBuilder)
+            else if (value is JsonBuilder builder)
             {
-                ((JsonBuilder)value).Create(result);
+                builder.Create(result);
             }
             else
             {

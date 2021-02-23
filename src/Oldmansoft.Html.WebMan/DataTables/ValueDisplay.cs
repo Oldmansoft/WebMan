@@ -1,11 +1,7 @@
-﻿using Oldmansoft.Html.WebMan.Util;
+﻿using Oldmansoft.Html.WebMan.DataTables.ValueDealer;
+using Oldmansoft.Html.WebMan.Util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.WebMan.DataTables.ValueDealer;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -16,22 +12,28 @@ namespace Oldmansoft.Html.WebMan
     {
         public static readonly ValueDisplay Instance = new ValueDisplay();
 
-        private Dictionary<Type, IValueDisplay> SimpleDealers { get; set; }
+        private readonly Dictionary<Type, IValueDisplay> SimpleDealers;
 
-        private Dictionary<Type, Func<Type, object, ModelPropertyContent, HtmlNode>> GenericDealers { get; set; }
+        private readonly Dictionary<Type, Func<Type, object, ModelPropertyContent, HtmlNode>> GenericDealers;
 
         private ValueDisplay()
         {
             SimpleDealers = new Dictionary<Type, IValueDisplay>();
-            SimpleDealers.Add(typeof(Guid), new GuidDisplay());
-            SimpleDealers.Add(typeof(bool), new BoolDisplay());
-            SimpleDealers.Add(typeof(DateTime), new DateTimeDisplay());
-            SimpleDealers.Add(typeof(string), new StringDisplay());
-            SimpleDealers.Add(typeof(System.Web.HttpPostedFileBase), new HttpPostedFileDisplay());
+            Add(new GuidDisplay());
+            Add(new BoolDisplay());
+            Add(new DateTimeDisplay());
+            Add(new StringDisplay());
 
-            GenericDealers = new Dictionary<Type, Func<Type, object, ModelPropertyContent, HtmlNode>>();
-            GenericDealers.Add(typeof(Nullable<>), NullableDeal);
-            GenericDealers.Add(typeof(List<>), ListDeal);
+            GenericDealers = new Dictionary<Type, Func<Type, object, ModelPropertyContent, HtmlNode>>
+            {
+                { typeof(Nullable<>), NullableDeal },
+                { typeof(List<>), ListDeal }
+            };
+        }
+
+        public void Add(IValueDisplay valueDisplay)
+        {
+            SimpleDealers.Add(valueDisplay.DealType, valueDisplay);
         }
 
         private HtmlNode NullableDeal(Type type, object value, ModelPropertyContent propertyContent)

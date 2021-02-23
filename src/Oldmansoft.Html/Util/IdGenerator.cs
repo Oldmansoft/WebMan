@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.Util
+﻿namespace Oldmansoft.Html.Util
 {
     /// <summary>
     /// 序号生成器
     /// </summary>
     public class IdGenerator : IGenerator<int>
     {
-        private int Start { get; set; }
+        private readonly int Start;
 
-        private int Store { get; set; }
+        private int Store;
 
         /// <summary>
         /// 上限
         /// </summary>
-        private int Max { get; set; }
+        private readonly int Max;
 
         /// <summary>
         /// 创建序号生成器

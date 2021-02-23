@@ -1,9 +1,4 @@
-﻿using Oldmansoft.Html.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -25,10 +20,11 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建网页文档
         /// </summary>
-        public HtmlDocument()
+        /// <param name="webRootPath"></param>
+        public HtmlDocument(string webRootPath)
         {
             InitAfterScripts = new List<Element.Script>();
-            Resources = new DocumentResource();
+            Resources = new DocumentResource(webRootPath);
 
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Http_Equiv, "Content-Type").Attribute(HtmlAttribute.Content, "text/html; charset=utf-8"));
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Name, "viewport").Attribute(HtmlAttribute.Content, "width=device-width, initial-scale=1, user-scalable=no"));

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.WebMan.Input;
-
-namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
+﻿namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     /// <summary>
     /// 文本组件
@@ -22,7 +15,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            InputMaxLength = PropertyContent.InputMaxLength;
+            InputMaxLength = PropertyContent.Attributes.Get<Annotations.InputMaxLengthAttribute>();
             Value = value.GetNotNullString();
         }
 

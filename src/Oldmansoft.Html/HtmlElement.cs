@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Oldmansoft.Html.Util;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.Util;
 
 namespace Oldmansoft.Html
 {
@@ -14,13 +11,13 @@ namespace Oldmansoft.Html
     {
         private static HashSet<HtmlTag> SelfClosedTags;
 
-        private HtmlAttributeManager Attributes = new HtmlAttributeManager();
+        private readonly HtmlAttributeManager Attributes = new HtmlAttributeManager();
 
-        private HtmlClassManager Classes = new HtmlClassManager();
+        private readonly HtmlClassManager Classes = new HtmlClassManager();
 
-        private HtmlStyleManager Csses = new HtmlStyleManager();
+        private readonly HtmlStyleManager Csses = new HtmlStyleManager();
 
-        private HtmlScriptManager Scripts = new HtmlScriptManager();
+        private readonly HtmlScriptManager Scripts = new HtmlScriptManager();
 
         /// <summary>
         /// 标签
@@ -40,16 +37,18 @@ namespace Oldmansoft.Html
         {
             if (SelfClosedTags == null)
             {
-                var tags = new HashSet<HtmlTag>();
-                tags.Add(HtmlTag.Col);
-                tags.Add(HtmlTag.Img);
-                tags.Add(HtmlTag.Area);
-                tags.Add(HtmlTag.Base);
-                tags.Add(HtmlTag.Link);
-                tags.Add(HtmlTag.Meta);
-                tags.Add(HtmlTag.Frame);
-                tags.Add(HtmlTag.Input);
-                tags.Add(HtmlTag.Param);
+                var tags = new HashSet<HtmlTag>
+                {
+                    HtmlTag.Col,
+                    HtmlTag.Img,
+                    HtmlTag.Area,
+                    HtmlTag.Base,
+                    HtmlTag.Link,
+                    HtmlTag.Meta,
+                    HtmlTag.Frame,
+                    HtmlTag.Input,
+                    HtmlTag.Param
+                };
                 SelfClosedTags = tags;
             }
             return SelfClosedTags.Contains(tag);

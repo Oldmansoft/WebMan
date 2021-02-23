@@ -21,25 +21,31 @@ namespace WebApplication.Controllers
             var list = new List<Models.DataTableItemModel>();
             for (var i = 0; i < 100; i++)
             {
-                var item = new Models.DataTableItemModel();
-                item.Id = i + 1;
-                item.Name = "Hello" + (i + 1);
-                item.Password = "^_^";
-                item.Content = "### heading text";
-                item.States = new List<Models.DataTableItemState>();
+                var item = new Models.DataTableItemModel
+                {
+                    Id = i + 1,
+                    Name = "Hello" + (i + 1),
+                    Password = "^_^",
+                    Content = "### heading text",
+                    States = new List<Models.DataTableItemState>()
+                };
                 item.States.Add(Models.DataTableItemState.Low);
                 item.States.Add(Models.DataTableItemState.Hight);
                 item.CreateTime = DateTime.UtcNow;
-                item.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
-                item.Files = new List<HttpPostedFileBase>();
-                item.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
-                item.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
+                item.File = FileLocation.Create("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
+                item.Files = new List<HttpPostedFileBase>
+                {
+                    FileLocation.Create("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"),
+                    FileLocation.Create("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501")
+                };
                 if (i == 0)
                 {
-                    item.Tags = new List<string>();
-                    item.Tags.Add("hello");
-                    item.Tags.Add("world");
-                    item.Tags.Add("hello");
+                    item.Tags = new List<string>
+                    {
+                        "hello",
+                        "world",
+                        "hello"
+                    };
                 }
                 item.Sub = new Models.SubClass() { First = "1", Second = "2" };
                 list.Add(item);
@@ -138,9 +144,11 @@ namespace WebApplication.Controllers
         [Location("添加", Icon = FontAwesome.Anchor, Behave = LinkBehave.Open)]
         public ActionResult Create()
         {
-            var model = new Models.DataTableItemModel();
-            model.CreateTime = DateTime.UtcNow;
-            
+            var model = new Models.DataTableItemModel
+            {
+                CreateTime = DateTime.UtcNow
+            };
+
             var panel = new Panel();
             panel.ConfigLocation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(Create)), GetListSource());
@@ -162,12 +170,12 @@ namespace WebApplication.Controllers
             data.Id = GetDataSource().Max(o => o.Id) + 1;
             model.DealUpload((file) =>
             {
-                data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                data.File = FileLocation.Create(file.FileName, file.ContentType, "");
             }, o => o.File);
             data.Files = new List<HttpPostedFileBase>();
             model.DealUpload((file) =>
             {
-                data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+                data.Files.Add(FileLocation.Create(file.FileName, file.ContentType, ""));
             }, o => o.Files);
             GetDataSource().Insert(0, data);
             return Json(DealResult.Location(Url.Location(Index), "添加成功"));
@@ -177,8 +185,10 @@ namespace WebApplication.Controllers
         public ActionResult Edit(int id)
         {
             var model = GetDataSource().FirstOrDefault(o => o.Id == id);
-            var panel = new Panel();
-            panel.Description = "hello, world";
+            var panel = new Panel
+            {
+                Description = "hello, world"
+            };
             panel.ConfigLocation();
             var form = FormHorizontal.Define(model, Url.Location(new Func<Models.DataTableItemModel, JsonResult>(EditResult)), GetListSource());
             panel.Append(form.Create());
@@ -199,14 +209,14 @@ namespace WebApplication.Controllers
                 model.MapTo(data);
                 model.DealUpload((file) =>
                 {
-                    data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                    data.File = FileLocation.Create(file.FileName, file.ContentType, "");
                 }, () =>
                 {
                     data.File = null;
                 }, o => o.File);
                 model.DealUpload((file) =>
                 {
-                    data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+                    data.Files.Add(FileLocation.Create(file.FileName, file.ContentType, ""));
                 }, (index) =>
                 {
                     data.Files.RemoveAt(index);
@@ -249,10 +259,12 @@ namespace WebApplication.Controllers
             var model = data.MapTo(new Models.ShowModel());
             model.Id = data.Id;
             model.Name = data.Name;
-            model.File = new HttpPostedFileCustom("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
-            model.Files = new List<HttpPostedFileBase>();
-            model.Files.Add(new HttpPostedFileCustom("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
-            model.Files.Add(new HttpPostedFileCustom("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"));
+            model.File = FileLocation.Create("file.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501");
+            model.Files = new List<HttpPostedFileBase>
+            {
+                FileLocation.Create("file1.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501"),
+                FileLocation.Create("file2.jpg", "image/jpg", "https://avatars.githubusercontent.com/u/1279501")
+            };
             var panel = new Panel();
             panel.ConfigLocation();
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.ShowModel, JsonResult>(ShowResult)), GetListSource());

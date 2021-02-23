@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html
+﻿namespace Oldmansoft.Html
 {
     /// <summary>
     /// 原始 Html
     /// </summary>
     public class HtmlRaw : HtmlNode
     {
-        private string Content = string.Empty;
+        private readonly string Content;
 
         /// <summary>
         /// 创建原始 Html

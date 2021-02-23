@@ -1,11 +1,11 @@
-﻿using Oldmansoft.Html.WebMan;
+﻿using Oldmansoft.Html.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Oldmansoft.Html.WebMan
@@ -76,6 +76,93 @@ namespace Oldmansoft.Html.WebMan
             var option = ControllerHelper.GetLastMethodLocation();
             source.Caption = option.Display;
             source.Icon = option.Icon;
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="delete"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<HttpPostedFileBase> upload, Action delete, Expression<Func<TModel, HttpPostedFileBase>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            if (source == null) return;
+
+            if (delete != null)
+            {
+                if (HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1") delete();
+            }
+
+            if (upload != null)
+            {
+                var httpPostedFile = expression.Compile().Invoke(source);
+                if (httpPostedFile == null || httpPostedFile.ContentLength == 0) return;
+                upload(httpPostedFile);
+            }
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<HttpPostedFileBase> upload, Expression<Func<TModel, HttpPostedFileBase>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            DealUpload(source, upload, null, expression);
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="delete"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<HttpPostedFileBase> upload, Action<int> delete, Expression<Func<TModel, List<HttpPostedFileBase>>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            if (source == null) return;
+
+            if (delete != null)
+            {
+                var deleteMarks = HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
+                if (deleteMarks == null) deleteMarks = new string[0];
+                for (var i = deleteMarks.Length - 1; i > -1; i--)
+                {
+                    if (deleteMarks[i] == "1") delete(i);
+                }
+            }
+
+            if (upload != null)
+            {
+                var httpPostedFiles = expression.Compile().Invoke(source);
+                if (httpPostedFiles == null) return;
+                foreach (var httpPostedFile in httpPostedFiles)
+                {
+                    if (httpPostedFile == null || httpPostedFile.ContentLength == 0) continue;
+                    upload(httpPostedFile);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 处理上传
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="upload"></param>
+        /// <param name="expression"></param>
+        public static void DealUpload<TModel>(this TModel source, Action<HttpPostedFileBase> upload, Expression<Func<TModel, List<HttpPostedFileBase>>> expression)
+        {
+            if (expression == null) throw new ArgumentNullException("expression");
+            DealUpload(source, upload, null, expression);
         }
     }
 }

@@ -1,13 +1,8 @@
-﻿using Oldmansoft.Html.WebMan.Annotations;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Oldmansoft.Html.WebMan.Util
 {
@@ -30,8 +25,7 @@ namespace Oldmansoft.Html.WebMan.Util
 
         private PropertyInfo[] GetPropertiesFromCache(Type type)
         {
-            PropertyInfo[] result;
-            if (Properties.TryGetValue(type, out result))
+            if (Properties.TryGetValue(type, out PropertyInfo[] result))
             {
                 return result;
             }

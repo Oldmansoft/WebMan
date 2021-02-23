@@ -1,17 +1,17 @@
-﻿using Oldmansoft.Html.WebMan.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 值显示
     /// </summary>
-    internal interface IValueDisplay
+    public interface IValueDisplay
     {
+        /// <summary>
+        /// 处理类型
+        /// </summary>
+        Type DealType { get; }
+
         /// <summary>
         /// 转换
         /// </summary>

@@ -1,203 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{22770D16-1E7F-4775-909F-A6DB1BA3091C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Oldmansoft.Html.WebMan</RootNamespace>
-    <AssemblyName>Oldmansoft.Html.WebMan</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Oldman</Authors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Oldmansoft.Html.WebMan.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Oldmansoft.Html.WebMan.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\Oldmansoft.Html.Shared\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Annotations\ExpansionAttribute.cs" />
-    <Compile Include="Annotations\FixedCountAttribute.cs" />
-    <Compile Include="Annotations\FormatAttribute.cs" />
-    <Compile Include="Annotations\HtmlDataAttribute.cs" />
-    <Compile Include="Annotations\CustomInputAttribute.cs" />
-    <Compile Include="Annotations\ContentType.cs" />
-    <Compile Include="Annotations\FileRequiredAttribute.cs" />
-    <Compile Include="Annotations\InputMaxLengthAttribute.cs" />
-    <Compile Include="Annotations\RangeCountAttribute.cs" />
-    <Compile Include="AppEvent.cs" />
-    <Compile Include="Badge.cs" />
-    <Compile Include="DataTables\IDynamicTableItemAction.cs" />
-    <Compile Include="DataTables\ITableColumn.cs" />
-    <Compile Include="DataTables\StaticTableAction.cs" />
-    <Compile Include="DataTables\IStaticTableItemAction.cs" />
-    <Compile Include="DataTables\ItemActionClient.cs" />
-    <Compile Include="DataTables\StaticTable.cs" />
-    <Compile Include="DataTables\Table.cs" />
-    <Compile Include="DataTables\TableAction.cs" />
-    <Compile Include="DataTables\DataTableDefining.cs" />
-    <Compile Include="DataTables\ValueDealer\HttpPostedFileDisplay.cs" />
-    <Compile Include="DataTables\ValueDealer\StringDisplay.cs" />
-    <Compile Include="DealResult.cs" />
-    <Compile Include="Annotations\FileOptionAttribute.cs" />
-    <Compile Include="Annotations\HiddenAttribute.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="ColumnOffset.cs" />
-    <Compile Include="DataTables\DataTable.cs" />
-    <Compile Include="DataTables\DynamicTableAction.cs" />
-    <Compile Include="DataTables\DataTableColumn.cs" />
-    <Compile Include="DataTables\DynamicTable.cs" />
-    <Compile Include="DataTables\DataTableRequest.cs" />
-    <Compile Include="DataTables\DataTableSource.cs" />
-    <Compile Include="DataTables\IValueDisplay.cs" />
-    <Compile Include="Document\IEnabledLinkResource.cs" />
-    <Compile Include="Document\IEnabledLinkScriptResource.cs" />
-    <Compile Include="Document\IEnabledResource.cs" />
-    <Compile Include="Document\IEnabledScriptResource.cs" />
-    <Compile Include="Document\ILinkResource.cs" />
-    <Compile Include="Document\ILinkScriptResource.cs" />
-    <Compile Include="Document\IScriptResource.cs" />
-    <Compile Include="Document\MainDocument.cs" />
-    <Compile Include="Document\Resource.cs" />
-    <Compile Include="Document\SimpleDocument.cs" />
-    <Compile Include="EmptyLocation.cs" />
-    <Compile Include="FormHorizontalDefining.cs" />
-    <Compile Include="FormInputCreator\FormInput.cs" />
-    <Compile Include="FormInputCreator\Handlers\BoolHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\CustomInputHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\DataSourceHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\DateHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\DateTimeHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\EnumHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\FileHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\ListHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\MultilineTextHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\IntegerHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\NumericHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\PasswordHandler.cs" />
-    <Compile Include="FormInputCreator\Handlers\TimeHandler.cs" />
-    <Compile Include="FormInputCreator\InputCreator.cs" />
-    <Compile Include="FormInputCreator\Handlers\FinalHandler.cs" />
-    <Compile Include="FormInputCreator\Handler.cs" />
-    <Compile Include="FormInputCreator\HandlerParameter.cs" />
-    <Compile Include="FormInputCreator\Handlers\StartHandler.cs" />
-    <Compile Include="FormInputCreator\Inputs\Bool.cs" />
-    <Compile Include="FormInputCreator\Inputs\CheckBoxList.cs" />
-    <Compile Include="FormInputCreator\Inputs\Date.cs" />
-    <Compile Include="FormInputCreator\Inputs\DateTimeInput.cs" />
-    <Compile Include="FormInputCreator\Inputs\File.cs" />
-    <Compile Include="FormInputCreator\Inputs\Hidden.cs" />
-    <Compile Include="FormInputCreator\Inputs\MultiFile.cs" />
-    <Compile Include="FormInputCreator\Inputs\MultiSelect.cs" />
-    <Compile Include="FormInputCreator\Inputs\Integer.cs" />
-    <Compile Include="FormInputCreator\Inputs\Number.cs" />
-    <Compile Include="FormInputCreator\Inputs\Numeric.cs" />
-    <Compile Include="FormInputCreator\Inputs\Password.cs" />
-    <Compile Include="FormInputCreator\Inputs\RadioList.cs" />
-    <Compile Include="FormInputCreator\Inputs\Select.cs" />
-    <Compile Include="FormInputCreator\Inputs\Text.cs" />
-    <Compile Include="FormInputCreator\Inputs\Textarea.cs" />
-    <Compile Include="FormInputCreator\Inputs\Time.cs" />
-    <Compile Include="FormInputCreator\ListDataItem.cs" />
-    <Compile Include="FormInputCreator\ListDataSource.cs" />
-    <Compile Include="FormValidate\EmailAddress.cs" />
-    <Compile Include="FormValidate\FileLimitContentLength.cs" />
-    <Compile Include="FormValidate\ListCount.cs" />
-    <Compile Include="FormValidate\FormValidator.cs" />
-    <Compile Include="FormValidate\GreaterThan.cs" />
-    <Compile Include="FormValidate\Identical.cs" />
-    <Compile Include="FormValidate\LessThan.cs" />
-    <Compile Include="FormValidate\NotEmpty.cs" />
-    <Compile Include="FormValidate\Regexp.cs" />
-    <Compile Include="FormValidate\StringLength.cs" />
-    <Compile Include="FormValidate\Validator.cs" />
-    <Compile Include="FormValidate\ValidatorManager.cs" />
-    <Compile Include="GlobalOption.cs" />
-    <Compile Include="HttpPostedFileCustom.cs" />
-    <Compile Include="DataTables\ITableAction.cs" />
-    <Compile Include="Input\MarkdownResource.cs" />
-    <Compile Include="Input\ScriptRegister.cs" />
-    <Compile Include="Input\ICustomInput.cs" />
-    <Compile Include="Input\IFormInput.cs" />
-    <Compile Include="Input\Markdown.cs" />
-    <Compile Include="Input\Select2.cs" />
-    <Compile Include="Input\Select2Resource.cs" />
-    <Compile Include="Input\TagsInput.cs" />
-    <Compile Include="LinkBehave.cs" />
-    <Compile Include="DataTables\ValueDealer\BoolDisplay.cs" />
-    <Compile Include="DataTables\ValueDisplay.cs" />
-    <Compile Include="DataTables\ValueDealer\DateTimeDisplay.cs" />
-    <Compile Include="DataTables\ValueDealer\GuidDisplay.cs" />
-    <Compile Include="Document\DocumentResource.cs" />
-    <Compile Include="FontAwesome.cs" />
-    <Compile Include="FormHorizontal.cs" />
-    <Compile Include="Document\HtmlDocument.cs" />
-    <Compile Include="GridOption.cs" />
-    <Compile Include="ILocation.cs" />
-    <Compile Include="Document\LoginDocument.cs" />
-    <Compile Include="Document\ManageDocument.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="LocationBind.cs" />
-    <Compile Include="Util\ColumnFlags.cs" />
-    <Compile Include="Util\ColumnOffsetFlags.cs" />
-    <Compile Include="Util\ContentTypeFlags.cs" />
-    <Compile Include="Util\ContentTypeMapping.cs" />
-    <Compile Include="Util\EnumFlags.cs" />
-    <Compile Include="Util\ModelPropertyContent.cs" />
-    <Compile Include="Util\ModelProvider.cs" />
-    <Compile Include="Panel.cs" />
-    <Compile Include="Document\QuickMenu.cs" />
-    <Compile Include="Document\TreeList.cs" />
-    <Compile Include="Document\TreeListItem.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\ChainOfResponsibility.cs" />
-    <Compile Include="Util\ChainOfResponsibilityHandler.cs" />
-    <Compile Include="Util\EnumProvider.cs" />
-    <Compile Include="_Extends.cs" />
+    <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj">
-      <Project>{4bf2e2a4-bfab-4574-81a4-1d2563d75908}</Project>
-      <Name>Oldmansoft.Html</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan
+﻿namespace Oldmansoft.Html.WebMan
 {
     /// <summary>
     /// 处理结果
@@ -48,9 +42,11 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Wrong(string message)
         {
-            var result = new DealResult();
-            result.Success = false;
-            result.Message = message;
+            var result = new DealResult
+            {
+                Success = false,
+                Message = message
+            };
             return result;
         }
 
@@ -61,11 +57,13 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult WrongRefresh(string message)
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.NewData = true;
-            result.Message = message;
-            result.Success = false;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                NewData = true,
+                Message = message,
+                Success = false
+            };
             return result;
         }
 
@@ -76,11 +74,13 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Location(ILocation location)
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.Path = location.Path;
-            result.Behave = location.Behave;
-            result.Success = true;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                Path = location.Path,
+                Behave = location.Behave,
+                Success = true
+            };
             return result;
         }
 
@@ -92,12 +92,14 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Location(ILocation location, string message)
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.Path = location.Path;
-            result.Behave = location.Behave;
-            result.Message = message;
-            result.Success = true;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                Path = location.Path,
+                Behave = location.Behave,
+                Message = message,
+                Success = true
+            };
             return result;
         }
 
@@ -107,10 +109,12 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Refresh()
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.NewData = true;
-            result.Success = true;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                NewData = true,
+                Success = true
+            };
             return result;
         }
 
@@ -121,11 +125,13 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Refresh(string message)
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.NewData = true;
-            result.Message = message;
-            result.Success = true;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                NewData = true,
+                Message = message,
+                Success = true
+            };
             return result;
         }
         
@@ -136,10 +142,12 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static DealResult Show(string message)
         {
-            var result = new DealResult();
-            result.CloseOpen = true;
-            result.Success = true;
-            result.Message = message;
+            var result = new DealResult
+            {
+                CloseOpen = true,
+                Success = true,
+                Message = message
+            };
             return result;
         }
     }

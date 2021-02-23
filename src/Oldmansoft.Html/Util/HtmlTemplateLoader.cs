@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Util
 {
@@ -11,9 +9,9 @@ namespace Oldmansoft.Html.Util
     /// </summary>
     public class HtmlTemplateLoader
     {
-        private string BasePath { get; set; }
+        private readonly string BasePath;
 
-        private System.Collections.Concurrent.ConcurrentDictionary<string, HtmlTemplate> Templates { get; set; }
+        private readonly ConcurrentDictionary<string, HtmlTemplate> Templates;
 
         /// <summary>
         /// 创建模板加载器
@@ -22,7 +20,7 @@ namespace Oldmansoft.Html.Util
         public HtmlTemplateLoader(string path)
         {
             BasePath = string.Format("{0}{1}/", AppDomain.CurrentDomain.BaseDirectory, path);
-            Templates = new System.Collections.Concurrent.ConcurrentDictionary<string, HtmlTemplate>();
+            Templates = new ConcurrentDictionary<string, HtmlTemplate>();
         }
 
         /// <summary>

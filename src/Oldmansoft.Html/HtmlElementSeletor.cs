@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html
 {
@@ -12,9 +8,9 @@ namespace Oldmansoft.Html
     /// </summary>
     class HtmlElementSeletor : IHtmlElementEnumerable
     {
-        private IList<IHtmlElement> Elements { get; set; }
+        private readonly IList<IHtmlElement> Elements;
 
-        private IHtmlNode _Parent;
+        private readonly IHtmlNode _Parent;
 
         public HtmlElementSeletor()
         {

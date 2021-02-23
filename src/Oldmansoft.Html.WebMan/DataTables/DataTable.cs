@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -13,18 +10,12 @@ namespace Oldmansoft.Html.WebMan
     public static class DataTable
     {
         /// <summary>
-        /// 创建表格定义
+        /// 注册值显示
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="primaryKey">主键</param>
-        /// <param name="dataSource">数据源路径</param>
-        /// <returns></returns>
-        [Obsolete("请使用 TableCreator<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)")]
-        public static DynamicTable<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey, ILocation dataSource)
-            where TModel : class
+        /// <param name="valueDisplay"></param>
+        public static void Register(IValueDisplay valueDisplay)
         {
-            if (dataSource == null) throw new ArgumentNullException("dataSource");
-            return new DynamicTable<TModel>(primaryKey, dataSource.Path);
+            ValueDisplay.Instance.Add(valueDisplay);
         }
 
         /// <summary>
@@ -54,19 +45,6 @@ namespace Oldmansoft.Html.WebMan
             return new DataTableSource<TModel>(source, request, totalCount);
         }
 
-        /// <summary>
-        /// 定义表格
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="primaryKey"></param>
-        /// <returns>表格创建者</returns>
-        [Obsolete("请使用 DataTableDefining<TModel> Define<TModel>(Expression<Func<TModel, object>> primaryKey)")]
-        public static DataTableDefining<TModel> Definition<TModel>(Expression<Func<TModel, object>> primaryKey)
-            where TModel : class
-        {
-            return new DataTableDefining<TModel>(primaryKey);
-        }
-        
         /// <summary>
         /// 定义表格
         /// </summary>

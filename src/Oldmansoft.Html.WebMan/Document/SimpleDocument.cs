@@ -1,9 +1,4 @@
 ﻿using Oldmansoft.Html.Element;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.Document
 {
@@ -18,7 +13,9 @@ namespace Oldmansoft.Html.WebMan.Document
         /// 创建文档
         /// </summary>
         /// <param name="defaultLink"></param>
-        public SimpleDocument(ILocation defaultLink)
+        /// <param name="webRootPath"></param>
+        public SimpleDocument(ILocation defaultLink, string webRootPath = "/")
+            : base(webRootPath)
         {
             Location = defaultLink;
         }

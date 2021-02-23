@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Oldmansoft.Html
 {
@@ -11,7 +7,7 @@ namespace Oldmansoft.Html
     /// </summary>
     public class HtmlNodeContainer : HtmlNode
     {
-        private List<IHtmlNode> Nodes;
+        private readonly List<IHtmlNode> Nodes;
 
         /// <summary>
         /// 创建列表

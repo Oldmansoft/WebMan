@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Util
 {
     class HtmlClassManager
     {
-        private SortedSet<string> Store = new SortedSet<string>(StringComparer.CurrentCultureIgnoreCase);
+        private readonly SortedSet<string> Store = new SortedSet<string>(StringComparer.CurrentCultureIgnoreCase);
 
         public void AddClass(string name)
         {

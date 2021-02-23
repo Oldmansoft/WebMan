@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Element
 {
@@ -11,9 +9,9 @@ namespace Oldmansoft.Html.Element
     /// </summary>
     public class Script : HtmlElement
     {
-        private string Content { get; set; }
+        private readonly string Content;
 
-        private List<Script> Scripts { get; set; }
+        private readonly List<Script> Scripts;
 
         /// <summary>
         /// 创建网页脚本
@@ -42,12 +40,20 @@ namespace Oldmansoft.Html.Element
             Scripts.AddRange(script);
         }
 
-        internal virtual bool HasContent()
+        /// <summary>
+        /// 是否有内容
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool HasContent()
         {
             return Content != null || Scripts.Count > 0;
         }
 
-        internal virtual void SetListFromContent(IList<string> list)
+        /// <summary>
+        /// 设置列表
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void SetListFromContent(IList<string> list)
         {
             if (list == null) return;
             if (Content != null)

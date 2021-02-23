@@ -1,11 +1,4 @@
-﻿using Oldmansoft.Html.WebMan.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
+﻿namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
     class IntegerHandler : Handler
     {

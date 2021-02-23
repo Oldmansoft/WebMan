@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.Util
 {
-    abstract class ChainOfResponsibilityHandler<TInput, TResult>
+    /// <summary>
+    /// 责任链
+    /// </summary>
+    /// <typeparam name="TInput"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    public abstract class ChainOfResponsibilityHandler<TInput, TResult>
     {
         private ChainOfResponsibilityHandler<TInput, TResult> Next { get; set; }
 

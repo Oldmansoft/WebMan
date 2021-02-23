@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Oldmansoft.Html
@@ -58,8 +54,9 @@ namespace Oldmansoft.Html
         /// 将 URL 转换为在请求客户端可用的 URL
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="webRootPath"></param>
         /// <returns></returns>
-        public static string ResolveUrl(this string source)
+        public static string ResolveUrl(this string source, string webRootPath)
         {
             if (string.IsNullOrEmpty(source)) return source;
             if (source.Length == 1) return source;
@@ -68,11 +65,11 @@ namespace Oldmansoft.Html
 
             if (source.Length < 3)
             {
-                return HttpRuntime.AppDomainAppVirtualPath;
+                return webRootPath;
             }
             else
             {
-                return HttpRuntime.AppDomainAppVirtualPath + source.Substring(2);
+                return webRootPath + source.Substring(2);
             }
         }
 

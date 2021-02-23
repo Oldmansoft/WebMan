@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -13,6 +10,11 @@ namespace Oldmansoft.Html.WebMan
     /// </summary>
     public class ModelPropertyContent
     {
+        /// <summary>
+        /// 属性管理器
+        /// </summary>
+        public readonly Util.AttributeManager Attributes = new Util.AttributeManager();
+
         /// <summary>
         /// 名称
         /// </summary>
@@ -74,66 +76,6 @@ namespace Oldmansoft.Html.WebMan
         public RequiredAttribute Required { get; private set; }
 
         /// <summary>
-        /// 字符串长度
-        /// </summary>
-        public StringLengthAttribute StringLength { get; private set; }
-
-        /// <summary>
-        /// 最大长度
-        /// </summary>
-        public MaxLengthAttribute MaxLength { get; private set; }
-
-        /// <summary>
-        /// 最小长度
-        /// </summary>
-        public MinLengthAttribute MinLength { get; private set; }
-
-        /// <summary>
-        /// 比较
-        /// </summary>
-        public CompareAttribute Compare { get; private set; }
-
-        /// <summary>
-        /// 正则表达式
-        /// </summary>
-        public RegularExpressionAttribute Regular { get; private set; }
-
-        /// <summary>
-        /// 两值之间
-        /// </summary>
-        public RangeAttribute Range { get; private set; }
-
-        /// <summary>
-        /// 上传文件扩展名
-        /// </summary>
-        public Annotations.FileOptionAttribute FileOption { get; private set; }
-
-        /// <summary>
-        /// 定制输入
-        /// </summary>
-        public Annotations.CustomInputAttribute CustomInput { get; private set; }
-
-        /// <summary>
-        /// 设置 Html data 属性
-        /// </summary>
-        public Annotations.HtmlDataAttribute HtmlData { get; private set; }
-
-        /// <summary>
-        /// 固定数量
-        /// </summary>
-        public Annotations.FixedCountAttribute FixedCount { get; private set; }
-
-        /// <summary>
-        /// 范围数量
-        /// </summary>
-        public Annotations.RangeCountAttribute RangeCount { get; private set; }
-
-        /// <summary>
-        /// 输入限制长度
-        /// </summary>
-        public Annotations.InputMaxLengthAttribute InputMaxLength { get; private set; }
-
-        /// <summary>
         /// 创建
         /// </summary>
         /// <param name="property"></param>
@@ -143,7 +85,7 @@ namespace Oldmansoft.Html.WebMan
             Name = property.Name;
             Display = property.Name;
             Hidden = property.Name.ToLower() == "id";
-            HtmlData = Annotations.HtmlDataAttribute.Empty;
+            Attributes.Add(Annotations.HtmlDataAttribute.Empty);
 
             if (IsType(property.PropertyType, typeof(DateTime)))
             {
@@ -194,12 +136,6 @@ namespace Oldmansoft.Html.WebMan
                 return;
             }
 
-            if (attribute is RequiredAttribute)
-            {
-                Required = attribute as RequiredAttribute;
-                return;
-            }
-
             if (attribute is DisplayAttribute)
             {
                 Display = (attribute as DisplayAttribute).Name;
@@ -232,87 +168,9 @@ namespace Oldmansoft.Html.WebMan
                 return;
             }
 
-            if (attribute is Annotations.FileOptionAttribute)
-            {
-                FileOption = attribute as Annotations.FileOptionAttribute;
-                return;
-            }
-
-            if (attribute is RangeAttribute)
-            {
-                Range = attribute as RangeAttribute;
-                return;
-            }
-
-            if (attribute is StringLengthAttribute)
-            {
-                StringLength = attribute as StringLengthAttribute; ;
-                return;
-            }
-
-            if (attribute is MaxLengthAttribute)
-            {
-                MaxLength = attribute as MaxLengthAttribute;
-                return;
-            }
-
-            if (attribute is MinLengthAttribute)
-            {
-                MinLength = attribute as MinLengthAttribute;
-                return;
-            }
-
-            if (attribute is CompareAttribute)
-            {
-                Compare = attribute as CompareAttribute;
-                return;
-            }
-
-            if (attribute is RegularExpressionAttribute)
-            {
-                Regular = attribute as RegularExpressionAttribute;
-                return;
-            }
-
-            if (attribute is RangeAttribute)
-            {
-                Range = attribute as RangeAttribute;
-                return;
-            }
-
             if (attribute is System.ComponentModel.DescriptionAttribute)
             {
                 Description = (attribute as System.ComponentModel.DescriptionAttribute).Description;
-                return;
-            }
-
-            if (attribute is Annotations.CustomInputAttribute)
-            {
-                CustomInput = attribute as Annotations.CustomInputAttribute;
-                return;
-            }
-
-            if (attribute is Annotations.HtmlDataAttribute)
-            {
-                HtmlData = attribute as Annotations.HtmlDataAttribute;
-                return;
-            }
-
-            if (attribute is Annotations.FixedCountAttribute)
-            {
-                FixedCount = attribute as Annotations.FixedCountAttribute;
-                return;
-            }
-
-            if (attribute is Annotations.RangeCountAttribute)
-            {
-                RangeCount = attribute as Annotations.RangeCountAttribute;
-                return;
-            }
-
-            if (attribute is Annotations.InputMaxLengthAttribute)
-            {
-                InputMaxLength = attribute as Annotations.InputMaxLengthAttribute;
                 return;
             }
 
@@ -321,6 +179,13 @@ namespace Oldmansoft.Html.WebMan
                 Expansion = true;
                 return;
             }
+
+            if (attribute is RequiredAttribute)
+            {
+                Required = attribute as RequiredAttribute;
+                return;
+            }
+            Attributes.Add(attribute);
         }
         
         /// <summary>
@@ -346,38 +211,43 @@ namespace Oldmansoft.Html.WebMan
         {
             if (ReadOnly || Disabled) return;
             var validator = form[inputName];
+
             if (Required != null && !Required.AllowEmptyStrings)
             {
                 validator.Set(Validator.NoEmpty().SetMessage(Required));
             }
 
-            if (StringLength != null)
+            var stringLength = Attributes.Get<StringLengthAttribute>();
+            var minLength = Attributes.Get<MinLengthAttribute>();
+            var maxLength = Attributes.Get<MaxLengthAttribute>();
+            if (stringLength != null)
             {
-                if (StringLength.MinimumLength > 0 && StringLength.MaximumLength == int.MaxValue)
+                if (stringLength.MinimumLength > 0 && stringLength.MaximumLength == int.MaxValue)
                 {
-                    validator.Set(Validator.StringLength(StringLength.MinimumLength).SetMessage(StringLength));
+                    validator.Set(Validator.StringLength(stringLength.MinimumLength).SetMessage(stringLength));
                 }
                 else
                 {
-                    validator.Set(Validator.StringLength(StringLength.MinimumLength, StringLength.MaximumLength).SetMessage(StringLength));
+                    validator.Set(Validator.StringLength(stringLength.MinimumLength, stringLength.MaximumLength).SetMessage(stringLength));
                 }
             }
-            else if (MinLength != null && MaxLength != null)
+            else if (minLength != null && maxLength != null)
             {
-                validator.Set(Validator.StringLength(MinLength.Length, MaxLength.Length).SetMessage(MaxLength));
+                validator.Set(Validator.StringLength(minLength.Length, maxLength.Length).SetMessage(maxLength));
             }
-            else if (MinLength != null)
+            else if (minLength != null)
             {
-                validator.Set(Validator.StringLength(MinLength.Length).SetMessage(MinLength));
+                validator.Set(Validator.StringLength(minLength.Length).SetMessage(minLength));
             }
-            else if (MaxLength != null)
+            else if (maxLength != null)
             {
-                validator.Set(Validator.StringLength(0, MaxLength.Length).SetMessage(MaxLength));
+                validator.Set(Validator.StringLength(0, maxLength.Length).SetMessage(maxLength));
             }
 
-            if (Regular != null && !string.IsNullOrEmpty(Regular.Pattern))
+            var regular = Attributes.Get<RegularExpressionAttribute>();
+            if (regular != null && !string.IsNullOrEmpty(regular.Pattern))
             {
-                validator.Set(Validator.Regexp(Regular.Pattern).SetMessage(Regular));
+                validator.Set(Validator.Regexp(regular.Pattern).SetMessage(regular));
             }
 
             if (DataType == DataType.EmailAddress)
@@ -385,26 +255,30 @@ namespace Oldmansoft.Html.WebMan
                 validator.Set(Validator.EmailAddress().Message(DataTypeErrorMessage));
             }
 
-            if (Compare != null && !string.IsNullOrEmpty(Compare.OtherProperty))
+            var compare = Attributes.Get<CompareAttribute>();
+            if (compare != null && !string.IsNullOrEmpty(compare.OtherProperty))
             {
-                validator.Set(Validator.Identical(Compare.OtherProperty).SetMessage(Compare));
-                form[Compare.OtherProperty].Set(Validator.Identical(inputName).SetMessage(Compare));
+                validator.Set(Validator.Identical(compare.OtherProperty).SetMessage(compare));
+                form[compare.OtherProperty].Set(Validator.Identical(inputName).SetMessage(compare));
             }
 
-            if (Range != null)
+            var range = Attributes.Get<RangeAttribute>();
+            if (range != null)
             {
-                validator.Set(Validator.GreaterThan(Range.Minimum).SetMessage(Range));
-                validator.Set(Validator.LessThan(Range.Maximum).SetMessage(Range));
+                validator.Set(Validator.GreaterThan(range.Minimum).SetMessage(range));
+                validator.Set(Validator.LessThan(range.Maximum).SetMessage(range));
             }
 
-            if (FixedCount != null)
+            var fixedCount = Attributes.Get<Annotations.FixedCountAttribute>();
+            if (fixedCount != null)
             {
-                validator.Set(Validator.FixedCount(FixedCount.Value).Message(string.Format(FixedCount.ErrorMessage == null ? "数量限定 {0} 个" : FixedCount.ErrorMessage, FixedCount.Value)));
+                validator.Set(Validator.FixedCount(fixedCount.Value).Message(string.Format(fixedCount.ErrorMessage ?? "数量限定 {0} 个", fixedCount.Value)));
             }
 
-            if (RangeCount != null)
+            var rangeCount = Attributes.Get<Annotations.RangeCountAttribute>();
+            if (rangeCount != null)
             {
-                validator.Set(Validator.RangeCount(RangeCount.MinCount, RangeCount.MaxCount, RangeCount.Inclusive).Message(RangeCount.ErrorMessage == null ? "数量限定有误" : RangeCount.ErrorMessage));
+                validator.Set(Validator.RangeCount(rangeCount.MinCount, rangeCount.MaxCount, rangeCount.Inclusive).Message(rangeCount.ErrorMessage ?? "数量限定有误"));
             }
         }
     }

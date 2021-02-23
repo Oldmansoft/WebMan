@@ -1,10 +1,7 @@
 ﻿using Oldmansoft.Html.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html
 {
@@ -13,11 +10,11 @@ namespace Oldmansoft.Html
     /// </summary>
     public class HtmlOutput : IHtmlOutput
     {
-        private bool IsCompleted = false;
+        private bool IsCompleted;
 
-        private StringBuilder Outer { get; set; }
+        private readonly StringBuilder Outer;
 
-        private List<IHtmlNode> Nodes { get; set; }
+        private readonly List<IHtmlNode> Nodes;
 
         /// <summary>
         /// 格式化输出
@@ -45,6 +42,7 @@ namespace Oldmansoft.Html
         /// <param name="node"></param>
         public HtmlOutput(params IHtmlNode[] node)
         {
+            IsCompleted = false;
             Outer = new StringBuilder();
             Generator = new IdGenerator();
             Nodes = new List<IHtmlNode>(node);
@@ -97,7 +95,7 @@ namespace Oldmansoft.Html
             {
                 node.Format(this);
             }
-            if (OnCompleted != null) OnCompleted(this);
+            OnCompleted?.Invoke(this);
             return Outer.ToString();
         }
     }

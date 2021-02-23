@@ -1,12 +1,10 @@
-﻿using Oldmansoft.Html.Util;
-using Oldmansoft.Html.WebMan.Annotations;
+﻿using Oldmansoft.Html.WebMan.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -83,7 +81,7 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        internal static ContentType[] ToArray(this ContentType source)
+        public static ContentType[] ToArray(this ContentType source)
         {
             return ContentTypeFlags.From(source);
         }
@@ -94,7 +92,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="source"></param>
         /// <param name="contentType"></param>
         /// <returns></returns>
-        internal static bool In(this ContentType source, string contentType)
+        public static bool In(this ContentType source, string contentType)
         {
             var header = source.ToString().ToLower().Replace('_', '-');
             return contentType.IndexOf(header) == 0;
@@ -117,7 +115,7 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static string GetString(this object source)
         {
-            return source == null ? null : source.ToString();
+            return source?.ToString();
         }
 
         /// <summary>
@@ -417,98 +415,11 @@ namespace Oldmansoft.Html.WebMan
         }
 
         /// <summary>
-        /// 处理上传
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="upload"></param>
-        /// <param name="delete"></param>
-        /// <param name="expression"></param>
-        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, Action delete, System.Linq.Expressions.Expression<Func<TModel, System.Web.HttpPostedFileBase>> expression)
-        {
-            if (expression == null) throw new ArgumentNullException("expression");
-            if (source == null) return;
-
-            if (delete != null)
-            {
-                if (System.Web.HttpContext.Current.Request.Form[string.Format("{0}_DeleteMark", expression.GetProperty().Name)] == "1") delete();
-            }
-
-            if (upload != null)
-            {
-                var httpPostedFile = expression.Compile().Invoke(source);
-                if (httpPostedFile == null || httpPostedFile.ContentLength == 0) return;
-                upload(httpPostedFile);
-            }
-        }
-
-        /// <summary>
-        /// 处理上传
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="upload"></param>
-        /// <param name="expression"></param>
-        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, System.Linq.Expressions.Expression<Func<TModel, System.Web.HttpPostedFileBase>> expression)
-        {
-            if (expression == null) throw new ArgumentNullException("expression");
-            DealUpload(source, upload, null, expression);
-        }
-
-        /// <summary>
-        /// 处理上传
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="upload"></param>
-        /// <param name="delete"></param>
-        /// <param name="expression"></param>
-        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, Action<int> delete, System.Linq.Expressions.Expression<Func<TModel, List<System.Web.HttpPostedFileBase>>> expression)
-        {
-            if (expression == null) throw new ArgumentNullException("expression");
-            if (source == null) return;
-
-            if (delete != null)
-            {
-                var deleteMarks = System.Web.HttpContext.Current.Request.Form.GetValues(string.Format("{0}_DeleteMark", expression.GetProperty().Name));
-                if (deleteMarks == null) deleteMarks = new string[0];
-                for (var i = deleteMarks.Length - 1; i > -1; i--)
-                {
-                    if (deleteMarks[i] == "1") delete(i);
-                }
-            }
-
-            if (upload != null)
-            {
-                var httpPostedFiles = expression.Compile().Invoke(source);
-                if (httpPostedFiles == null) return;
-                foreach (var httpPostedFile in httpPostedFiles)
-                {
-                    if (httpPostedFile == null || httpPostedFile.ContentLength == 0) continue;
-                    if (upload != null) upload(httpPostedFile);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 处理上传
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="upload"></param>
-        /// <param name="expression"></param>
-        public static void DealUpload<TModel>(this TModel source, Action<System.Web.HttpPostedFileBase> upload, System.Linq.Expressions.Expression<Func<TModel, List<System.Web.HttpPostedFileBase>>> expression)
-        {
-            if (expression == null) throw new ArgumentNullException("expression");
-            DealUpload(source, upload, null, expression);
-        }
-
-        /// <summary>
         /// 转换为空间容易内容
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        internal static string ToSpaceVolumeString(this uint source)
+        public static string ToSpaceVolumeString(this uint source)
         {
             if (source < 1024)
             {

@@ -1,9 +1,5 @@
-﻿using Oldmansoft.Html.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -48,7 +44,9 @@ namespace Oldmansoft.Html.WebMan
         /// 创建文档
         /// </summary>
         /// <param name="defaultLink">默认链接</param>
-        public ManageDocument(ILocation defaultLink)
+        /// <param name="webRootPath"></param>
+        public ManageDocument(ILocation defaultLink, string webRootPath = "/")
+            : base(webRootPath)
         {
             DefaultLink = defaultLink.Path;
             SearchAction = Location.Empty;
@@ -190,26 +188,6 @@ namespace Oldmansoft.Html.WebMan
             }
         }
 
-        private void SetRightPanelContent(IHtmlElement panel)
-        {
-            var nav = new HtmlElement(HtmlTag.Nav);
-            panel.Append(nav);
-
-            var main = new HtmlElement(HtmlTag.Div).AddClass("webman-content");
-            panel.Append(main);
-        }
-
-        /// <summary>
-        /// 设置通用搜索栏
-        /// </summary>
-        /// <param name="location"></param>
-        /// <param name="name"></param>
-        [Obsolete("请使用 SetQuickSearch")]
-        public void SetSearchAction(ILocation location, string name = "keyword")
-        {
-            SetQuickSearch(location, name);
-        }
-
         /// <summary>
         /// 设置快速搜索栏
         /// </summary>
@@ -217,8 +195,7 @@ namespace Oldmansoft.Html.WebMan
         /// <param name="name"></param>
         public void SetQuickSearch(ILocation location, string name = "key")
         {
-            if (location == null) throw new ArgumentNullException();
-            SearchAction = location;
+            SearchAction = location ?? throw new ArgumentNullException();
             SearchInputName = name;
         }
     }

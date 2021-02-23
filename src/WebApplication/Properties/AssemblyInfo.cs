@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 有关程序集的常规信息是通过以下项进行控制的
@@ -8,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WebApplication")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Oldman")]
 [assembly: AssemblyProduct("WebApplication")]
 [assembly: AssemblyCopyright("版权所有(C)  2016")]
 [assembly: AssemblyTrademark("")]

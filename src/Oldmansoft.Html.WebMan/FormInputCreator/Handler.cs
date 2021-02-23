@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan.FormInputCreator
+﻿namespace Oldmansoft.Html.WebMan.FormInputCreator
 {
-    abstract class Handler : Util.ChainOfResponsibilityHandler<HandlerParameter, Input.IFormInput>
+    /// <summary>
+    /// 表单输入创建处理
+    /// </summary>
+    public abstract class Handler : Util.ChainOfResponsibilityHandler<HandlerParameter, Input.IFormInput>
     {
     }
 }

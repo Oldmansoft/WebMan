@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -17,14 +13,11 @@ namespace Oldmansoft.Html.WebMan
         {
             var frames = new System.Diagnostics.StackTrace(1, false).GetFrames();
             var result = frames[0].GetMethod();
-            Type controllerType = null;
             for (var i = 0; i < frames.Length; i++)
             {
                 var method = frames[i].GetMethod();
                 if (method.DeclaringType == null) break;
                 if (!method.DeclaringType.IsSubclassOf(typeof(System.Web.Mvc.Controller))) continue;
-
-                controllerType = method.DeclaringType;
                 result = method;
             }
             return result;

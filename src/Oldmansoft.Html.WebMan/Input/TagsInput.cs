@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Oldmansoft.Html.WebMan.Input
 {
@@ -28,7 +24,7 @@ namespace Oldmansoft.Html.WebMan.Input
         protected override void InitValue(object value)
         {
             WrongValueFormat = value != null && !(value is IEnumerable<string>);
-            InputMaxLength = PropertyContent.InputMaxLength;
+            InputMaxLength = PropertyContent.Attributes.Get<Annotations.InputMaxLengthAttribute>();
             Value = new HashSet<string>();
             foreach (var item in value.GetListString())
             {

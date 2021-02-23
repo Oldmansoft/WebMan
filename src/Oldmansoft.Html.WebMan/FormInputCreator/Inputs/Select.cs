@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
+﻿namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
     /// <summary>
     /// 下拉选择组件

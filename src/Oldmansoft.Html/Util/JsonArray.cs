@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.Util
 {
@@ -14,7 +11,7 @@ namespace Oldmansoft.Html.Util
         /// <summary>
         /// 子项
         /// </summary>
-        private IList<object> Items { get; set; }
+        private readonly IList<object> Items;
 
         /// <summary>
         /// 创建 JSON 数组

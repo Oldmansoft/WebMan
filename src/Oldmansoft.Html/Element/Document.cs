@@ -1,19 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oldmansoft.Html.Element
+﻿namespace Oldmansoft.Html.Element
 {
     /// <summary>
     /// 网页文档
     /// </summary>
     public class Document : HtmlElement
     {
-        private IHtmlElement TitleNode { get; set; }
+        private readonly IHtmlElement TitleNode;
 
-        private string _Title { get; set; }
+        private string _Title;
+
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title
+        {
+            get { return _Title; }
+            set
+            {
+                _Title = value;
+                TitleNode.Text(_Title);
+            }
+        }
 
         /// <summary>
         /// 头
@@ -36,19 +43,6 @@ namespace Oldmansoft.Html.Element
             Head.Append(TitleNode);
             Body = new HtmlElement(HtmlTag.Body);
             Append(Head).Append(Body);
-        }
-        
-        /// <summary>
-        /// 标题
-        /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set
-            {
-                _Title = value;
-                TitleNode.Text(_Title);
-            }
         }
         
         /// <summary>

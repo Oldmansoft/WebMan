@@ -1,13 +1,8 @@
-﻿using System;
+﻿using Oldmansoft.Html.Util;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.Util;
-using System.Reflection;
-using Oldmansoft.Html.WebMan.Util;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -50,9 +45,7 @@ namespace Oldmansoft.Html.WebMan
         internal DynamicTable(Expression<Func<TModel, object>> primaryKey, string dataSource)
             : base(primaryKey)
         {
-            if (dataSource == null) throw new ArgumentNullException("dataSource");
-
-            DataSourceLoation = dataSource;
+            DataSourceLoation = dataSource ?? throw new ArgumentNullException("dataSource");
             RowClassNameClientConditions = new List<KeyValuePair<string, string>>();
             TableActions = new List<DynamicTableAction>();
             ItemActions = new List<DynamicTableAction>();

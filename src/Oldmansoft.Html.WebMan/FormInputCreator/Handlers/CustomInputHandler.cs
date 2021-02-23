@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.WebMan.Input;
+﻿using Oldmansoft.Html.WebMan.Input;
+using System;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
 {
@@ -11,10 +7,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Handlers
     {
         protected override bool Request(HandlerParameter input, ref IFormInput result)
         {
-            if (input.PropertyContent.CustomInput == null) return false;
+            var customInput = input.PropertyContent.Attributes.Get<Annotations.CustomInputAttribute>();
+            if (customInput == null) return false;
 
-            var customer = Activator.CreateInstance(input.PropertyContent.CustomInput.InputType) as ICustomInput;
-            customer.Set(input.PropertyContent.CustomInput.Parameter);
+            var customer = Activator.CreateInstance(customInput.InputType) as ICustomInput;
+            customer.Set(customInput.Parameter);
 
             result = customer;
             input.SetInputProperty(result);

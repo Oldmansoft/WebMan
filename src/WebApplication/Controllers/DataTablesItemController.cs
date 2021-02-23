@@ -85,12 +85,12 @@ namespace WebApplication.Controllers
             }
             model.DealUpload((file) =>
             {
-                data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                data.File = FileLocation.Create(file.FileName, file.ContentType, "");
             }, o => o.File);
             data.Files = new List<HttpPostedFileBase>();
             model.DealUpload((file) =>
             {
-                data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+                data.Files.Add(FileLocation.Create(file.FileName, file.ContentType, ""));
             }, o => o.Files);
             GetDataSource(parentId).Insert(0, data);
             return Json(DealResult.Refresh("添加成功"));
@@ -125,14 +125,14 @@ namespace WebApplication.Controllers
                 model.MapTo(data);
                 model.DealUpload((file) =>
                 {
-                    data.File = new HttpPostedFileCustom(file.FileName, file.ContentType, "");
+                    data.File = FileLocation.Create(file.FileName, file.ContentType, "");
                 }, () =>
                 {
                     data.File = null;
                 }, o => o.File);
                 model.DealUpload((file) =>
                 {
-                    data.Files.Add(new HttpPostedFileCustom(file.FileName, file.ContentType, ""));
+                    data.Files.Add(FileLocation.Create(file.FileName, file.ContentType, ""));
                 }, (index) =>
                 {
                     data.Files.RemoveAt(index);

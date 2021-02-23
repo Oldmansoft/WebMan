@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.Html.WebMan.Input;
+﻿using System.Collections.Generic;
 
 namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
 {
@@ -22,9 +17,11 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
         /// <param name="value">值</param>
         protected override void InitValue(object value)
         {
-            Source = new Dictionary<bool, string>();
-            Source.Add(true, "是");
-            Source.Add(false, "否");
+            Source = new Dictionary<bool, string>
+            {
+                { true, "是" },
+                { false, "否" }
+            };
             Value = (bool?)value;
         }
 

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan.Annotations
 {
@@ -30,7 +26,7 @@ namespace Oldmansoft.Html.WebMan.Annotations
         {
             Datas = new Dictionary<string, string>();
             if (properties == null) return;
-            for (var i = 0; i < properties.Length; i = i + 2)
+            for (var i = 0; i < properties.Length; i += 2)
             {
                 string value = null;
                 if (properties.Length > i + 1) value = properties[i + 1];

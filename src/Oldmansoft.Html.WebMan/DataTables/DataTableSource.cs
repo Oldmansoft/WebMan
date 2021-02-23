@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -59,7 +56,6 @@ namespace Oldmansoft.Html.WebMan
 
         private void SetData(IEnumerable<TModel> source)
         {
-            var items = ModelProvider.Instance.GetItems(typeof(TModel));
             foreach(var model in source)
             {
                 var dataItem = new Dictionary<string, string>();

@@ -1,9 +1,5 @@
 ﻿using Oldmansoft.Html.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Html.WebMan
 {
@@ -75,8 +71,10 @@ namespace Oldmansoft.Html.WebMan
         public static Validator StringLength(int min)
         {
             if (min < 1) throw new ArgumentOutOfRangeException("min");
-            var result = new FormValidate.StringLength();
-            result.Min = min;
+            var result = new FormValidate.StringLength
+            {
+                Min = min
+            };
             return result;
         }
         
@@ -105,8 +103,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator Regexp(string pattern)
         {
-            var result = new FormValidate.Regexp();
-            result.Pattern = pattern;
+            var result = new FormValidate.Regexp
+            {
+                Pattern = pattern
+            };
             return result;
         }
 
@@ -126,8 +126,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator Identical(string otherProperty)
         {
-            var result = new FormValidate.Identical();
-            result.OtherProperty = otherProperty;
+            var result = new FormValidate.Identical
+            {
+                OtherProperty = otherProperty
+            };
             return result;
         }
 
@@ -138,8 +140,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator LessThan(object value)
         {
-            var result = new FormValidate.LessThan();
-            result.Value = value;
+            var result = new FormValidate.LessThan
+            {
+                Value = value
+            };
             return result;
         }
 
@@ -150,8 +154,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator GreaterThan(object value)
         {
-            var result = new FormValidate.GreaterThan();
-            result.Value = value;
+            var result = new FormValidate.GreaterThan
+            {
+                Value = value
+            };
             return result;
         }
 
@@ -162,8 +168,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator FixedCount(uint count)
         {
-            var result = new FormValidate.ListCount();
-            result.Fixed = count;
+            var result = new FormValidate.ListCount
+            {
+                Fixed = count
+            };
             return result;
         }
 
@@ -176,8 +184,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator RangeCount(uint min, uint max, bool inclusive)
         {
-            var result = new FormValidate.ListCount();
-            result.Inclusive = inclusive;
+            var result = new FormValidate.ListCount
+            {
+                Inclusive = inclusive
+            };
             if (min > 0) result.Min = min;
             if (max > 0) result.Max = max;
             return result;
@@ -190,8 +200,10 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public static Validator FileLimitContentLength(uint length)
         {
-            var result = new FormValidate.FileLimitContentLength();
-            result.Length = length;
+            var result = new FormValidate.FileLimitContentLength
+            {
+                Length = length
+            };
             return result;
         }
     }
