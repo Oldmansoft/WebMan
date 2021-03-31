@@ -64,7 +64,7 @@ namespace Oldmansoft.Html.WebMan
             return Element.RemoveData(name);
         }
 
-        IEnumerable<IHtmlNode> IHtmlNode.Children()
+        IList<IHtmlNode> IHtmlNode.Children()
         {
             return Element.Children();
         }
@@ -99,11 +99,6 @@ namespace Oldmansoft.Html.WebMan
             {
                 (Element as IHtmlNode).Parent = value;
             }
-        }
-
-        List<IHtmlNode> IHtmlNode.GetNodes()
-        {
-            return (Element as IHtmlNode).GetNodes();
         }
 
         IHtmlElement IHtmlElement.OnClient(HtmlEvent e, string script)

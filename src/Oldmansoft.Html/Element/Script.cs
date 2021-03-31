@@ -24,7 +24,7 @@ namespace Oldmansoft.Html.Element
 
             if (string.IsNullOrWhiteSpace(text)) return;
             Content = text.Trim();
-            if (Content.Last() != ';') Content = string.Format("{0};", Content);
+            if (Content.Last() != HtmlChar.Semicolons.Value) Content = string.Format("{0};", Content);
         }
 
         /// <summary>

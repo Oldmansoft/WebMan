@@ -10,16 +10,16 @@ namespace Oldmansoft.Html
     /// </summary>
     public class HtmlOutput : IHtmlOutput
     {
+        /// <summary>
+        /// 格式化输出
+        /// </summary>
+        public static bool DebugFormat { get; set; }
+
         private bool IsCompleted;
 
         private readonly StringBuilder Outer;
 
         private readonly List<IHtmlNode> Nodes;
-
-        /// <summary>
-        /// 格式化输出
-        /// </summary>
-        public static bool DebugFormat { get; set; }
 
         /// <summary>
         /// 序号生成器

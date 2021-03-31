@@ -10,11 +10,11 @@ namespace Oldmansoft.Html
     public static class Extend
     {
         /// <summary>
-        /// 获取字符串键值对
+        /// 转换成字符串键值对
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> GetKeyValues(this object source)
+        public static IDictionary<string, string> ConvertToKeyValues(this object source)
         {
             var result = new Dictionary<string, string>();
             if (source == null) return result;
@@ -81,7 +81,7 @@ namespace Oldmansoft.Html
         public static bool HasChild(this IHtmlNode source)
         {
             if (source == null) return false;
-            return source.GetNodes().Count > 0;
+            return source.Children().Count > 0;
         }
 
         /// <summary>

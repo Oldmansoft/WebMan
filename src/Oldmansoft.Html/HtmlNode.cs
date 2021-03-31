@@ -22,7 +22,7 @@ namespace Oldmansoft.Html
         {
             _Parent = new EmptyNode();
             Nodes = new List<IHtmlNode>();
-            _Parent.GetNodes().Add(this);
+            _Parent.Children().Add(this);
         }
 
         IHtmlNode IHtmlNode.Parent
@@ -31,11 +31,6 @@ namespace Oldmansoft.Html
             set { _Parent = value; }
         }
 
-        List<IHtmlNode> IHtmlNode.GetNodes()
-        {
-            return Nodes;
-        }
-        
         void IHtmlNode.Format(IHtmlOutput outer)
         {
             if (outer == null) throw new ArgumentNullException("outer");
@@ -54,7 +49,7 @@ namespace Oldmansoft.Html
         /// <param name="node"></param>
         protected void NodesAppend(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
+            node.Parent.Children().Remove(node);
             node.Parent = this;
             Nodes.Add(node);
         }
@@ -65,7 +60,7 @@ namespace Oldmansoft.Html
         /// <param name="node"></param>
         protected void NodesPrepend(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
+            node.Parent.Children().Remove(node);
             node.Parent = this;
             Nodes.Insert(0, node);
         }
@@ -76,8 +71,8 @@ namespace Oldmansoft.Html
         /// <param name="node"></param>
         protected void NodeAfter(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
-            var nodes = _Parent.GetNodes();
+            node.Parent.Children().Remove(node);
+            var nodes = _Parent.Children();
             var index = nodes.IndexOf(this);
             node.Parent = _Parent;
             nodes.Insert(index + 1, node);
@@ -89,8 +84,8 @@ namespace Oldmansoft.Html
         /// <param name="node"></param>
         protected void NodeBefore(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
-            var nodes = _Parent.GetNodes();
+            node.Parent.Children().Remove(node);
+            var nodes = _Parent.Children();
             var index = nodes.IndexOf(this);
             node.Parent = _Parent;
             nodes.Insert(index, node);
@@ -121,7 +116,7 @@ namespace Oldmansoft.Html
         /// 子节点
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IHtmlNode> Children()
+        public IList<IHtmlNode> Children()
         {
             return Nodes;
         }

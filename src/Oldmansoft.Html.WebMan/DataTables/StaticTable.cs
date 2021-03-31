@@ -364,7 +364,7 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public override IHtmlElement Append(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
+            node.Parent.Children().Remove(node);
             node.Parent = this;
             AfterNodes.Add(node);
             return this;
@@ -377,7 +377,7 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         public override IHtmlElement Prepend(IHtmlNode node)
         {
-            node.Parent.GetNodes().Remove(node);
+            node.Parent.Children().Remove(node);
             node.Parent = this;
             FrontNodes.Insert(0, node);
             return this;

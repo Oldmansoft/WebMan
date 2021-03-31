@@ -27,12 +27,7 @@ namespace Oldmansoft.Html
             }
         }
 
-        public List<IHtmlNode> GetNodes()
-        {
-            return Nodes;
-        }
-
-        public void Format(IHtmlOutput outer)
+        void IHtmlNode.Format(IHtmlOutput outer)
         {
             foreach (var item in Nodes)
             {
@@ -40,7 +35,7 @@ namespace Oldmansoft.Html
             }
         }
 
-        public IEnumerable<IHtmlNode> Children()
+        public IList<IHtmlNode> Children()
         {
             return Nodes;
         }

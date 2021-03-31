@@ -13,11 +13,6 @@ namespace Oldmansoft.Html
         IHtmlNode Parent { get; set; }
 
         /// <summary>
-        /// 子元素
-        /// </summary>
-        List<IHtmlNode> GetNodes();
-
-        /// <summary>
         /// 格式化
         /// </summary>
         /// <param name="outer"></param>
@@ -27,6 +22,6 @@ namespace Oldmansoft.Html
         /// 子元素
         /// </summary>
         /// <returns></returns>
-        IEnumerable<IHtmlNode> Children();
+        IList<IHtmlNode> Children();
     }
 }

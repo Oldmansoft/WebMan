@@ -73,7 +73,7 @@ namespace Oldmansoft.Html
             return this;
         }
 
-        IEnumerable<IHtmlNode> IHtmlNode.Children()
+        IList<IHtmlNode> IHtmlNode.Children()
         {
             return Elements.Count == 0 ? new List<IHtmlNode>() : Elements[0].Children();
         }
@@ -121,11 +121,6 @@ namespace Oldmansoft.Html
             {
                 item.Format(outer);
             }
-        }
-
-        List<IHtmlNode> IHtmlNode.GetNodes()
-        {
-            return Elements.Count == 0 ? new List<IHtmlNode>() : Elements[0].GetNodes();
         }
 
         IHtmlElement IHtmlElement.OnClient(HtmlEvent e, string script)
