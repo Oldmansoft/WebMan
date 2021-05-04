@@ -1,5 +1,5 @@
 ﻿/*
-* v0.30.117
+* v1.0.0
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -185,10 +185,10 @@ window.oldmansoft.webman = new (function () {
                 currentLinks = links.slice(0, i + 1);
                 a = $("<a></a>");
                 if (i < links.length - 1) {
-                    a.attr("href", "#" + oldmansoft.webapp.parser(currentLinks).getContent());
+                    a.attr("href", "#" + oldmansoft.webapp.linker.createHash(currentLinks));
                 }
                 if (!text) {
-                    if (view.node.data("link") == links[i]) {
+                    if (view.href == links[i]) {
                         text = view.node.find(".webman-panel header h2").text();
                         icon = view.node.find(".webman-panel header>i");
                     } else {
@@ -228,15 +228,17 @@ window.oldmansoft.webman = new (function () {
     }
 
     function dealSubmitResultAction(data, method, form) {
+        var newData = data.newData ? data.newData : data.NewData,
+            closeOpen = data.closeOpen ? data.closeOpen : data.CloseOpen;
         function refresh(isNewContent) {
             var operator;
-            if (!data.NewData) {
+            if (!newData) {
                 if (method == dealMethod.form && form) form.bootstrapValidator("disableSubmitButtons", false);
                 action();
                 return;
             }
 
-            operator = $app.current().node.data("operator");
+            operator = $app.current().data("operator");
             if (operator) {
                 operator.draw(false);
             } else if (!isNewContent) {
@@ -246,26 +248,28 @@ window.oldmansoft.webman = new (function () {
         }
 
         function action() {
-            var loading;
-            if (data.NewData || data.Path == null) return;
+            var loading,
+                path = data.path ? data.path : data.Path,
+                behave = data.behave ? data.behave : data.Behave;
+            if (newData || path == null) return;
 
-            if (data.Behave == linkBehave.link) {
-                $app.same(data.Path);
-            } else if (data.Behave == linkBehave.open) {
-                $app.open(data.Path);
-            } else if (data.Behave == linkBehave.call) {
+            if (behave == linkBehave.link) {
+                $app.same(path);
+            } else if (behave == linkBehave.open) {
+                $app.open(path);
+            } else if (behave == linkBehave.call) {
                 loading = $app.loading();
-                $.get(data.Path).done(function (data) {
+                $.get(path).done(function (data) {
                     dealSubmitResult(data, dealMethod.call);
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
-            } else if (data.Behave == linkBehave.self) {
-                document.location = data.Path;
-            } else if (data.Behave == linkBehave.blank) {
-                window.open(data.Path);
+            } else if (behave == linkBehave.self) {
+                document.location = path;
+            } else if (behave == linkBehave.blank) {
+                window.open(path);
             }
         }
 
-        if (data.CloseOpen && (!$app.current().node.hasClass("main-view") || (method == dealMethod.form && $app.current().view.getLinks().length > 1))) {
+        if (closeOpen && (!$app.current().hasClass("main-view") || (method == dealMethod.form && oldmansoft.webapp.linker.hrefs().length > 1))) {
             $app.close().completed(refresh);
         } else {
             refresh(false);
@@ -273,8 +277,11 @@ window.oldmansoft.webman = new (function () {
     }
 
     function dealSubmitResult(data, method, form) {
-        if (data.Message) {
-            $app.alert(data.Message, data.Success ? text.success : text.tips).ok(function () {
+        var message = data.message ? data.message : data.Message,
+            success = data.success ? data.success : data.Success;
+
+        if (message) {
+            $app.alert(message, success ? text.success : text.tips).ok(function () {
                 dealSubmitResultAction(data, method, form);
             });
         } else {
@@ -333,11 +340,11 @@ window.oldmansoft.webman = new (function () {
             });
         } else if (target == "_open") {
             $app.open(action, form.serialize());
-        }else if(target == "_self"){
-            if ($app.current().node.hasClass("main-view")) {
+        } else if (target == "_self") {
+            if ($app.current().hasClass("main-view")) {
                 $app.same(action + (action.indexOf("?") > -1 ? "&" : "?") + form.serialize());
             } else {
-                $app.current().view.replace(action, form.serialize());
+                oldmansoft.webapp.redirect(action, form.serialize());
             }
         } else if (!target) {
             $app.link(action + (action.indexOf("?") > -1 ? "&" : "?") + form.serialize());
@@ -858,7 +865,7 @@ window.oldmansoft.webman = new (function () {
         } else {
             execute();
         }
-        $app.current().node.data("operator", node.data("datatable"));
+        $app.current().data("operator", node.data("datatable"));
     }
 
     function dataTable_item_action_a_click(e) {
@@ -900,7 +907,7 @@ window.oldmansoft.webman = new (function () {
         } else {
             execute();
         }
-        $app.current().node.data("operator", node.data("datatable"));
+        $app.current().data("operator", node.data("datatable"));
     }
 
     function input_group_addon_del_file_click() {
@@ -1082,10 +1089,17 @@ window.oldmansoft.webman = new (function () {
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
         });
-        $app.init(main, defaultLink).viewActived(function (view) {
+        $app.configEvent().formSubmit().before.add(function () {
+            return false;
+        });
+        $app.setup(main, defaultLink).viewActived(function (view) {
             if (view.name == "open") return;
-            menu.active(oldmansoft.webapp.hashes(), view, defaultLink);
+            menu.active(oldmansoft.webapp.linker.hrefs(), view, defaultLink);
             $this.search.off();
+        }).viewLoaded(function (option) {
+            if (option.name == "main" && option.index == 0) {
+                $app.find(".webman-panel-tools a.webapp-close").hide();
+            }
         }).replacePCScrollBar(true);
 
         resetMainHeight();

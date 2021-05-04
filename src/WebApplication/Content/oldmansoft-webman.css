@@ -539,10 +539,6 @@ header .dropdown-menu a {
     float: right;
 }
 
-.main-view:first-child .webman-panel-tools a.webapp-close {
-    display: none;
-}
-
 .hide-webapp-close .webman-panel-tools a.webapp-close {
     display: none;
 }
