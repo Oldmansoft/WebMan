@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplicationCore.Controllers
+namespace WebApplicationCore.Areas.Manage.Controllers
 {
+    [Area("Manage")]
     public class TableController : Controller
     {
         [Location("表格", Icon = FontAwesome.Table)]
@@ -103,6 +104,16 @@ namespace WebApplicationCore.Controllers
             if (data == null) return new EmptyResult();
             if (data.Avatar == null) return new EmptyResult();
             return File(data.Avatar.Content, data.Avatar.Type);
+        }
+
+        public IActionResult Test()
+        {
+            var area = ControllerContext.ActionDescriptor.RouteValues["area"];
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName;
+
+            return Content($"area name:{area}" +
+                $" controller:{controllerName}  action name: {actionName}");
         }
     }
 }

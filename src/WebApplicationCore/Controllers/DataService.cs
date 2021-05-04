@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplicationCore.Controllers
+namespace WebApplicationCore
 {
     public class DataService
     {

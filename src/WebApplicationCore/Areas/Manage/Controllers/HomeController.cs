@@ -1,24 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Oldmansoft.Html.WebMan;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplicationCore.Models;
 
-namespace WebApplicationCore.Controllers
+namespace WebApplicationCore.Areas.Manage.Controllers
 {
+    [Area("Manage")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             var document = new ManageDocument(Url.Location(Empty));
@@ -31,7 +22,7 @@ namespace WebApplicationCore.Controllers
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/js/oldmansoft-webman.cn.js")));
 
             document.Title = "WebMan";
-            document.Menu.Add(new TreeListItem(Url.Location<Areas.Manage.Controllers.TableController>(o => o.Index)));
+            document.Menu.Add(new TreeListItem(Url.Location<TableController>(o => o.Index)));
             return new HtmlResult(document);
         }
 
@@ -40,31 +31,11 @@ namespace WebApplicationCore.Controllers
             return new EmptyResult();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
         public IActionResult Test()
         {
-            var area = ControllerContext.ActionDescriptor.RouteValues["area"];
-            var actionName = ControllerContext.ActionDescriptor.ActionName;
-            var controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            var content = Url.Action("Test", "Home", new { area = "" });
 
-            return Content($"area name:{area}" +
-                $" controller:{controllerName}  action name: {actionName}");
-        }
-
-        [Route("/Hello")]
-        public IActionResult Hello()
-        {
-            return Content("hello, world");
+            return Content(content);
         }
     }
 }

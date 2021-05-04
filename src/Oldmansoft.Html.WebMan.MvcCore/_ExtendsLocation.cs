@@ -30,7 +30,18 @@ namespace Oldmansoft.Html.WebMan
         /// <returns></returns>
         private static string GetMethodLocation(this MethodBase source, Type controllerType, IUrlHelper url)
         {
-            return url.Action(source.Name, GetControllerName(controllerType));
+            var area = controllerType.GetCustomAttribute<AreaAttribute>();
+            if (area == null) area = source.GetCustomAttribute<AreaAttribute>();
+            object values;
+            if (area != null)
+            {
+                values = new { area = area.RouteValue };
+            }
+            else
+            {
+                values = new { area = string.Empty };
+            }
+            return url.Action(source.Name, GetControllerName(controllerType), values);
         }
 
 
