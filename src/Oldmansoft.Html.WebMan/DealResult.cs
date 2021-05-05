@@ -76,7 +76,6 @@
         {
             var result = new DealResult
             {
-                CloseOpen = true,
                 Path = location.Path,
                 Behave = location.Behave,
                 Success = true
@@ -94,7 +93,6 @@
         {
             var result = new DealResult
             {
-                CloseOpen = true,
                 Path = location.Path,
                 Behave = location.Behave,
                 Message = message,
