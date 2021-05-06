@@ -644,6 +644,9 @@ table.dataTable tbody td ul li:first-child {
 .form-horizontal.view-mode .control-label {
     padding-top: 0;
 }
+.form-horizontal.view-mode .textarea {
+    word-wrap: break-word;
+}
 .form-horizontal .control-value i.fa {
     margin-right: 2px;
 }
