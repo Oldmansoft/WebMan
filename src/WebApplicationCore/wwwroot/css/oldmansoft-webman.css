@@ -22,6 +22,9 @@ body,
     .webman-panel>header form {
         display: none;
     }
+    .container-full > .layout-center > .layout-center-content > .webman-panel {
+        width: 300px !important;
+    }
 }
 @media (max-width: 768px){
     .mini-nav .webman-left-panel {
@@ -512,6 +515,9 @@ header .dropdown-menu a {
 }
 .layout-center-content>.webman-panel {
     margin-top: 0;
+}
+.container-full > .layout-center > .layout-center-content > .webman-panel {
+    width: 500px;
 }
 
 .main-view .webman-panel {

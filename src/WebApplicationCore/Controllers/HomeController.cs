@@ -39,7 +39,6 @@ namespace WebApplicationCore.Controllers
             document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
             document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
             document.Title = "登录";
-            document.LoginPanel.Css("width", "500px");
             var form = (Oldmansoft.Html.IHtmlElement)document.LoginPanel.Body.Children().First();
             form.Prepend(new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Input).Attribute(Oldmansoft.Html.HtmlAttribute.Type, "hidden"));
             return new HtmlResult(document);

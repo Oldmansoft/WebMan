@@ -22,6 +22,9 @@ body,
     .webman-panel>header form {
         display: none;
     }
+    .container-full > .layout-center > .layout-center-content > .webman-panel {
+        width: 300px !important;
+    }
 }
 @media (max-width: 768px){
     .mini-nav .webman-left-panel {
@@ -117,6 +120,14 @@ body,
 body {
     font-family: 'LatoBold', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif;
     line-height: 21px;
+}
+
+.container-full {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 
 section.container-fluid {
@@ -502,6 +513,12 @@ header .dropdown-menu a {
     border-radius: 3px;
     background-color: #fcfcfc;
 }
+.layout-center-content>.webman-panel {
+    margin-top: 0;
+}
+.container-full > .layout-center > .layout-center-content > .webman-panel {
+    width: 500px;
+}
 
 .main-view .webman-panel {
     margin-bottom: 15px;
@@ -640,6 +657,9 @@ table.dataTable tbody td ul li:first-child {
 }
 .form-horizontal .form-group ul.control-value li:first-child {
     margin-left: 0;
+}
+.form-horizontal .form-group .control-label {
+    white-space: nowrap;
 }
 .form-horizontal.view-mode .control-label {
     padding-top: 0;
