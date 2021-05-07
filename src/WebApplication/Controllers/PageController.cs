@@ -19,8 +19,10 @@ namespace WebApplication.Controllers
 
         public ActionResult IndexLink()
         {
-            var model = new Models.DataTableItemModel();
-            model.CreateTime = DateTime.UtcNow;
+            var model = new Models.DataTableItemModel
+            {
+                CreateTime = DateTime.UtcNow
+            };
 
             var panel = new Panel();
             panel.ConfigLocation();

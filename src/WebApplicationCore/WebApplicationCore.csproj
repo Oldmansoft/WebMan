@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Manage\Data\**" />
+    <Compile Remove="Areas\Manage\Models\**" />
+    <Compile Remove="Areas\Manage\Views\**" />
+    <Content Remove="Areas\Manage\Data\**" />
+    <Content Remove="Areas\Manage\Models\**" />
+    <Content Remove="Areas\Manage\Views\**" />
+    <EmbeddedResource Remove="Areas\Manage\Data\**" />
+    <EmbeddedResource Remove="Areas\Manage\Models\**" />
+    <EmbeddedResource Remove="Areas\Manage\Views\**" />
+    <None Remove="Areas\Manage\Data\**" />
+    <None Remove="Areas\Manage\Models\**" />
+    <None Remove="Areas\Manage\Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
@@ -15,12 +30,6 @@
     <ProjectReference Include="..\Oldmansoft.Html.WebMan.MvcCore\Oldmansoft.Html.WebMan.MvcCore.csproj" />
     <ProjectReference Include="..\Oldmansoft.Html.WebMan\Oldmansoft.Html.WebMan.csproj" />
     <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Manage\Data\" />
-    <Folder Include="Areas\Manage\Models\" />
-    <Folder Include="Areas\Manage\Views\" />
   </ItemGroup>
 
 </Project>

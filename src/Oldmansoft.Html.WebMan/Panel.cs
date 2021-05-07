@@ -7,11 +7,17 @@
     {
         private IHtmlElement HeaderCaption { get; set; }
 
-        private IHtmlElement Header { get; set; }
-
-        private IHtmlElement Body { get; set; }
-
         private IHtmlElement HeaderSearchForm { get; set; }
+
+        /// <summary>
+        /// 头部
+        /// </summary>
+        public IHtmlElement Header { get; private set; }
+
+        /// <summary>
+        /// 身体
+        /// </summary>
+        public IHtmlElement Body { get; private set; }
 
         /// <summary>
         /// 标题

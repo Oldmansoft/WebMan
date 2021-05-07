@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Oldmansoft.Html.WebMan;
 using System;
@@ -12,13 +14,6 @@ namespace WebApplicationCore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             var document = new ManageDocument(Url.Location(Empty));
@@ -35,6 +30,55 @@ namespace WebApplicationCore.Controllers
             return new HtmlResult(document);
         }
 
+        public IActionResult Login()
+        {
+            var document = new LoginDocument(Url.Location(Seed), Url.Location(new Func<string, string, JsonResult>(Login)));
+            document.Resources.WebApp.Link.Href = Url.Content("~/css/oldmansoft-webapp.css");
+            document.Resources.WebMan.Link.Href = Url.Content("~/css/oldmansoft-webman.css");
+            document.Resources.WebApp.Script.Src = Url.Content("~/js/oldmansoft-webapp.js");
+            document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
+            document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
+            document.Title = "登录";
+            document.LoginPanel.Css("width", "500px");
+            var form = (Oldmansoft.Html.IHtmlElement)document.LoginPanel.Body.Children().First();
+            form.Prepend(new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Input).Attribute(Oldmansoft.Html.HtmlAttribute.Type, "hidden"));
+            return new HtmlResult(document);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Seed()
+        {
+            string seed = Guid.NewGuid().ToString().Substring(0, 4);
+            TempData["HashSeed"] = seed;
+            return Content(seed);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult Login(string account, string hash)
+        {
+            if (!(TempData["HashSeed"] is string hashSeed))
+            {
+                return Json(DealResult.Wrong("脚本运行不正确"));
+            }
+            if (account == "test")
+            {
+                var claims = new List<System.Security.Claims.Claim>()
+                {
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "test"),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, Guid.Empty.ToString("N")),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Test"),
+                };
+                var identity = new System.Security.Claims.ClaimsIdentity(claims, "ApplicationCookie");
+                HttpContext.SignInAsync(new System.Security.Claims.ClaimsPrincipal(new[] { identity }));
+                return Json(DealResult.Location(Url.Location<HomeController>(o => o.Index)));
+            }
+            else
+            {
+                return Json(DealResult.Wrong("帐号或密码错误"));
+            }
+        }
+
         public IActionResult Empty()
         {
             return new EmptyResult();
@@ -49,22 +93,6 @@ namespace WebApplicationCore.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Test()
-        {
-            var area = ControllerContext.ActionDescriptor.RouteValues["area"];
-            var actionName = ControllerContext.ActionDescriptor.ActionName;
-            var controllerName = ControllerContext.ActionDescriptor.ControllerName;
-
-            return Content($"area name:{area}" +
-                $" controller:{controllerName}  action name: {actionName}");
-        }
-
-        [Route("/Hello")]
-        public IActionResult Hello()
-        {
-            return Content("hello, world");
         }
     }
 }

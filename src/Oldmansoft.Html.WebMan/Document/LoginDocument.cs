@@ -8,6 +8,11 @@ namespace Oldmansoft.Html.WebMan
     public class LoginDocument : HtmlDocument
     {
         /// <summary>
+        /// 登录面板
+        /// </summary>
+        public Panel LoginPanel { get; private set; }
+
+        /// <summary>
         /// 创建登录文档
         /// </summary>
         /// <param name="seed">加密种子路径</param>
@@ -20,21 +25,21 @@ namespace Oldmansoft.Html.WebMan
             if (action == null) throw new ArgumentNullException("action");
             if (action.Behave != LinkBehave.Call) throw new ArgumentException("需要返回 DealResult JSON", "action");
 
-            var container = new HtmlElement(HtmlTag.Div).AddClass("container-fluid");
+            var container = new HtmlElement(HtmlTag.Div).AddClass("container-full");
             Body.Append(container);
 
-            var row = new HtmlElement(HtmlTag.Div).AddClass("row");
-            container.Append(row);
+            var center = new HtmlElement(HtmlTag.Div).AddClass("layout-center");
+            container.Append(center);
 
-            var col = new HtmlElement(HtmlTag.Div).AddClass("col-sm-6 col-sm-offset-3");
-            row.Append(col);
+            var content = new HtmlElement(HtmlTag.Div).AddClass("layout-center-content");
+            center.Append(content);
 
-            var panel = new Panel();
-            col.Append(panel);
-            panel.Caption = "登录";
-            panel.Icon = FontAwesome.Unlock_Alt;
-            panel.AddClass("hide-webapp-close");
-            panel.Append(CreateForm(action.Path));
+            LoginPanel = new Panel();
+            content.Append(LoginPanel);
+            LoginPanel.Caption = "登录";
+            LoginPanel.Icon = FontAwesome.Unlock_Alt;
+            LoginPanel.AddClass("hide-webapp-close");
+            LoginPanel.Append(CreateForm(action.Path));
             
             var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seed.Path);
             var script = new Element.Script(scriptContent);
