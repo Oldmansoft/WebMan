@@ -40,10 +40,19 @@ namespace Oldmansoft.Html.WebMan
             LoginPanel.Icon = FontAwesome.Unlock_Alt;
             LoginPanel.AddClass("hide-webapp-close");
             LoginPanel.Append(CreateForm(action.Path));
-            
+
             var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seed.Path);
             var script = new Element.Script(scriptContent);
             Body.Append(script);
+        }
+
+        /// <summary>
+        /// 格式化之前
+        /// </summary>
+        protected override void BeforeFormat()
+        {
+            base.BeforeFormat();
+
             foreach (var item in InitAfterScripts)
             {
                 Body.Append(item);
