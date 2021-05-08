@@ -20,11 +20,10 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建网页文档
         /// </summary>
-        /// <param name="webRootPath"></param>
-        public HtmlDocument(string webRootPath)
+        public HtmlDocument()
         {
             InitAfterScripts = new List<Element.Script>();
-            Resources = new DocumentResource(webRootPath);
+            Resources = new DocumentResource();
 
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Http_Equiv, "Content-Type").Attribute(HtmlAttribute.Content, "text/html; charset=utf-8"));
             Head.Append(new HtmlElement(HtmlTag.Meta).Attribute(HtmlAttribute.Name, "viewport").Attribute(HtmlAttribute.Content, "width=device-width, initial-scale=1, user-scalable=no"));

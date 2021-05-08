@@ -13,9 +13,7 @@ namespace Oldmansoft.Html.WebMan.Document
         /// 创建文档
         /// </summary>
         /// <param name="defaultLink"></param>
-        /// <param name="webRootPath"></param>
-        public SimpleDocument(ILocation defaultLink, string webRootPath = "/")
-            : base(webRootPath)
+        public SimpleDocument(ILocation defaultLink)
         {
             Location = defaultLink;
         }

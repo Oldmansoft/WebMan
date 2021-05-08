@@ -41,7 +41,7 @@ namespace WebApplicationCore.Areas.Manage.Controllers
                 };
                 if (item.Avatar != null)
                 {
-                    model.Avatar = FileLocation.Create(item.Avatar.Name, item.Avatar.Type, string.Format("/Table/GetFile/{0}", item.Id));
+                    model.Avatar = FileLocation.Create(item.Avatar.Name, item.Avatar.Type, string.Format("/File/Get/{0}", item.Id));
                 }
                 list.Add(model);
             }
@@ -73,7 +73,7 @@ namespace WebApplicationCore.Areas.Manage.Controllers
             {
                 Id = data.Id,
                 Name = data.Name,
-                File = FileLocation.Create(data.Avatar.Name, data.Avatar.Type, string.Format("/Table/GetFile/{0}", data.Id))
+                File = FileLocation.Create(data.Avatar.Name, data.Avatar.Type, string.Format("/File/Get/{0}", data.Id))
             };
 
             var form = FormHorizontal.Create(model, Url.Location<Models.TableEditModel>(ChangeResult));
@@ -104,16 +104,6 @@ namespace WebApplicationCore.Areas.Manage.Controllers
             if (data == null) return new EmptyResult();
             if (data.Avatar == null) return new EmptyResult();
             return File(data.Avatar.Content, data.Avatar.Type);
-        }
-
-        public IActionResult Test()
-        {
-            var area = ControllerContext.ActionDescriptor.RouteValues["area"];
-            var actionName = ControllerContext.ActionDescriptor.ActionName;
-            var controllerName = ControllerContext.ActionDescriptor.ControllerName;
-
-            return Content($"area name:{area}" +
-                $" controller:{controllerName}  action name: {actionName}");
         }
     }
 }

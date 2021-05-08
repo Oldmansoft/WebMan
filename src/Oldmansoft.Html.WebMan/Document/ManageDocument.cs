@@ -44,9 +44,7 @@ namespace Oldmansoft.Html.WebMan
         /// 创建文档
         /// </summary>
         /// <param name="defaultLink">默认链接</param>
-        /// <param name="webRootPath"></param>
-        public ManageDocument(ILocation defaultLink, string webRootPath = "/")
-            : base(webRootPath)
+        public ManageDocument(ILocation defaultLink)
         {
             DefaultLink = defaultLink.Path;
             SearchAction = Location.Empty;

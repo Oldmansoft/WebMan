@@ -13,12 +13,11 @@ namespace WebApplication.Controllers
         public ActionResult Index()
         {
             var document = new ManageDocument(Url.Location(Welcome));
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
-            document.Resources.JQuery.Script = new Oldmansoft.Html.Element.ScriptResource("/Scripts/jquery-1.10.2.js");
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.jsdelivr.net/gh/Oldmansoft/WebMan/src/WebApplicationCore/wwwroot/js/oldmansoft-webman.cn.js"));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.jsdelivr.net/npm/bootstrapvalidator@0.5.4/src/js/language/zh_CN.min.js"));
 
-            document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/lity/2.3.0/lity.min.css"));
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/lity/2.3.0/lity.min.js"));
+            document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.jsdelivr.net/npm/lity@2.4.1/dist/lity.min.css"));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.jsdelivr.net/npm/lity@2.4.1/dist/lity.min.js"));
 
             document.Resources.Markdown.Enabled = true;
             document.Resources.Select2.Enabled = true;

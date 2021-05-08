@@ -75,19 +75,18 @@ namespace Oldmansoft.Html.WebMan
         /// <summary>
         /// 创建文档资源
         /// </summary>
-        /// <param name="webRootPath"></param>
-        public DocumentResource(string webRootPath)
+        public DocumentResource()
         {
             Nodes = new List<IHtmlElement>();
 
             FontAwesome = new Document.Resource
             {
-                Link = new Element.Link("https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css")
             };
 
             JQuery = new Document.Resource
             {
-                Script = new Element.ScriptResource("//cdn.bootcss.com/jquery/1.12.4/jquery.min.js")
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/gh/jquery/jquery@1.12.4/dist/jquery.min.js")
                 {
                     Integrity = "sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=",
                     CrossOrigin = "anonymous"
@@ -96,12 +95,12 @@ namespace Oldmansoft.Html.WebMan
 
             Bootstrap = new Document.Resource
             {
-                Link = new Element.Link("//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css")
                 {
                     Integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u",
                     CrossOrigin = "anonymous"
                 },
-                Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js")
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js")
                 {
                     Integrity = "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa",
                     CrossOrigin = "anonymous"
@@ -110,28 +109,28 @@ namespace Oldmansoft.Html.WebMan
 
             Sha256 = new Document.Resource
             {
-                Script = new Element.ScriptResource("//cdn.bootcss.com/js-sha256/0.5.0/sha256.min.js")
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/gh/emn178/js-sha256@0.5.0/build/sha256.min.js")
                 {
-                    Integrity = "sha256-QBdQQL9wDJVDk0eibUblj8jCArYQD+XaeFU47LnWboY=",
+                    Integrity = "sha256-DzhbsixtDukR6TQaqxgDEwtXBct17h3gpz8vgzpDWbA=",
                     CrossOrigin = "anonymous"
                 }
             };
 
             WebApp = new Document.Resource
             {
-                Link = new Element.Link("~/Content/oldmansoft-webapp.css".ResolveUrl(webRootPath)),
-                Script = new Element.ScriptResource("~/Scripts/oldmansoft-webapp.js".ResolveUrl(webRootPath))
+                Link = new Element.Link("//cdn.jsdelivr.net/gh/Oldmansoft/webapp/dist/oldmansoft-webapp.min.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/gh/Oldmansoft/webapp/dist/oldmansoft-webapp.min.js")
             };
 
             DataTables = new Document.Resource
             {
-                Link = new Element.Link("//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"),
-                Script = new Element.ScriptResource("//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/datatables@1.10.13/media/css/jquery.dataTables.min.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/datatables@1.10.13/media/js/jquery.dataTables.min.js")
             };
 
             JQueryForm = new Document.Resource
             {
-                Script = new Element.ScriptResource("//cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js")
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/jquery-form@4.2.1/dist/jquery.form.min.js")
                 {
                     Integrity = "sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer",
                     CrossOrigin = "anonymous"
@@ -140,32 +139,32 @@ namespace Oldmansoft.Html.WebMan
 
             BootstrapValidator = new Document.Resource
             {
-                Link = new Element.Link("//cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"),
-                Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/bootstrapvalidator@0.5.4/dist/css/bootstrapValidator.min.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/bootstrapvalidator@0.5.4/dist/js/bootstrapValidator.min.js")
             };
 
             PluginFix = new Document.Resource
             {
-                Script = new Element.ScriptResource("~/Scripts/oldmansoft-plugin-fix.js".ResolveUrl(webRootPath))
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/gh/Oldmansoft/WebMan/src/WebApplicationCore/wwwroot/js/oldmansoft-plugin-fix.js")
             };
 
             WebMan = new Document.Resource
             {
-                Link = new Element.Link("~/Content/oldmansoft-webman.css".ResolveUrl(webRootPath)),
-                Script = new Element.ScriptResource("~/Scripts/oldmansoft-webman.js".ResolveUrl(webRootPath))
+                Link = new Element.Link("//cdn.jsdelivr.net/gh/Oldmansoft/WebMan/src/WebApplicationCore/wwwroot/css/oldmansoft-webman.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/gh/Oldmansoft/WebMan/src/WebApplicationCore/wwwroot/js/oldmansoft-webman.js")
             };
 
             Markdown = new Input.MarkdownResource
             {
-                Link = new Element.Link("//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"),
-                Script = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"),
-                Preview = new Element.ScriptResource("//cdn.bootcss.com/bootstrap-markdown/1.1.4/js/markdown.min.js")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/bootstrap-markdown@2.10.0/css/bootstrap-markdown.min.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/bootstrap-markdown@2.10.0/js/bootstrap-markdown.min.js"),
+                Preview = new Element.ScriptResource("//cdn.jsdelivr.net/npm/markdown@0.5.0/lib/markdown.min.js")
             };
 
             Select2 = new Input.Select2Resource
             {
-                Link = new Element.Link("//cdn.bootcss.com/select2/4.0.3/css/select2.min.css"),
-                Script = new Element.ScriptResource("//cdn.bootcss.com/select2/4.0.3/js/select2.min.js")
+                Link = new Element.Link("//cdn.jsdelivr.net/npm/select2@4.0.3/dist/css/select2.min.css"),
+                Script = new Element.ScriptResource("//cdn.jsdelivr.net/npm/select2@4.0.3/dist/js/select2.min.js")
             };
         }
 
