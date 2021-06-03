@@ -1,6 +1,7 @@
 ﻿using Oldmansoft.Html.Util;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Oldmansoft.Html
 {
@@ -183,6 +184,7 @@ namespace Oldmansoft.Html
         public virtual IHtmlElement Append(IHtmlNode node)
         {
             if (node == null) return this;
+            if (node == this) throw new ArgumentException("不能添加自己", "node");
             NodesAppend(node);
             return this;
         }
@@ -195,6 +197,7 @@ namespace Oldmansoft.Html
         public virtual IHtmlElement Prepend(IHtmlNode node)
         {
             if (node == null) return this;
+            if (node == this) throw new ArgumentException("不能添加自己", "node");
             NodesPrepend(node);
             return this;
         }
@@ -207,6 +210,7 @@ namespace Oldmansoft.Html
         public virtual IHtmlElement After(IHtmlNode node)
         {
             if (node == null) return this;
+            if (node == this) throw new ArgumentException("不能添加自己", "node");
             NodeAfter(node);
             return this;
         }
@@ -219,6 +223,7 @@ namespace Oldmansoft.Html
         public virtual IHtmlElement Before(IHtmlNode node)
         {
             if (node == null) return this;
+            if (node == this) throw new ArgumentException("不能添加自己", "node");
             NodeBefore(node);
             return this;
         }
