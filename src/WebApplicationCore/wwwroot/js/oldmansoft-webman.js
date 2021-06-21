@@ -1,5 +1,5 @@
 ﻿/*
-* v1.0.0
+* v1.1.0
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -433,6 +433,7 @@ window.oldmansoft.webman = new (function () {
             var loading,
                 account,
                 password,
+                postData,
                 seedResponse,
                 passwordHash,
                 doubleHash;
@@ -460,10 +461,15 @@ window.oldmansoft.webman = new (function () {
             passwordHash = sha256(account.toLowerCase() + password);
             doubleHash = sha256(passwordHash.toUpperCase() + seedResponse.responseText);
 
-            $.post($(this).attr("action"), {
+            postData = {
                 Account: account,
                 Hash: doubleHash
-            }).done(function (data) {
+            }
+            if ($("input[name=ReturnUrl]").length > 0) {
+                postData.returnUrl = $("input[name=ReturnUrl]").val();
+            }
+
+            $.post($(this).attr("action"), postData).done(function (data) {
                 loading.hide();
                 data.NewData = false;
                 data.CloseOpen = false;
