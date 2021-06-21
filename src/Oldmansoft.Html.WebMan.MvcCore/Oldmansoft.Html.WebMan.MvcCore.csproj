@@ -5,7 +5,7 @@
     <RootNamespace>Oldmansoft.Html.WebMan</RootNamespace>
     <Authors>Oldman</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Oldmansoft.Html.WebMan\Oldmansoft.Html.WebMan.csproj" />
-    <ProjectReference Include="..\Oldmansoft.Html\Oldmansoft.Html.csproj" />
   </ItemGroup>
 
 </Project>
