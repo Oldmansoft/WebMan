@@ -24,23 +24,46 @@ namespace WebApplicationCore.Models
         public Guid Id { get; set; }
 
         [Display(Name = "名称")]
+        [Required]
         public string Name { get; set; }
 
         [Display(Name = "图像")]
+        [Oldmansoft.Html.WebMan.Annotations.FileRequired]
         public IFormFile File { get; set; }
     }
 
     public class UserFile
     {
         public string FileName { get; set; }
+
         public long Length { get; set; }
+
         public string Extension { get; set; }
+
         public string FileType { get; set; }
+
         private readonly static string[] Filters = { ".jpg", ".png", ".bmp" };
+
         public bool IsValid => !string.IsNullOrEmpty(this.Extension) && Filters.Contains(this.Extension);
+
         private IFormFile file;
+
         public IFormFile File
-        { get { return file; } set { if (value != null) { this.file = value; this.FileType = this.file.ContentType; this.Length = this.file.Length; this.Extension = this.file.FileName.Substring(file.FileName.LastIndexOf('.')); if (string.IsNullOrEmpty(this.FileName)) this.FileName = this.FileName; } } }
+        {
+            get { return file; }
+            set
+            {
+                if (value != null)
+                {
+                    file = value;
+                    FileType = file.ContentType;
+                    Length = file.Length;
+                    Extension = file.FileName[file.FileName.LastIndexOf('.')..];
+                    if (string.IsNullOrEmpty(FileName)) FileName = FileName;
+                }
+            }
+        }
+
         public async Task<string> SaveAs(string destinationDir = null)
         {
             if (this.file == null) throw new ArgumentNullException("没有需要保存的文件");

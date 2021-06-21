@@ -117,6 +117,10 @@ namespace Oldmansoft.Html.WebMan
             {
                 return;
             }
+            if (modelType.IsInterface)
+            {
+                return;
+            }
             if (modelType.IsClass)
             {
                 return;

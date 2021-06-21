@@ -17,7 +17,8 @@ namespace Oldmansoft.Html.WebMan
         /// </summary>
         /// <param name="seed">加密种子路径</param>
         /// <param name="action">登录处理地址</param>
-        public LoginDocument(ILocation seed, ILocation action)
+        /// <param name="returnUrl">返回地址</param>
+        public LoginDocument(ILocation seed, ILocation action, string returnUrl = null)
         {
             if (seed == null) throw new ArgumentNullException("seed");
             if (action == null) throw new ArgumentNullException("action");
@@ -37,7 +38,7 @@ namespace Oldmansoft.Html.WebMan
             LoginPanel.Caption = "登录";
             LoginPanel.Icon = FontAwesome.Unlock_Alt;
             LoginPanel.AddClass("hide-webapp-close");
-            LoginPanel.Append(CreateForm(action.Path));
+            LoginPanel.Append(CreateForm(action.Path, returnUrl));
 
             var scriptContent = string.Format("oldmansoft.webman.setLoginSubmit('form', '{0}', 'input[name=Account]', 'input[name=Password]');", seed.Path);
             var script = new Element.Script(scriptContent);
@@ -57,11 +58,19 @@ namespace Oldmansoft.Html.WebMan
             }
         }
 
-        private IHtmlElement CreateForm(string action)
+        private IHtmlElement CreateForm(string action, string returnUrl)
         {
             var form = new HtmlElement(HtmlTag.Form).Attribute(HtmlAttribute.Method, "post").Attribute(HtmlAttribute.Action, action);
-            form.AddClass("form-horizontal");
+            if (returnUrl != null)
+            {
+                var hidden = new HtmlElement(HtmlTag.Input);
+                hidden.Attribute(HtmlAttribute.Name, "ReturnUrl");
+                hidden.Attribute(HtmlAttribute.Type, "hidden");
+                hidden.Attribute(HtmlAttribute.Value, returnUrl);
+                form.Append(hidden);
+            }
 
+            form.AddClass("form-horizontal");
             form.Append(CreateFormGroup("帐号", "Account", "text"));
             form.Append(CreateFormGroup("密码", "Password", "password"));
 
