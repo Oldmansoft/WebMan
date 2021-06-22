@@ -1,5 +1,5 @@
 ﻿/*
-* v1.1.0
+* v1.1.1
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -466,7 +466,7 @@ window.oldmansoft.webman = new (function () {
                 Hash: doubleHash
             }
             if ($("input[name=ReturnUrl]").length > 0) {
-                postData.returnUrl = $("input[name=ReturnUrl]").val();
+                postData.returnUrl = $("input[name=ReturnUrl]").val() + document.location.hash;
             }
 
             $.post($(this).attr("action"), postData).done(function (data) {
