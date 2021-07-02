@@ -1,5 +1,5 @@
 ﻿/*
-* v1.1.0
+* v1.2.0
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -466,7 +466,7 @@ window.oldmansoft.webman = new (function () {
                 Hash: doubleHash
             }
             if ($("input[name=ReturnUrl]").length > 0) {
-                postData.returnUrl = $("input[name=ReturnUrl]").val();
+                postData.returnUrl = $("input[name=ReturnUrl]").val() + document.location.hash;
             }
 
             $.post($(this).attr("action"), postData).done(function (data) {
@@ -484,13 +484,20 @@ window.oldmansoft.webman = new (function () {
         });
     }
 
+    this.onFormValidate = new $app.definition.actionEvent();
+
     this.setFormValidate = function (view, className, fields) {
         if (!fields) return;
         var form = view.node.find("." + className);
         form.bootstrapValidator({
             fields: fields
         }).on('success.form.bv', function (e) {
+            if ($this.onFormValidate.before.execute(form) === false) {
+                e.preventDefault();
+                return;
+            }
             form.bootstrapValidator("disableSubmitButtons", true);
+            $this.onFormValidate.completed.execute(form);
             if (!submitForm($(e.target))) {
                 e.preventDefault();
             }
