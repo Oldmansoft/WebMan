@@ -17,8 +17,6 @@ namespace WebApplicationCore.Controllers
         public IActionResult Index()
         {
             var document = new ManageDocument(Url.Location(Empty));
-            document.Resources.WebApp.Script.Src = Url.Content("~/js/oldmansoft-webapp.js");
-            document.Resources.WebApp.Link.Href = Url.Content("~/css/oldmansoft-webapp.css");
             document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
             document.Resources.WebMan.Link.Href = Url.Content("~/css/oldmansoft-webman.css");
             document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
@@ -33,9 +31,7 @@ namespace WebApplicationCore.Controllers
         public IActionResult Login()
         {
             var document = new LoginDocument(Url.Location(Seed), Url.Location(new Func<string, string, JsonResult>(Login)));
-            document.Resources.WebApp.Link.Href = Url.Content("~/css/oldmansoft-webapp.css");
             document.Resources.WebMan.Link.Href = Url.Content("~/css/oldmansoft-webman.css");
-            document.Resources.WebApp.Script.Src = Url.Content("~/js/oldmansoft-webapp.js");
             document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
             document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
             document.Title = "登录";
