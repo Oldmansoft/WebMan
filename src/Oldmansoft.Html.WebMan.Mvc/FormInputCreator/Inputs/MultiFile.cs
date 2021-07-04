@@ -104,6 +104,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             templateInput.Attribute(HtmlAttribute.Name, Name);
             templateInput.Data("temporary", "temporary");
             templateInput.Data("temporary-for", Name);
+            HtmlData.SetContext(templateInput);
             if (FileOption.Accept != Annotations.ContentType.None)
             {
                 var list = new List<string>();
