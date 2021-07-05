@@ -1,5 +1,5 @@
 ﻿/*
-* v1.2.0
+* v1.2.1
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -486,6 +486,10 @@ window.oldmansoft.webman = new (function () {
 
     this.onFormValidate = new $app.definition.actionEvent();
 
+    this.submitForm = function (form) {
+        submitForm(form);
+    }
+
     this.setFormValidate = function (view, className, fields) {
         if (!fields) return;
         var form = view.node.find("." + className);
@@ -497,7 +501,10 @@ window.oldmansoft.webman = new (function () {
                 return;
             }
             form.bootstrapValidator("disableSubmitButtons", true);
-            $this.onFormValidate.completed.execute(form);
+            if ($this.onFormValidate.completed.execute(form) === false) {
+                e.preventDefault();
+                return;
+            }
             if (!submitForm($(e.target))) {
                 e.preventDefault();
             }
@@ -999,8 +1006,7 @@ window.oldmansoft.webman = new (function () {
         input.on("change", function () {
             caller.prev().prev().trigger("change");
 
-            var container = $(this).parent(),
-                groups = $(this).parentsUntil("form", ".mulit-file-group"),
+            var groups = $(this).parentsUntil("form", ".mulit-file-group"),
                 group,
                 control,
                 files,
