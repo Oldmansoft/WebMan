@@ -103,6 +103,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
             templateInput.AppendTo(group);
             templateInput.Attribute(HtmlAttribute.Type, "file");
             templateInput.Attribute(HtmlAttribute.Name, Name);
+            HtmlData.SetContext(templateInput);
             templateInput.Data("temporary", "temporary");
             templateInput.Data("temporary-for", Name);
             if (FileOption.Accept != Annotations.ContentType.None)

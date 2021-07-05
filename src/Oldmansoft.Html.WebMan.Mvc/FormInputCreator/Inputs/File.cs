@@ -80,6 +80,7 @@ namespace Oldmansoft.Html.WebMan.FormInputCreator.Inputs
                 input.Attribute(HtmlAttribute.Accept, string.Join(",", list));
             }
             input.AddClass("single-file-input");
+            HtmlData.SetContext(input);
 
             var virtualInput = new HtmlElement(HtmlTag.Div);
             virtualInput.AddClass("form-control virtual-file-input");
