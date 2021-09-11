@@ -22,6 +22,7 @@ namespace WebApplicationCore.Controllers
             document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/js/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.jsdelivr.net/npm/bootstrapvalidator@0.5.4/src/js/language/zh_CN.min.js"));
+            document.Resources.WebApp.Script = new Oldmansoft.Html.Element.ScriptResource("https://cdn.jsdelivr.net/gh/Oldmansoft/webapp/dist/oldmansoft-webapp.js");
 
             document.Title = "WebMan";
             document.Menu.Add(new TreeListItem(Url.Location<Areas.Manage.Controllers.TableController>(o => o.Index)));

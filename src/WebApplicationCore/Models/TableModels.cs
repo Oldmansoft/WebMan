@@ -32,6 +32,13 @@ namespace WebApplicationCore.Models
         public IFormFile File { get; set; }
     }
 
+    public class TableExportModel
+    {
+        [Display(Name = "开始日期")]
+        [DataType(DataType.Date)]
+        public DateTime Start { get; set; }
+    }
+
     public class UserFile
     {
         public string FileName { get; set; }

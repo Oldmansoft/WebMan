@@ -1108,7 +1108,11 @@ window.oldmansoft.webman = new (function () {
                 }).fail(dealAjaxError).always(function () { loading.hide(); });
             }
         });
-        $app.configEvent().formSubmit().before.add(function () {
+        $app.configEvent().formSubmit().before.add(function (form) {
+            var target = form.attr("target");
+            if (target == "_none") return;
+            if (target == "_blank") return;
+            if (target == "_open") return;
             return false;
         });
         $app.setup(main, defaultLink).viewActived(function (view) {

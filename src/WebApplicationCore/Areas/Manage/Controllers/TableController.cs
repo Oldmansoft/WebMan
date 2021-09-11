@@ -17,6 +17,7 @@ namespace WebApplicationCore.Areas.Manage.Controllers
             panel.ConfigLocation();
 
             var table = DataTable.Define<Models.TableListModel>(o => o.Id).Create(Url.Location(IndexDataSource));
+            table.AddActionTable(Url.Location(Export));
             table.AddActionTable(Url.Location(Create));
             table.AddActionItem(Url.Location(Change));
             table.SetRowClassNameWhenClientCondition("alert-danger", "data.Id < 3");
@@ -104,6 +105,22 @@ namespace WebApplicationCore.Areas.Manage.Controllers
             if (data == null) return new EmptyResult();
             if (data.Avatar == null) return new EmptyResult();
             return File(data.Avatar.Content, data.Avatar.Type);
+        }
+
+        [Location("导出", Behave = LinkBehave.Open)]
+        public IActionResult Export()
+        {
+            var form = FormHorizontal.Create(new Models.TableExportModel(), Url.Location<Models.TableExportModel>(ExportResult));
+            var panel = new Panel();
+            panel.ConfigLocation();
+            panel.Append(form);
+            return new HtmlResult(panel);
+        }
+
+        [Location("导出", Behave = LinkBehave.Blank)]
+        public IActionResult ExportResult(Models.TableExportModel model)
+        {
+            return Content("hello");
         }
     }
 }
